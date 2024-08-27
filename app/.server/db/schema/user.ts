@@ -1,0 +1,19 @@
+import { pgTable, timestamp, varchar, integer } from 'drizzle-orm/pg-core';
+import { UserRole } from './enums';
+import { image } from './meta';
+
+export const user = pgTable('users', {
+  // id: uuid('id').primaryKey().defaultRandom().notNull(),
+  id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
+  createdAt: timestamp('created_at', { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  firstName: varchar('first_name', { length: 255 }).notNull(),
+  lastName: varchar('last_name', { length: 255 }).notNull(),
+  username: varchar('username', { length: 255 }).notNull().unique(),
+  password: varchar('password', { length: 255 }).notNull(),
+  email: varchar('email', { length: 255 }).notNull().unique(),
+  role: UserRole('role').default('user').notNull(),
+  profileImage: varchar('profile_image', { length: 255 }),
+  //   profileImageID: integer('profile_image_id').references(() => image.id),
+});
