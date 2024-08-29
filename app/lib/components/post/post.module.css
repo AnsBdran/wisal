@@ -3,6 +3,34 @@
   background-color: var(--mantine-color-body);
 }
 
+.carousel {
+  @mixin hover {
+    .carouselControls {
+      opacity: 1;
+    }
+  }
+}
+
+.carouselControls {
+  transition: opacity 150ms ease;
+  opacity: 0;
+}
+
+.image {
+  /* height: rem(400px); */
+  /* width: full; */
+}
+
+.carouselIndicator {
+  width: rem(4px);
+  height: rem(4px);
+  transition: width 250ms ease;
+
+  &[data-active] {
+    width: rem(16px);
+  }
+}
+
 .rating {
   position: absolute;
   top: var(--mantine-spacing-xs);
@@ -30,6 +58,18 @@
   }
 }
 
+.user {
+  gap: 0.2rem;
+  align-items: center;
+}
+
 .footer {
-  margin-top: var(--mantine-spacing-md);
+  border-top: rem(1px) solid
+    light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4));
+  margin-top: var(--mantine-spacing-sm);
+  /* padding: var(--mantine-spacing-xs) var(--mantine-spacing-lg); */
+  /* background-color: light-dark(
+    var(--mantine-color-gray-1),
+    var(--mantine-color-dark-8)
+  ); */
 }

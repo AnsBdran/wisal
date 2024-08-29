@@ -6,6 +6,7 @@ import {
   text,
   integer,
   unique,
+  primaryKey,
 } from 'drizzle-orm/pg-core';
 import { ReactionType } from './enums';
 import { sql } from 'drizzle-orm/sql';
@@ -84,41 +85,26 @@ export const comment = pgTable('comments', {
     .notNull(),
 });
 
-export const message = pgTable('messages', {
+export const tag = pgTable('tags', {
   id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
-  createdAt: timestamp('created_at', { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  content: text('content').notNull(),
-  conversationID: integer('conversation_id')
-    .notNull()
-    .references(() => conversation.id),
-  fromID: integer('from_id')
-    .references(() => user.id, { onDelete: 'cascade' })
-    .notNull(),
-});
-
-export const conversation = pgTable('conversation', {
-  id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
-  createdAt: timestamp('created_at', { withTimezone: true })
-    .defaultNow()
-    .notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }),
   name: varchar('name', { length: 255 }).notNull(),
+  nameEn: varchar('name_en', { length: 255 }).notNull(),
 });
 
-export const conversationMember = pgTable('conversation_member', {
-  id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
-  conversationID: integer('conversation_id')
-    .references(() => conversation.id, { onDelete: 'cascade' })
-    .notNull(),
-  joinedAt: timestamp('joined_at', { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  leftAt: timestamp('left_at'),
-  userID: integer('user_id')
-    .references(() => user.id)
-    .notNull(),
-});
+export const postToTag = pgTable(
+  'posts_to_tags',
+  {
+    tagID: integer('tag_id').references(() => tag.id, { onDelete: 'cascade' }),
+    postID: integer('post_id').references(() => post.id, {
+      onDelete: 'cascade',
+    }),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.postID, t.tagID] }),
+  })
+);
+
 // |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 // |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 // relations
@@ -126,6 +112,8 @@ export const postRelations = relations(post, ({ many, one }) => ({
   comments: many(comment),
   reactions: many(postReaction),
   user: one(user, { fields: [post.userID], references: [user.id] }),
+  images: many(image),
+  tags: many(postToTag),
 }));
 
 export const commentRelations = relations(comment, ({ one, many }) => ({
@@ -139,7 +127,7 @@ export const postReactionRealtions = relations(
   ({ one, many }) => ({
     post: one(post, { fields: [postReaction.postID], references: [post.id] }),
     user: one(user, { fields: [postReaction.userID], references: [user.id] }),
-    images: many(image),
+    // images: many(image),
   })
 );
 
@@ -157,16 +145,17 @@ export const commentReactionRealtions = relations(
   })
 );
 
-export const conversationMemberRelations = relations(
-  conversationMember,
-  ({ one }) => ({
-    user: one(user, {
-      fields: [conversationMember.userID],
-      references: [user.id],
-    }),
-    conversation: one(conversation, {
-      fields: [conversationMember.conversationID],
-      references: [conversation.id],
-    }),
-  })
-);
+export const tagRelations = relations(tag, ({ many }) => ({
+  posts: many(postToTag),
+}));
+
+export const postToTagRelations = relations(postToTag, ({ one }) => ({
+  tag: one(tag, {
+    fields: [postToTag.tagID],
+    references: [tag.id],
+  }),
+  post: one(post, {
+    fields: [postToTag.postID],
+    references: [post.id],
+  }),
+}));

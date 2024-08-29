@@ -1,4 +1,11 @@
-import { pgTable, timestamp, varchar, integer } from 'drizzle-orm/pg-core';
+import {
+  pgTable,
+  timestamp,
+  varchar,
+  integer,
+  boolean,
+  text,
+} from 'drizzle-orm/pg-core';
 import { UserRole } from './enums';
 import { image } from './meta';
 
@@ -9,11 +16,16 @@ export const user = pgTable('users', {
     .defaultNow()
     .notNull(),
   firstName: varchar('first_name', { length: 255 }).notNull(),
+  middleName: varchar('middle_name', { length: 255 }),
   lastName: varchar('last_name', { length: 255 }).notNull(),
   username: varchar('username', { length: 255 }).notNull().unique(),
+  nickName: varchar('nickname', { length: 255 }),
   password: varchar('password', { length: 255 }).notNull(),
   email: varchar('email', { length: 255 }).notNull().unique(),
   role: UserRole('role').default('user').notNull(),
   profileImage: varchar('profile_image', { length: 255 }),
+  isVerified: boolean('is_verified').default(false).notNull(),
+  bio: text('bio'),
+  isApproved: boolean('is_approved').default(false).notNull(),
   //   profileImageID: integer('profile_image_id').references(() => image.id),
 });

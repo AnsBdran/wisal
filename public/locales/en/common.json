@@ -1,0 +1,21 @@
+{
+  "greeting": "Hello",
+  "app_title": "Wisal",
+  "choose_app_language": "Choose the app language",
+  "scroll_to_top": "Scroll to top",
+  "load_more": "Load more",
+  "communicating": "communicating",
+  "messaging": "messaging",
+  "email": "Email",
+  "password": "Password",
+  "password_confirmation": "Confirm Password",
+  "username": "Username",
+  "email_invalid": "Invalid email",
+  "login": "Login",
+  "logout": "Log out",
+  "settings": "Settings",
+  "reacted_to_this": "people reacted to this",
+  "comment": "comment",
+  "comment_placeholder": "write your comment here",
+  "share": "share"
+}

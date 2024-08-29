@@ -3,33 +3,19 @@ import {
   Avatar,
   Box,
   Button,
+  Center,
   Container,
   Group,
   Menu,
   Title,
-  useDirection,
   useMantineColorScheme,
 } from '@mantine/core';
-import { LoaderFunctionArgs } from '@remix-run/node';
-import { Form, Link, useLoaderData } from '@remix-run/react';
+import { Form, Link } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
-import { authenticator } from '~/services/auth.server';
-// import { authenticator } from '~/services/auth.server'
-
-// export const loader = async ({ request }: LoaderFunctionArgs) => {
-//     const user = await authenticator.isAuthenticated(request)
-//     return { user }
-// }
-
-// const Header = ({ user }) => {
 const Header = () => {
-  // const { } = useLoaderData<typeof loader>()
-  // console.log('the user in header', user)
-  // console.log('finally', user)
   const { i18n, t } = useTranslation();
   const { toggleColorScheme, colorScheme } = useMantineColorScheme();
-  // const { toggleDirection } = useDirection()
   return (
     <>
       <Container className='h-full'>
@@ -43,17 +29,20 @@ const Header = () => {
                 <Menu.Target>
                   <Avatar />
                 </Menu.Target>
-                <Menu.Divider />
                 <Menu.Dropdown>
+                  <Menu.Item>{t('settings')}</Menu.Item>
+                  <Menu.Divider />
                   <Form method='post' action='/logout'>
-                    <Menu.Item
-                      color='red'
-                      component='button'
-                      type='submit'
-                      leftSection={<Icon icon='fluent:sign-out-20-regular' />}
-                    >
-                      {t('logout')}
-                    </Menu.Item>
+                    <Center>
+                      <Menu.Item
+                        color='red'
+                        component='button'
+                        type='submit'
+                        leftSection={<Icon icon='fluent:sign-out-20-regular' />}
+                      >
+                        {t('logout')}
+                      </Menu.Item>
+                    </Center>
                   </Form>
                 </Menu.Dropdown>
               </Menu>
@@ -67,13 +56,14 @@ const Header = () => {
                 </Button>
               </Box>
             )}
-
+            {/* ==================================================================== */}
+            {/* ==================================================================== */}
             {/* Change language menu */}
-            <Menu transitionProps={{ transition: 'fade-down', duration: 120 }}>
+            <Menu transitionProps={{ transition: 'skew-up', duration: 120 }}>
               <Menu.Target>
                 {/* i18n.language === 'ar' ? i18n.changeLanguage('en') : i18n.changeLanguage('ar') */}
                 <ActionIcon>
-                  <Icon icon='ic:outline-language' />
+                  <Icon icon='lets-icons:globe-light' />
                 </ActionIcon>
               </Menu.Target>
               <Menu.Dropdown>
@@ -85,7 +75,8 @@ const Header = () => {
                   عربي
                 </Menu.Item>
                 <Menu.Item
-                  onClick={() => i18n.changeLanguage('en')}
+                  onClick={() => i18n.loadLanguages('ar')}
+                  // onClick={() => i18n.changeLanguage('en')}
                   leftSection={<Icon icon='ri:english-input' />}
                 >
                   English
@@ -95,8 +86,11 @@ const Header = () => {
             <ActionIcon onClick={toggleColorScheme}>
               <Icon
                 icon={
-                  colorScheme === 'light' ? 'hugeicons:sun-02' : 'bi:moon-stars'
+                  colorScheme === 'light'
+                    ? 'lets-icons:sunlight-light'
+                    : 'lets-icons:moon-light'
                 }
+                className='rotate-[210deg]'
               />
             </ActionIcon>
           </Group>

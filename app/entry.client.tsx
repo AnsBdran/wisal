@@ -16,27 +16,81 @@
 //     </StrictMode>
 //   );
 // });
+
+// ===================================================
+// ===================================================
+// ===================================================
+// import { RemixBrowser } from '@remix-run/react';
+// import i18next from 'i18next';
+// import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector';
+// import Fetch from 'i18next-fetch-backend';
+// import { startTransition, StrictMode } from 'react';
+// import { hydrateRoot } from 'react-dom/client';
+// import { I18nextProvider, initReactI18next } from 'react-i18next';
+// import { getInitialNamespaces } from 'remix-i18next/client';
+// import { defaultNS, fallbackLng, supportedLngs } from '~/config/i18n';
+
+// async function main() {
+//   // eslint-disable-next-line import/no-named-as-default-member
+//   await i18next
+//     .use(initReactI18next) // Tell i18next to use the react-i18next plugin
+//     .use(Fetch) // Tell i18next to use the Fetch backend
+//     .use(I18nextBrowserLanguageDetector) // Setup a client-side language detector
+//     .init({
+//       defaultNS,
+//       fallbackLng,
+//       supportedLngs,
+//       ns: getInitialNamespaces(),
+//       detection: {
+//         // Here only enable htmlTag detection, we'll detect the language only
+//         // server-side with remix-i18next, by using the `<html lang>` attribute
+//         // we can communicate to the client the language detected server-side
+//         order: ['htmlTag'],
+//         // Because we only use htmlTag, there's no reason to cache the language
+//         // on the browser, so we disable it
+//         caches: [],
+//       },
+//       backend: {
+//         // We will configure the backend to fetch the translations from the
+//         // resource route /api/locales and pass the lng and ns as search params
+//         loadPath: '/api/locales?lng={{lng}}&ns={{ns}}',
+//       },
+//     });
+
+//   startTransition(() => {
+//     hydrateRoot(
+//       document,
+//       <I18nextProvider i18n={i18next}>
+//         <StrictMode>
+//           <RemixBrowser />
+//         </StrictMode>
+//       </I18nextProvider>
+//     );
+//   });
+// }
+
+// main().catch((error) => console.error(error));
+
 import { RemixBrowser } from '@remix-run/react';
-import i18next from 'i18next';
-import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector';
-import Fetch from 'i18next-fetch-backend';
 import { startTransition, StrictMode } from 'react';
 import { hydrateRoot } from 'react-dom/client';
+import i18n from './services/i18n';
+import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
+import Backend from 'i18next-http-backend';
 import { getInitialNamespaces } from 'remix-i18next/client';
-import { defaultNS, fallbackLng, supportedLngs } from '~/config/i18n';
 
-async function main() {
-  // eslint-disable-next-line import/no-named-as-default-member
+async function hydrate() {
   await i18next
     .use(initReactI18next) // Tell i18next to use the react-i18next plugin
-    .use(Fetch) // Tell i18next to use the Fetch backend
-    .use(I18nextBrowserLanguageDetector) // Setup a client-side language detector
+    .use(LanguageDetector) // Setup a client-side language detector
+    .use(Backend) // Setup your backend
     .init({
-      defaultNS,
-      fallbackLng,
-      supportedLngs,
+      ...i18n, // spread the configuration
+      // This function detects the namespaces your routes rendered while SSR use
       ns: getInitialNamespaces(),
+      backend: { loadPath: '/locales/{{lng}}/{{ns}}.json' },
       detection: {
         // Here only enable htmlTag detection, we'll detect the language only
         // server-side with remix-i18next, by using the `<html lang>` attribute
@@ -45,11 +99,6 @@ async function main() {
         // Because we only use htmlTag, there's no reason to cache the language
         // on the browser, so we disable it
         caches: [],
-      },
-      backend: {
-        // We will configure the backend to fetch the translations from the
-        // resource route /api/locales and pass the lng and ns as search params
-        loadPath: '/api/locales?lng={{lng}}&ns={{ns}}',
       },
     });
 
@@ -65,4 +114,10 @@ async function main() {
   });
 }
 
-main().catch((error) => console.error(error));
+if (window.requestIdleCallback) {
+  window.requestIdleCallback(hydrate);
+} else {
+  // Safari doesn't support requestIdleCallback
+  // https://caniuse.com/requestidlecallback
+  window.setTimeout(hydrate, 1);
+}

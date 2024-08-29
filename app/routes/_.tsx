@@ -1,27 +1,25 @@
 import { AppShell, Container, Tabs, TabsList } from '@mantine/core';
-import { useNavigate, Outlet, useLocation } from '@remix-run/react';
+import { useNavigate, Outlet } from '@remix-run/react';
 
 import Header from '~/lib/components/main/header';
 import Footer from '~/lib/components/main/footer';
 import '@mantine/core/styles.css';
 import { useTranslation } from 'react-i18next';
-import { useEffect } from 'react';
+import { useHeadroom } from '@mantine/hooks';
 
 const MailLayout = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const location = useLocation();
-  useEffect(() => {}, [location]);
-  console.log('location', location);
+  const pinned = useHeadroom({ fixedAt: 120 });
   return (
     <>
       <AppShell
         header={{
-          height: 50,
-          collapsed: false,
+          height: 60,
+          collapsed: !pinned,
+          offset: false,
         }}
         footer={{ collapsed: true, height: 120 }}
-        // title='Hello, wisal'
         p='sm'
       >
         <AppShell.Header>

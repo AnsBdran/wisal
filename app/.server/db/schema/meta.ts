@@ -1,5 +1,5 @@
 import { pgTable, varchar, integer } from 'drizzle-orm/pg-core';
-import { post } from './social';
+import { post } from './feed';
 import { relations } from 'drizzle-orm';
 // import { sql } from 'drizzle-orm'
 

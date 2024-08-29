@@ -9,6 +9,8 @@ import {
   message,
   post,
   postReaction,
+  postToTag,
+  tag,
 } from './schema';
 import { user } from './schema/user';
 import { fakerAR as faker } from '@faker-js/faker';
@@ -27,6 +29,9 @@ const seedUsers = async () => {
       username: faker.internet.userName(),
       role: faker.helpers.maybe(() => 'admin', { probability: 0.1 }) || 'user',
       profileImage: faker.image.avatar(),
+      bio: faker.word.words(),
+      isVerified: faker.datatype.boolean({ probability: 0.3 }),
+      isApproved: faker.datatype.boolean({ probability: 0.8 }),
       // profileImageID: images[i].id
     });
   }
@@ -54,6 +59,36 @@ export const seedComments = async () => {
         userID: users[i].id,
       });
     }
+  }
+};
+
+export const seedTags = async () => {
+  for (let i = 0; i < COUNT / 3; i++) {
+    await db.insert(tag).values({
+      name: faker.word.adjective(),
+      nameEn: faker.word.noun(),
+    });
+  }
+};
+
+export const seedPostToTags = async () => {
+  const posts = await db.select().from(post);
+  const tags = await db.select().from(tag);
+
+  for (let i = 0; i < posts.length; i++) {
+    const _tags = faker.helpers.arrayElements(tags, { min: 2, max: 7 });
+    _tags.map(async (t) => {
+      await db.insert(postToTag).values({
+        postID: posts[i].id,
+        tagID: t.id,
+      });
+    });
+    // for (let j = 0; j < faker.helpers.rangeToNumber({ min: 2, max: 5 }); j++) {
+    //   await db.insert(postToTag).values({
+    //     postID: posts[i].id,
+    //     tagID: faker.helpers.arrayElement(tags).id,
+    //   });
+    // }
   }
 };
 
@@ -150,6 +185,8 @@ const seedConversations = async () => {
   for (let i = 0; i < 25; i++) {
     await db.insert(conversation).values({
       name: faker.lorem.words(),
+      bio: faker.lorem.sentence(),
+      image: faker.image.urlLoremFlickr(),
     });
   }
 };
@@ -199,6 +236,8 @@ const clear = async () => {
   await db.delete(message);
   await db.delete(commentReaction);
   await db.delete(postReaction);
+  await db.delete(tag);
+  await db.delete(postToTag);
 };
 
 const seed = async () => {
@@ -214,6 +253,8 @@ const seed = async () => {
   await seedConversations();
   await seedConversationMembers();
   await seedMessages();
+  await seedTags();
+  await seedPostToTags();
 };
 
 const main = async () => {
