@@ -16,5 +16,7 @@
   "settings": "الإعدادات",
   "reacted_to_this": "شخص تفاعل مع هذا",
   "comment": "تعليق",
-  "comment_placeholder": "اكتب تعليقك هنا"
+  "comment_placeholder": "اكتب تعليقك هنا",
+  "edit": "تعديل",
+  "delete": "حذف"
 }

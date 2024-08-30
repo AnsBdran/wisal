@@ -73,3 +73,36 @@
     var(--mantine-color-dark-8)
   ); */
 }
+
+.commentsContainer {
+  border-top-width: 2px;
+  border-top-color: light-dark(
+    var(--mantine-color-gray-4),
+    var(--mantine-color-gray-8)
+  );
+  border-style: dotted;
+}
+
+.comment {
+  position: relative;
+  padding-block: var(--mantine-spacing-xs);
+  padding-inline: var(--mantine-spacing-sm); /* padding-left: 300px; */
+  padding-right: calc(
+    (var(--mantine-spacing-lg) * 2) + var(--mantine-spacing-xs)
+  );
+  @mixin rtl {
+    padding-left: calc(
+      (var(--mantine-spacing-lg) * 2) + var(--mantine-spacing-xs)
+    );
+  }
+}
+
+.menuIcon {
+  position: absolute;
+  top: var(--mantine-spacing-xs);
+  right: var(--mantine-spacing-xs);
+
+  @mixin rtl {
+    left: var(--mantine-spacing-xs);
+  }
+}

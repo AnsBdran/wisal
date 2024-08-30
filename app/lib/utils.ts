@@ -14,3 +14,7 @@ export const fromNow = (date: string, lang: string) => {
   return dayjs(date).fromNow();
   // return dayjs(date).locale('es').fromNow()
 };
+
+export const fullName = (user) => `${user.firstName} ${user.lastName}`;
+export const firstLetters = (user) =>
+  `${user.firstName.charAt(0)} ${user.lastName.charAt(0)}`;

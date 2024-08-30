@@ -5,26 +5,35 @@ import {
   rem,
   useMantineTheme,
   TextInput,
+  ThemeIcon,
+  Menu,
+  Stack,
+  Badge,
 } from '@mantine/core';
 import { Icon } from '@iconify/react';
 import classes from './post.module.css';
 import { useTranslation } from 'react-i18next';
-import { useFetcher } from '@remix-run/react';
+import { useFetcher, Link } from '@remix-run/react';
+import { tag } from '~/.server/db/schema';
+
 export const Reactions = () => {
   const theme = useMantineTheme();
   const fetcher = useFetcher();
-  const submitReaction = (type: string) => {};
+  const submitReaction = (type: string) => {
+    console.log(type);
+  };
   const reactions: { icon: string; color: string; type: string }[] = [
     { icon: 'ic:twotone-favorite-border', color: 'red', type: 'love' },
-    { icon: 'akar-icons:thumbs-up', color: 'green', type: '' },
-    { icon: 'fluent:emoji-laugh-16-regular', color: 'teal', type: '' },
-    { icon: 'lets-icons:sad-light', color: '', type: '' },
-    { icon: 'lets-icons:angry', color: 'red', type: '' },
-    { icon: 'akar-icons:thumbs-down', color: 'green', type: '' },
+    { icon: 'akar-icons:thumbs-up', color: 'green', type: 'like' },
+    { icon: 'fluent:emoji-laugh-16-regular', color: 'teal', type: 'haha' },
+    { icon: 'lets-icons:sad-light', color: 'dark', type: 'sad' },
+    { icon: 'lets-icons:wow', color: 'violet', type: 'wow' },
+    { icon: 'lets-icons:angry', color: 'red', type: 'angry' },
+    { icon: 'akar-icons:thumbs-down', color: 'green', type: 'dislike' },
   ];
   return (
     <fetcher.Form>
-      <Popover opened>
+      <Popover>
         <Popover.Target>
           <ActionIcon className={classes.action}>
             <Icon
@@ -37,52 +46,17 @@ export const Reactions = () => {
         <Popover.Dropdown>
           <Group>
             {reactions.map((r) => (
-              <ActionIcon key={r.type} color={r.color} c='' variant='light'>
+              <ThemeIcon
+                onClick={() => submitReaction(r.type)}
+                component={ActionIcon}
+                color={r.color}
+                variant='light'
+                bd={0}
+                key={r.type}
+              >
                 <Icon icon={r.icon} />
-              </ActionIcon>
+              </ThemeIcon>
             ))}
-            {/* <ActionIcon
-              variant='light'
-              color='blue'
-              onClick={() => submitReaction('like')}
-            >
-              <Icon icon='akar-icons:thumbs-up' />
-            </ActionIcon>
-            <ActionIcon
-              autoContrast
-              variant='filled'
-              color='yellow.6'
-              onClick={() => submitReaction('haha')}
-            >
-              <Icon icon='fluent:emoji-laugh-16-regular' />
-            </ActionIcon>
-            <ActionIcon
-              variant='light'
-              color='dark'
-              onClick={() => submitReaction('sad')}
-            >
-              <Icon icon='lets-icons:sad-light' />
-            </ActionIcon>
-            <ActionIcon
-              variant='filled'
-              color='red'
-              onClick={() => submitReaction('love')}
-            >
-              <Icon icon='ic:twotone-favorite-border' />
-            </ActionIcon>
-            <ActionIcon
-              variant='light'
-              color='red'
-              onClick={() => submitReaction('angry')}
-            >
-              <Icon icon='lets-icons:angry' />
-            </ActionIcon>
-            <ActionIcon
-              variant='light'
-              onClick={() => submitReaction('dislike')}
-            >
-              <Icon icon='akar-icons:thumbs-down' />
-            </ActionIcon> */}
           </Group>
         </Popover.Dropdown>
       </Popover>
@@ -110,10 +84,58 @@ export const Comment = () => {
           <ActionIcon size='lg' variant='filled'>
             <Icon
               icon='lets-icons:send-hor-light'
-              // style={{ width: rem(24), height: rem(24) }}
+              style={{ width: rem(32), height: rem(32) }}
               className={i18n.language === 'ar' ? 'rotate-180' : ''}
             />
           </ActionIcon>
+        </Group>
+      </Popover.Dropdown>
+    </Popover>
+  );
+};
+
+export const CommentActions = () => {
+  const { t } = useTranslation();
+  return (
+    <Menu>
+      <Menu.Target>
+        <ActionIcon className={classes.menuIcon} variant='subtle'>
+          <Icon icon='lets-icons:meatballs-menu' />
+        </ActionIcon>
+      </Menu.Target>
+      <Menu.Dropdown>
+        <Menu.Item leftSection={<Icon icon='lets-icons:edit-light' />}>
+          {t('edit')}
+        </Menu.Item>
+        <Menu.Item leftSection={<Icon icon='lets-icons:trash-light' />}>
+          {t('delete')}
+        </Menu.Item>
+      </Menu.Dropdown>
+    </Menu>
+  );
+};
+
+export const PostTags = ({ tags }: { tags: (typeof tag.$inferSelect)[] }) => {
+  return (
+    <Popover>
+      <Popover.Target>
+        <ActionIcon>
+          <Icon icon='hugeicons:tags' />
+        </ActionIcon>
+      </Popover.Target>
+      <Popover.Dropdown>
+        <Group align='center'>
+          {tags.map((tag) => (
+            <Badge
+              style={{ cursor: 'pointer' }}
+              component={Link}
+              to={`?tag=${tag?.name}`}
+              key={tag?.id}
+              radius='sm'
+            >
+              {tag?.name}
+            </Badge>
+          ))}
         </Group>
       </Popover.Dropdown>
     </Popover>

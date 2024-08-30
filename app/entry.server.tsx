@@ -298,8 +298,8 @@
 //   });
 // }
 
-// +++++++++++++++++++++++++++++++++++++
-import { PassThrough } from 'stream';
+// +++++++++++++++++++++++++++++++++++++import { PassThrough } from "stream";
+import { PassThrough } from 'node:stream';
 import {
   createReadableStreamFromReadable,
   type EntryContext,
@@ -322,13 +322,13 @@ export default async function handleRequest(
   responseHeaders: Headers,
   remixContext: EntryContext
 ) {
-  const callbackName = isbot(request.headers.get('user-agent'))
+  let callbackName = isbot(request.headers.get('user-agent'))
     ? 'onAllReady'
     : 'onShellReady';
 
-  const instance = createInstance();
-  const lng = await i18next.getLocale(request);
-  const ns = i18next.getRouteNamespaces(remixContext);
+  let instance = createInstance();
+  let lng = await i18next.getLocale(request);
+  let ns = i18next.getRouteNamespaces(remixContext);
 
   await instance
     .use(initReactI18next) // Tell our instance to use react-i18next
@@ -343,13 +343,13 @@ export default async function handleRequest(
   return new Promise((resolve, reject) => {
     let didError = false;
 
-    const { pipe, abort } = renderToPipeableStream(
+    let { pipe, abort } = renderToPipeableStream(
       <I18nextProvider i18n={instance}>
         <RemixServer context={remixContext} url={request.url} />
       </I18nextProvider>,
       {
         [callbackName]: () => {
-          const body = new PassThrough();
+          let body = new PassThrough();
           const stream = createReadableStreamFromReadable(body);
           responseHeaders.set('Content-Type', 'text/html');
 

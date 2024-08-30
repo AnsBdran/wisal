@@ -1,3 +1,4 @@
+// import React from 'react';
 // import { IconBookmark, IconHeart, IconShare } from '@tabler/icons-react';
 import {
   Card,
@@ -13,6 +14,10 @@ import {
   Accordion,
   ListItem,
   List,
+  ThemeIcon,
+  Center,
+  Divider,
+  Menu,
 } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import classes from './post.module.css';
@@ -21,7 +26,10 @@ import { SerializeFrom } from '@remix-run/node';
 import { loader } from '~/routes/_.feed/route';
 import { useTranslation } from 'react-i18next';
 import { Link } from '@remix-run/react';
-import { Comment, Reactions } from './bits';
+import { Comment, CommentActions, PostTags, Reactions } from './bits';
+import { fullName } from '~/lib/utils';
+import React, { useState } from 'react';
+import { tag } from '~/.server/db/schema';
 
 export default function Post({
   post,
@@ -35,6 +43,7 @@ export default function Post({
     rel: 'noopener noreferrer',
   };
   const theme = useMantineTheme();
+  const [commentsOpened, setCommentsOpened] = useState(false);
 
   return (
     <Card withBorder radius='md' className={classes.card}>
@@ -42,11 +51,11 @@ export default function Post({
         <Card.Section className={classes.image}>
           <Carousel
             withIndicators={post.images.length > 1}
-            withControls
+            withControls={false}
             loop
             classNames={{
               root: classes.carousel,
-              controls: classes.carouselControls,
+              // controls: classes.carouselControls,
               indicator: classes.carouselIndicator,
             }}
           >
@@ -68,6 +77,12 @@ export default function Post({
       </Text>
 
       <Group justify='space-between' mt='md'>
+        <Group className={classes.user} justify='space-between' align='center'>
+          <Avatar src={post.user.profileImage} size={24} radius='xl' />
+          <Text fz='sm' inline>
+            {fullName(post.user)}
+          </Text>
+        </Group>
         <Group gap={8} mr={0}>
           <Reactions />
           <Comment />
@@ -81,28 +96,8 @@ export default function Post({
         </Group>
         {/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */}
         {/* Tags +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */}
-        <Popover>
-          <Popover.Target>
-            <ActionIcon>
-              <Icon icon='hugeicons:tags' />
-            </ActionIcon>
-          </Popover.Target>
-          <Popover.Dropdown>
-            <Stack align='center'>
-              {post.tags.map((t) => (
-                <Badge
-                  style={{ cursor: 'pointer' }}
-                  component={Link}
-                  to={`?tag=${t.tag?.name}`}
-                  key={t.tag?.id}
-                >
-                  {t.tag?.name}
-                </Badge>
-              ))}
-            </Stack>
-          </Popover.Dropdown>
-        </Popover>
       </Group>
+
       {/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */}
       {/* Footer +++++++++++++++++++++++++++++++++++++++++++++++++++++++ */}
 
@@ -111,31 +106,46 @@ export default function Post({
           <Accordion.Item value='comments'>
             <Accordion.Control w='100%'>
               <Group justify='space-between' px='md' py='xs'>
-                <Group
-                  className={classes.user}
-                  justify='space-between'
-                  align='center'
-                >
-                  <Avatar src={post.user.profileImage} size={24} radius='xl' />
-                  <Text fz='sm' inline>
-                    {post.user.firstName} {post.user.lastName}
-                  </Text>
+                <Group>
+                  {/* copy button */}
+                  <ActionIcon disabled>
+                    <Icon icon='lets-icons:copy-alt-light' />
+                  </ActionIcon>
+                  <PostTags
+                    tags={
+                      post.tags.map((t) => t.tag) as (typeof tag.$inferSelect)[]
+                    }
+                  />
                 </Group>
                 <Text fz='xs' c='dimmed'>
                   878 {t('reacted_to_this')}
                 </Text>
               </Group>
             </Accordion.Control>
-            <Accordion.Panel>
-              <List bg='lime.1'>
+            <Accordion.Panel className={classes.commentsContainer}>
+              <List icon={<ThemeIcon></ThemeIcon>}>
                 {post.comments.map((comment) => (
-                  <ListItem key={comment.id}>
-                    <Avatar src={comment.user.profileImage} />
-                    <span>
-                      {comment.user.firstName} {comment.user.lastName}
-                    </span>{' '}
-                    {comment.content}
-                  </ListItem>
+                  <React.Fragment key={comment.id}>
+                    <ListItem
+                      className={classes.comment}
+                      icon={
+                        <Avatar
+                          radius='md'
+                          src={comment.user.profileImage}
+                          name={fullName(comment.user)}
+                          color='initials'
+                        />
+                      }
+                    >
+                      <Text>{comment.content}</Text>
+
+                      <CommentActions />
+                      <Text fz='xs' c='dimmed'>
+                        {fullName(comment.user)}
+                      </Text>
+                    </ListItem>
+                    <Divider />
+                  </React.Fragment>
                 ))}
               </List>
             </Accordion.Panel>

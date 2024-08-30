@@ -6,6 +6,7 @@ import {
   Stack,
   Tooltip,
   Transition,
+  Accordion,
 } from '@mantine/core';
 import { useWindowScroll } from '@mantine/hooks';
 import { json, LoaderFunctionArgs } from '@remix-run/node';
@@ -38,6 +39,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
           },
           user: true,
         },
+        limit: 5,
       },
       reactions: {
         with: {

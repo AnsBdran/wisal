@@ -17,5 +17,7 @@
   "reacted_to_this": "people reacted to this",
   "comment": "comment",
   "comment_placeholder": "write your comment here",
-  "share": "share"
+  "share": "share",
+  "edit": "Edit",
+  "delete": "Delete"
 }
