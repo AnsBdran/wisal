@@ -1,5 +1,6 @@
 import {
   ActionIcon,
+  AppShellHeader,
   Avatar,
   Box,
   Button,
@@ -13,18 +14,19 @@ import {
 import { Form, Link } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
-const Header = () => {
+import { User } from '~/lib/types';
+const Header = ({ user }: { user?: User }) => {
   const { i18n, t } = useTranslation();
   const { toggleColorScheme, colorScheme } = useMantineColorScheme();
   return (
-    <>
+    <AppShellHeader>
       <Container className='h-full'>
         <Group className='h-full !justify-between'>
           <Link to='/'>
             <Title order={4}>{t('app_title')}</Title>
           </Link>
           <Group>
-            {true ? (
+            {user ? (
               <Menu>
                 <Menu.Target>
                   <Avatar />
@@ -96,7 +98,7 @@ const Header = () => {
           </Group>
         </Group>
       </Container>
-    </>
+    </AppShellHeader>
   );
 };
 

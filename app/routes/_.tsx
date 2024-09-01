@@ -1,13 +1,28 @@
 import { AppShell, Container, Tabs, TabsList } from '@mantine/core';
-import { useNavigate, Outlet, useLocation } from '@remix-run/react';
+import {
+  useNavigate,
+  Outlet,
+  useLocation,
+  useLoaderData,
+} from '@remix-run/react';
 
 import Header from '~/lib/components/main/header';
 import Footer from '~/lib/components/main/footer';
 import '@mantine/core/styles.css';
 import { useTranslation } from 'react-i18next';
+import { LoaderFunction } from '@remix-run/node';
+import { authenticator } from '~/services/auth.server';
 // import { useHeadroom } from '@mantine/hooks';
 
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await authenticator.isAuthenticated(request);
+  console.log('in root ', user);
+  return { user };
+};
+
 const MailLayout = () => {
+  const { user } = useLoaderData<typeof loader>();
+  console.log('in root route', user);
   const navigate = useNavigate();
   const { t } = useTranslation();
   // const pinned = useHeadroom({ fixedAt: 120 });SS
@@ -23,9 +38,7 @@ const MailLayout = () => {
         footer={{ collapsed: true, height: 120 }}
         p='sm'
       >
-        <AppShell.Header>
-          <Header />
-        </AppShell.Header>
+        <Header user={user} />
         <AppShell.Main>
           <Container>
             <Tabs

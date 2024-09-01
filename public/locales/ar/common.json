@@ -18,5 +18,8 @@
   "comment": "تعليق",
   "comment_placeholder": "اكتب تعليقك هنا",
   "edit": "تعديل",
-  "delete": "حذف"
+  "delete": "حذف",
+  "copy_content": "نسخ محتوى المنشور",
+  "view_all_comments": "عرض كل التعليقات",
+  "copied": "تم النسخ"
 }

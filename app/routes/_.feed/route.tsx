@@ -78,15 +78,6 @@ const Feed = () => {
   const [scroll, scrollTo] = useWindowScroll();
   return (
     <>
-      <Pagination
-        total={Math.ceil(count / ITEMS_PER_PAGE)}
-        value={activePage}
-        onChange={(page) => {
-          navigate(`?page=${page}`, { preventScrollReset: true });
-          setActivePage(page);
-        }}
-        hideWithOnePage
-      />
       <Stack pt='xl'>
         {posts.map((post) => (
           <Post post={post} key={post.id} />
@@ -99,6 +90,7 @@ const Feed = () => {
           navigate(`?page=${page}`, { preventScrollReset: true });
           setActivePage(page);
         }}
+        mt='xl'
         hideWithOnePage
       />
       {/* scroll to top button */}

@@ -28,7 +28,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   });
 };
 
-export let handle = {
+export const handle = {
   // In the handle export, we can add a i18n key with namespaces our route
   // will need to load. This key can be a single string or an array of strings.
   // TIP: In most cases, you should set this to your defaultNS from your i18n config
@@ -64,7 +64,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  const { locale } = useLoaderData<typeof loader>();
-  useChangeLanguage(locale);
+  // const { locale } = useLoaderData<typeof loader>();
+  // useChangeLanguage(locale);
   return <Outlet />;
 }

@@ -18,6 +18,9 @@ import {
   Center,
   Divider,
   Menu,
+  Button,
+  Drawer,
+  ScrollArea,
 } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import classes from './post.module.css';
@@ -26,10 +29,18 @@ import { SerializeFrom } from '@remix-run/node';
 import { loader } from '~/routes/_.feed/route';
 import { useTranslation } from 'react-i18next';
 import { Link } from '@remix-run/react';
-import { Comment, CommentActions, PostTags, Reactions } from './bits';
+import {
+  Comment,
+  CommentActions,
+  Comments,
+  CopyContent,
+  PostTags,
+  Reactions,
+} from './bits';
 import { fullName } from '~/lib/utils';
 import React, { useState } from 'react';
 import { tag } from '~/.server/db/schema';
+import { postcss } from 'tailwindcss';
 
 export default function Post({
   post,
@@ -43,7 +54,7 @@ export default function Post({
     rel: 'noopener noreferrer',
   };
   const theme = useMantineTheme();
-  const [commentsOpened, setCommentsOpened] = useState(false);
+  const [showAllComments, setShowAllComments] = useState(false);
 
   return (
     <Card withBorder radius='md' className={classes.card}>
@@ -94,8 +105,6 @@ export default function Post({
             />
           </ActionIcon>
         </Group>
-        {/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */}
-        {/* Tags +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */}
       </Group>
 
       {/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */}
@@ -108,9 +117,7 @@ export default function Post({
               <Group justify='space-between' px='md' py='xs'>
                 <Group>
                   {/* copy button */}
-                  <ActionIcon disabled>
-                    <Icon icon='lets-icons:copy-alt-light' />
-                  </ActionIcon>
+                  <CopyContent value={post.content} />
                   <PostTags
                     tags={
                       post.tags.map((t) => t.tag) as (typeof tag.$inferSelect)[]
@@ -123,31 +130,28 @@ export default function Post({
               </Group>
             </Accordion.Control>
             <Accordion.Panel className={classes.commentsContainer}>
-              <List icon={<ThemeIcon></ThemeIcon>}>
-                {post.comments.map((comment) => (
-                  <React.Fragment key={comment.id}>
-                    <ListItem
-                      className={classes.comment}
-                      icon={
-                        <Avatar
-                          radius='md'
-                          src={comment.user.profileImage}
-                          name={fullName(comment.user)}
-                          color='initials'
-                        />
-                      }
-                    >
-                      <Text>{comment.content}</Text>
-
-                      <CommentActions />
-                      <Text fz='xs' c='dimmed'>
-                        {fullName(comment.user)}
-                      </Text>
-                    </ListItem>
-                    <Divider />
-                  </React.Fragment>
-                ))}
-              </List>
+              <Comments comments={post.comments} />
+              <Button w='100%' onClick={() => setShowAllComments(true)}>
+                {t('view_all_comments')}
+              </Button>
+              <Drawer
+                opened={showAllComments}
+                onClose={() => setShowAllComments(false)}
+                position='bottom'
+              >
+                <Drawer.Content>
+                  <Drawer.Header>
+                    <Drawer.Title>Hello</Drawer.Title>
+                  </Drawer.Header>
+                  <Drawer.Body h='60vh' className='bg-green-300'>
+                    <ScrollArea>
+                      <Stack>
+                        <Comments comments={post.comments} />
+                      </Stack>
+                    </ScrollArea>
+                  </Drawer.Body>
+                </Drawer.Content>
+              </Drawer>
             </Accordion.Panel>
           </Accordion.Item>
         </Accordion>

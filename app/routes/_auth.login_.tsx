@@ -7,7 +7,12 @@ import {
   Stack,
   TextInput,
 } from '@mantine/core';
-import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
+import {
+  ActionFunctionArgs,
+  json,
+  LoaderFunctionArgs,
+  redirect,
+} from '@remix-run/node';
 import { Form, useActionData } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
 import { authenticator } from '~/services/auth.server';
@@ -18,10 +23,11 @@ import { loginSchema } from '~/lib/schemas';
 import { db } from '~/.server/db';
 import { user } from '~/.server/db/schema';
 import { eq } from 'drizzle-orm';
+import { commitSession, getSession } from '~/services/session.server';
 
-export const handle = {
-  i18n: 'auth',
-};
+// export const handle = {
+//   i18n: 'auth',
+// };
 
 const Login = () => {
   const { t } = useTranslation('auth');
@@ -35,26 +41,29 @@ const Login = () => {
   });
   return (
     // <Form method='post'>
-    <Form method='post' onSubmit={form.onSubmit}>
-      <div>{form.errors}</div>
-      <Stack py='xl'>
-        <TextInput
-          label={t('username')}
-          name='username'
-          placeholder='example@example.io'
-          defaultValue={fields.username.value}
-          leftSection={<Icon icon='lets-icons:e-mail-light' />}
-        />
-        <div>{fields.username.errors}</div>
-        <PasswordInput
-          label={t('password')}
-          leftSection={<Icon icon='tabler:lock-password' />}
-          name='password'
-        />
-        <div>{fields.password.errors}</div>
-        <Button type='submit'>{t('login')}</Button>
-      </Stack>
-    </Form>
+    <>
+      <h2>Login page</h2>
+      <Form method='post' onSubmit={form.onSubmit}>
+        <div>{form.errors}</div>
+        <Stack py='xl'>
+          <TextInput
+            label={t('username')}
+            name='username'
+            placeholder='example@example.io'
+            defaultValue={fields.username.value}
+            error={fields.username.errors}
+            leftSection={<Icon icon='lets-icons:e-mail-light' />}
+          />
+          <PasswordInput
+            label={t('password')}
+            leftSection={<Icon icon='tabler:lock-password' />}
+            name='password'
+            error={fields.password.errors}
+          />
+          <Button type='submit'>{t('login')}</Button>
+        </Stack>
+      </Form>
+    </>
   );
 };
 
@@ -84,18 +93,26 @@ export async function action({ request }: ActionFunctionArgs) {
     });
   }
 
-  return await authenticator.authenticate('form', request, {
-    successRedirect: '/feed',
-    failureRedirect: '/login',
+  const session = await getSession(request.headers.get('cookie'));
+  session.set(authenticator.sessionKey, {
+    ...userRecord[0],
+    password: undefined,
   });
+  return redirect('/feed', {
+    headers: { 'Set-Cookie': await commitSession(session) },
+  });
+
+  // return await authenticator.authenticate('user-pass', request, {
+  //   successRedirect: '/feed',
+  //   failureRedirect: '/login',
+  //   context: userRecord[0],
+  // });
 }
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  return json(
-    await authenticator.isAuthenticated(request, {
-      successRedirect: '/feed',
-    })
-  );
+  return await authenticator.isAuthenticated(request, {
+    successRedirect: '/feed',
+  });
 };
 
 export default Login;

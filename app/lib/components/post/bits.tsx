@@ -1,3 +1,5 @@
+// 'use client';
+import React from 'react';
 import {
   Popover,
   Group,
@@ -8,14 +10,23 @@ import {
   ThemeIcon,
   Menu,
   Stack,
+  List,
+  Avatar,
+  Text,
+  Divider,
+  ListItem,
   Badge,
+  CopyButton,
+  Tooltip,
 } from '@mantine/core';
 import { Icon } from '@iconify/react';
 import classes from './post.module.css';
 import { useTranslation } from 'react-i18next';
 import { useFetcher, Link } from '@remix-run/react';
 import { tag } from '~/.server/db/schema';
-
+import { fullName } from '~/lib/utils';
+import { SerializeFrom } from '@remix-run/node';
+import { loader } from '~/routes/_.feed/route';
 export const Reactions = () => {
   const theme = useMantineTheme();
   const fetcher = useFetcher();
@@ -118,13 +129,15 @@ export const CommentActions = () => {
 export const PostTags = ({ tags }: { tags: (typeof tag.$inferSelect)[] }) => {
   return (
     <Popover>
-      <Popover.Target>
-        <ActionIcon>
-          <Icon icon='hugeicons:tags' />
-        </ActionIcon>
-      </Popover.Target>
+      <button onClick={(e) => e.stopPropagation()}>
+        <Popover.Target>
+          <ActionIcon variant='subtle'>
+            <Icon icon='hugeicons:tags' />
+          </ActionIcon>
+        </Popover.Target>
+      </button>
       <Popover.Dropdown>
-        <Group align='center'>
+        <Group align='center' wrap='wrap'>
           {tags.map((tag) => (
             <Badge
               style={{ cursor: 'pointer' }}
@@ -139,5 +152,65 @@ export const PostTags = ({ tags }: { tags: (typeof tag.$inferSelect)[] }) => {
         </Group>
       </Popover.Dropdown>
     </Popover>
+  );
+};
+
+export const Comments = ({
+  comments,
+}: {
+  comments: SerializeFrom<typeof loader>['posts'][0]['comments'];
+  // comments: (typeof comment.$inferSelect & {
+  //   user: typeof user.$inferSelect;
+  //   reactions: (typeof commentReaction.$inferSelect)[];
+  // })[];
+}) => {
+  return (
+    <List icon={<ThemeIcon></ThemeIcon>}>
+      {comments.map((comment) => (
+        <React.Fragment key={comment.id}>
+          <ListItem
+            className={classes.comment}
+            icon={
+              <Avatar
+                radius='md'
+                src={comment.user.profileImage}
+                name={fullName(comment.user)}
+                color='initials'
+              />
+            }
+          >
+            <Text>{comment.content}</Text>
+
+            <CommentActions />
+            <Text fz='xs' c='dimmed'>
+              {fullName(comment.user)}
+            </Text>
+          </ListItem>
+          <Divider />
+        </React.Fragment>
+      ))}
+    </List>
+  );
+};
+
+export const CopyContent = ({ value }: { value: string }) => {
+  const { t } = useTranslation();
+  return (
+    <CopyButton value={value}>
+      {({ copy, copied }) => (
+        <Tooltip label={copied ? t('copied') : t('copy_content')}>
+          <ActionIcon
+            onClick={(e) => {
+              console.log({ copy, copied });
+              copy();
+              e.stopPropagation();
+            }}
+            variant='subtle'
+          >
+            <Icon icon='lets-icons:copy-alt-light' />
+          </ActionIcon>
+        </Tooltip>
+      )}
+    </CopyButton>
   );
 };

@@ -1,15 +1,22 @@
-import { Container, Title } from '@mantine/core';
+import { Container, Title, AppShell } from '@mantine/core';
 import { Outlet } from '@remix-run/react';
+import Header from '~/lib/components/main/header';
 
 const AuthLayout = () => {
   return (
-    <>
-      <header className='bg-green-400/10 py-2 px-8'>hi</header>
-      <Container>
-        <Title>Auth layout</Title>
-        <Outlet />
-      </Container>
-    </>
+    <AppShell
+      header={{
+        height: 60,
+      }}
+    >
+      <Header />
+      <AppShell.Main>
+        <Container>
+          <Title>Auth layout</Title>
+          <Outlet />
+        </Container>
+      </AppShell.Main>
+    </AppShell>
   );
 };
 

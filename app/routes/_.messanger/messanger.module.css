@@ -1,0 +1,7 @@
+.chatContainer {
+  padding-block: 3rem;
+  background-color: light-dark(
+    var(--mantine-color-gray-2),
+    var(--mantine-color-dark-8)
+  );
+}

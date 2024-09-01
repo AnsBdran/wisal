@@ -19,5 +19,8 @@
   "comment_placeholder": "write your comment here",
   "share": "share",
   "edit": "Edit",
-  "delete": "Delete"
+  "delete": "Delete",
+  "copy_content": "copy post content",
+  "view_all_comments": "view all comments",
+  "copied": "copied"
 }

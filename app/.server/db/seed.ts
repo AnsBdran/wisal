@@ -20,6 +20,20 @@ const COUNT = 100;
 
 const seedUsers = async () => {
   // const images = await db.select().from(image);
+  await db.insert(user).values({
+    email: faker.internet.email(),
+    firstName: 'أنس',
+    lastName: 'بدران',
+    password: 'anas',
+    username: 'anas',
+    bio: faker.word.words(),
+    middleName: 'كمال',
+    isVerified: true,
+    isApproved: true,
+    nickName: '',
+    role: 'super_admin',
+    profileImage: faker.image.avatarLegacy(),
+  });
   for (let i = 0; i < COUNT; i++) {
     await db.insert(user).values({
       email: faker.internet.email(),
@@ -194,8 +208,9 @@ const seedConversations = async () => {
 const seedConversationMembers = async () => {
   const conversations = await db.select().from(conversation);
   const users = await db.select().from(user);
-  for (let i = 0; i < users.length; i++) {
-    for (let j = 0; j < conversations.length; j++) {
+  const anas = await db.select().from(user).where(eq(user.username, 'anas'));
+  for (let j = 0; j < conversations.length; j++) {
+    for (let i = 0; i < users.length; i++) {
       faker.helpers.maybe(
         async () => {
           await db.insert(conversationMember).values({
@@ -209,6 +224,18 @@ const seedConversationMembers = async () => {
         { probability: 0.5 }
       );
     }
+    // faker.helpers.maybe(
+    //   async () => {
+    //     await db.insert(conversationMember).values({
+    //       conversationID: conversations[j].id,
+    //       leftAt: faker.helpers.maybe(() => faker.date.future(), {
+    //         probability: 0.01,
+    //       }),
+    //       userID: anas[0].id,
+    //     });
+    //   },
+    //   { probability: 0.6 }
+    // );
   }
 };
 
