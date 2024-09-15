@@ -6,6 +6,7 @@ import {
   PasswordInput,
   Stack,
   TextInput,
+  Title,
 } from '@mantine/core';
 import {
   ActionFunctionArgs,
@@ -21,16 +22,17 @@ import { useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
 import { loginSchema } from '~/lib/schemas';
 import { db } from '~/.server/db';
-import { user } from '~/.server/db/schema';
+import { users } from '~/.server/db/schema';
 import { eq } from 'drizzle-orm';
 import { commitSession, getSession } from '~/services/session.server';
+import { icons } from '~/lib/icons';
 
 // export const handle = {
 //   i18n: 'auth',
 // };
 
 const Login = () => {
-  const { t } = useTranslation('auth');
+  const { t } = useTranslation('form');
   const lastResult = useActionData<typeof action>();
   const [form, fields] = useForm({
     shouldValidate: 'onBlur',
@@ -42,21 +44,20 @@ const Login = () => {
   return (
     // <Form method='post'>
     <>
-      <h2>Login page</h2>
+      <Title>{t('login')}</Title>
       <Form method='post' onSubmit={form.onSubmit}>
         <div>{form.errors}</div>
         <Stack py='xl'>
           <TextInput
             label={t('username')}
             name='username'
-            placeholder='example@example.io'
             defaultValue={fields.username.value}
             error={fields.username.errors}
-            leftSection={<Icon icon='lets-icons:e-mail-light' />}
+            leftSection={<Icon icon={icons.profile} />}
           />
           <PasswordInput
             label={t('password')}
-            leftSection={<Icon icon='tabler:lock-password' />}
+            leftSection={<Icon icon={icons.lock} />}
             name='password'
             error={fields.password.errors}
           />
@@ -77,8 +78,8 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const userRecord = await db
     .select()
-    .from(user)
-    .where(eq(user.username, submission.value.username));
+    .from(users)
+    .where(eq(users.username, submission.value.username));
 
   // return if there is no matching user
   if (!userRecord.length) {
@@ -95,8 +96,11 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const session = await getSession(request.headers.get('cookie'));
   session.set(authenticator.sessionKey, {
-    ...userRecord[0],
-    password: undefined,
+    // ...userRecord[0],
+    // password: undefined,
+    id: userRecord[0].id,
+    role: userRecord[0].role,
+    locale: userRecord[0].locale,
   });
   return redirect('/feed', {
     headers: { 'Set-Cookie': await commitSession(session) },

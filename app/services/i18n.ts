@@ -3,8 +3,8 @@ export default {
   supportedLngs: ['en', 'ar'],
   // This is the language you want to use in case
   // if the user language is not in the supportedLngs
-  fallbackLng: 'en',
+  fallbackLng: 'ar',
   // The default namespace of i18next is "translation", but you can customize it here
   defaultNS: 'common',
-  react: { useSuspense: false },
+  react: { useSuspense: true },
 };

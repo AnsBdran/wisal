@@ -1,0 +1,21 @@
+{
+  "first_name_required": "الاسم الأول مطلوب",
+  "last_name_required": "اسم العائلة مطلوب",
+  "username_required": "اسم المستخدم مطلوب",
+  "email_required": "البريد الإلكتروني مطلوب",
+  "email_invalid": "صيغة البريد الإلكتروني غير صحيحة",
+  "email": "البريد الإلكتروني",
+  "password": "كلمة المرور",
+  "first_name": "الاسم الأول",
+  "middle_name": "اسم الأب",
+  "last_name": "اسم العائلة",
+  "age": "العمر",
+  "nickname": "اللقب",
+  "bio": "التعريف الشخصي",
+  "password_confirmation": "تأكيد كلمة المرور",
+  "username": "اسم المستخدم",
+  "string_invalid": "صيغة النص غير صحيحة.",
+  "confirm": "تأكيد",
+  "login": "تسجيل الدخول",
+  "register": "التسجيل"
+}

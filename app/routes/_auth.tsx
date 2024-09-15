@@ -1,6 +1,6 @@
 import { Container, Title, AppShell } from '@mantine/core';
 import { Outlet } from '@remix-run/react';
-import Header from '~/lib/components/main/header';
+import Header from '~/lib/components/main/header/index';
 
 const AuthLayout = () => {
   return (
@@ -8,11 +8,11 @@ const AuthLayout = () => {
       header={{
         height: 60,
       }}
+      padding='xl'
     >
       <Header />
       <AppShell.Main>
         <Container>
-          <Title>Auth layout</Title>
           <Outlet />
         </Container>
       </AppShell.Main>

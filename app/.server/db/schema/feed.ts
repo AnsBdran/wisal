@@ -1,4 +1,3 @@
-// import { sql } from 'drizzle-orm';
 import {
   pgTable,
   timestamp,
@@ -10,14 +9,13 @@ import {
 } from 'drizzle-orm/pg-core';
 import { ReactionType } from './enums';
 import { sql } from 'drizzle-orm/sql';
-import { user } from './user';
+import { users } from './user';
 import { relations } from 'drizzle-orm';
-import { image, postImage } from './meta';
-// import { now } from './meta';
+import { images } from './meta';
 
 export const now = () => sql<Date>`now()`;
 
-export const post = pgTable('posts', {
+export const posts = pgTable('posts', {
   id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
   createdAt: timestamp('created_at', { withTimezone: true })
     .defaultNow()
@@ -28,11 +26,11 @@ export const post = pgTable('posts', {
   title: varchar('name', { length: 255 }).notNull(),
   content: text('content').notNull(),
   userID: integer('user_id')
-    .references(() => user.id, { onDelete: 'cascade' })
+    .references(() => users.id, { onDelete: 'cascade' })
     .notNull(),
 });
 
-export const postReaction = pgTable(
+export const postReactions = pgTable(
   'posts_reactions',
   {
     id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
@@ -41,17 +39,17 @@ export const postReaction = pgTable(
       .notNull(),
     type: ReactionType('type').notNull(),
     userID: integer('user_id')
-      .references(() => user.id, { onDelete: 'cascade' })
+      .references(() => users.id, { onDelete: 'cascade' })
       .notNull(),
     postID: integer('post_Id')
-      .references(() => post.id)
+      .references(() => posts.id)
       .notNull(),
   },
   (table) => ({
     uniqueUserPostReaction: unique().on(table.postID, table.userID),
   })
 );
-export const commentReaction = pgTable(
+export const commentReactions = pgTable(
   'comments_reactions',
   {
     id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
@@ -60,10 +58,13 @@ export const commentReaction = pgTable(
       .notNull(),
     type: ReactionType('type').notNull(),
     userID: integer('user_id')
-      .references(() => user.id, { onDelete: 'cascade' })
+      .references(() => users.id, { onDelete: 'cascade' })
       .notNull(),
     commentID: integer('comment_Id')
-      .references(() => comment.id)
+      .references(() => comments.id, {
+        onDelete: 'cascade',
+        onUpdate: 'cascade',
+      })
       .notNull(),
   },
   (table) => ({
@@ -71,32 +72,32 @@ export const commentReaction = pgTable(
   })
 );
 
-export const comment = pgTable('comments', {
+export const comments = pgTable('comments', {
   id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
   createdAt: timestamp('created_at', { withTimezone: true })
     .defaultNow()
     .notNull(),
   content: text('content').notNull(),
-  postsID: integer('post_id')
-    .references(() => post.id, { onDelete: 'cascade' })
+  postID: integer('post_id')
+    .references(() => posts.id, { onDelete: 'cascade', onUpdate: 'cascade' })
     .notNull(),
   userID: integer('user_id')
-    .references(() => user.id, { onDelete: 'cascade' })
+    .references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' })
     .notNull(),
 });
 
-export const tag = pgTable('tags', {
+export const tags = pgTable('tags', {
   id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
   createdAt: timestamp('created_at', { withTimezone: true }),
   name: varchar('name', { length: 255 }).notNull(),
   nameEn: varchar('name_en', { length: 255 }).notNull(),
 });
 
-export const postToTag = pgTable(
+export const postsToTags = pgTable(
   'posts_to_tags',
   {
-    tagID: integer('tag_id').references(() => tag.id, { onDelete: 'cascade' }),
-    postID: integer('post_id').references(() => post.id, {
+    tagID: integer('tag_id').references(() => tags.id, { onDelete: 'cascade' }),
+    postID: integer('post_id').references(() => posts.id, {
       onDelete: 'cascade',
     }),
   },
@@ -108,54 +109,51 @@ export const postToTag = pgTable(
 // |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 // |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 // relations
-export const postRelations = relations(post, ({ many, one }) => ({
-  comments: many(comment),
-  reactions: many(postReaction),
-  user: one(user, { fields: [post.userID], references: [user.id] }),
-  images: many(image),
-  tags: many(postToTag),
+export const postRelations = relations(posts, ({ many, one }) => ({
+  comments: many(comments),
+  reactions: many(postReactions),
+  user: one(users, { fields: [posts.userID], references: [users.id] }),
+  images: many(images),
+  tags: many(postsToTags),
 }));
 
-export const commentRelations = relations(comment, ({ one, many }) => ({
-  post: one(post, { fields: [comment.postsID], references: [post.id] }),
-  reactions: many(commentReaction),
-  user: one(user, { fields: [comment.userID], references: [user.id] }),
+export const commentRelations = relations(comments, ({ one, many }) => ({
+  post: one(posts, { fields: [comments.postID], references: [posts.id] }),
+  reactions: many(commentReactions),
+  user: one(users, { fields: [comments.userID], references: [users.id] }),
 }));
 
-export const postReactionRealtions = relations(
-  postReaction,
-  ({ one, many }) => ({
-    post: one(post, { fields: [postReaction.postID], references: [post.id] }),
-    user: one(user, { fields: [postReaction.userID], references: [user.id] }),
-    // images: many(image),
-  })
-);
+export const postReactionRealtions = relations(postReactions, ({ one }) => ({
+  post: one(posts, { fields: [postReactions.postID], references: [posts.id] }),
+  user: one(users, { fields: [postReactions.userID], references: [users.id] }),
+  // images: many(image),
+}));
 
 export const commentReactionRealtions = relations(
-  commentReaction,
+  commentReactions,
   ({ one }) => ({
-    comment: one(comment, {
-      fields: [commentReaction.commentID],
-      references: [comment.id],
+    comment: one(comments, {
+      fields: [commentReactions.commentID],
+      references: [comments.id],
     }),
-    user: one(user, {
-      fields: [commentReaction.userID],
-      references: [user.id],
+    user: one(users, {
+      fields: [commentReactions.userID],
+      references: [users.id],
     }),
   })
 );
 
-export const tagRelations = relations(tag, ({ many }) => ({
-  posts: many(postToTag),
+export const tagRelations = relations(tags, ({ many }) => ({
+  posts: many(postsToTags),
 }));
 
-export const postToTagRelations = relations(postToTag, ({ one }) => ({
-  tag: one(tag, {
-    fields: [postToTag.tagID],
-    references: [tag.id],
+export const postToTagRelations = relations(postsToTags, ({ one }) => ({
+  tag: one(tags, {
+    fields: [postsToTags.tagID],
+    references: [tags.id],
   }),
-  post: one(post, {
-    fields: [postToTag.postID],
-    references: [post.id],
+  post: one(posts, {
+    fields: [postsToTags.postID],
+    references: [posts.id],
   }),
 }));

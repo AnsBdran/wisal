@@ -1,73 +1,60 @@
-// import React from 'react';
-// import { IconBookmark, IconHeart, IconShare } from '@tabler/icons-react';
 import {
   Card,
   Image,
   Text,
   ActionIcon,
-  Badge,
   Group,
   Avatar,
   useMantineTheme,
-  Popover,
-  Stack,
-  Accordion,
-  ListItem,
-  List,
-  ThemeIcon,
-  Center,
-  Divider,
-  Menu,
-  Button,
-  Drawer,
-  ScrollArea,
+  Highlight,
 } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
-import classes from './post.module.css';
+import styles from './post.module.css';
 import { Icon } from '@iconify/react';
 import { SerializeFrom } from '@remix-run/node';
 import { loader } from '~/routes/_.feed/route';
-import { useTranslation } from 'react-i18next';
-import { Link } from '@remix-run/react';
 import {
-  Comment,
-  CommentActions,
-  Comments,
-  CopyContent,
-  PostTags,
+  AllComments,
+  AddComment,
+  PostFooter,
   Reactions,
+  ReactionsStats,
 } from './bits';
-import { fullName } from '~/lib/utils';
-import React, { useState } from 'react';
-import { tag } from '~/.server/db/schema';
-import { postcss } from 'tailwindcss';
+import { fromNow, getFullName } from '~/lib/utils';
+import { useState } from 'react';
+import { icons } from '~/lib/icons';
+import { useFetcher } from '@remix-run/react';
+import { INTENTS } from '~/lib/constants';
 
 export default function Post({
   post,
+  userID,
 }: {
-  post: SerializeFrom<typeof loader>['posts'][0];
+  post: SerializeFrom<typeof loader>['posts']['data'][0];
+  userID: number;
 }) {
-  const { t } = useTranslation();
-  const linkProps = {
-    href: 'https://mantine.dev',
-    target: '_blank',
-    rel: 'noopener noreferrer',
-  };
   const theme = useMantineTheme();
   const [showAllComments, setShowAllComments] = useState(false);
+  const [showAllReactions, setShowAllReactions] = useState(false);
+  const commentsFetcher = useFetcher();
+  const reactionsFetcher = useFetcher();
+  // const data = useActionData();
+  // const postData = useRouteLoaderData<typeof postDataLoader>(
+  //   'routes/api.post-data'
+  // );
 
   return (
-    <Card withBorder radius='md' className={classes.card}>
+    <Card withBorder radius='md' className={styles.card}>
       {!!post.images.length && (
-        <Card.Section className={classes.image}>
+        <Card.Section className={styles.image}>
           <Carousel
             withIndicators={post.images.length > 1}
             withControls={false}
             loop
             classNames={{
-              root: classes.carousel,
-              // controls: classes.carouselControls,
-              indicator: classes.carouselIndicator,
+              root: styles.carousel,
+              // controls: styles.carouselControls,
+              indicator: styles.carouselIndicator,
             }}
           >
             {post.images.map((image, i) => (
@@ -79,83 +66,66 @@ export default function Post({
         </Card.Section>
       )}
 
-      <Text className={classes.title} fw={500} component='a' {...linkProps}>
-        {post.title}
+      <Text className={styles.title} fw={500}>
+        {post.title} {fromNow(post.createdAt, 'ar')}
       </Text>
 
       <Text fz='sm' c='dimmed' lineClamp={4}>
-        {post.content}
+        <Highlight highlight='حر'>{post.content}</Highlight>
       </Text>
 
       <Group justify='space-between' mt='md'>
-        <Group className={classes.user} justify='space-between' align='center'>
+        <Group className={styles.user} justify='space-between' align='center'>
           <Avatar src={post.user.profileImage} size={24} radius='xl' />
           <Text fz='sm' inline>
-            {fullName(post.user)}
+            {getFullName(post.user)}
           </Text>
         </Group>
         <Group gap={8} mr={0}>
-          <Reactions />
-          <Comment />
+          <Reactions post={post} />
+          <AddComment postID={post.id} />
 
-          <ActionIcon className={classes.action}>
-            <Icon
-              icon='material-symbols:share-windows-rounded'
-              color={theme.colors.blue[6]}
-            />
+          <ActionIcon className={styles.action}>
+            <Icon icon={icons.share} color={theme.colors.blue[6]} />
           </ActionIcon>
         </Group>
       </Group>
 
-      {/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */}
-      {/* Footer +++++++++++++++++++++++++++++++++++++++++++++++++++++++ */}
-
-      <Card.Section className={classes.footer}>
-        <Accordion w='100%' unstyled chevron>
-          <Accordion.Item value='comments'>
-            <Accordion.Control w='100%'>
-              <Group justify='space-between' px='md' py='xs'>
-                <Group>
-                  {/* copy button */}
-                  <CopyContent value={post.content} />
-                  <PostTags
-                    tags={
-                      post.tags.map((t) => t.tag) as (typeof tag.$inferSelect)[]
-                    }
-                  />
-                </Group>
-                <Text fz='xs' c='dimmed'>
-                  878 {t('reacted_to_this')}
-                </Text>
-              </Group>
-            </Accordion.Control>
-            <Accordion.Panel className={classes.commentsContainer}>
-              <Comments comments={post.comments} />
-              <Button w='100%' onClick={() => setShowAllComments(true)}>
-                {t('view_all_comments')}
-              </Button>
-              <Drawer
-                opened={showAllComments}
-                onClose={() => setShowAllComments(false)}
-                position='bottom'
-              >
-                <Drawer.Content>
-                  <Drawer.Header>
-                    <Drawer.Title>Hello</Drawer.Title>
-                  </Drawer.Header>
-                  <Drawer.Body h='60vh' className='bg-green-300'>
-                    <ScrollArea>
-                      <Stack>
-                        <Comments comments={post.comments} />
-                      </Stack>
-                    </ScrollArea>
-                  </Drawer.Body>
-                </Drawer.Content>
-              </Drawer>
-            </Accordion.Panel>
-          </Accordion.Item>
-        </Accordion>
+      <Card.Section>
+        <PostFooter
+          onShowCommentsBtnClicked={(e) => {
+            commentsFetcher.load(
+              `/api/data?intent=${INTENTS.fetchComments}&postID=` + post.id
+            );
+            e.stopPropagation();
+            setShowAllComments(true);
+          }}
+          showCommentsBtnLoading={commentsFetcher.state === 'loading'}
+          onShowReactionsBtnClicked={(e) => {
+            reactionsFetcher.load(
+              `/api/data?intent=${INTENTS.fetchReactions}&postID=${post.id}`
+            );
+            e.stopPropagation();
+            setShowAllReactions(true);
+          }}
+          showReactionsBtnLoading={reactionsFetcher.state === 'loading'}
+          post={post}
+          userID={userID}
+        />
       </Card.Section>
+
+      {/* comments and reactions overlays */}
+      <ReactionsStats
+        opened={showAllReactions && reactionsFetcher.state === 'idle'}
+        close={() => setShowAllReactions(false)}
+        reactions={reactionsFetcher.data?.reactions ?? []}
+      />
+      <AllComments
+        opened={showAllComments && commentsFetcher.state === 'idle'}
+        close={() => setShowAllComments(false)}
+        comments={commentsFetcher.data?.comments ?? []}
+        userID={userID}
+      />
     </Card>
   );
 }

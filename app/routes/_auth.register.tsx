@@ -1,9 +1,8 @@
 import { Button, Fieldset, Group, Input, InputLabel } from '@mantine/core';
 import { ActionFunction, LoaderFunction, redirect } from '@remix-run/node';
 import { Form } from '@remix-run/react';
-import React from 'react';
 import { db } from '~/.server/db';
-import { user } from '~/.server/db/schema';
+import { users } from '~/.server/db/schema';
 import { authenticator } from '~/services/auth.server';
 import { commitSession, getSession } from '~/services/session.server';
 
@@ -56,7 +55,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
-  const newUser = await db.insert(user).values(data).returning();
+  const newUser = await db.insert(users).values(data).returning();
   const session = await getSession(request.headers.get('cookie'));
   session.set(authenticator.sessionKey, newUser);
   return redirect('/feed', {

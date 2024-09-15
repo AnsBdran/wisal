@@ -1,14 +1,14 @@
 import { pgTable, varchar, integer } from 'drizzle-orm/pg-core';
-import { post } from './feed';
+import { posts } from './feed';
 import { relations } from 'drizzle-orm';
 // import { sql } from 'drizzle-orm'
 
-export const image = pgTable('images', {
+export const images = pgTable('images', {
   // id: uuid('id').primaryKey().notNull().defaultRandom(),
   id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
   url: varchar('url').notNull(),
   postID: integer('post_id')
-    .references(() => post.id, { onDelete: 'cascade' })
+    .references(() => posts.id, { onDelete: 'cascade' })
     .notNull(),
   // userID: integer('user_id')
   //   .references(() => user.id, { onDelete: 'cascade' })
@@ -26,6 +26,6 @@ export const image = pgTable('images', {
 // export const userImageRelations = relations(userImage, ({ one }) => ({
 //   user: one(user, { fields: [userImage.userID], references: [user.id] }),
 // }));
-export const imageRelations = relations(image, ({ one }) => ({
-  post: one(post, { fields: [image.postID], references: [post.id] }),
+export const imageRelations = relations(images, ({ one }) => ({
+  post: one(posts, { fields: [images.postID], references: [posts.id] }),
 }));

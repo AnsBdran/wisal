@@ -1,6 +1,6 @@
 {
-  "id": "1dc4f63c-ef36-4216-b517-e1ffab3315a4",
-  "prevId": "b6243efe-8db6-49ed-a320-5badc351d1d0",
+  "id": "0e3e698f-7f74-47e3-9c1d-0d1ead53dce8",
+  "prevId": "736d905c-8921-4fd5-ba3f-a24b5e587371",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -64,7 +64,7 @@
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "cascade"
         },
         "comments_user_id_users_id_fk": {
           "name": "comments_user_id_users_id_fk",
@@ -77,7 +77,7 @@
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -156,8 +156,8 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -334,6 +334,63 @@
         }
       }
     },
+    "public.posts_to_tags": {
+      "name": "posts_to_tags",
+      "schema": "",
+      "columns": {
+        "tag_id": {
+          "name": "tag_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "post_id": {
+          "name": "post_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "posts_to_tags_tag_id_tags_id_fk": {
+          "name": "posts_to_tags_tag_id_tags_id_fk",
+          "tableFrom": "posts_to_tags",
+          "tableTo": "tags",
+          "columnsFrom": [
+            "tag_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "posts_to_tags_post_id_posts_id_fk": {
+          "name": "posts_to_tags_post_id_posts_id_fk",
+          "tableFrom": "posts_to_tags",
+          "tableTo": "posts",
+          "columnsFrom": [
+            "post_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "posts_to_tags_post_id_tag_id_pk": {
+          "name": "posts_to_tags_post_id_tag_id_pk",
+          "columns": [
+            "post_id",
+            "tag_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
     "public.tags": {
       "name": "tags",
       "schema": "",
@@ -363,6 +420,12 @@
         },
         "name": {
           "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name_en": {
+          "name": "name_en",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
@@ -426,8 +489,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.conversation": {
-      "name": "conversation",
+    "public.chats": {
+      "name": "chats",
       "schema": "",
       "columns": {
         "id": {
@@ -437,7 +500,7 @@
           "notNull": true,
           "identity": {
             "type": "byDefault",
-            "name": "conversation_id_seq",
+            "name": "chats_id_seq",
             "schema": "public",
             "increment": "1",
             "startWith": "1",
@@ -459,6 +522,18 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
+        },
+        "image": {
+          "name": "image",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "bio": {
+          "name": "bio",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -466,8 +541,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.conversation_member": {
-      "name": "conversation_member",
+    "public.chat_member": {
+      "name": "chat_member",
       "schema": "",
       "columns": {
         "id": {
@@ -477,7 +552,7 @@
           "notNull": true,
           "identity": {
             "type": "byDefault",
-            "name": "conversation_member_id_seq",
+            "name": "chat_member_id_seq",
             "schema": "public",
             "increment": "1",
             "startWith": "1",
@@ -487,8 +562,8 @@
             "cycle": false
           }
         },
-        "conversation_id": {
-          "name": "conversation_id",
+        "chat_id": {
+          "name": "chat_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -515,12 +590,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "conversation_member_conversation_id_conversation_id_fk": {
-          "name": "conversation_member_conversation_id_conversation_id_fk",
-          "tableFrom": "conversation_member",
-          "tableTo": "conversation",
+        "chat_member_chat_id_chats_id_fk": {
+          "name": "chat_member_chat_id_chats_id_fk",
+          "tableFrom": "chat_member",
+          "tableTo": "chats",
           "columnsFrom": [
-            "conversation_id"
+            "chat_id"
           ],
           "columnsTo": [
             "id"
@@ -528,9 +603,9 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "conversation_member_user_id_users_id_fk": {
-          "name": "conversation_member_user_id_users_id_fk",
-          "tableFrom": "conversation_member",
+        "chat_member_user_id_users_id_fk": {
+          "name": "chat_member_user_id_users_id_fk",
+          "tableFrom": "chat_member",
           "tableTo": "users",
           "columnsFrom": [
             "user_id"
@@ -538,7 +613,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -579,8 +654,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "conversation_id": {
-          "name": "conversation_id",
+        "chat_id": {
+          "name": "chat_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -594,12 +669,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "messages_conversation_id_conversation_id_fk": {
-          "name": "messages_conversation_id_conversation_id_fk",
+        "messages_chat_id_chats_id_fk": {
+          "name": "messages_chat_id_chats_id_fk",
           "tableFrom": "messages",
-          "tableTo": "conversation",
+          "tableTo": "chats",
           "columnsFrom": [
-            "conversation_id"
+            "chat_id"
           ],
           "columnsTo": [
             "id"
@@ -658,6 +733,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "middle_name": {
+          "name": "middle_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "last_name": {
           "name": "last_name",
           "type": "varchar(255)",
@@ -669,6 +750,12 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
+        },
+        "nickname": {
+          "name": "nickname",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
         },
         "password": {
           "name": "password",
@@ -695,6 +782,26 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
+        },
+        "is_verified": {
+          "name": "is_verified",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "bio": {
+          "name": "bio",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_approved": {
+          "name": "is_approved",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
         }
       },
       "indexes": {},
@@ -728,7 +835,8 @@
         "dislike",
         "love",
         "sad",
-        "angry"
+        "angry",
+        "wow"
       ]
     },
     "public.user_role": {
@@ -736,7 +844,8 @@
       "schema": "public",
       "values": [
         "user",
-        "admin"
+        "admin",
+        "super_admin"
       ]
     }
   },

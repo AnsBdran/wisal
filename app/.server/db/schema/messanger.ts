@@ -5,24 +5,24 @@ import {
   text,
   integer,
 } from 'drizzle-orm/pg-core';
-import { user } from './user';
+import { users } from './user';
 import { relations } from 'drizzle-orm';
 
-export const message = pgTable('messages', {
+export const messages = pgTable('messages', {
   id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
   createdAt: timestamp('created_at', { withTimezone: true })
     .defaultNow()
     .notNull(),
   content: text('content').notNull(),
-  conversationID: integer('conversation_id')
+  chatID: integer('chat_id')
     .notNull()
-    .references(() => conversation.id),
-  fromID: integer('from_id')
-    .references(() => user.id, { onDelete: 'cascade' })
+    .references(() => chats.id),
+  senderID: integer('from_id')
+    .references(() => users.id, { onDelete: 'cascade' })
     .notNull(),
 });
 
-export const conversation = pgTable('conversation', {
+export const chats = pgTable('chats', {
   id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
   createdAt: timestamp('created_at', { withTimezone: true })
     .defaultNow()
@@ -32,43 +32,40 @@ export const conversation = pgTable('conversation', {
   bio: text('bio'),
 });
 
-export const conversationMember = pgTable('conversation_member', {
+export const chatMembers = pgTable('chat_member', {
   id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
-  conversationID: integer('conversation_id')
-    .references(() => conversation.id, { onDelete: 'cascade' })
+  chatID: integer('chat_id')
+    .references(() => chats.id, { onDelete: 'cascade' })
     .notNull(),
   joinedAt: timestamp('joined_at', { withTimezone: true })
     .defaultNow()
     .notNull(),
   leftAt: timestamp('left_at'),
   userID: integer('user_id')
-    .references(() => user.id, { onDelete: 'cascade' })
+    .references(() => users.id, { onDelete: 'cascade' })
     .notNull(),
 });
 
-export const conversationRelations = relations(conversation, ({ many }) => ({
-  members: many(conversationMember),
-  messages: many(message),
+export const chatRelations = relations(chats, ({ many }) => ({
+  members: many(chatMembers),
+  messages: many(messages),
 }));
 
-export const conversationMemberRelations = relations(
-  conversationMember,
-  ({ one }) => ({
-    user: one(user, {
-      fields: [conversationMember.userID],
-      references: [user.id],
-    }),
-    conversation: one(conversation, {
-      fields: [conversationMember.conversationID],
-      references: [conversation.id],
-    }),
-  })
-);
-
-export const messageRelations = relations(message, ({ one, many }) => ({
-  conversation: one(conversation, {
-    fields: [message.conversationID],
-    references: [conversation.id],
+export const chatMemberssRelations = relations(chatMembers, ({ one }) => ({
+  user: one(users, {
+    fields: [chatMembers.userID],
+    references: [users.id],
   }),
-  sender: one(user, { fields: [message.fromID], references: [user.id] }),
+  chat: one(chats, {
+    fields: [chatMembers.chatID],
+    references: [chats.id],
+  }),
+}));
+
+export const messagessRelations = relations(messages, ({ one }) => ({
+  chat: one(chats, {
+    fields: [messages.chatID],
+    references: [chats.id],
+  }),
+  sender: one(users, { fields: [messages.senderID], references: [users.id] }),
 }));

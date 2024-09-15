@@ -1,4 +1,11 @@
-import { AppShell, Container, Tabs, TabsList } from '@mantine/core';
+import {
+  AppShell,
+  Box,
+  Container,
+  Tabs,
+  TabsList,
+  useMantineTheme,
+} from '@mantine/core';
 import {
   useNavigate,
   Outlet,
@@ -6,32 +13,32 @@ import {
   useLoaderData,
 } from '@remix-run/react';
 
-import Header from '~/lib/components/main/header';
+import Header from '~/lib/components/main/header/index';
 import Footer from '~/lib/components/main/footer';
-import '@mantine/core/styles.css';
 import { useTranslation } from 'react-i18next';
 import { LoaderFunction } from '@remix-run/node';
 import { authenticator } from '~/services/auth.server';
-// import { useHeadroom } from '@mantine/hooks';
+import { HEADER_HEIGHT } from '~/lib/constants';
+import { Icon } from '@iconify/react/dist/iconify.js';
+import { icons } from '~/lib/icons';
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request);
-  console.log('in root ', user);
   return { user };
 };
 
 const MailLayout = () => {
   const { user } = useLoaderData<typeof loader>();
-  console.log('in root route', user);
   const navigate = useNavigate();
   const { t } = useTranslation();
   // const pinned = useHeadroom({ fixedAt: 120 });SS
   const location = useLocation();
+  const theme = useMantineTheme();
   return (
     <>
       <AppShell
         header={{
-          height: 60,
+          height: HEADER_HEIGHT,
           // collapsed: !pinned,
           // offset: false,
         }}
@@ -41,20 +48,45 @@ const MailLayout = () => {
         <Header user={user} />
         <AppShell.Main>
           <Container>
+            <Box
+              style={{
+                paddingBottom: theme.spacing.xl,
+              }}
+            >
+              <Outlet />
+            </Box>
             <Tabs
               defaultValue={location.pathname}
               onChange={(value) => value && navigate(value)}
+              style={{
+                position: 'fixed',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                backgroundColor: 'var(--mantine-color-body',
+                maxWidth: 'var(--container-size-md)',
+                marginInline: 'auto',
+              }}
+              // top={1}
+              inverted
             >
               <TabsList>
-                <Tabs.Tab flex={1} value='/feed'>
+                <Tabs.Tab
+                  flex={1}
+                  value='/feed'
+                  leftSection={<Icon icon={icons.communication} />}
+                >
                   {t('communicating')}
                 </Tabs.Tab>
-                <Tabs.Tab flex={1} value='/messanger'>
+                <Tabs.Tab
+                  flex={1}
+                  value='/messanger'
+                  leftSection={<Icon icon={icons.messaging} />}
+                >
                   {t('messaging')}
                 </Tabs.Tab>
               </TabsList>
             </Tabs>
-            <Outlet />
           </Container>
         </AppShell.Main>
         <AppShell.Footer>

@@ -1,23 +1,27 @@
 import { Avatar, Box, Divider, Group, Stack, Title } from '@mantine/core';
-import {
-  json,
-  LoaderFunction,
-  LoaderFunctionArgs,
-  redirect,
-} from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { json, LoaderFunctionArgs, redirect } from '@remix-run/node';
+import { Link, useLoaderData } from '@remix-run/react';
 import { db } from '~/.server/db';
 import { authenticator } from '~/services/auth.server';
-import classes from './messanger.module.css';
 import { Fragment } from 'react/jsx-runtime';
+import { Chat } from './bits';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await authenticator.isAuthenticated(request);
   if (!user) return redirect('/login');
 
-  const chats = await db.query.conversationMember.findMany({
+  const chats = await db.query.chatMembers.findMany({
     with: {
-      conversation: true,
+      chat: {
+        with: {
+          members: {
+            with: { user: true },
+            orderBy({ joinedAt }, { asc }) {
+              return [asc(joinedAt)];
+            },
+          },
+        },
+      },
     },
     where(fields, operators) {
       return operators.eq(fields.userID, user.id);
@@ -29,29 +33,17 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 const Messanger = () => {
   const { chats } = useLoaderData<typeof loader>();
 
-  // console.log('chats recieved', chats);
-
   return (
-    <Stack py='xl'>
+    // <Stack py='xl' >
+    <>
       {chats.map((chat) => (
         <Fragment key={chat.id}>
-          <Box className={classes.chatContainer}>
-            <Group>
-              <Avatar
-                src={chat.conversation.image}
-                color='initials'
-                variant='outline'
-                radius='sm'
-              />
-              <Title order={3} className={classes.title}>
-                {chat.conversation.name}
-              </Title>
-            </Group>
-          </Box>
+          <Chat chat={chat} />
           <Divider />
         </Fragment>
       ))}
-    </Stack>
+    </>
+    // </Stack>
   );
 };
 

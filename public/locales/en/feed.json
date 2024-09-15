@@ -1,0 +1,21 @@
+{
+  "filter_content": "filter feed content",
+  "date": "date",
+  "reaction": "reactions",
+  "most_recent": "most recent",
+  "most_reacted": "most reacted on",
+  "time": "time",
+  "reactions": "reactions",
+  "comments": "comments",
+  "order_by": "order by",
+  "desc": "desc",
+  "asc": "asc",
+  "most_commented": "most commented on",
+  "clear_all": "clear all",
+  "apply": "apply",
+  "filter_basis": "filter basis",
+  "order_basis": "order basis",
+  "order": "order",
+  "sender": "sender",
+  "author": "author"
+}

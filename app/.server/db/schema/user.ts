@@ -6,10 +6,9 @@ import {
   boolean,
   text,
 } from 'drizzle-orm/pg-core';
-import { UserRole } from './enums';
-import { image } from './meta';
+import { Locale, UserRole } from './enums';
 
-export const user = pgTable('users', {
+export const users = pgTable('users', {
   // id: uuid('id').primaryKey().defaultRandom().notNull(),
   id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
   createdAt: timestamp('created_at', { withTimezone: true })
@@ -27,5 +26,7 @@ export const user = pgTable('users', {
   isVerified: boolean('is_verified').default(false).notNull(),
   bio: text('bio'),
   isApproved: boolean('is_approved').default(false).notNull(),
+  locale: Locale('locale').default('ar').notNull(),
+  isFamily: boolean('is_family').default(false).notNull(),
   //   profileImageID: integer('profile_image_id').references(() => image.id),
 });

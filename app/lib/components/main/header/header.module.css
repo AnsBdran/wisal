@@ -1,0 +1,37 @@
+.themeIcon {
+  /* width: rem(6px); */
+  /* height: rem(6px); */
+  border-color: light-dark(
+    var(--mantine-color-yellow-1),
+    var(--mantine-color-gray-4)
+  );
+  /* border-color: light-dark(
+    var(--mantine-color-yellow-7),
+    var(--mantine-color-gray-4)
+  ); */
+  color: light-dark(var(--mantine-color-yellow-8), var(--mantine-color-gray-0));
+  background-color: light-dark(
+    var(--mantine-color-yellow-0),
+    var(--mantine-color-dark-6)
+  );
+  /* background-color: light-dark(
+    var(--mantine-color-white),
+    var(--mantine-color-dark-7)
+  ); */
+  box-shadow: var(--mantine-shadow-xl);
+
+  &:hover {
+    color: light-dark(
+      var(--mantine-color-yellow-9),
+      var(--mantine-color-gray-2)
+    );
+    border-color: light-dark(
+      var(--mantine-color-yellow-3),
+      var(--mantine-color-gary-3)
+    );
+    background-color: light-dark(
+      var(--mantine-color-yellow-0),
+      var(--mantine-color-dark-5)
+    );
+  }
+}

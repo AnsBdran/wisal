@@ -10,3 +10,4 @@ export const ReactionType = pgEnum('reaction_type', [
   'wow',
 ]);
 export const UserRole = pgEnum('user_role', ['user', 'admin', 'super_admin']);
+export const Locale = pgEnum('locale', ['ar', 'en']);

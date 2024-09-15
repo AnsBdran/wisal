@@ -1,0 +1,21 @@
+{
+  "filter_content": "تصفية المنشورات",
+  "date": "التاريخ",
+  "reaction": "التفاعل",
+  "most_recent": "الأحدث",
+  "time": "الزمن",
+  "reactions": "التفاعلات",
+  "comments": "التعليقات",
+  "most_reacted": "الأكثر تفاعلاً",
+  "order_by": "ترتيب",
+  "desc": "تنازلي",
+  "asc": "تصاعدي",
+  "most_commented": "الأكثر تعليقاً",
+  "clear_all": "حذف الجميع",
+  "apply": "تطبيق",
+  "filter_basis": "معيار التصفية",
+  "order_basis": "معيار الترتيب",
+  "order": "الترتيب",
+  "sender": "المُرسِل",
+  "author": "الكاتب"
+}

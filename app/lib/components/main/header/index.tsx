@@ -8,6 +8,7 @@ import {
   Container,
   Group,
   Menu,
+  ThemeIcon,
   Title,
   useMantineColorScheme,
 } from '@mantine/core';
@@ -15,13 +16,16 @@ import { Form, Link } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 import { User } from '~/lib/types';
+import styles from './header.module.css';
+import { icons } from '~/lib/icons';
+
 const Header = ({ user }: { user?: User }) => {
   const { i18n, t } = useTranslation();
   const { toggleColorScheme, colorScheme } = useMantineColorScheme();
   return (
     <AppShellHeader>
-      <Container className='h-full'>
-        <Group className='h-full !justify-between'>
+      <Container className='h-full sm:px-12'>
+        <Group className='h-full justify-between'>
           <Link to='/'>
             <Title order={4}>{t('app_title')}</Title>
           </Link>
@@ -32,7 +36,20 @@ const Header = ({ user }: { user?: User }) => {
                   <Avatar />
                 </Menu.Target>
                 <Menu.Dropdown>
-                  <Menu.Item>{t('settings')}</Menu.Item>
+                  <Menu.Item
+                    component={Link}
+                    to='/about'
+                    leftSection={<Icon icon={icons.info} />}
+                  >
+                    {t('about_app')}
+                  </Menu.Item>
+                  <Menu.Item
+                    component={Link}
+                    to='/settings'
+                    leftSection={<Icon icon={icons.settings} />}
+                  >
+                    {t('settings')}
+                  </Menu.Item>
                   <Menu.Divider />
                   <Form method='post' action='/logout'>
                     <Center>
@@ -40,7 +57,7 @@ const Header = ({ user }: { user?: User }) => {
                         color='red'
                         component='button'
                         type='submit'
-                        leftSection={<Icon icon='fluent:sign-out-20-regular' />}
+                        leftSection={<Icon icon={icons.exit} />}
                       >
                         {t('logout')}
                       </Menu.Item>
@@ -58,41 +75,20 @@ const Header = ({ user }: { user?: User }) => {
                 </Button>
               </Box>
             )}
-            {/* ==================================================================== */}
-            {/* ==================================================================== */}
-            {/* Change language menu */}
-            <Menu transitionProps={{ transition: 'skew-up', duration: 120 }}>
-              <Menu.Target>
-                {/* i18n.language === 'ar' ? i18n.changeLanguage('en') : i18n.changeLanguage('ar') */}
-                <ActionIcon>
-                  <Icon icon='lets-icons:globe-light' />
-                </ActionIcon>
-              </Menu.Target>
-              <Menu.Dropdown>
-                <Menu.Label>{t('choose_app_language')}</Menu.Label>
-                <Menu.Item
-                  onClick={() => i18n.changeLanguage('ar')}
-                  leftSection={<Icon icon='mdi:abjad-arabic' />}
-                >
-                  عربي
-                </Menu.Item>
-                <Menu.Item
-                  onClick={() => i18n.loadLanguages('ar')}
-                  // onClick={() => i18n.changeLanguage('en')}
-                  leftSection={<Icon icon='ri:english-input' />}
-                >
-                  English
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
-            <ActionIcon onClick={toggleColorScheme}>
+
+            <ActionIcon
+              onClick={toggleColorScheme}
+              className={styles.themeIcon}
+              variant='default'
+            >
               <Icon
                 icon={
                   colorScheme === 'light'
-                    ? 'lets-icons:sunlight-light'
-                    : 'lets-icons:moon-light'
+                    ? 'material-symbols:sunny-rounded'
+                    : 'bi:moon-stars-fill'
                 }
-                className='rotate-[210deg]'
+                className=''
+                // color={colorScheme === 'light' ? 'gray' : 'white'}
               />
             </ActionIcon>
           </Group>

@@ -1,0 +1,115 @@
+:root {
+  --footer-height: rem(360px);
+}
+
+.shellMain {
+  /* z-index: 100; */
+  /* background-color: red; */
+  background-color: var(--mantine-color-body);
+  margin-bottom: var(--footer-height);
+  box-shadow: var(--mantine-shadow-md);
+}
+
+.shellFooter {
+  z-index: -1;
+  height: var(--footer-height);
+  background-color: light-dark(
+    var(--mantine-color-gray-0),
+    var(--mantine-color-dark-6)
+  );
+}
+
+.wrapper {
+  padding-block: calc(var(--mantine-spacing-xl) * 2);
+  /* padding-bottom: calc(var(--mantine-spacing-xl) * 2); */
+  /* min-height: rem(650px); */
+}
+
+.title {
+  margin-bottom: calc(var(--mantine-spacing-xl) * 1.5);
+}
+
+.item {
+  border-radius: var(--mantine-radius-md);
+  margin-bottom: var(--mantine-spacing-lg);
+  border: rem(1px) solid
+    light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+
+  & > * {
+    text-wrap: wrap;
+  }
+}
+
+/* stat styles begin from here */
+.root {
+  display: flex;
+  background-image: linear-gradient(
+    -60deg,
+    var(--mantine-color-blue-4) 0%,
+    var(--mantine-color-blue-7) 100%
+  );
+  padding: calc(var(--mantine-spacing-xl) * 1.5);
+  border-radius: var(--mantine-radius-md);
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    flex-direction: column;
+  }
+}
+
+.statTitle {
+  color: var(--mantine-color-white);
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: var(--mantine-font-size-sm);
+}
+
+.count {
+  color: var(--mantine-color-white);
+  font-size: rem(32px);
+  line-height: 1;
+  font-weight: 700;
+  margin-bottom: var(--mantine-spacing-md);
+  /* font-family: Greycliff CF, var(--mantine-font-family); */
+}
+
+.description {
+  color: var(--mantine-color-blue-0);
+  font-size: var(--mantine-font-size-sm);
+  margin-top: rem(5px);
+}
+
+.stat {
+  flex: 1;
+
+  & + & {
+    @mixin ltr {
+      padding-left: var(--mantine-spacing-xl);
+      margin-left: var(--mantine-spacing-xl);
+      border-left: rem(1px) solid var(--mantine-color-blue-3);
+    }
+
+    @mixin rtl {
+      padding-right: var(--mantine-spacing-xl);
+      margin-right: var(--mantine-spacing-xl);
+      border-right: rem(1px) solid var(--mantine-color-blue-3);
+    }
+
+    @media (max-width: $mantine-breakpoint-sm) {
+      padding-top: var(--mantine-spacing-xl);
+      margin-top: var(--mantine-spacing-xl);
+      border-top: rem(1px) solid var(--mantine-color-blue-3);
+
+      @mixin ltr {
+        padding-left: 0;
+        margin-left: 0;
+        border-left: 0;
+      }
+
+      @mixin rtl {
+        padding-right: 0;
+        margin-right: 0;
+        border-right: 0;
+      }
+    }
+  }
+}

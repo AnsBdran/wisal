@@ -16,11 +16,6 @@
   opacity: 0;
 }
 
-.image {
-  /* height: rem(400px); */
-  /* width: full; */
-}
-
 .carouselIndicator {
   width: rem(4px);
   height: rem(4px);
@@ -57,6 +52,9 @@
     );
   }
 }
+.active {
+  background-color: red;
+}
 
 .user {
   gap: 0.2rem;
@@ -67,11 +65,15 @@
   border-top: rem(1px) solid
     light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4));
   margin-top: var(--mantine-spacing-sm);
-  /* padding: var(--mantine-spacing-xs) var(--mantine-spacing-lg); */
-  /* background-color: light-dark(
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-lg);
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  background-color: light-dark(
     var(--mantine-color-gray-1),
     var(--mantine-color-dark-8)
-  ); */
+  );
 }
 
 .commentsContainer {
@@ -85,15 +87,22 @@
 
 .comment {
   position: relative;
+
   padding-block: var(--mantine-spacing-xs);
-  padding-inline: var(--mantine-spacing-sm); /* padding-left: 300px; */
-  padding-right: calc(
-    (var(--mantine-spacing-lg) * 2) + var(--mantine-spacing-xs)
-  );
+  padding-inline: var(--mantine-spacing-sm);
+  @mixin ltr {
+    padding-right: calc(
+      (var(--mantine-spacing-lg) * 2) + var(--mantine-spacing-xs)
+    );
+  }
   @mixin rtl {
     padding-left: calc(
       (var(--mantine-spacing-lg) * 2) + var(--mantine-spacing-xs)
     );
+  }
+
+  &.highlightedComment {
+    background-color: var(--mantine-primary-color-light);
   }
 }
 
@@ -104,5 +113,37 @@
 
   @mixin rtl {
     left: var(--mantine-spacing-xs);
+    right: unset;
+  }
+}
+
+.reactions {
+  position: absolute;
+  left: var(--mantine-spacing-xs);
+}
+
+.postReactions {
+  align-items: start;
+  background-color: var(--mantine-color-blue-0);
+  gap: 0;
+  padding: 1px var(--mantine-spacing-xs);
+}
+
+.reactionIcon {
+  width: 12px;
+}
+
+.commentTime {
+  position: absolute;
+  font-size: var(--mantine-font-size-xs);
+  color: var(--mantine-color-dimmed);
+  /* bottom: 0; */
+
+  @mixin ltr {
+    right: var(--mantine-spacing-md);
+  }
+
+  @mixin rtl {
+    left: var(--mantine-spacing-md);
   }
 }

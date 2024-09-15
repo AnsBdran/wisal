@@ -1,0 +1,18 @@
+{
+  "first_name_required": "first name is required",
+  "last_name_required": "last name is required",
+  "username_required": "username is required",
+  "email_required": "email is required",
+  "email": "Email",
+  "password": "Password",
+  "password_confirmation": "Confirm Password",
+  "username": "Username",
+  "first_name": "first name",
+  "middle_name": "middle name",
+  "last_name": "last name",
+  "age": "age",
+  "nickname": "nickname",
+  "bio": "bio",
+  "email_invalid": "Invalid email",
+  "confirm": "confirm"
+}

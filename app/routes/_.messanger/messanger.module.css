@@ -1,7 +1,25 @@
 .chatContainer {
-  padding-block: 3rem;
-  background-color: light-dark(
-    var(--mantine-color-gray-2),
-    var(--mantine-color-dark-8)
-  );
+  padding-block: var(--mantine-spacing-xs);
+  padding-inline: var(--mantine-spacing-md);
+  width: 100%;
+  &:hover {
+    background-color: light-dark(
+      var(--mantine-color-blue-0),
+      var(--mantine-color-blue-9)
+    );
+  }
+}
+
+.upperRow {
+  /* background-color: blueviolet; */
+}
+.menuBtn {
+  justify-self: flex-end;
+  @mixin ltr {
+    margin-left: auto;
+  }
+
+  @mixin rtl {
+    margin-right: auto;
+  }
 }
