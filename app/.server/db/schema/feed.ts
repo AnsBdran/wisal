@@ -6,6 +6,7 @@ import {
   integer,
   unique,
   primaryKey,
+  boolean,
 } from 'drizzle-orm/pg-core';
 import { ReactionType } from './enums';
 import { sql } from 'drizzle-orm/sql';
@@ -28,6 +29,7 @@ export const posts = pgTable('posts', {
   userID: integer('user_id')
     .references(() => users.id, { onDelete: 'cascade' })
     .notNull(),
+  isEdited: boolean('is_edited').default(false).notNull(),
 });
 
 export const postReactions = pgTable(
@@ -84,6 +86,7 @@ export const comments = pgTable('comments', {
   userID: integer('user_id')
     .references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' })
     .notNull(),
+  isEdited: boolean('is_edited').default(false).notNull(),
 });
 
 export const tags = pgTable('tags', {

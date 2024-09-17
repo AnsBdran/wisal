@@ -21,6 +21,7 @@ import { authenticator } from '~/services/auth.server';
 import { HEADER_HEIGHT } from '~/lib/constants';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { icons } from '~/lib/icons';
+import { useHeadroom } from '@mantine/hooks';
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request);
@@ -31,7 +32,7 @@ const MailLayout = () => {
   const { user } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  // const pinned = useHeadroom({ fixedAt: 120 });SS
+  const pinned = useHeadroom({ fixedAt: 0 });
   const location = useLocation();
   const theme = useMantineTheme();
   return (
@@ -40,7 +41,7 @@ const MailLayout = () => {
         header={{
           height: HEADER_HEIGHT,
           // collapsed: !pinned,
-          // offset: false,
+          // offset: true,
         }}
         footer={{ collapsed: true, height: 120 }}
         p='sm'

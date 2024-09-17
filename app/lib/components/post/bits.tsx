@@ -106,11 +106,10 @@ export const PostFooter = ({
       >
         <Group>
           {/* copy button */}
-          <CopyContentBtn value={post.content} />
-          <PostTags
-            // tags={post.tags}
+          {/* <PostTags
             tags={post.tags.map((t) => t.tag) as (typeof tag.$inferSelect)[]}
-          />
+          /> */}
+          <CopyContentBtn value={post.content} />
         </Group>
         <Box>
           <Button.Group opacity={0.7}>

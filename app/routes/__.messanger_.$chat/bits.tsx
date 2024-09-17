@@ -3,6 +3,7 @@ import {
   Avatar,
   Box,
   Button,
+  CopyButton,
   Drawer,
   Group,
   Input,
@@ -16,13 +17,13 @@ import {
 import styles from './chat.module.css';
 import { SerializeFrom } from '@remix-run/node';
 import { loader } from './route';
-import { fromNow, getFullName } from '~/lib/utils';
+import { fromNow, getFullName, getFullNameString } from '~/lib/utils';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { icons } from '~/lib/icons';
 import { useFetcher, useNavigate } from '@remix-run/react';
 import { INTENTS } from '~/lib/constants';
-import { useState } from 'react';
+import { act, useState } from 'react';
 import { modals } from '@mantine/modals';
 
 export const Message = ({
@@ -38,6 +39,7 @@ export const Message = ({
 }) => {
   const { t, i18n } = useTranslation();
   const editFetcher = useFetcher();
+  const deleteFetcher = useFetcher();
   const isEditLoading = editFetcher.state !== 'idle';
   return (
     <Box
@@ -64,9 +66,17 @@ export const Message = ({
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Item leftSection={<Icon icon={icons.copy} />}>
-              {t('copy')}
-            </Menu.Item>
+            <CopyButton value={m.content}>
+              {({ copy, copied }) => (
+                <Menu.Item
+                  leftSection={<Icon icon={icons.copy} />}
+                  onClick={copy}
+                  closeMenuOnClick={false}
+                >
+                  {copied ? t('copied') : t('copy')}
+                </Menu.Item>
+              )}
+            </CopyButton>
             <Menu.Item
               hidden={user.id !== m.senderID}
               leftSection={<Icon icon={icons.edit} />}
@@ -127,6 +137,23 @@ export const Message = ({
               onClick={() => {
                 modals.openConfirmModal({
                   title: t('confirm'),
+                  children: (
+                    <>
+                      <Text>{t('confirm_delete_paragraph')}</Text>
+                    </>
+                  ),
+                  onConfirm: () => {
+                    deleteFetcher.submit(
+                      {
+                        messageID: m.id,
+                        intent: INTENTS.deleteMessage,
+                      },
+                      {
+                        method: 'post',
+                        action: `/messanger/${m.chatID}`,
+                      }
+                    );
+                  },
                 });
               }}
             >
@@ -196,10 +223,10 @@ export const JoinedUsers = ({
                   <Group>
                     <Avatar
                       color='initials'
-                      name={getFullName(m.user)}
+                      name={getFullNameString(m.user)}
                       radius='xs'
                     />
-                    <Text>{getFullName(m.user)}</Text>
+                    {getFullName(m.user)}
                   </Group>
                 </Box>
               ))}
@@ -226,10 +253,12 @@ export const ChatFooter = ({ chatID }: { chatID: number }) => {
           className={styles.messageInput}
           flex={1}
           name='content'
+
           // variant='default'
         />
         <ActionIcon
           type='submit'
+          variant='outline'
           size='lg'
           name='intent'
           value={INTENTS.sendMessage}
@@ -258,7 +287,18 @@ export const ChatHeader = ({
   const navigate = useNavigate();
   return (
     <Group justify='space-between' h='100%'>
-      <Button
+      <ActionIcon
+        onClick={() => navigate(-1)}
+        variant='outline'
+        color='light-dark(black, white)'
+        className={styles.backBtn}
+      >
+        <Icon
+          icon={icons.arrow}
+          className={i18n.language === 'en' ? 'rotate-180' : ''}
+        />
+      </ActionIcon>
+      {/* <Button
         onClick={() => navigate(-1)}
         variant='white'
         // color='light-dark(black, white)'
@@ -271,7 +311,7 @@ export const ChatHeader = ({
         }
       >
         {t('back')}
-      </Button>
+      </Button> */}
       <Group>
         <Text>{chat.name}</Text>
 

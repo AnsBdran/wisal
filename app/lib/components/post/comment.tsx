@@ -89,8 +89,10 @@ export const AddComment = ({ postID }: { postID: number }) => {
 
 export const CommentActions = ({
   comment,
+  isSameUser,
 }: {
   comment: SerializeFrom<typeof loader>['posts']['data'][0]['comments'][0];
+  isSameUser: boolean;
 }) => {
   const { t } = useTranslation();
   const [opened, { toggle, open, close }] = useDisclosure();
@@ -124,6 +126,7 @@ export const CommentActions = ({
           </CopyButton>
           <Menu.Item
             leftSection={<Icon icon={icons.edit} />}
+            hidden={!isSameUser}
             onClick={() => {
               modals.open({
                 title: t('edit'),
@@ -162,6 +165,7 @@ export const CommentActions = ({
             {t('edit')}
           </Menu.Item>
           <Menu.Item
+            hidden={!isSameUser}
             leftSection={<Icon icon={icons.delete} />}
             onClick={() => {
               modals.open({

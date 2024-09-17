@@ -4,6 +4,7 @@ import {
   varchar,
   text,
   integer,
+  boolean,
 } from 'drizzle-orm/pg-core';
 import { users } from './user';
 import { relations } from 'drizzle-orm';
@@ -20,6 +21,7 @@ export const messages = pgTable('messages', {
   senderID: integer('from_id')
     .references(() => users.id, { onDelete: 'cascade' })
     .notNull(),
+  isEdited: boolean('is_edited').default(false).notNull(),
 });
 
 export const chats = pgTable('chats', {

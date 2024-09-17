@@ -5,11 +5,6 @@ import {
   LoaderFunctionArgs,
   redirect,
 } from '@remix-run/node';
-import {
-  useLoaderData,
-  useResolvedPath,
-  useRevalidator,
-} from '@remix-run/react';
 import { getChatData } from '~/.server/queries';
 import Header from '~/lib/components/main/header/index';
 import {
@@ -29,10 +24,11 @@ import { eq } from 'drizzle-orm';
 import { ElementScrollRestoration } from '@epic-web/restore-scroll';
 import { emitter } from '~/services/emitter.server';
 import { useLiveLoader } from '~/lib/hooks/useLiveLoader';
+import { authenticateOrToast } from '~/.server/utils';
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-  const user = await authenticator.isAuthenticated(request);
-  if (!user) return redirect('/login');
+  const { user, redirect } = await authenticateOrToast(request);
+  if (!user) return redirect;
   const chat = await getChatData({ chatID: Number(params.chat) });
   return json({ user, chat });
 };
@@ -70,16 +66,16 @@ const Chat = () => {
         </Box>
 
         <Stack id='messages_chat' className={styles.messagesContainer}>
+          <div ref={chatEndRef}></div>
           {chat.messages.map((m, idx) => (
             <Message
               key={m.id}
               m={m}
               user={user}
-              isSameSenderAsNext={isSameSenderAsNext(m, idx)}
-              isSameSenderAsPrevious={isSameSenderAsPrevious(m, idx)}
+              isSameSenderAsNext={isSameSenderAsPrevious(m, idx)}
+              isSameSenderAsPrevious={isSameSenderAsNext(m, idx)}
             />
           ))}
-          <div ref={chatEndRef}></div>
         </Stack>
         <ElementScrollRestoration
           elementQuery='#messages_chat'
@@ -133,16 +129,20 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
         content,
         senderID: userID,
       });
-      // emitter.emit(params.chat!);
+      emitter.emit(params.chat!);
       return { action: 'added' };
     }
     case INTENTS.editMessage: {
-      console.log('hiiiiiiiiiiiiiiii');
-      console.log('trying to edit');
       await db
         .update(messages)
         .set({ content })
         .where(eq(messages.id, messageID));
+      emitter.emit(params.chat!);
+      return null;
+    }
+    case INTENTS.deleteMessage: {
+      await db.delete(messages).where(eq(messages.id, messageID));
+      emitter.emit(params.chat!);
     }
   }
   return { foo: 'bar' };

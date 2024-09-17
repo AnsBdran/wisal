@@ -20,12 +20,12 @@
 
 .chatHeader,
 .chatFooter {
-  background-color: var(--mantine-primary-color-filled);
-  color: var(--mantine-primary-color-contrast);
-  /* background-color: light-dark(
+  /* background-color: var(--mantine-primary-color-filled); */
+  color: var(--mantine-color-gray-text);
+  background-color: light-dark(
     var(--mantine-color-gray-1),
     var(--mantine-color-dark-5)
-  ); */
+  );
   padding-inline: var(--mantine-spacing-md);
   box-shadow: var(--mantine-shadow-lg);
 }
@@ -37,6 +37,7 @@
   gap: var(--mantine-spacing-md);
   align-items: flex-end;
   flex: 1;
+  flex-direction: column-reverse;
   padding-inline: var(--mantine-spacing-xs);
   scrollbar-width: none;
   &::-webkit-scrollbar {
@@ -165,7 +166,7 @@
 }
 
 .groupAvatar {
-  border: 1px solid var(--mantine-primary-color-contrast);
+  /* border: 1px solid var(--mantine-primary-color-contrast); */
 }
 
 .messageInput {

@@ -12,7 +12,7 @@ import {
   postsToTags,
   tags,
 } from './schema';
-import { users } from './schema/user';
+import { users, usersPrefs } from './schema/user';
 import { fakerAR as faker } from '@faker-js/faker';
 
 // const arr = num =>  Array.from({length: num}).fill(0)
@@ -30,9 +30,9 @@ const seedUsers = async () => {
     middleName: 'كمال',
     isVerified: true,
     isApproved: true,
-    nickName: '',
     role: 'super_admin',
     profileImage: faker.image.avatarLegacy(),
+    nickname: faker.person.prefix(),
   });
   for (let i = 0; i < COUNT; i++) {
     await db.insert(users).values({
@@ -47,6 +47,18 @@ const seedUsers = async () => {
       isVerified: faker.datatype.boolean({ probability: 0.3 }),
       isApproved: faker.datatype.boolean({ probability: 0.8 }),
       // profileImageID: images[i].id
+    });
+  }
+};
+
+const seedPrefs = async () => {
+  const _users = await db.select().from(users);
+  for (let i = 0; i < _users.length; i++) {
+    await db.insert(usersPrefs).values({
+      userID: _users[i].id,
+      locale: faker.helpers.arrayElement(['ar', 'en']),
+      showAds: faker.datatype.boolean(),
+      itemsPerPage: faker.helpers.arrayElement(['eight', 'fifteen', 'twelve']),
     });
   }
 };
@@ -290,6 +302,7 @@ const clear = async () => {
   await db.delete(postReactions);
   await db.delete(tags);
   await db.delete(postsToTags);
+  await db.delete(usersPrefs);
 };
 
 const seed = async () => {
@@ -307,6 +320,7 @@ const seed = async () => {
   await seedMessages();
   await seedTags();
   await seedPostsToTags();
+  await seedPrefs();
 };
 
 const main = async () => {

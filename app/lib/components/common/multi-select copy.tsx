@@ -87,7 +87,7 @@ const MultiSelect = ({
             name={getFullName(item)}
             color='initials'
           />
-          <span>{getFullName(item)}</span>
+          {getFullName(item)}
         </Group>
       </Combobox.Option>
     ));

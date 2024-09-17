@@ -5,10 +5,11 @@ import { db } from '~/.server/db';
 import { authenticator } from '~/services/auth.server';
 import { Fragment } from 'react/jsx-runtime';
 import { Chat } from './bits';
+import { authenticateOrToast } from '~/.server/utils';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const user = await authenticator.isAuthenticated(request);
-  if (!user) return redirect('/login');
+  const { user, redirect } = await authenticateOrToast(request);
+  if (!user) return redirect;
 
   const chats = await db.query.chatMembers.findMany({
     with: {

@@ -2,6 +2,10 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjsAr from 'dayjs/locale/ar';
 import { ReactionType } from '~/.server/db/schema';
+import { User } from './types';
+import { Group, rem, Text } from '@mantine/core';
+import { Icon } from '@iconify/react';
+import { icons } from './icons';
 
 export const fromNow = (date: string, lang: string) => {
   dayjs.extend(relativeTime);
@@ -16,7 +20,25 @@ export const fromNow = (date: string, lang: string) => {
   // return dayjs(date).locale('es').fromNow()
 };
 
-export const getFullName = (user) => `${user.firstName} ${user.lastName}`;
+export const getFullName = (user: User) => {
+  return (
+    <Group gap='2px'>
+      <Text>
+        {user.firstName} {user.lastName}
+      </Text>
+      {user.isFamily ||
+        (user.role === 'super_admin' && (
+          <Icon
+            icon={icons.verified}
+            fontSize={rem('14px')}
+            color='var(--mantine-primary-color-9)'
+          />
+        ))}
+    </Group>
+  );
+};
+
+export const getFullNameString = (user) => `${user.firstName} ${user.lastName}`;
 export const firstLetters = (user) =>
   `${user.firstName.charAt(0)} ${user.lastName.charAt(0)}`;
 

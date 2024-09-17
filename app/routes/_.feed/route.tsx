@@ -7,7 +7,15 @@ import {
   Stack,
 } from '@mantine/core';
 import { useDisclosure, useWindowScroll } from '@mantine/hooks';
-import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
+import {
+  ActionFunctionArgs,
+  json,
+  LoaderFunctionArgs,
+  unstable_composeUploadHandlers,
+  unstable_createFileUploadHandler,
+  unstable_createMemoryUploadHandler,
+  UploadHandler,
+} from '@remix-run/node';
 import { useLoaderData, useNavigate, useSearchParams } from '@remix-run/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,16 +27,22 @@ import { comment, commentUpdate, deleteComment, react } from './actions';
 import { Icon } from '@iconify/react';
 import { icons } from '~/lib/icons';
 import { FeedFilters } from './filters';
+import { CreatePostForm, ScrollToTop } from './bits';
+import { authenticateOrToast } from '~/.server/utils';
+import { parseWithZod } from '@conform-to/zod';
+import { postSchema } from '~/lib/schemas';
+import { uploadImage } from '~/.server/cloudinary';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const page = parseInt(url.searchParams.get('page') ?? '1');
   const searchQueries = Object.fromEntries(url.searchParams);
+  // try {
+  // }
 
-  const user = await authenticator.isAuthenticated(request, {
-    failureRedirect: '/login',
-  });
-
+  const { user, redirect } = await authenticateOrToast(request);
+  if (!user) return redirect;
+  console.log('in feed route loader', user);
   const posts = await getPosts({ page, searchQueries, userID: user?.id });
 
   return json({
@@ -52,12 +66,7 @@ const Feed = () => {
     <>
       <Stack>
         <Group justify='end'>
-          <ActionIcon>
-            <Icon icon={icons.add} />
-          </ActionIcon>
-          <ActionIcon onClick={open}>
-            <Icon icon={icons.filter} />
-          </ActionIcon>
+          <CreatePostForm />
         </Group>
         <Stack>
           {posts.data.map((post) => (
@@ -88,22 +97,7 @@ const Feed = () => {
       <Modal h={800} size='lg' opened={opened} onClose={close} visibleFrom='sm'>
         <FeedFilters />
       </Modal>
-      {/* scroll to top button */}
-      {/* <Affix position={{ bottom: 20, right: 20 }}>
-        <Transition transition='slide-up' mounted={scroll.y > 120}>
-          {(transitionStyles) => (
-            <Tooltip label={t('scroll_to_top')}>
-              <ActionIcon
-                style={transitionStyles}
-                onClick={() => scrollTo({ y: 0 })}
-                variant='light'
-              >
-                <Icon icon={icons.arrowUp} />
-              </ActionIcon>
-            </Tooltip>
-          )}
-        </Transition>
-      </Affix> */}
+      <ScrollToTop />
     </>
   );
 };
@@ -130,6 +124,26 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     }
     case INTENTS.deleteComment:
       return await deleteComment(commentID);
+    case INTENTS.post: {
+      const submission = parseWithZod(formData, { schema: postSchema });
+      if (submission.status !== 'success') {
+        return submission.reply();
+      }
+      for (let i = 0; i < submission.value.images.length; i++) {
+        const uploadHandler: UploadHandler = unstable_composeUploadHandlers(
+          async ({ name, data }) => {
+            if (name !== 'images') {
+              return undefined;
+            }
+            const uploadedImage = await uploadImage(data);
+            return uploadedImage?.secure_url;
+          }
+        );
+        unstable_createMemoryUploadHandler();
+      }
+
+      return null;
+    }
   }
 
   // return null;

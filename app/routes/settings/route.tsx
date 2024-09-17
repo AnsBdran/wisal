@@ -4,18 +4,19 @@ import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
 import { redirect, useLoaderData } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
 import Header from '~/lib/components/main/header/index';
-import { HEADER_HEIGHT } from '~/lib/constants';
+import { HEADER_HEIGHT, INTENTS } from '~/lib/constants';
 import { icons } from '~/lib/icons';
 import { authenticator } from '~/services/auth.server';
 import { ProfileForm } from './profile-form';
 import { db } from '~/.server/db';
-import { users } from '~/.server/db/schema';
+import { users, usersPrefs } from '~/.server/db/schema';
 import { eq } from 'drizzle-orm';
 import { parseWithZod } from '@conform-to/zod';
-import { profileSchema } from '~/lib/schemas';
+import { appSchema, profileSchema } from '~/lib/schemas';
 import { jsonWithSuccess, redirectWithSuccess } from 'remix-toast';
 import i18next from '~/services/i18n.server';
 import AppForm from './app-form';
+import { authenticateOrToast } from '~/.server/utils';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const authUser = await authenticator.isAuthenticated(request);
@@ -73,21 +74,39 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const t = await i18next.getFixedT('ar', 'settings', { lng: 'ar' });
   const formData = await request.formData();
   const authUser = await authenticator.isAuthenticated(request);
-  const submission = parseWithZod(formData, { schema: profileSchema });
+  const intent = formData.get('intent');
 
-  if (!authUser) redirect('/login');
+  const response = await authenticateOrToast(request);
+  if (!response.user) return response.redirect;
 
-  if (submission.status !== 'success') {
-    return json(submission.reply());
+  if (intent === INTENTS.editProfile) {
+    const submission = parseWithZod(formData, { schema: profileSchema });
+    if (submission.status !== 'success') {
+      return json(submission.reply());
+    }
+    await db
+      .update(users)
+      .set({ ...submission.value })
+      .where(eq(users.id, authUser?.id));
+
+    return redirectWithSuccess('/feed', {
+      message: t('updated_successfully'),
+      description: t('profile_updated'),
+    });
+  } else if (intent === INTENTS.editApp) {
+    console.log('we are getting something');
+    const submission = parseWithZod(formData, { schema: appSchema });
+    if (submission.status !== 'success') {
+      return json(submission.reply());
+    }
+    await db.update(usersPrefs).set({
+      locale: submission.value.locale,
+    });
+
+    return redirectWithSuccess('/feed', {
+      message: t('updated_successfully'),
+      description: t('profile_updated'),
+    });
+    return null;
   }
-
-  await db
-    .update(users)
-    .set({ ...submission.value })
-    .where(eq(users.id, authUser?.id));
-
-  return jsonWithSuccess('/feed', {
-    message: t('updated_successfully'),
-    description: t('profile_updated'),
-  });
 };

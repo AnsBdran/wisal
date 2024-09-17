@@ -24,7 +24,7 @@ const Header = ({ user }: { user?: User }) => {
   const { toggleColorScheme, colorScheme } = useMantineColorScheme();
   return (
     <AppShellHeader>
-      <Container className='h-full sm:px-12'>
+      <Container className='h-full '>
         <Group className='h-full justify-between'>
           <Link to='/'>
             <Title order={4}>{t('app_title')}</Title>
@@ -70,9 +70,9 @@ const Header = ({ user }: { user?: User }) => {
                 <Button variant='light' component={Link} to='/login'>
                   {t('login')}
                 </Button>
-                <Button to='/register' variant='outline' component={Link}>
+                {/* <Button to='/register' variant='outline' component={Link}>
                   {t('register')}
-                </Button>
+                </Button> */}
               </Box>
             )}
 

@@ -11,10 +11,10 @@ export const getChatMessages = async ({ id }) => {
     with: {
       sender: true,
     },
-    // limit: 100,
     orderBy(fields, operators) {
-      return operators.asc(fields.createdAt);
+      return operators.desc(fields.createdAt);
     },
+    limit: 50,
   });
 
   return messages;

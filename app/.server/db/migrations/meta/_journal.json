@@ -29,6 +29,34 @@
       "when": 1726378909341,
       "tag": "0003_nebulous_eternity",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1726461148598,
+      "tag": "0004_lovely_alice",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1726476873213,
+      "tag": "0005_large_cerise",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1726481220969,
+      "tag": "0006_past_swarm",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1726509312440,
+      "tag": "0007_wonderful_agent_zero",
+      "breakpoints": true
     }
   ]
 }

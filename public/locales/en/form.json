@@ -3,6 +3,15 @@
   "last_name_required": "last name is required",
   "username_required": "username is required",
   "email_required": "email is required",
+  "username_at_least_three_characters": "username must at least contains 3 characters",
+  "username_at_most_fifteen_characters": "username must at most contains 15 characters",
+  "password_at_least_six_characters": "password must at least contains 6 characters",
+  "first_name_at_least_three_characters": "first name must at least contains 3 characters",
+  "first_name_at_most_fifteen_characters": "first name must at most contains 15 characters",
+  "middle_name_at_least_three_characters": "middle name must at least contains 3 characters",
+  "middle_name_at_most_fifteen_characters": "middle name must at most contains 15 characters",
+  "last_name_at_least_three_characters": "last name must at least contains 3 characters",
+  "last_name_at_most_fifteen_characters": "last name must at most contains 15 characters",
   "email": "Email",
   "password": "Password",
   "password_confirmation": "Confirm Password",
@@ -14,5 +23,6 @@
   "nickname": "nickname",
   "bio": "bio",
   "email_invalid": "Invalid email",
-  "confirm": "confirm"
+  "confirm": "confirm",
+  "credentials_invalid": "Check that you have provided the correct username and password."
 }

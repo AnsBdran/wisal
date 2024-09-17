@@ -150,7 +150,7 @@ export const ReactionsStats = ({
                       name={getFullName(r.user)}
                       color='initials'
                     />
-                    <Text>{getFullName(r.user)}</Text>
+                    {getFullName(r.user)}
                   </Group>
                 </Box>
               ))}

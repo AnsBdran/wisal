@@ -11,3 +11,8 @@ export const ReactionType = pgEnum('reaction_type', [
 ]);
 export const UserRole = pgEnum('user_role', ['user', 'admin', 'super_admin']);
 export const Locale = pgEnum('locale', ['ar', 'en']);
+export const ItemsPerPage = pgEnum('items_per_page', [
+  'eight',
+  'twelve',
+  'fifteen',
+]);

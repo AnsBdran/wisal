@@ -2,8 +2,19 @@
   "first_name_required": "الاسم الأول مطلوب",
   "last_name_required": "اسم العائلة مطلوب",
   "username_required": "اسم المستخدم مطلوب",
+  "password_required": "كلمة المرور مطلوبة",
   "email_required": "البريد الإلكتروني مطلوب",
   "email_invalid": "صيغة البريد الإلكتروني غير صحيحة",
+  "username_at_least_three_characters": "اسم المستخدم يجب أن يحوي على الأقل ثلاثة أحرف.",
+  "username_at_most_fifteen_characters": "اسم المستخدم يجب أن يحوي على الأكثر 15 حرفاً",
+  "password_at_least_six_characters": "كلمة المرور يجب أن تحوي على الأقل ستة أحرف.",
+  "password_at_most_fifteen_characters": "كلمة المرور يجب أن تحوي على الأكثر 15 حرفاً",
+  "first_name_at_least_three_characters": "الاسم يجب أن يحوي على الأقل ثلاثة أحرف.",
+  "first_name_at_most_fifteen_characters": "الاسم يجب أن يحوي على الأكثر 15 حرفاً",
+  "middle_name_at_least_three_characters": "اسم الأب يجب أن يحوي على الأقل ثلاثة أحرف.",
+  "middle_name_at_most_fifteen_characters": "اسم الأب يجب أن يحوي على الأكثر 15 حرفاً",
+  "last_name_at_least_three_characters": "اسم العائلة يجب أن يحوي على الأقل ثلاثة أحرف.",
+  "last_name_at_most_fifteen_characters": "اسم العائلة يجب أن يحوي على الأكثر 15 حرفاً",
   "email": "البريد الإلكتروني",
   "password": "كلمة المرور",
   "first_name": "الاسم الأول",
@@ -17,5 +28,6 @@
   "string_invalid": "صيغة النص غير صحيحة.",
   "confirm": "تأكيد",
   "login": "تسجيل الدخول",
-  "register": "التسجيل"
+  "register": "التسجيل",
+  "credentials_invalid": "الرجاء التحقق من تطابق اسم المستخدم لكلمة المرور."
 }

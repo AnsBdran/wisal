@@ -8,6 +8,7 @@ import { action } from './route';
 import { useForm } from '@conform-to/react';
 import { z } from 'zod';
 import { profileSchema } from '~/lib/schemas';
+import { INTENTS } from '~/lib/constants';
 
 export const ProfileForm = ({ user }: { user: User }) => {
   const lastResult = useActionData<typeof action>();
@@ -67,21 +68,24 @@ export const ProfileForm = ({ user }: { user: User }) => {
 
         <Textarea name='bio' label={t('bio')} defaultValue={user?.bio ?? ''} />
         <TextInput
-          defaultValue={fields.nickName.initialValue}
-          name={fields.nickName.name}
-          key={fields.nickName.key}
+          defaultValue={fields.nickname.initialValue}
+          name={fields.nickname.name}
+          key={fields.nickname.key}
           label={t('nickname')}
-          error={t(fields.nickName.errors ?? '')}
+          error={t(fields.nickname.errors ?? '')}
         />
-        <Button
-          type='submit'
-          variant='gradient'
-          size='compact-xl'
-          leftSection={<Icon icon={icons.checkMark} />}
-        >
-          {t('confirm')}
-        </Button>
       </Stack>
+      <Button
+        type='submit'
+        variant='gradient'
+        size='compact-xl'
+        leftSection={<Icon icon={icons.checkMark} />}
+        mt={'xl'}
+        name='intent'
+        value={INTENTS.editProfile}
+      >
+        {t('confirm')}
+      </Button>
     </Form>
   );
 };

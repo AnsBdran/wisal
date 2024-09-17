@@ -32,4 +32,6 @@ export const icons = {
   appSettings: 'ic:baseline-app-settings-alt',
   checkMark: 'line-md:confirm',
   filterAlt: 'material-symbols:filter-alt',
+  verified: 'material-symbols:verified-outline-rounded',
+  error: 'material-symbols:error-circle-rounded-outline-sharp',
 };

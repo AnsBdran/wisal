@@ -39,5 +39,11 @@
   "updated_successfully": "تم التحديث بنجاح",
   "register": "التسجيل",
   "posts_per_page": "عدد المنشورات في كل صفحة",
-  "apply": "تطبيق"
+  "apply": "تطبيق",
+  "successfully_logged_out": "تم تسجيل الخروج بنجاح.",
+  "Log_back_in": "يجب عليك تسجيل الدخول لتتمكن من تصفح المحتوى.",
+  "require_login": "يجب عليك تسجيل الدخول",
+  "require_login_description": "للوصول للمحتوى، سجِّل دخولك أولاً.",
+  "you_are_unauthorized": "غير مسموح لك بالوصول.",
+  "you_are_unauthorized_description": "أنت غير مخوَّل بالوصول إلى صفحة التحكم."
 }

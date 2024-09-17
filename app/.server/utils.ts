@@ -3,6 +3,11 @@ import { db } from './db';
 import { chats, chatMembers } from './db/schema';
 import { eventStream } from 'remix-utils/sse/server';
 import { emitter } from '~/services/emitter.server';
+import { authenticator } from '~/services/auth.server';
+import i18next from '~/services/i18n.server';
+import { redirectWithInfo } from 'remix-toast';
+import cloudinary from 'cloudinary';
+import { writeAsyncIterableToWritable } from '@remix-run/node';
 
 export const getPagination = ({ page }) => {
   return {
@@ -70,4 +75,20 @@ export const createEventStream = (request: Request, eventName: string) => {
       emitter.removeListener('message', handle);
     };
   });
+};
+
+export const authenticateOrToast = async (request: Request) => {
+  const user = await authenticator.isAuthenticated(request);
+  console.log('user is ', user);
+  const t = await i18next.getFixedT(user?.locale ?? 'ar', 'common', {
+    lng: user?.locale ?? 'ar',
+  });
+
+  return {
+    user,
+    redirect: redirectWithInfo('/login', {
+      message: t('require_login'),
+      description: t('require_login_description'),
+    }),
+  };
 };

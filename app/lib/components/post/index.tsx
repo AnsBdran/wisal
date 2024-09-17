@@ -75,11 +75,9 @@ export default function Post({
       </Text>
 
       <Group justify='space-between' mt='md'>
-        <Group className={styles.user} justify='space-between' align='center'>
-          <Avatar src={post.user.profileImage} size={24} radius='xl' />
-          <Text fz='sm' inline>
-            {getFullName(post.user)}
-          </Text>
+        <Group className={styles.user} align='center'>
+          <Avatar src={post.user.profileImage} size={24} radius='md' />
+          {getFullName(post.user)}
         </Group>
         <Group gap={8} mr={0}>
           <Reactions post={post} />

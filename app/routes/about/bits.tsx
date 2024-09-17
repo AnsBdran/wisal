@@ -6,7 +6,7 @@ import { loader } from './route';
 export const Faqs = () => {
   const data: { title: string; desc: string }[] = [
     {
-      title: 'الأسئلة الأكثر شيوعاً',
+      title: 'هل هذا هو الشكل النهائي للتطبيق؟',
       desc: 'بالطبع لا، فهذا التطبيق ما يزال في مراحل التطوير الأولى، ونتمنى بدعمكم تطويره وتحسين مزاياه ليكون خياركم الأول للتواصل مع أحبابكم.',
     },
     {
@@ -17,7 +17,7 @@ export const Faqs = () => {
       title: 'واجهت مشكلة ما أثناء استخدام التطبيق!',
       desc: `
               نعتذر عن ذلك، ولكن من المتوقع أن تواجه العديد من المشاكل أثناء
-              استخدام هذا التطبيق، خاصةً أنه ما زال في نسخته التجريبية، فنتمنى
+              استخدام هذا التطبيق، خاصةً أنه ما يزال في نسخته التجريبية، فنتمنى
               منكم إبلاغنا بأي مشكلة للعمل على إصلاحها بأسرع وقت.
 `,
     },
@@ -42,9 +42,13 @@ export const Faqs = () => {
               value={d.title}
             >
               <Accordion.Control>
-                <Title order={4}>{d.title}</Title>
+                <Title order={4} fz='h5'>
+                  {d.title}
+                </Title>
               </Accordion.Control>
-              <Accordion.Panel>{d.desc}</Accordion.Panel>
+              <Accordion.Panel>
+                <Text c='dimmed'>{d.desc}</Text>
+              </Accordion.Panel>
             </Accordion.Item>
           ))}
         </Accordion>

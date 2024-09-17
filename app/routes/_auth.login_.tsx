@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   Fieldset,
@@ -22,10 +23,9 @@ import { useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
 import { loginSchema } from '~/lib/schemas';
 import { db } from '~/.server/db';
-import { users } from '~/.server/db/schema';
-import { eq } from 'drizzle-orm';
 import { commitSession, getSession } from '~/services/session.server';
 import { icons } from '~/lib/icons';
+import i18next from '~/services/i18n.server';
 
 // export const handle = {
 //   i18n: 'auth',
@@ -35,7 +35,8 @@ const Login = () => {
   const { t } = useTranslation('form');
   const lastResult = useActionData<typeof action>();
   const [form, fields] = useForm({
-    shouldValidate: 'onBlur',
+    shouldValidate: 'onInput',
+    shouldRevalidate: 'onInput',
     lastResult,
     onValidate: ({ formData }) => {
       return parseWithZod(formData, { schema: loginSchema });
@@ -45,22 +46,32 @@ const Login = () => {
     // <Form method='post'>
     <>
       <Title>{t('login')}</Title>
-      <Form method='post' onSubmit={form.onSubmit}>
-        <div>{form.errors}</div>
+      <Form method='post' onSubmit={form.onSubmit} autoComplete='off'>
         <Stack py='xl'>
           <TextInput
             label={t('username')}
             name='username'
             defaultValue={fields.username.value}
-            error={fields.username.errors}
+            error={t(fields.username.errors ?? '')}
             leftSection={<Icon icon={icons.profile} />}
+            autoComplete='off'
           />
           <PasswordInput
             label={t('password')}
             leftSection={<Icon icon={icons.lock} />}
             name='password'
-            error={fields.password.errors}
+            error={t(fields.password.errors ?? '')}
+            autoComplete='off'
           />
+          {form.errors && (
+            <Alert
+              variant='outline'
+              color='red'
+              icon={<Icon icon={icons.error} />}
+            >
+              {form.errors}
+            </Alert>
+          )}
           <Button type='submit'>{t('login')}</Button>
         </Stack>
       </Form>
@@ -76,31 +87,33 @@ export async function action({ request }: ActionFunctionArgs) {
     return submission.reply();
   }
 
-  const userRecord = await db
-    .select()
-    .from(users)
-    .where(eq(users.username, submission.value.username));
+  const t = await i18next.getFixedT('ar', 'form');
+
+  const userRecord = await db.query.users.findFirst({
+    where: ({ username }, op) => op.eq(username, submission.value.username),
+    with: {
+      prefs: true,
+    },
+  });
 
   // return if there is no matching user
-  if (!userRecord.length) {
+  if (!userRecord || userRecord.password !== submission.value.password) {
     return submission.reply({
-      formErrors: ['There is no such user'],
+      formErrors: [t('credentials_invalid')],
     });
   }
 
-  if (userRecord[0].password !== submission.value.password) {
-    return submission.reply({
-      fieldErrors: { password: ['hi worng password'] },
-    });
-  }
+  // if () {
+  //   return submission.reply({
+  //     fieldErrors: { password: ['hi worng password'] },
+  //   });
+  // }
 
   const session = await getSession(request.headers.get('cookie'));
   session.set(authenticator.sessionKey, {
-    // ...userRecord[0],
-    // password: undefined,
-    id: userRecord[0].id,
-    role: userRecord[0].role,
-    locale: userRecord[0].locale,
+    id: userRecord.id,
+    role: userRecord.role,
+    locale: userRecord.prefs?.locale,
   });
   return redirect('/feed', {
     headers: { 'Set-Cookie': await commitSession(session) },

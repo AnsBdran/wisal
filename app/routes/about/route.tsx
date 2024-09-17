@@ -8,6 +8,7 @@ import {
   Stack,
   Box,
   Text,
+  Divider,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { json, LoaderFunctionArgs } from '@remix-run/node';
@@ -22,6 +23,7 @@ import { Faqs, StatsGroup } from './bits';
 import { db } from '~/.server/db';
 import { count } from 'drizzle-orm';
 import { messages, posts, users } from '~/.server/db/schema';
+import { useTranslation } from 'react-i18next';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const authUser = await authenticator.isAuthenticated(request);
@@ -41,6 +43,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 const About = () => {
   const { user, stats } = useLoaderData<typeof loader>();
   const [opened, { open, close }] = useDisclosure();
+  const { t } = useTranslation();
 
   return (
     <>
@@ -82,12 +85,25 @@ const About = () => {
           </Container>
         </AppShell.Main>
         <AppShell.Footer p='xl' className={styles.shellFooter}>
-          <Box>
+          <Stack justify='space-between' h='100%'>
             <Group>
-              <Text>فكرة وتطوير</Text>
-              <Text>أنس بدران</Text>
+              <Stack gap='xs'>
+                <Title order={3} fz='h2'>
+                  {t('app_title')}
+                </Title>
+                <Text color='dimmed' fz='sm'>
+                  تواصل وتراسل مع أصدقائك وأحبابك.
+                </Text>
+              </Stack>
             </Group>
-          </Box>
+            <Box>
+              <Divider />
+              <Group mt='md'>
+                <Text c='dimmed'>فكرة وتطوير</Text>
+                <Text className='highlighted'>أنس بدران</Text>
+              </Group>
+            </Box>
+          </Stack>
         </AppShell.Footer>
       </AppShell>
     </>

@@ -17,5 +17,10 @@
   "order_basis": "معيار الترتيب",
   "order": "الترتيب",
   "sender": "المُرسِل",
-  "author": "الكاتب"
+  "author": "الكاتب",
+  "post_title": "عنوان المنشور",
+  "post_content": "محتوى المنشور",
+  "add_images": "إضافة صور",
+  "create_new_post": "إنشاء منشور جديد",
+  "click_here_to_add_images": "انقر هنا لإضافة الصور"
 }
