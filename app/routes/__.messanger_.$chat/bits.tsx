@@ -249,13 +249,7 @@ export const ChatFooter = ({ chatID }: { chatID: number }) => {
     >
       <Group h='100%'>
         <input type='hidden' name='chatID' value={chatID} />
-        <Input
-          className={styles.messageInput}
-          flex={1}
-          name='content'
-
-          // variant='default'
-        />
+        <Input className={styles.messageInput} flex={1} name='content' />
         <ActionIcon
           type='submit'
           variant='outline'
@@ -266,6 +260,7 @@ export const ChatFooter = ({ chatID }: { chatID: number }) => {
             fetcher.state === 'submitting' &&
             fetcher.formData?.get('intent') === INTENTS.sendMessage
           }
+          // disabled={!fetcher.}
         >
           <Icon
             icon={icons.send}

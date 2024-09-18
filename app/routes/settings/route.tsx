@@ -107,6 +107,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       message: t('updated_successfully'),
       description: t('profile_updated'),
     });
-    return null;
   }
+  return null;
 };

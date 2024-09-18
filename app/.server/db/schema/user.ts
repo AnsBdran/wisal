@@ -8,13 +8,10 @@ import {
 } from 'drizzle-orm/pg-core';
 import { ItemsPerPage, Locale, UserRole } from './enums';
 import { relations } from 'drizzle-orm';
-import { authenticator } from '~/services/auth.server';
-import i18next from '~/services/i18n.server';
-import { redirectWithInfo } from 'remix-toast';
 
 export const users = pgTable('users', {
   id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
-  createdAt: timestamp('created_at', { withTimezone: true })
+  createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' })
     .defaultNow()
     .notNull(),
   firstName: varchar('first_name', { length: 255 }).notNull(),
@@ -40,40 +37,6 @@ export const usersPrefs = pgTable('users_prefs', {
   locale: Locale('locale').default('ar').notNull(),
   itemsPerPage: ItemsPerPage('items_per_page').default('twelve').notNull(),
   showAds: boolean('show_ads').notNull().default(false),
-});
-
-export const suggestions = pgTable('suggestions', {
-  id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
-  createdAt: timestamp('created_at', { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  title: varchar('title', { length: 255 }).notNull(),
-  description: text('description'),
-});
-
-export const choices = pgTable('choices', {
-  id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
-  suggestionID: integer('suggestion_id')
-    .references(() => suggestions.id, { onDelete: 'cascade' })
-    .notNull(),
-  title: varchar('title', { length: 255 }).notNull(),
-  votes: integer('votes').default(0).notNull(),
-});
-
-export const votes = pgTable('votes', {
-  id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
-  createdAt: timestamp('created_at', { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  userID: integer('user_id')
-    .references(() => users.id, { onDelete: 'cascade' })
-    .notNull(),
-  suggestionID: integer('suggestion_id')
-    .references(() => suggestions.id, { onDelete: 'cascade' })
-    .notNull(),
-  choiceID: integer('choice_id')
-    .references(() => choices.id, { onDelete: 'cascade' })
-    .notNull(),
 });
 
 // +++++++++++++++++++++++++++++++++++

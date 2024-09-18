@@ -1,0 +1,10 @@
+/* .submitBtn {
+  @mixin rtl {
+    & > * {
+      flex-direction: row-reverse;
+    }
+    & > svg {
+      transform: rotate(180deg);
+    }
+  }
+} */

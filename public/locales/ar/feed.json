@@ -22,5 +22,8 @@
   "post_content": "محتوى المنشور",
   "add_images": "إضافة صور",
   "create_new_post": "إنشاء منشور جديد",
-  "click_here_to_add_images": "انقر هنا لإضافة الصور"
+  "click_here_to_add_images": "انقر هنا لإضافة الصور",
+  "create": "إنشاء",
+  "all_post_reactions": "جميع التفاعلات على المنشور",
+  "all": "الجميع"
 }

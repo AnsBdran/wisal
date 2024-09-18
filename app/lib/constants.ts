@@ -17,7 +17,7 @@ export const REACTIONS = [
   'angry',
   'sad',
   'love',
-];
+] as const;
 export const INTENTS = {
   fetchComments: 'FETCH_COMMENTS',
   updateComment: 'UPDATE_COMMENT',

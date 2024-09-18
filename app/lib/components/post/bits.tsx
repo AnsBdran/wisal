@@ -137,7 +137,12 @@ export const PostFooter = ({
 
       <Collapse in={opened} className={styles.commentsContainer}>
         <Comments comments={post.comments} userID={userID} />
-        <Button w='100%' onClick={onShowCommentsBtnClicked}>
+        <Button
+          w='100%'
+          onClick={onShowCommentsBtnClicked}
+          loading={showCommentsBtnLoading}
+          loaderProps={{ type: 'dots' }}
+        >
           {t('view_all_comments')}
         </Button>
       </Collapse>

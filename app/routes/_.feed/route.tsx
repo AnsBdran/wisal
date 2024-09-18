@@ -11,10 +11,10 @@ import {
   ActionFunctionArgs,
   json,
   LoaderFunctionArgs,
-  unstable_composeUploadHandlers,
-  unstable_createFileUploadHandler,
-  unstable_createMemoryUploadHandler,
   UploadHandler,
+  unstable_composeUploadHandlers as composeUploadHandlers,
+  unstable_createMemoryUploadHandler as createMemoryUploadHandler,
+  unstable_parseMultipartFormData as parseMultipartFormData,
 } from '@remix-run/node';
 import { useLoaderData, useNavigate, useSearchParams } from '@remix-run/react';
 import { useState } from 'react';
@@ -43,7 +43,11 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { user, redirect } = await authenticateOrToast(request);
   if (!user) return redirect;
   console.log('in feed route loader', user);
-  const posts = await getPosts({ page, searchQueries, userID: user?.id });
+  const posts = await getPosts({
+    page,
+    userID: user?.id,
+    //  searchQueries,
+  });
 
   return json({
     posts,
@@ -125,22 +129,25 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     case INTENTS.deleteComment:
       return await deleteComment(commentID);
     case INTENTS.post: {
-      const submission = parseWithZod(formData, { schema: postSchema });
-      if (submission.status !== 'success') {
-        return submission.reply();
-      }
-      for (let i = 0; i < submission.value.images.length; i++) {
-        const uploadHandler: UploadHandler = unstable_composeUploadHandlers(
-          async ({ name, data }) => {
-            if (name !== 'images') {
-              return undefined;
-            }
-            const uploadedImage = await uploadImage(data);
-            return uploadedImage?.secure_url;
+      const uploadHandler: UploadHandler = composeUploadHandlers(
+        async ({ name, data }) => {
+          if (name !== 'images') {
+            return undefined;
           }
-        );
-        unstable_createMemoryUploadHandler();
-      }
+          const uploadedImage = await uploadImage(data);
+          return uploadedImage?.secure_url;
+        },
+        createMemoryUploadHandler()
+      );
+
+      const formData = await parseMultipartFormData(request, uploadHandler);
+      console.log('uploaded image', formData.get('images'));
+      // const submission = parseWithZod(formData, { schema: postSchema });
+      // if (submission.status !== 'success') {
+      //   return submission.reply();
+      // }
+      // for (let i = 0; i < submission.value.images.length; i++) {
+      // }
 
       return null;
     }

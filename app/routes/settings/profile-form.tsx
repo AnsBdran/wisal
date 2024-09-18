@@ -9,7 +9,7 @@ import { useForm } from '@conform-to/react';
 import { z } from 'zod';
 import { profileSchema } from '~/lib/schemas';
 import { INTENTS } from '~/lib/constants';
-
+import styles from './settings.module.css';
 export const ProfileForm = ({ user }: { user: User }) => {
   const lastResult = useActionData<typeof action>();
   const [form, fields] = useForm<z.infer<typeof profileSchema>>({
@@ -19,7 +19,8 @@ export const ProfileForm = ({ user }: { user: User }) => {
     shouldValidate: 'onInput',
   });
   console.log('form app', fields.username.errors);
-  const { t } = useTranslation(['form', 'settings']);
+  const { t, i18n } = useTranslation(['form', 'settings']);
+  console.log('dirty', form.dirty);
   return (
     <Form method='post' onSubmit={form.onSubmit} noValidate id={form.id}>
       <Stack>
@@ -79,10 +80,12 @@ export const ProfileForm = ({ user }: { user: User }) => {
         type='submit'
         variant='gradient'
         size='compact-xl'
-        leftSection={<Icon icon={icons.checkMark} />}
+        leftSection={<Icon icon={icons.send} />}
         mt={'xl'}
         name='intent'
         value={INTENTS.editProfile}
+        disabled={!form.dirty}
+        className={styles.submitBtn}
       >
         {t('confirm')}
       </Button>

@@ -45,12 +45,12 @@ export const firstLetters = (user) =>
 export const getReactionIconData = (type: typeof ReactionType.enumName) => {
   switch (type) {
     case 'like':
-      return { icon: 'noto:thumbs-up', color: 'blue' };
+      return { icon: 'fluent-emoji:thumbs-up', color: 'blue' };
     case 'love':
-      return { icon: 'noto:heart-suit', color: 'red' };
+      return { icon: 'fluent-emoji:smiling-face-with-hearts', color: 'red' };
     case 'haha':
       return {
-        icon: 'noto:rolling-on-the-floor-laughing',
+        icon: 'fluent-emoji:rolling-on-the-floor-laughing',
         color: 'darkYellow',
       };
     case 'wow':
@@ -58,9 +58,9 @@ export const getReactionIconData = (type: typeof ReactionType.enumName) => {
     case 'sad':
       return { icon: 'noto:sad-but-relieved-face', color: 'dark' };
     case 'dislike':
-      return { icon: 'noto:thumbs-down', color: 'orange' };
+      return { icon: 'fluent-emoji:thumbs-down', color: 'orange' };
     case 'angry':
-      return { icon: 'noto:angry-face', color: 'red' };
+      return { icon: 'fluent-emoji:angry-face', color: 'red' };
     default:
       return { icon: '', color: '' };
   }

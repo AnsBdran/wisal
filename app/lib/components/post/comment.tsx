@@ -268,7 +268,10 @@ export const Comments = ({
               >
                 <Text>{comment.content}</Text>
 
-                <CommentActions comment={comment} />
+                <CommentActions
+                  isSameUser={comment.userID === userID}
+                  comment={comment}
+                />
                 <Group w='100%' justify='space-between'>
                   <Text fz='xs' c='dimmed'>
                     {getFullName(comment.user)}

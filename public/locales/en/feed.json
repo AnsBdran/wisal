@@ -22,5 +22,8 @@
   "post_content": "Post content",
   "add_images": "Add images",
   "create_new_post": "Create new post",
-  "click_here_to_add_images": "Click here to add images."
+  "click_here_to_add_images": "Click here to add images.",
+  "create": "Create",
+  "all_post_reactions": "All post reactions",
+  "all": "All"
 }

@@ -34,4 +34,7 @@ export const icons = {
   filterAlt: 'material-symbols:filter-alt',
   verified: 'material-symbols:verified-outline-rounded',
   error: 'material-symbols:error-circle-rounded-outline-sharp',
+  github: 'ph:github-logo-bold',
+  telegram: 'tabler:brand-telegram',
+  whatsapp: 'tabler:brand-whatsapp',
 };

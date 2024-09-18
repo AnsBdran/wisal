@@ -23,13 +23,13 @@ export const getChatMessages = async ({ id }) => {
 export const getPosts = async ({
   page,
   userID,
-  tag,
-  searchQueries,
-}: {
+}: // tag,
+// searchQueries,
+{
   page: number;
-  tag: string;
+  // tag: string;
   userID: number;
-  searchQueries: Record<string, string>;
+  // searchQueries: Record<string, string>;
 }) => {
   const { limit, offset } = getPagination({ page });
 
@@ -50,9 +50,9 @@ export const getPosts = async ({
         },
       },
       reactions: {
-        // with: {
-        //   user: true,
-        // },
+        with: {
+          user: true,
+        },
         where(fields, operators) {
           return operators.eq(fields.userID, userID);
         },

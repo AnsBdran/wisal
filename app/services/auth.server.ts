@@ -1,6 +1,5 @@
 import { Authenticator } from 'remix-auth';
 import { sessionStorage } from './session.server';
-import { FormStrategy } from 'remix-auth-form';
 
 // type User = Omit<typeof user.$inferSelect, 'password'>;
 type User = {

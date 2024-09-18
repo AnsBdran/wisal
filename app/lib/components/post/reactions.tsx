@@ -12,13 +12,18 @@ import {
   Box,
   SegmentedControl,
   Modal,
+  Indicator,
+  ScrollAreaAutosize,
 } from '@mantine/core';
 import { Icon } from '@iconify/react';
 import styles from './post.module.css';
 import { useTranslation } from 'react-i18next';
 import { useFetcher } from '@remix-run/react';
-import { postReaction, user } from '~/.server/db/schema';
-import { getFullName, getReactionIconData } from '~/lib/utils';
+import {
+  getFullName,
+  getFullNameString,
+  getReactionIconData,
+} from '~/lib/utils';
 import { SerializeFrom } from '@remix-run/node';
 import { loader } from '~/routes/_.feed/route';
 import { icons } from '~/lib/icons';
@@ -69,7 +74,7 @@ export const Reactions = ({
               variant={
                 post.reactions.length
                   ? post.reactions[0].type === r
-                    ? 'filled'
+                    ? 'light'
                     : 'default'
                   : 'default'
               }
@@ -88,9 +93,9 @@ export const Reactions = ({
             >
               <Icon
                 icon={getReactionIconData(r)?.icon}
-                className={`${r === 'dislike' ? 'rotate-180' : ''} ${
-                  r === 'like' ? 'flip' : ''
-                }`}
+                // className={`${r === 'dislike' ? 'rotate-180' : ''} ${
+                //   r === 'like' ? 'flip' : ''
+                // }`}
               />
             </ActionIcon>
           ))}
@@ -107,54 +112,104 @@ export const ReactionsStats = ({
 }: {
   opened: boolean;
   close: () => void;
-  reactions: (typeof postReaction.$inferSelect & {
-    user: typeof user.$inferSelect;
-  })[];
+  reactions: SerializeFrom<typeof loader>['posts']['data'][0]['reactions'];
 }) => {
-  const { t } = useTranslation();
-  const [type, setType] = useState('like');
+  const { t } = useTranslation('feed');
+  const [type, setType] = useState('all');
+
+  const ReactionStat = ({
+    r,
+  }: {
+    r: SerializeFrom<typeof loader>['posts']['data'][0]['reactions'][0];
+  }) => {
+    return (
+      <Box>
+        <Group>
+          <Indicator
+            label={<Icon icon={getReactionIconData(r.type).icon} />}
+            color='transparent'
+            size={24}
+          >
+            <Avatar
+              src={r.user.profileImage}
+              name={getFullNameString(r.user)}
+              color='initials'
+              radius='md'
+            />
+          </Indicator>
+
+          {getFullName(r.user)}
+        </Group>
+      </Box>
+    );
+  };
+
   return (
     <>
       {reactions.length ? (
         <Modal
           opened={opened}
           onClose={close}
-          title={t('all_reactions')}
+          title={t('all_post_reactions')}
           // classNames={{ root: 'overflow-hidden' }}
         >
           <SegmentedControl
             fullWidth
             onChange={(v) => setType(v)}
-            data={REACTIONS.map((r) => ({
-              value: r,
-              label: (
-                <Center>
-                  <Icon
-                    style={{ flex: 1 }}
-                    icon={getReactionIconData(r).icon}
-                    color={getReactionIconData(r).color}
-                  />
-                </Center>
-              ),
-            }))}
+            styles={{
+              label: {
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              },
+            }}
+            data={[
+              {
+                label: (
+                  <Center>
+                    <Text>{t('all')}</Text>
+                  </Center>
+                ),
+                value: 'all',
+              },
+              ...REACTIONS.filter((type) =>
+                reactions.map((r) => r.type).includes(type)
+              ).map((r) => ({
+                value: r,
+                label: (
+                  <Center>
+                    <Text>
+                      <Indicator
+                        color='transparent'
+                        position='bottom-start'
+                        label={
+                          reactions.filter((reaction) => reaction.type === r)
+                            .length
+                        }
+                      >
+                        <Icon
+                          style={{ flex: 1 }}
+                          icon={getReactionIconData(r).icon}
+                          color={getReactionIconData(r).color}
+                        />
+                      </Indicator>
+                    </Text>
+                  </Center>
+                ),
+              })),
+            ]}
             flex={1}
           />
-          <Stack py='xl' px='sm'>
-            {reactions
-              .filter((r) => r.type === type)
-              .map((r) => (
-                <Box key={r.id}>
-                  <Group>
-                    <Avatar
-                      src={r.user.profileImage}
-                      name={getFullName(r.user)}
-                      color='initials'
-                    />
-                    {getFullName(r.user)}
-                  </Group>
-                </Box>
-              ))}
-          </Stack>
+          <ScrollAreaAutosize>
+            <Stack py='xl' px='sm'>
+              {type === 'all'
+                ? reactions.map((r) => <ReactionStat r={r} key={r.id} />)
+                : reactions
+                    .filter((r) => r.type === type)
+                    .map((r) => <ReactionStat r={r} key={r.id} />)}
+            </Stack>
+          </ScrollAreaAutosize>
         </Modal>
       ) : undefined}{' '}
     </>

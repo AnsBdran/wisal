@@ -87,7 +87,7 @@ export const CreatePostForm = () => {
                   placeholder={t('click_here_to_add_images')}
                 />
                 <Button type='submit' name='intent' value={INTENTS.post}>
-                  {t('submit')}
+                  {t('create')}
                 </Button>
               </Stack>
             </Form>
