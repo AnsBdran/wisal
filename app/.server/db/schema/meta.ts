@@ -6,10 +6,12 @@ import { relations } from 'drizzle-orm';
 export const images = pgTable('images', {
   // id: uuid('id').primaryKey().notNull().defaultRandom(),
   id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
-  url: varchar('url').notNull(),
+  secureURL: varchar('secure_url').notNull(),
   postID: integer('post_id')
     .references(() => posts.id, { onDelete: 'cascade' })
     .notNull(),
+  publicID: varchar('public_id', { length: 255 }).notNull(),
+  format: varchar('format').notNull(),
   // userID: integer('user_id')
   //   .references(() => user.id, { onDelete: 'cascade' })
   //   .notNull(),

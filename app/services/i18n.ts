@@ -6,5 +6,5 @@ export default {
   fallbackLng: 'ar',
   // The default namespace of i18next is "translation", but you can customize it here
   defaultNS: 'common',
-  react: { useSuspense: true },
+  // react: { useSuspense: true },
 };

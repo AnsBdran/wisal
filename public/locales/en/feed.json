@@ -25,5 +25,11 @@
   "click_here_to_add_images": "Click here to add images.",
   "create": "Create",
   "all_post_reactions": "All post reactions",
-  "all": "All"
+  "all": "All",
+  "title_short": "Post title is too short.",
+  "content_short": "Post content is to short.",
+  "title_long": "Post title is too long.",
+  "invalid_image_file": "Invalid image file.",
+  "invalid_image_size": "Invalid image size.",
+  "content_required": "Post content is required."
 }

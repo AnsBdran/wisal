@@ -25,5 +25,11 @@
   "click_here_to_add_images": "انقر هنا لإضافة الصور",
   "create": "إنشاء",
   "all_post_reactions": "جميع التفاعلات على المنشور",
-  "all": "الجميع"
+  "all": "الجميع",
+  "title_short": "عنوان المنشور قصير جداً.",
+  "content_short": "محتوى المنشور قصير جداً.",
+  "title_long": "عنوان المنشور طويل جداً.",
+  "invalid_image_file": "الصور غير صالحة.",
+  "invalid_image_size": "تجاوزت الحد الأقصى لحجم الصورة.",
+  "content_required": "محتوى المنشور مطلوب"
 }

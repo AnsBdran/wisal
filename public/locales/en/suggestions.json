@@ -1,0 +1,15 @@
+{
+  "suggestions": "Suggestions",
+  "add_suggestion": "Add suggestion",
+  "vote": "Vote",
+  "suggestion_title": "Suggestion title",
+  "suggestion_description": "Suggestion description",
+  "submit_suggestion": "Submit a suggestion",
+  "submit": "Submit",
+  "submitted_successfully": "Your suggestion has been submitted successfully.",
+  "submitted_successfully_description": "Your suggestion is under review.",
+  "title_required": "Suggestion title is required",
+  "description_required": "Suggestion description is required",
+  "title_short": "Suggestion title is too short.",
+  "description_short": "Suggestion description is too short."
+}

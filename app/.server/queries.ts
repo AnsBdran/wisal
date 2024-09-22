@@ -1,6 +1,6 @@
 import { count } from 'drizzle-orm';
 import { db } from './db';
-import { posts } from './db/schema';
+import { posts, suggestions } from './db/schema';
 import { getPagination } from './utils';
 
 export const getChatMessages = async ({ id }) => {
@@ -98,4 +98,22 @@ export const getChatData = async ({ chatID }: { chatID: number }) => {
   });
   if (!chat) throw new Response(null, { status: 404, statusText: 'not found' });
   return { messages, data: chat };
+};
+
+export const getSuggestions = async () => {
+  const _suggestions = await db.query.suggestions.findMany({
+    with: {
+      choices: {
+        // with: { votes: {with: {user: {}} },
+        with: { votes: { with: { user: true } } },
+      },
+    },
+    where: ({ isAccepted, id }, { eq, and }) => {
+      return eq(isAccepted, true);
+      // return and(eq(isAccepted, true), eq(id, 821));
+    },
+    // limit: 10,
+  });
+
+  return { suggestions: _suggestions };
 };

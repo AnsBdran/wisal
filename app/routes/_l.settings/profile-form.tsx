@@ -3,20 +3,20 @@ import { Button, Group, Stack, Textarea, TextInput } from '@mantine/core';
 import { Form, useActionData } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
 import { icons } from '~/lib/icons';
-import { User } from '~/lib/types';
+import { UserRecord } from '~/lib/types';
 import { action } from './route';
 import { useForm } from '@conform-to/react';
 import { z } from 'zod';
 import { profileSchema } from '~/lib/schemas';
 import { INTENTS } from '~/lib/constants';
 import styles from './settings.module.css';
-export const ProfileForm = ({ user }: { user: User }) => {
+export const ProfileForm = ({ user }: { user: UserRecord }) => {
   const lastResult = useActionData<typeof action>();
   const [form, fields] = useForm<z.infer<typeof profileSchema>>({
     lastResult,
     defaultValue: user,
     shouldRevalidate: 'onInput',
-    shouldValidate: 'onInput',
+    shouldValidate: 'onBlur',
   });
   console.log('form app', fields.username.errors);
   const { t, i18n } = useTranslation(['form', 'settings']);

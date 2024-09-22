@@ -1,6 +1,11 @@
-import { Title } from '@mantine/core';
+import { AppShell, Container, Group, Title } from '@mantine/core';
 import { LoaderFunctionArgs } from '@remix-run/node';
+import { Link, Outlet, useLoaderData } from '@remix-run/react';
+import { useTranslation } from 'react-i18next';
 import { redirectWithError } from 'remix-toast';
+import Header from '~/lib/components/main/header';
+import { HEADER_HEIGHT } from '~/lib/constants';
+import { EditUserContextProvider } from '~/lib/contexts/edit-user';
 import { authenticator } from '~/services/auth.server';
 import i18next from '~/services/i18n.server';
 
@@ -15,13 +20,32 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       description: t('you_are_unauthorized_description'),
     });
   }
-  return null;
+  return { user };
 };
 
 const Dashboard = () => {
+  const { user } = useLoaderData();
+  console.log('user', user);
+  const { t } = useTranslation();
   return (
     <>
-      <Title>hi</Title>
+      <AppShell
+        header={{
+          height: HEADER_HEIGHT,
+        }}
+        padding={'sm'}
+      >
+        <Header user={user} />
+        <AppShell.Main>
+          <Container>
+            <Group>
+              <Link to={'./users'}>{t('users')}</Link>
+              <Link to='./'>{t('dashboard')}</Link>
+            </Group>
+            <Outlet />
+          </Container>
+        </AppShell.Main>
+      </AppShell>
     </>
   );
 };

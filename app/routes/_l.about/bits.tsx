@@ -1,7 +1,20 @@
-import { Accordion, Text, Container, Title, Box } from '@mantine/core';
+import {
+  Accordion,
+  Text,
+  Container,
+  Title,
+  Box,
+  Modal,
+  Button,
+  Stack,
+  List,
+} from '@mantine/core';
 import styles from './about.module.css';
 import { SerializeFrom } from '@remix-run/node';
 import { loader } from './route';
+import { Icon } from '@iconify/react';
+import { icons } from '~/lib/icons';
+import { useDisclosure } from '@mantine/hooks';
 
 export const Faqs = () => {
   const data: { title: string; desc: string }[] = [
@@ -30,7 +43,7 @@ export const Faqs = () => {
   return (
     <>
       <Box className={styles.wrapper}>
-        <Title ta='center' className={styles.title}>
+        <Title order={2} ta='center' className={styles.title}>
           الأسئلة الأكثر شيوعاً
         </Title>
 
@@ -94,3 +107,44 @@ export function StatsGroup({
   ));
   return <div className={styles.root}>{stats}</div>;
 }
+
+export const SuggestionForm = () => {
+  const [opened, { open, close }] = useDisclosure();
+
+  return (
+    <>
+      <Button
+        variant='outline'
+        onClick={open}
+        leftSection={<Icon icon={icons.add} />}
+      >
+        تقديم اقتراح
+      </Button>
+
+      <Modal
+        opened={opened}
+        onClose={close}
+        overlayProps={{
+          blur: 3,
+          backgroundOpacity: 0.4,
+        }}
+      >
+        <Stack></Stack>
+      </Modal>
+    </>
+  );
+};
+
+export const InProgressFeatures = () => {
+  return (
+    <Box>
+      <Title className={styles.title} ta={'center'} order={2}>
+        ميِّزات يتم العمل عليها:
+      </Title>
+      <List mt={0}>
+        <List.Item>العمل بدون إتصال بالإنترنت.</List.Item>
+        <List.Item>التفاعل على التعليقات.</List.Item>
+      </List>
+    </Box>
+  );
+};

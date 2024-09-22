@@ -7,15 +7,7 @@ import {
   Stack,
 } from '@mantine/core';
 import { useDisclosure, useWindowScroll } from '@mantine/hooks';
-import {
-  ActionFunctionArgs,
-  json,
-  LoaderFunctionArgs,
-  UploadHandler,
-  unstable_composeUploadHandlers as composeUploadHandlers,
-  unstable_createMemoryUploadHandler as createMemoryUploadHandler,
-  unstable_parseMultipartFormData as parseMultipartFormData,
-} from '@remix-run/node';
+import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData, useNavigate, useSearchParams } from '@remix-run/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -24,14 +16,14 @@ import { INTENTS, ITEMS_PER_PAGE } from '~/lib/constants';
 import { getPosts } from '~/.server/queries';
 import { authenticator } from '~/services/auth.server';
 import { comment, commentUpdate, deleteComment, react } from './actions';
-import { Icon } from '@iconify/react';
-import { icons } from '~/lib/icons';
 import { FeedFilters } from './filters';
 import { CreatePostForm, ScrollToTop } from './bits';
 import { authenticateOrToast } from '~/.server/utils';
 import { parseWithZod } from '@conform-to/zod';
 import { postSchema } from '~/lib/schemas';
 import { uploadImage } from '~/.server/cloudinary';
+import { db } from '~/.server/db';
+import { images, posts } from '~/.server/db/schema';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -129,23 +121,42 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     case INTENTS.deleteComment:
       return await deleteComment(commentID);
     case INTENTS.post: {
-      const uploadHandler: UploadHandler = composeUploadHandlers(
-        async ({ name, data }) => {
-          if (name !== 'images') {
-            return undefined;
-          }
-          const uploadedImage = await uploadImage(data);
-          return uploadedImage?.secure_url;
-        },
-        createMemoryUploadHandler()
-      );
+      // const uploadHandler: UploadHandler = composeUploadHandlers(
+      //   async ({ name, data }) => {
+      //     if (name !== 'images') {
+      //       return undefined;
+      //     }
+      //     const uploadedImage = await uploadImage(data);
+      //     return uploadedImage?.secure_url;
+      //   },
+      //   createMemoryUploadHandler()
+      // );
 
-      const formData = await parseMultipartFormData(request, uploadHandler);
-      console.log('uploaded image', formData.get('images'));
-      // const submission = parseWithZod(formData, { schema: postSchema });
-      // if (submission.status !== 'success') {
-      //   return submission.reply();
-      // }
+      // const formData = await parseMultipartFormData(request, uploadHandler);
+      // console.log('uploaded image', formData.get('images'));
+      const submission = parseWithZod(formData, { schema: postSchema });
+      if (submission.status !== 'success') {
+        return submission.reply();
+      }
+      const post = await db
+        .insert(posts)
+        .values({
+          content: submission.value.content,
+          title: submission.value.title,
+          userID: user?.id,
+        })
+        .returning();
+
+      for (let i = 0; i < submission.value.images.length; i++) {
+        const result = await uploadImage(submission.value.images[i]);
+        await db.insert(images).values({
+          format: result.format,
+          postID: post[0].id,
+          publicID: result.public_id,
+          secureURL: result.secure_url,
+        });
+      }
+      console.log('we have go something', result);
       // for (let i = 0; i < submission.value.images.length; i++) {
       // }
 

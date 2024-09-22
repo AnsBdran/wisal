@@ -67,7 +67,7 @@ export const CopyContentBtn = ({ value }: { value: string }) => {
             }}
             variant='subtle'
           >
-            <Icon icon={icons.copy} />
+            <Icon icon={copied ? icons.checkMark : icons.copy} />
           </ActionIcon>
         </Tooltip>
       )}

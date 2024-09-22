@@ -52,7 +52,19 @@ export const appSchema = z.object({
 });
 
 export const postSchema = z.object({
-  title: z.string().min(1).max(50).optional(),
-  content: z.string().min(5),
+  title: z.string().min(5, 'title_short').max(50, 'title_long').optional(),
+  content: z
+    .string({ required_error: 'content_required' })
+    .min(25, 'content_short'),
   images: z.array(z.instanceof(File)),
 });
+
+export const suggestionSchema = z.object({
+  title: z.string({ required_error: 'title_required' }).min(5, 'title_short'),
+  description: z
+    .string({ required_error: 'description_required' })
+    .min(10, 'description_short'),
+  isAccepted: z.boolean().default(false),
+});
+
+export type SuggestionSchema = typeof suggestionSchema;

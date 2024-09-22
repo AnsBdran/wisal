@@ -13,7 +13,7 @@ import { users, usersPrefs } from '~/.server/db/schema';
 import { eq } from 'drizzle-orm';
 import { parseWithZod } from '@conform-to/zod';
 import { appSchema, profileSchema } from '~/lib/schemas';
-import { jsonWithSuccess, redirectWithSuccess } from 'remix-toast';
+import { redirectWithSuccess } from 'remix-toast';
 import i18next from '~/services/i18n.server';
 import AppForm from './app-form';
 import { authenticateOrToast } from '~/.server/utils';
@@ -32,38 +32,31 @@ const Settings = () => {
   const { user } = useLoaderData<typeof loader>();
   return (
     <>
-      <AppShell header={{ height: HEADER_HEIGHT }} padding='sm'>
-        <Header user={user} />
-        <AppShell.Main>
-          <Container>
-            <Box>
-              <Title>{t('settings')}</Title>
-              <Tabs defaultValue='profile_settings'>
-                <Tabs.List grow mb='xl'>
-                  <Tabs.Tab
-                    value='profile_settings'
-                    leftSection={<Icon icon={icons.profileSettings} />}
-                  >
-                    {t('profile_settings')}
-                  </Tabs.Tab>
-                  <Tabs.Tab
-                    value='app_settings'
-                    leftSection={<Icon icon={icons.appSettings} />}
-                  >
-                    {t('app_settings')}
-                  </Tabs.Tab>
-                </Tabs.List>
-                <Tabs.Panel value='profile_settings'>
-                  <ProfileForm user={user} />
-                </Tabs.Panel>
-                <Tabs.Panel value='app_settings'>
-                  <AppForm user={user} />
-                </Tabs.Panel>
-              </Tabs>
-            </Box>
-          </Container>
-        </AppShell.Main>
-      </AppShell>
+      <Box>
+        <Title>{t('settings')}</Title>
+        <Tabs defaultValue='profile_settings'>
+          <Tabs.List grow mb='xl'>
+            <Tabs.Tab
+              value='profile_settings'
+              leftSection={<Icon icon={icons.profileSettings} />}
+            >
+              {t('profile_settings')}
+            </Tabs.Tab>
+            <Tabs.Tab
+              value='app_settings'
+              leftSection={<Icon icon={icons.appSettings} />}
+            >
+              {t('app_settings')}
+            </Tabs.Tab>
+          </Tabs.List>
+          <Tabs.Panel value='profile_settings'>
+            <ProfileForm user={user} />
+          </Tabs.Panel>
+          <Tabs.Panel value='app_settings'>
+            <AppForm user={user} />
+          </Tabs.Panel>
+        </Tabs>
+      </Box>
     </>
   );
 };
@@ -99,9 +92,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     if (submission.status !== 'success') {
       return json(submission.reply());
     }
-    await db.update(usersPrefs).set({
-      locale: submission.value.locale,
-    });
+    await db
+      .update(usersPrefs)
+      .set({
+        locale: submission.value.locale,
+      })
+      .where(eq(usersPrefs.userID, authUser?.id));
 
     return redirectWithSuccess('/feed', {
       message: t('updated_successfully'),

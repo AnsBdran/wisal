@@ -1,0 +1,21 @@
+{
+  "first_name": "الاسم الأول",
+  "email": "البريد الإلكتروني",
+  "password": "كلمة المرور",
+  "middle_name": "اسم الأب",
+  "last_name": "اسم العائلة",
+  "age": "العمر",
+  "nickname": "اللقب",
+  "bio": "التعريف الشخصي",
+  "user": "المستخدم",
+  "role": "الدور",
+  "is_family": "بدران؟",
+  "is_verified": "مفعَّل",
+  "a_user": "مستخدم",
+  "admin": "مسؤول",
+  "super_admin": "المسؤول الأكبر",
+  "ongoing_update": "جاري التعديل",
+  "ongoing_update_description": "الرجاء الإنتظار، جار حفظ التعديلات.",
+  "updates_saved": "تم التعديل.",
+  "updates_saved_description": "تم حفظ التعديلات بنجاح."
+}

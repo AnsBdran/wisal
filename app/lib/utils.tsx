@@ -2,10 +2,17 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjsAr from 'dayjs/locale/ar';
 import { ReactionType } from '~/.server/db/schema';
-import { User } from './types';
+import { UserRecord } from './types';
 import { Group, rem, Text } from '@mantine/core';
 import { Icon } from '@iconify/react';
+import { createColumnHelper, flexRender } from '@tanstack/react-table';
 import { icons } from './icons';
+import {
+  CellActions,
+  RoleCell,
+  SwitchCell,
+  UserCell,
+} from './components/main/table/bits';
 
 export const fromNow = (date: string, lang: string) => {
   dayjs.extend(relativeTime);
@@ -20,7 +27,7 @@ export const fromNow = (date: string, lang: string) => {
   // return dayjs(date).locale('es').fromNow()
 };
 
-export const getFullName = (user: User) => {
+export const getFullName = (user: UserRecord) => {
   return (
     <Group gap='2px'>
       <Text>
@@ -64,4 +71,38 @@ export const getReactionIconData = (type: typeof ReactionType.enumName) => {
     default:
       return { icon: '', color: '' };
   }
+};
+
+export const getUsersColumns = () => {
+  const columnHelper = createColumnHelper<UserRecord>();
+
+  return [
+    columnHelper.display({
+      header: 'user',
+      cell: (props) => flexRender(UserCell, { row: props.row.original }),
+    }),
+    // columnHelper.accessor('role', {
+    //   header: 'role',
+    //   cell: (info) =>
+    //     flexRender(RoleCell, {
+    //       defaultValue: info.getValue(),
+    //       userID: info.row.original.id,
+    //     }),
+    // }),
+    columnHelper.accessor('isFamily', {
+      header: 'is_family',
+      cell: (info) =>
+        flexRender(SwitchCell, {
+          defaultValue: info.getValue(),
+        }),
+    }),
+    columnHelper.display({
+      header: 'actions',
+      cell: (props) => flexRender(CellActions, { row: props.row.original }),
+    }),
+  ];
+};
+
+export const waiit = async (time: number = 1000) => {
+  return await new Promise((res) => setTimeout(res, time));
 };

@@ -1,0 +1,23 @@
+{
+  "email": "Email",
+  "password": "Password",
+  "password_confirmation": "Confirm Password",
+  "username": "Username",
+  "first_name": "First name",
+  "middle_name": "Middle name",
+  "last_name": "Last name",
+  "age": "Age",
+  "nickname": "Nickname",
+  "bio": "Bio",
+  "user": "User",
+  "role": "Role",
+  "is_family": "Badran?",
+  "is_verified": "Verified",
+  "a_user": "user",
+  "admin": "Admin",
+  "super_admin": "Super admin",
+  "ongoing_update": "Updates are underway.",
+  "ongoing_update_description": "Please wait, we are saving the updates.",
+  "updates_saved": "Updates saved.",
+  "updates_saved_description": "Updates saved successfully."
+}

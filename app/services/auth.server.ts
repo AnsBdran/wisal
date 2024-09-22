@@ -1,13 +1,10 @@
 import { Authenticator } from 'remix-auth';
 import { sessionStorage } from './session.server';
+import { UserSession } from '~/lib/types';
 
 // type User = Omit<typeof user.$inferSelect, 'password'>;
-type User = {
-  id: number;
-  locale: 'ar' | 'en';
-  role: 'admin' | 'user' | 'super_admin';
-};
-export const authenticator = new Authenticator<User>(sessionStorage);
+
+export const authenticator = new Authenticator<UserSession>(sessionStorage);
 
 // authenticator.use(
 //   new FormStrategy(async ({ context }) => {

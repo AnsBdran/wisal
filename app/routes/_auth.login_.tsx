@@ -99,12 +99,6 @@ export async function action({ request }: ActionFunctionArgs) {
     });
   }
 
-  // if () {
-  //   return submission.reply({
-  //     fieldErrors: { password: ['hi worng password'] },
-  //   });
-  // }
-
   const session = await getSession(request.headers.get('cookie'));
   session.set(authenticator.sessionKey, {
     id: userRecord.id,

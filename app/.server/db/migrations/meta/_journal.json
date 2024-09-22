@@ -57,6 +57,34 @@
       "when": 1726509312440,
       "tag": "0007_wonderful_agent_zero",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1726668138268,
+      "tag": "0008_cuddly_ma_gnuci",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1726913901915,
+      "tag": "0009_sweet_salo",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1726918613957,
+      "tag": "0010_bright_dreadnoughts",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1726920297966,
+      "tag": "0011_free_nitro",
+      "breakpoints": true
     }
   ]
 }

@@ -37,4 +37,8 @@ export const icons = {
   github: 'ph:github-logo-bold',
   telegram: 'tabler:brand-telegram',
   whatsapp: 'tabler:brand-whatsapp',
+  dashboard: 'mage:dashboard',
+  star: 'material-symbols:kid-star',
+  starOutline: 'material-symbols:kid-star-outline',
+  close: 'material-symbols:close-small-outline-rounded',
 };

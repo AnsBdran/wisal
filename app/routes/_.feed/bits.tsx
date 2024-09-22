@@ -71,19 +71,19 @@ export const CreatePostForm = () => {
                 <TextInput
                   label={t('post_title')}
                   name={fields.title.name}
-                  error={fields.title.errors}
+                  error={t(fields.title.errors ?? '')}
                 />
                 <Textarea
                   label={t('post_content')}
                   name={fields.content.name}
-                  error={fields.content.errors}
+                  error={t(fields.content.errors ?? '')}
                   autosize
                 />
                 <FileInput
                   name={fields.images.name}
-                  multiple
+                  // multiple
                   label={t('add_images')}
-                  error={fields.images.errors}
+                  error={t(fields.images.errors ?? '')}
                   placeholder={t('click_here_to_add_images')}
                 />
                 <Button type='submit' name='intent' value={INTENTS.post}>

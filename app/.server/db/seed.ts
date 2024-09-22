@@ -11,12 +11,15 @@ import {
   postReactions,
   postsToTags,
   tags,
+  suggestions,
+  choices,
+  votes,
 } from './schema';
 import { users, usersPrefs } from './schema/user';
 import { fakerAR as faker } from '@faker-js/faker';
 
 // const arr = num =>  Array.from({length: num}).fill(0)
-const COUNT = 10;
+const COUNT = 100;
 
 const seedUsers = async () => {
   // const images = await db.select().from(images);
@@ -149,9 +152,11 @@ const seedImages = async () => {
     for (let i = 0; i < faker.helpers.rangeToNumber({ min: 0, max: 6 }); i++) {
       console.log('seed images called');
       await db.insert(images).values({
-        url: faker.image.urlPicsumPhotos(),
+        secureURL: faker.image.urlPicsumPhotos(),
         // userID: posts[j].id,
         postID: _posts[j].id,
+        format: faker.internet.protocol(),
+        publicID: faker.color.cssSupportedFunction(),
 
         // key: `users-${userss[j].id}`,
       });
@@ -289,6 +294,54 @@ const seedMessages = async () => {
   }
 };
 
+export const seedSuggestions = async () => {
+  for (let i = 0; i < COUNT; i++) {
+    await db.insert(suggestions).values({
+      title: faker.lorem.sentence(),
+      description: faker.lorem.paragraphs(),
+      isAccepted: faker.datatype.boolean({ probability: 0.6 }),
+    });
+  }
+
+  // const _suggestions = await db.select().from(suggestions);
+  const acceptedSuggestions = await db
+    .select()
+    .from(suggestions)
+    .where(eq(suggestions.isAccepted, true));
+
+  for (let i = 0; i < acceptedSuggestions.length; i++) {
+    const choicesCount = faker.helpers.rangeToNumber({ min: 2, max: 4 });
+
+    for (let j = 0; j < choicesCount; j++) {
+      await db.insert(choices).values({
+        suggestionID: acceptedSuggestions[i].id,
+        title: faker.lorem.words({ min: 1, max: 3 }),
+        description: faker.lorem.sentence(),
+        votesCount: faker.helpers.rangeToNumber({ min: 2, max: 25 }),
+      });
+    }
+  }
+  const _users = await db.select().from(users);
+
+  for (let h = 0; h < acceptedSuggestions.length; h++) {
+    const _choices = await db
+      .select()
+      .from(choices)
+      .where(eq(choices.suggestionID, acceptedSuggestions[h].id));
+
+    const votesCount = faker.helpers.rangeToNumber({ min: 2, max: 20 });
+    const usersToVote = faker.helpers.arrayElements(_users, votesCount);
+
+    for (let o = 0; o < votesCount; o++) {
+      await db.insert(votes).values({
+        choiceID: faker.helpers.arrayElement(_choices).id,
+        suggestionID: acceptedSuggestions[h].id,
+        userID: usersToVote[o].id,
+      });
+    }
+  }
+};
+
 const clear = async () => {
   await db.delete(users);
   await db.delete(images);
@@ -303,6 +356,9 @@ const clear = async () => {
   await db.delete(tags);
   await db.delete(postsToTags);
   await db.delete(usersPrefs);
+  await db.delete(suggestions);
+  await db.delete(choices);
+  await db.delete(votes);
 };
 
 const seed = async () => {
@@ -321,6 +377,7 @@ const seed = async () => {
   await seedTags();
   await seedPostsToTags();
   await seedPrefs();
+  await seedSuggestions();
 };
 
 const main = async () => {

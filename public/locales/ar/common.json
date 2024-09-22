@@ -45,5 +45,8 @@
   "require_login": "يجب عليك تسجيل الدخول",
   "require_login_description": "للوصول للمحتوى، سجِّل دخولك أولاً.",
   "you_are_unauthorized": "غير مسموح لك بالوصول.",
-  "you_are_unauthorized_description": "أنت غير مخوَّل بالوصول إلى صفحة التحكم."
+  "you_are_unauthorized_description": "أنت غير مخوَّل بالوصول إلى صفحة التحكم.",
+  "dashboard": "لوحة التحكم",
+  "users": "المستخدمون",
+  "view_suggestions": "رؤية المقترحات"
 }

@@ -33,4 +33,9 @@ export const INTENTS = {
   editProfile: 'EDIT_PROFILE',
   editApp: 'EDIT_APP',
   post: 'POST',
+  editUserRole: 'EDIT_USER_ROLE',
+  editUserIsFamily: 'EDIT_USER_IS_FAMILY',
+  submitVote: 'SUBMIT_VOTE',
+  cancelVote: 'CANCEL_VOTE',
+  submitSuggestion: 'SUBMIT_SUGGESTION',
 };

@@ -33,9 +33,16 @@ export const findOrCreateChat = async (fromID: number, toID: number) => {
     //     );
     //   return and(eq(sq.length, 1), eq(sq2.length, 1));
     // },
-    with: {
-      members: true,
-    },
+    // where(fields, operators) {
+    //     return operators.and(fie)
+    // },
+    // with: {
+    //   members: {
+    //     where(fields, operators) {
+    //         return fields.
+    //     },
+    //   },
+    // },
   });
   // const existingchat = await db.query.chats.findFirst({
   //   with: {
@@ -79,7 +86,6 @@ export const createEventStream = (request: Request, eventName: string) => {
 
 export const authenticateOrToast = async (request: Request) => {
   const user = await authenticator.isAuthenticated(request);
-  console.log('user is ', user);
   const t = await i18next.getFixedT(user?.locale ?? 'ar', 'common', {
     lng: user?.locale ?? 'ar',
   });

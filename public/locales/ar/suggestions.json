@@ -1,0 +1,15 @@
+{
+  "suggestions": "المقترحات",
+  "add_suggestion": "إضافة مقترح",
+  "vote": "تصويت",
+  "suggestion_title": "عنوان المقترح",
+  "suggestion_description": "تفاصيل المقترح",
+  "submit_suggestion": "تقديم اقتراح",
+  "submit": "تقديم",
+  "submitted_successfully": "تم تقديم اقتراحك.",
+  "submitted_successfully_description": "تم وضع الاقتراح قيد المراجعة قبل عرضه للتصويت عليه.",
+  "title_required": "عنوان المقترح مطلوب",
+  "description_required": "تفاصيل المقترح مطلوبة",
+  "title_short": "عنوان المقترح قصير جداً",
+  "description_short": "تفاصيل المقترح قصيرة جداً"
+}

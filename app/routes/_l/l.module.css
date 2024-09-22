@@ -1,0 +1,24 @@
+:root {
+  --footer-height: rem(360px);
+}
+
+.shellMain {
+  /* z-index: 100; */
+  /* background-color: red; */
+  background-color: var(--mantine-color-body);
+  margin-bottom: var(--footer-height);
+  box-shadow: var(--mantine-shadow-md);
+  background-color: light-dark(
+    var(--mantine-color-gray-0),
+    var(--mantine-color-dark-7)
+  );
+}
+
+.shellFooter {
+  z-index: -1;
+  height: var(--footer-height);
+  background-color: light-dark(
+    var(--mantine-color-gray-0),
+    var(--mantine-color-dark-6)
+  );
+}

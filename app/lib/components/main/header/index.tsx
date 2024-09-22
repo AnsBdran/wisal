@@ -15,11 +15,11 @@ import {
 import { Form, Link } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
-import { User } from '~/lib/types';
+import { UserRecord, UserSession } from '~/lib/types';
 import styles from './header.module.css';
 import { icons } from '~/lib/icons';
 
-const Header = ({ user }: { user?: User }) => {
+const Header = ({ user }: { user?: UserSession }) => {
   const { i18n, t } = useTranslation();
   const { toggleColorScheme, colorScheme } = useMantineColorScheme();
   return (
@@ -49,6 +49,14 @@ const Header = ({ user }: { user?: User }) => {
                     leftSection={<Icon icon={icons.settings} />}
                   >
                     {t('settings')}
+                  </Menu.Item>
+                  <Menu.Item
+                    hidden={user.role === 'user'}
+                    component={Link}
+                    to='/dashboard'
+                    leftSection={<Icon icon={icons.dashboard} />}
+                  >
+                    {t('dashboard')}
                   </Menu.Item>
                   <Menu.Divider />
                   <Form method='post' action='/logout'>
