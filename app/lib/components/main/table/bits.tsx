@@ -11,7 +11,6 @@ export const SwitchCell = ({ defaultValue }: { defaultValue: boolean }) => {
   const { setEditUser, editUser } = useEditUserContext();
   return (
     <>
-      {JSON.stringify(editUser, null, 2)}
       <Switch
         defaultChecked={defaultValue}
         onChange={(ev) => {
