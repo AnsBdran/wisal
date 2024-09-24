@@ -18,7 +18,7 @@ import styles from './suggestions.module.css';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { suggestions } = await getSuggestions();
-  const { user, redirect } = await authenticateOrToast(request);
+  const { user, loginRedirect: redirect } = await authenticateOrToast(request);
   if (!user) return redirect;
 
   return json({ suggestions, user });
@@ -49,6 +49,7 @@ export default Suggestions;
 export const action = async ({ request }: ActionFunctionArgs) => {
   console.log('suggestion action called');
   const user = await authenticator.isAuthenticated(request);
+  console.log('the user in the action ', user);
   const userID = Number(user?.id);
   const fd = await request.formData();
   const intent = fd.get('intent');

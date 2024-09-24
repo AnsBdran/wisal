@@ -22,9 +22,12 @@ import { HEADER_HEIGHT } from '~/lib/constants';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { icons } from '~/lib/icons';
 import { useHeadroom } from '@mantine/hooks';
+import { authenticateOrToast } from '~/.server/utils';
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const user = await authenticator.isAuthenticated(request);
+  // const user = await authenticator.isAuthenticated(request);
+  const { user, loginRedirect } = await authenticateOrToast(request);
+  if (!user) return loginRedirect;
   return { user };
 };
 
@@ -83,6 +86,7 @@ const MailLayout = () => {
                   flex={1}
                   value='/messanger'
                   leftSection={<Icon icon={icons.messaging} />}
+                  z
                 >
                   {t('messaging')}
                 </Tabs.Tab>

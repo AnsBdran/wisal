@@ -8,8 +8,10 @@ body {
 }
 
 .highlighted {
-  @apply underline underline-offset-8 hover:decoration-solid decoration-2 decoration-dotted;
+  @apply underline underline-offset-8 hover:decoration-solid decoration-dotted;
+
   & span {
     color: var(--mantine-color-text);
+    font-weight: 500;
   }
 }

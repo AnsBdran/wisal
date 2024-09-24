@@ -15,7 +15,7 @@ import {
 import { theme } from './lib/theme';
 import NotFound from '~/lib/components/main/not-found/index';
 import { getToast } from 'remix-toast';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { notifications, Notifications } from '@mantine/notifications';
 import { authenticator } from './services/auth.server';
 import { LoaderFunctionArgs } from '@remix-run/node';
@@ -28,22 +28,16 @@ import '@mantine/carousel/styles.css';
 
 import './tailwind.css';
 import './font.css';
-import { db } from './.server/db';
-import { users } from './.server/db/schema';
-import { eq } from 'drizzle-orm';
-import { userPrefs } from './services/user-prefs.server';
+import { getUserLocale } from './.server/utils';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const userSession = await authenticator.isAuthenticated(request);
-  // const locale = await initializeLocale(request);
-  const cookieHeader = request.headers.get('Cookie');
-  const cookie = (await userPrefs.parse(cookieHeader)) || {};
-  const locale = cookie.locale === 'en' ? 'en' : 'ar';
+  const user = await authenticator.isAuthenticated(request);
+  const locale = await getUserLocale(request);
   const { toast, headers } = await getToast(request);
   return json(
     {
       toast,
-      user: userSession,
+      user,
       locale,
     },
     { headers }
@@ -51,8 +45,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const { toast, user, locale } = useLoaderData<typeof loader>();
-  console.log('locale in root', locale);
+  const { toast, locale, user } = useLoaderData<typeof loader>();
+  console.log('locale in root', user, locale);
   useEffect(() => {
     if (toast) {
       notifications.show({

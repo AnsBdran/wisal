@@ -1,5 +1,12 @@
-import { createCookie } from '@remix-run/node';
+import { createCookie, createCookieSessionStorage } from '@remix-run/node';
 
-export const userPrefs = createCookie('user-prefs', {
-  maxAge: 604_800,
+type UserPrefs = {
+  locale: 'ar' | 'en';
+};
+export const userPrefs = createCookieSessionStorage({
+  cookie: {
+    name: 'user-prefs',
+    sameSite: 'lax',
+    path: '/',
+  },
 });

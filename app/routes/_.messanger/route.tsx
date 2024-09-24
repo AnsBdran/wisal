@@ -8,7 +8,7 @@ import { Chat } from './bits';
 import { authenticateOrToast } from '~/.server/utils';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { user, redirect } = await authenticateOrToast(request);
+  const { user, loginRedirect: redirect } = await authenticateOrToast(request);
   if (!user) return redirect;
 
   const chats = await db.query.chatMembers.findMany({

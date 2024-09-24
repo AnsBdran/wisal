@@ -1,7 +1,6 @@
 import {
   Accordion,
   Text,
-  Container,
   Title,
   Box,
   Modal,
@@ -139,11 +138,19 @@ export const InProgressFeatures = () => {
   return (
     <Box>
       <Title className={styles.title} ta={'center'} order={2}>
-        ميِّزات يتم العمل عليها:
+        ميِّزات يتم
+        <Text span style={{ fontSize: 'inherit' }} c='dimmed'>
+          {' '}
+          أو سيتم{' '}
+        </Text>
+        العمل عليها:
       </Title>
       <List mt={0}>
         <List.Item>العمل بدون إتصال بالإنترنت.</List.Item>
         <List.Item>التفاعل على التعليقات.</List.Item>
+        <List.Item>زيادة سرعة التطبيق.</List.Item>
+        <List.Item>إرسال الصور عبر المحادثات الخاصة و الجماعية.</List.Item>
+        <List.Item></List.Item>
       </List>
     </Box>
   );

@@ -4,5 +4,7 @@
   "choose_app_language": "اختر لغة التطبيق",
   "posts_per_page": "عدد المنشورات في كل صفحة",
   "confirm": "تأكيد",
-  "profile_updated": "تم تحديث بيانات ملفك الشخصي بنجاح."
+  "profile_updated": "تم تحديث بيانات ملفك الشخصي بنجاح.",
+  "profile_synced_successfully": "تمت المزامنة بنجاح",
+  "profile_synced_successfully_description": "تمت مزامنة بيانات ملفك الشخصي بنجاح"
 }

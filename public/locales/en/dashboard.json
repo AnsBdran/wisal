@@ -19,5 +19,9 @@
   "ongoing_update": "Updates are underway.",
   "ongoing_update_description": "Please wait, we are saving the updates.",
   "updates_saved": "Updates saved.",
-  "updates_saved_description": "Updates saved successfully."
+  "updates_saved_description": "Updates saved successfully.",
+  "suggestions": "Suggestions",
+  "is_accepted": "Accepted?",
+  "description": "description",
+  "title": "title"
 }

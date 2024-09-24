@@ -38,4 +38,5 @@ export const INTENTS = {
   submitVote: 'SUBMIT_VOTE',
   cancelVote: 'CANCEL_VOTE',
   submitSuggestion: 'SUBMIT_SUGGESTION',
+  syncProfileData: 'SYNC_PROFILE_DATA',
 };

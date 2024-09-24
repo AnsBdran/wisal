@@ -1,44 +1,68 @@
-import { Button, Fieldset, Group, Input, InputLabel } from '@mantine/core';
+import { useForm } from '@conform-to/react';
+import { conformZodMessage, parseWithZod } from '@conform-to/zod';
+import {
+  Button,
+  Group,
+  PasswordInput,
+  Stack,
+  TextInput,
+  Title,
+} from '@mantine/core';
 import { ActionFunction, LoaderFunction, redirect } from '@remix-run/node';
-import { Form } from '@remix-run/react';
+import { Form, useActionData } from '@remix-run/react';
+import { useTranslation } from 'react-i18next';
 import { db } from '~/.server/db';
 import { users } from '~/.server/db/schema';
+import { RegisterSchema, registerSchema } from '~/lib/schemas';
 import { authenticator } from '~/services/auth.server';
 import { commitSession, getSession } from '~/services/session.server';
+import bcrypt from 'bcrypt';
+import { z } from 'zod';
+import { UserSession } from '~/lib/types';
+import { spreadRecordIntoSession } from '~/.server/utils';
 
 const Register = () => {
+  const { t } = useTranslation('form');
+  const lastResult = useActionData<typeof action>();
+  const [
+    form,
+    { firstName, lastName, password, passwordConfirmation, username },
+  ] = useForm<z.infer<RegisterSchema>>({ lastResult });
+  console.log('password error', passwordConfirmation.errors);
   return (
     <>
-      <Form method='post'>
-        <Fieldset className='space-y-4'>
-          <Group className='justify-between [&>*]:flex-1 '>
-            <InputLabel>الاسم الأول</InputLabel>
-            <Input name='firstName' />
+      <Form method='post' id={form.id} onSubmit={form.onSubmit}>
+        <Title mb={'xl'}>{t('register')}</Title>
+        <Stack>
+          <Group grow>
+            <TextInput
+              label={t('first_name')}
+              name={firstName.name}
+              error={t(firstName.errors ?? '')}
+            />
+            <TextInput
+              label={t('last_name')}
+              name={lastName.name}
+              error={t(lastName.errors ?? '')}
+            />
           </Group>
-          <Group className='justify-between [&>*]:flex-1 '>
-            <InputLabel>الاسم الأخير</InputLabel>
-            <Input name='lastName' />
-          </Group>
-
-          <Group className='justify-between [&>*]:flex-1 '>
-            <InputLabel>اسم المستخدم</InputLabel>
-            <Input name='username' />
-          </Group>
-
-          <Group className='justify-between [&>*]:flex-1 '>
-            <InputLabel>البريد الإلكتروني</InputLabel>
-            <Input name='email' />
-          </Group>
-          <Group className='justify-between [&>*]:flex-1 '>
-            <InputLabel>كلمة المرور</InputLabel>
-            <Input name='password' />
-          </Group>
-          <Group className='justify-between [&>*]:flex-1 '>
-            <InputLabel>تأكيد كلمة المرور</InputLabel>
-            <Input name='password_confirmation' />
-          </Group>
-          <Button type='submit'>التسجيل</Button>
-        </Fieldset>
+          <TextInput
+            label={t('username')}
+            name={username.name}
+            error={t(username.errors ?? '')}
+          />
+          <PasswordInput
+            label={t('password')}
+            name={password.name}
+            error={t(password.errors ?? '')}
+          />
+          <PasswordInput
+            label={t('password_confirmation')}
+            name={passwordConfirmation.name}
+            error={t(passwordConfirmation.errors ?? '')}
+          />
+          <Button type='submit'>{t('register')}</Button>
+        </Stack>
       </Form>
     </>
   );
@@ -54,10 +78,28 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
-  const data = Object.fromEntries(formData);
-  const newUser = await db.insert(users).values(data).returning();
+  const submission = parseWithZod(formData, { schema: registerSchema });
+  console.log('action called ++++++++=');
+  if (submission.status !== 'success') {
+    return submission.reply();
+  }
+  const { password, firstName, lastName, username } = submission.value;
+  const salt = await bcrypt.genSalt(10);
+  const passwordHash = await bcrypt.hash(password, salt);
+
+  const response = await db
+    .insert(users)
+    .values({
+      firstName,
+      lastName,
+      username,
+      password: passwordHash,
+    })
+    .returning();
+  const newUser = response[0];
   const session = await getSession(request.headers.get('cookie'));
-  session.set(authenticator.sessionKey, newUser);
+
+  session.set(authenticator.sessionKey, spreadRecordIntoSession(newUser));
   return redirect('/feed', {
     headers: { 'Set-Cookie': await commitSession(session) },
   });

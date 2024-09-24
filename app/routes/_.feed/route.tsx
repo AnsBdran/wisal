@@ -32,7 +32,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   // try {
   // }
 
-  const { user, redirect } = await authenticateOrToast(request);
+  const { user, loginRedirect: redirect } = await authenticateOrToast(request);
   if (!user) return redirect;
   console.log('in feed route loader', user);
   const posts = await getPosts({
@@ -101,6 +101,7 @@ const Feed = () => {
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const user = await authenticator.isAuthenticated(request);
+  const userID = Number(user?.id);
   const intent = String(formData.get('intent'));
   const postID = String(formData.get('postID'));
   const content = String(formData.get('content'));
@@ -141,9 +142,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       const post = await db
         .insert(posts)
         .values({
-          content: submission.value.content,
-          title: submission.value.title,
-          userID: user?.id,
+          content: 'asdf',
+          title: 'asldkf',
+          userID,
+          // userID: 323
+          // content: submission.value.content,
+          // title: submission.value.title,
+          // userID: user?.id,
         })
         .returning();
 

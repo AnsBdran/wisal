@@ -48,5 +48,6 @@
   "you_are_unauthorized_description": "أنت غير مخوَّل بالوصول إلى صفحة التحكم.",
   "dashboard": "لوحة التحكم",
   "users": "المستخدمون",
-  "view_suggestions": "رؤية المقترحات"
+  "view_suggestions": "رؤية المقترحات",
+  "suggestions": "المقترحات"
 }

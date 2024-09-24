@@ -1,8 +1,12 @@
-import { Container, AppShell, Title } from '@mantine/core';
-import { Outlet } from '@remix-run/react';
+import { Container, AppShell, Title, Card, Tabs } from '@mantine/core';
+import { Outlet, useLocation, useNavigate } from '@remix-run/react';
+import { useTranslation } from 'react-i18next';
 import Header from '~/lib/components/main/header/index';
 
 const AuthLayout = () => {
+  const { t } = useTranslation();
+  const location = useLocation();
+  const navigate = useNavigate();
   return (
     <AppShell
       header={{
@@ -10,11 +14,22 @@ const AuthLayout = () => {
       }}
       padding='xl'
     >
-      {/* <Header /> */}
       <AppShell.Main>
         <Container>
-          <Title>Auth</Title>
-          <Outlet />
+          <Tabs
+            mb='xl'
+            onChange={(value) => {
+              navigate(`${value}`);
+            }}
+          >
+            <Tabs.List grow defaultValue={location.pathname}>
+              <Tabs.Tab value='/login'>{t('login')}</Tabs.Tab>
+              <Tabs.Tab value='/register'>{t('register')}</Tabs.Tab>
+            </Tabs.List>
+          </Tabs>
+          <Card>
+            <Outlet />
+          </Card>
         </Container>
       </AppShell.Main>
     </AppShell>

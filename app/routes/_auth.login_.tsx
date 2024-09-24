@@ -22,6 +22,8 @@ import { db } from '~/.server/db';
 import { commitSession, getSession } from '~/services/session.server';
 import { icons } from '~/lib/icons';
 import i18next from '~/services/i18n.server';
+import { UserSession } from '~/lib/types';
+import { spreadRecordIntoSession } from '~/.server/utils';
 
 // export const handle = {
 //   i18n: 'auth',
@@ -99,12 +101,9 @@ export async function action({ request }: ActionFunctionArgs) {
     });
   }
 
-  const session = await getSession(request.headers.get('cookie'));
-  session.set(authenticator.sessionKey, {
-    id: userRecord.id,
-    role: userRecord.role,
-    locale: userRecord.prefs?.locale,
-  });
+  const session = await getSession(request.headers.get('Cookie'));
+  session.set(authenticator.sessionKey, spreadRecordIntoSession(userRecord));
+
   return redirect('/feed', {
     headers: { 'Set-Cookie': await commitSession(session) },
   });

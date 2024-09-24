@@ -41,4 +41,8 @@ export const icons = {
   star: 'material-symbols:kid-star',
   starOutline: 'material-symbols:kid-star-outline',
   close: 'material-symbols:close-small-outline-rounded',
+  offline: 'oui:offline',
+  speedMeter: 'line-md:speedometer-loop',
+  sync: 'material-symbols:directory-sync-rounded',
+  users: 'ph:users-three-duotone',
 };

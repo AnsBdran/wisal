@@ -27,7 +27,7 @@ import { useLiveLoader } from '~/lib/hooks/useLiveLoader';
 import { authenticateOrToast } from '~/.server/utils';
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-  const { user, redirect } = await authenticateOrToast(request);
+  const { user, loginRedirect: redirect } = await authenticateOrToast(request);
   if (!user) return redirect;
   const chat = await getChatData({ chatID: Number(params.chat) });
   return json({ user, chat });

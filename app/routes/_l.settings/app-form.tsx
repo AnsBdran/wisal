@@ -6,9 +6,12 @@ import { useForm } from '@conform-to/react';
 import { z } from 'zod';
 import { appSchema } from '~/lib/schemas';
 import { INTENTS } from '~/lib/constants';
-import { UserSession } from '~/lib/types';
 
-const AppForm = ({ user }: { user: UserSession }) => {
+const AppForm = ({
+  defaultValue,
+}: {
+  defaultValue: { locale: 'ar' | 'en' };
+}) => {
   const { t } = useTranslation(['settings']);
   const lastResult = useActionData<typeof action>();
   const [form, fields] = useForm<z.infer<typeof appSchema>>({
@@ -28,7 +31,7 @@ const AppForm = ({ user }: { user: UserSession }) => {
                   { label: 'English', value: 'en' },
                   { label: 'اللغة العربية', value: 'ar' },
                 ]}
-                defaultValue={user.locale}
+                defaultValue={defaultValue.locale}
               />
             </Box>
             {/* <Box>

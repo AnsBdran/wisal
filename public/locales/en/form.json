@@ -12,6 +12,8 @@
   "middle_name_at_most_fifteen_characters": "middle name must at most contains 15 characters",
   "last_name_at_least_three_characters": "last name must at least contains 3 characters",
   "last_name_at_most_fifteen_characters": "last name must at most contains 15 characters",
+  "password_confirmation_required": "Password confirmation required",
+  "passwords_unmatch": "Passwords don't match",
   "email": "Email",
   "password": "Password",
   "password_confirmation": "Confirm Password",

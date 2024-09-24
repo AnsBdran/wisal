@@ -9,6 +9,7 @@ import {
   Text,
   Title,
   Divider,
+  Badge,
 } from '@mantine/core';
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { json, Outlet, useLoaderData } from '@remix-run/react';
@@ -19,7 +20,7 @@ import { HEADER_HEIGHT } from '~/lib/constants';
 import { icons } from '~/lib/icons';
 import styles from './l.module.css';
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { user, redirect } = await authenticateOrToast(request);
+  const { user, loginRedirect: redirect } = await authenticateOrToast(request);
   if (!user) return redirect;
 
   return json({ user });
@@ -42,9 +43,14 @@ const MainLayout = () => {
             <Stack justify='space-between' h='100%'>
               <Group>
                 <Stack gap='xs'>
-                  <Title order={3} fz='h2'>
-                    {t('app_title')}
-                  </Title>
+                  <Group>
+                    <Title order={3} fz='h2'>
+                      {t('app_title')}
+                    </Title>
+                    <Badge size='xs' variant='dot'>
+                      نسخة تجريبية
+                    </Badge>
+                  </Group>
                   <Text color='dimmed' fz='sm'>
                     تواصل وتراسل مع أصدقائك وأحبابك.
                   </Text>
@@ -52,19 +58,21 @@ const MainLayout = () => {
               </Group>
               <Box>
                 <Divider />
-                <Group mt='md'>
-                  <Text c='dimmed' className='highlighted'>
-                    فكرة وتطوير: <Text span>أنس بدران</Text>
+                <Group mt='md' justify='space-between'>
+                  <Text c='dimmed' className='highlighted' fz='xs'>
+                    فكرة وتطوير: <span>أنس بدران</span>
                   </Text>
-                  <ActionIcon variant='transparent'>
-                    <Icon icon={icons.github} />
-                  </ActionIcon>
-                  <ActionIcon variant='gradient'>
-                    <Icon icon={icons.telegram} />
-                  </ActionIcon>
-                  <ActionIcon variant='transparent'>
-                    <Icon icon={icons.whatsapp} />
-                  </ActionIcon>
+                  <Group gap={'xs'}>
+                    <ActionIcon variant='subtle'>
+                      <Icon icon={icons.github} />
+                    </ActionIcon>
+                    <ActionIcon variant='subtle'>
+                      <Icon icon={icons.telegram} />
+                    </ActionIcon>
+                    <ActionIcon variant='subtle'>
+                      <Icon icon={icons.whatsapp} />
+                    </ActionIcon>
+                  </Group>
                 </Group>
               </Box>
             </Stack>

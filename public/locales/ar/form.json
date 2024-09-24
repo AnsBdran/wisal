@@ -15,6 +15,8 @@
   "middle_name_at_most_fifteen_characters": "اسم الأب يجب أن يحوي على الأكثر 15 حرفاً",
   "last_name_at_least_three_characters": "اسم العائلة يجب أن يحوي على الأقل ثلاثة أحرف.",
   "last_name_at_most_fifteen_characters": "اسم العائلة يجب أن يحوي على الأكثر 15 حرفاً",
+  "password_confirmation_required": "تأكيد كلمة المرور مطلوب",
+  "passwords_unmatch": "كلمات المرور غير متطابقة.",
   "email": "البريد الإلكتروني",
   "password": "كلمة المرور",
   "first_name": "الاسم الأول",

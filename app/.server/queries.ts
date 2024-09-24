@@ -3,6 +3,8 @@ import { db } from './db';
 import { posts, suggestions } from './db/schema';
 import { getPagination } from './utils';
 
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const getChatMessages = async ({ id }) => {
   const messages = await db.query.messages.findMany({
     where({ chatID }, { eq }) {
@@ -20,6 +22,8 @@ export const getChatMessages = async ({ id }) => {
   return messages;
 };
 
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const getPosts = async ({
   page,
   userID,
@@ -81,6 +85,8 @@ export const getPosts = async ({
   return { data: _posts, count: _count };
 };
 
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const getChatData = async ({ chatID }: { chatID: number }) => {
   const messages = await getChatMessages({ id: chatID });
 
@@ -100,17 +106,17 @@ export const getChatData = async ({ chatID }: { chatID: number }) => {
   return { messages, data: chat };
 };
 
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const getSuggestions = async () => {
   const _suggestions = await db.query.suggestions.findMany({
     with: {
       choices: {
-        // with: { votes: {with: {user: {}} },
         with: { votes: { with: { user: true } } },
       },
     },
-    where: ({ isAccepted, id }, { eq, and }) => {
+    where: ({ isAccepted }, { eq }) => {
       return eq(isAccepted, true);
-      // return and(eq(isAccepted, true), eq(id, 821));
     },
     // limit: 10,
   });

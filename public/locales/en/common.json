@@ -49,5 +49,6 @@
   "you_are_unauthorized_description": "Only admins can view the dashboard page.",
   "dashboard": "Dashboard",
   "users": "Users",
-  "view_suggestions": "View suggestions"
+  "view_suggestions": "View suggestions",
+  "suggestions": "Suggestions"
 }

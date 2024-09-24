@@ -6,6 +6,10 @@ import {
 } from '@tanstack/react-table';
 import { useTranslation } from 'react-i18next';
 
+export const handle = {
+  i18n: ['common', 'dashboard'],
+};
+
 const _Table = ({ data, columns }) => {
   const table = useReactTable({
     data,
@@ -13,6 +17,7 @@ const _Table = ({ data, columns }) => {
     getCoreRowModel: getCoreRowModel(),
   });
   const { t } = useTranslation('dashboard');
+  console.log('+++++++++', 'table re-rendered');
   return (
     <>
       <Table>
@@ -24,7 +29,7 @@ const _Table = ({ data, columns }) => {
                   {header.isPlaceholder
                     ? null
                     : flexRender(
-                        t(header.column.columnDef.header),
+                        t(header.column.columnDef.header) ?? '',
                         header.getContext()
                       )}
                 </Table.Th>

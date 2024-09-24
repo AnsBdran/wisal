@@ -8,11 +8,12 @@ import { UserRecord } from '~/lib/types';
 import { getFullName, getFullNameString } from '~/lib/utils';
 
 export const SwitchCell = ({ defaultValue }: { defaultValue: boolean }) => {
-  const { setEditUser, editUser } = useEditUserContext();
+  const { setEditUser } = useEditUserContext();
+  console.log('switch cell re-rendered', defaultValue);
   return (
     <>
       <Switch
-        defaultChecked={defaultValue}
+        checked={defaultValue}
         onChange={(ev) => {
           setEditUser((prev) => ({
             ...prev,
@@ -26,6 +27,26 @@ export const SwitchCell = ({ defaultValue }: { defaultValue: boolean }) => {
     </>
   );
 };
+// export const SwitchCell = ({ defaultValue }: { defaultValue: boolean }) => {
+//   const { setEditUser } = useEditUserContext();
+//   console.log('switch cell re-rendered', defaultValue);
+//   return (
+//     <>
+//       <Switch
+//         defaultChecked={defaultValue}
+//         onChange={(ev) => {
+//           setEditUser((prev) => ({
+//             ...prev,
+//             intent: INTENTS.editUserIsFamily,
+//             isFamily: ev.currentTarget.checked,
+//           }));
+//         }}
+//         onLabel={<Icon icon={icons.star} fontSize={rem('14px')} />}
+//         offLabel={<Icon icon={icons.starOutline} fontSize={rem('14px')} />}
+//       />
+//     </>
+//   );
+// };
 
 export const UserCell = ({ row }: { row: UserRecord }) => {
   return (
@@ -36,6 +57,7 @@ export const UserCell = ({ row }: { row: UserRecord }) => {
           color='initials'
           src={row.profileImage}
           radius='sm'
+          size='sm'
         />
         {getFullName(row)}
       </Group>
@@ -74,10 +96,9 @@ export const UserCell = ({ row }: { row: UserRecord }) => {
 export const CellActions = ({ row }: { row: UserRecord }) => {
   const fetcher = useFetcher();
   const { editUser } = useEditUserContext();
+  console.log('actions cell re-rendered');
 
-  console.log('cell actions', editUser);
   const submit = () => {
-    console.log('we are submitting', editUser);
     fetcher.submit(
       {
         userID: row.id,

@@ -1,31 +1,38 @@
-import { AppShell, Container, Group, Title } from '@mantine/core';
+import { Icon } from '@iconify/react/dist/iconify.js';
+import { AppShell, Container, Group, Tabs } from '@mantine/core';
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { Link, Outlet, useLoaderData } from '@remix-run/react';
+import {
+  Link,
+  Outlet,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+} from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
-import { redirectWithError } from 'remix-toast';
+import { authenticateOrToast, getUserLocale } from '~/.server/utils';
 import Header from '~/lib/components/main/header';
 import { HEADER_HEIGHT } from '~/lib/constants';
-import { EditUserContextProvider } from '~/lib/contexts/edit-user';
-import { authenticator } from '~/services/auth.server';
-import i18next from '~/services/i18n.server';
+import { icons } from '~/lib/icons';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const user = await authenticator.isAuthenticated(request);
-  const t = await i18next.getFixedT(user?.locale ?? 'ar', 'common', {
-    lng: user?.locale ?? 'ar',
-  });
-  if (!user || user.role === 'user') {
-    return redirectWithError('/feed', {
-      message: t('you_are_unauthorized'),
-      description: t('you_are_unauthorized_description'),
-    });
-  }
+  const { user, loginRedirect, feedRedirect } = await authenticateOrToast(
+    request
+  );
+  if (!user) return loginRedirect;
+  if (user.role === 'user') return feedRedirect;
   return { user };
 };
 
+export const handle = {
+  i18n: ['dashboard', 'common'],
+};
+
 const Dashboard = () => {
-  const { user } = useLoaderData();
+  const { user } = useLoaderData<typeof loader>();
+  console.log('in dashboard, user is ', user);
   console.log('user', user);
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   return (
     <>
@@ -38,10 +45,29 @@ const Dashboard = () => {
         <Header user={user} />
         <AppShell.Main>
           <Container>
-            <Group>
-              <Link to={'./users'}>{t('users')}</Link>
-              <Link to='./'>{t('dashboard')}</Link>
-            </Group>
+            <Tabs
+              mb={'xl'}
+              onChange={(value) => value && navigate(value)}
+              defaultValue={pathname}
+            >
+              <Tabs.List grow>
+                <Tabs.Tab
+                  leftSection={<Icon icon={icons.users} />}
+                  value='/dashboard/users'
+                >
+                  {t('users')}
+                </Tabs.Tab>
+                <Tabs.Tab
+                  leftSection={<Icon icon={icons.dashboard} />}
+                  value='/dashboard'
+                >
+                  {t('dashboard')}
+                </Tabs.Tab>
+                <Tabs.Tab value='/dashboard/suggestions'>
+                  {t('suggestions')}
+                </Tabs.Tab>
+              </Tabs.List>
+            </Tabs>
             <Outlet />
           </Container>
         </AppShell.Main>

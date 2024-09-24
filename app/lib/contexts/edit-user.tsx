@@ -14,6 +14,7 @@ type EditUserType = {
   intent: string;
   // userID: number;
 };
+const initialState = {} as EditUserType;
 
 type EditUserContext = {
   editUser: EditUserType;
@@ -27,11 +28,7 @@ export const EditUserContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [editUser, setEditUser] = useState<EditUserType>({
-    intent: '',
-    isFamily: false,
-    role: 'user',
-  } as EditUserType);
+  const [editUser, setEditUser] = useState<EditUserType>(initialState);
   return (
     <EditUserContext.Provider value={{ editUser, setEditUser }}>
       {children}

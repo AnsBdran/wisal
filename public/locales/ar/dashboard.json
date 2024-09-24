@@ -17,5 +17,11 @@
   "ongoing_update": "جاري التعديل",
   "ongoing_update_description": "الرجاء الإنتظار، جار حفظ التعديلات.",
   "updates_saved": "تم التعديل.",
-  "updates_saved_description": "تم حفظ التعديلات بنجاح."
+  "updates_saved_description": "تم حفظ التعديلات بنجاح.",
+  "suggestions": "المقترحات",
+  "is_accepted": "قُبِل؟",
+  "description": "التفاصيل",
+  "title": "العنوان",
+  "accepted": "تم قَبُوله",
+  "not_accepted": "لم يتم قبوله"
 }

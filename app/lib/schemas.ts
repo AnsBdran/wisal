@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { messages } from '~/.server/db/schema';
 
 const stringOnlyRegex = /^[a-zA-Z\u0600-\u06FF]+(?: [a-zA-Z\u0600-\u06FF]+)?$/;
 // const stringOnlyRegex = /^[\p{L}]+$/u;
@@ -17,18 +18,12 @@ export const commentSchema = z.object({
   postID: z.number(),
 });
 
-export const profileSchema = z.object({
+export const baseProfileSchema = z.object({
   firstName: z
     .string({ required_error: 'first_name_required' })
     .min(3, 'first_name_at_least_three_characters')
     .max(15, 'first_name_at_most_fifteen_characters')
     .regex(stringOnlyRegex, 'string_invalid'),
-  middleName: z
-    .string()
-    .min(3, 'middle_name_at_least_three_characters')
-    .max(15, 'middle_name_at_most_fifteen_characters')
-    .regex(stringOnlyRegex, 'string_invalid')
-    .optional(),
   lastName: z
     .string({ required_error: 'last_name_required' })
     .min(3, 'last_name_at_least_three_characters')
@@ -38,14 +33,40 @@ export const profileSchema = z.object({
     .string({ required_error: 'username_required' })
     .min(3, 'username_at_least_three_characters')
     .max(15, 'username_at_most_fifteen_characters'),
+});
+
+export const editProfileSchema = z.object({
+  middleName: z
+    .string()
+    .min(3, 'middle_name_at_least_three_characters')
+    .max(15, 'middle_name_at_most_fifteen_characters')
+    .regex(stringOnlyRegex, 'string_invalid')
+    .optional(),
   nickname: z.string().min(1, 'nickname_required').max(15).optional(),
   email: z
     .string({ required_error: 'email_required' })
     .email('email_invalid')
     .max(255),
-  // profileImage: z.string().max(255).optional(),
   bio: z.string().optional(),
 });
+
+export const registerSchema = baseProfileSchema
+  .merge(
+    z.object({
+      password: z
+        .string({ required_error: 'password_required' })
+        .min(6, 'password_at_least_six_characters'),
+      passwordConfirmation: z.string({
+        required_error: 'password_confirmation_required',
+      }),
+    })
+  )
+  .refine((value) => value.password === value.passwordConfirmation, {
+    message: 'passwords_unmatch',
+    path: ['passwordConfirmation'],
+  });
+
+export const profileSchema = baseProfileSchema.merge(editProfileSchema);
 
 export const appSchema = z.object({
   locale: z.enum(['ar', 'en']),
@@ -67,4 +88,19 @@ export const suggestionSchema = z.object({
   isAccepted: z.boolean().default(false),
 });
 
+export const suggestionChoiceSchema = z.object({
+  title: z.string().min(1),
+  description: z.string().min(5).optional(),
+});
+
+export const suggestionEditSchema = suggestionSchema.merge(
+  z.object({
+    choices: z.array(suggestionChoiceSchema).min(2),
+  })
+);
+
+// ++++++++++++++++++++++++++++++++++++++++++
+// schemas types
 export type SuggestionSchema = typeof suggestionSchema;
+export type RegisterSchema = typeof registerSchema;
+export type SuggestionEditSchema = typeof suggestionEditSchema;

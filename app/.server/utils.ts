@@ -5,9 +5,11 @@ import { eventStream } from 'remix-utils/sse/server';
 import { emitter } from '~/services/emitter.server';
 import { authenticator } from '~/services/auth.server';
 import i18next from '~/services/i18n.server';
-import { redirectWithInfo } from 'remix-toast';
+import { redirectWithError, redirectWithInfo } from 'remix-toast';
 import cloudinary from 'cloudinary';
 import { writeAsyncIterableToWritable } from '@remix-run/node';
+import { userPrefs } from '~/services/user-prefs.server';
+import { UserRecord, UserSession } from '~/lib/types';
 
 export const getPagination = ({ page }) => {
   return {
@@ -86,15 +88,51 @@ export const createEventStream = (request: Request, eventName: string) => {
 
 export const authenticateOrToast = async (request: Request) => {
   const user = await authenticator.isAuthenticated(request);
-  const t = await i18next.getFixedT(user?.locale ?? 'ar', 'common', {
-    lng: user?.locale ?? 'ar',
+  const locale = await getUserLocale(request);
+
+  const t = await i18next.getFixedT(locale, 'common', {
+    lng: locale,
+  });
+
+  const feedRedirect = redirectWithInfo('/feed', {
+    message: t('you_are_unauthorized'),
+    description: t('you_are_unauthorized_description'),
+  });
+
+  const loginRedirect = redirectWithInfo('/login', {
+    message: t('require_login'),
+    description: t('require_login_description'),
   });
 
   return {
     user,
-    redirect: redirectWithInfo('/login', {
-      message: t('require_login'),
-      description: t('require_login_description'),
-    }),
+    loginRedirect,
+    feedRedirect,
   };
 };
+
+export const getUserLocale = async (request: Request): Promise<'ar' | 'en'> => {
+  const userPrefsSession = await userPrefs.getSession(
+    request.headers.get('Cookie')
+  );
+  const locale = userPrefsSession.get('locale');
+  return locale === 'en' ? 'en' : 'ar';
+};
+
+export const spreadRecordIntoSession = (
+  userRecord: UserRecord
+): UserSession => ({
+  id: userRecord.id,
+  role: userRecord.role,
+  firstName: userRecord.firstName,
+  middleName: userRecord.middleName,
+  lastName: userRecord.lastName,
+  username: userRecord.username,
+  bio: userRecord.bio,
+  email: userRecord.email,
+  isApproved: userRecord.isApproved,
+  isFamily: userRecord.isFamily,
+  isVerified: userRecord.isVerified,
+  nickname: userRecord.nickname,
+  profileImage: userRecord.profileImage,
+});

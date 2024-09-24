@@ -1,39 +1,63 @@
-import { Icon } from '@iconify/react/dist/iconify.js';
-import { AppShell, Box, Container, Tabs, Title } from '@mantine/core';
+import { Icon } from '@iconify/react';
+import { ActionIcon, Box, Button, Group, Tabs, Title } from '@mantine/core';
 import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
-import { redirect, useLoaderData } from '@remix-run/react';
+import { useFetcher, useLoaderData } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
-import Header from '~/lib/components/main/header/index';
-import { HEADER_HEIGHT, INTENTS } from '~/lib/constants';
+import { INTENTS } from '~/lib/constants';
 import { icons } from '~/lib/icons';
 import { authenticator } from '~/services/auth.server';
 import { ProfileForm } from './profile-form';
 import { db } from '~/.server/db';
-import { users, usersPrefs } from '~/.server/db/schema';
+import { users } from '~/.server/db/schema';
 import { eq } from 'drizzle-orm';
 import { parseWithZod } from '@conform-to/zod';
 import { appSchema, profileSchema } from '~/lib/schemas';
-import { redirectWithSuccess } from 'remix-toast';
+import { jsonWithSuccess, redirectWithSuccess } from 'remix-toast';
 import i18next from '~/services/i18n.server';
 import AppForm from './app-form';
-import { authenticateOrToast } from '~/.server/utils';
+import {
+  authenticateOrToast,
+  getUserLocale,
+  spreadRecordIntoSession,
+} from '~/.server/utils';
+import { userPrefs } from '~/services/user-prefs.server';
+import { commitSession, getSession } from '~/services/session.server';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const authUser = await authenticator.isAuthenticated(request);
+  // const authUser = await authenticator.isAuthenticated(request);
+  const { user, loginRedirect: redirect } = await authenticateOrToast(request);
+  if (!user) return redirect;
+  const locale = await getUserLocale(request);
   const userRecord = await db
     .select()
     .from(users)
-    .where(eq(users.id, authUser?.id));
-  return json({ user: userRecord[0] });
+    .where(eq(users.id, user?.id));
+  return json({ user: userRecord[0], locale });
 };
 
 const Settings = () => {
   const { i18n, t } = useTranslation();
-  const { user } = useLoaderData<typeof loader>();
+  const { user, locale } = useLoaderData<typeof loader>();
+  const fetcher = useFetcher();
+  console.log('in settings route', user);
   return (
     <>
       <Box>
-        <Title>{t('settings')}</Title>
+        <Group justify='space-between' mb='lg'>
+          <Title>{t('settings')}</Title>
+          <ActionIcon
+            variant='outline'
+            onClick={() => {
+              fetcher.submit(
+                { intent: INTENTS.syncProfileData },
+                { method: 'POST' }
+              );
+            }}
+          >
+            <Icon icon={icons.sync} />
+          </ActionIcon>
+        </Group>
+
         <Tabs defaultValue='profile_settings'>
           <Tabs.List grow mb='xl'>
             <Tabs.Tab
@@ -53,7 +77,7 @@ const Settings = () => {
             <ProfileForm user={user} />
           </Tabs.Panel>
           <Tabs.Panel value='app_settings'>
-            <AppForm user={user} />
+            <AppForm defaultValue={{ locale: locale }} />
           </Tabs.Panel>
         </Tabs>
       </Box>
@@ -64,13 +88,14 @@ const Settings = () => {
 export default Settings;
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const t = await i18next.getFixedT('ar', 'settings', { lng: 'ar' });
   const formData = await request.formData();
-  const authUser = await authenticator.isAuthenticated(request);
+  const user = await authenticator.isAuthenticated(request);
+  const userID = Number(user?.id);
   const intent = formData.get('intent');
-
+  const locale = await getUserLocale(request);
+  const t = await i18next.getFixedT(locale, 'settings', { lng: locale });
   const response = await authenticateOrToast(request);
-  if (!response.user) return response.redirect;
+  if (!response.user) return response.loginRedirect;
 
   if (intent === INTENTS.editProfile) {
     const submission = parseWithZod(formData, { schema: profileSchema });
@@ -80,7 +105,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     await db
       .update(users)
       .set({ ...submission.value })
-      .where(eq(users.id, authUser?.id));
+      .where(eq(users.id, userID));
 
     return redirectWithSuccess('/feed', {
       message: t('updated_successfully'),
@@ -92,17 +117,43 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     if (submission.status !== 'success') {
       return json(submission.reply());
     }
-    await db
-      .update(usersPrefs)
-      .set({
-        locale: submission.value.locale,
-      })
-      .where(eq(usersPrefs.userID, authUser?.id));
-
-    return redirectWithSuccess('/feed', {
-      message: t('updated_successfully'),
-      description: t('profile_updated'),
-    });
+    const userPrefsSession = await userPrefs.getSession(
+      request.headers.get('Cookie')
+    );
+    userPrefsSession.set('locale', submission.value.locale);
+    return redirectWithSuccess(
+      '/feed',
+      {
+        message: t('updated_successfully'),
+        description: t('profile_updated'),
+      },
+      {
+        headers: {
+          'Set-Cookie': await userPrefs.commitSession(userPrefsSession),
+        },
+      }
+    );
+  } else if (intent === INTENTS.syncProfileData) {
+    console.log('trying to sync');
+    const userRecord = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, userID));
+    const session = await getSession(request.headers.get('Cookie'));
+    session.set(
+      authenticator.sessionKey,
+      spreadRecordIntoSession(userRecord[0])
+    );
+    return jsonWithSuccess(
+      { success: true },
+      {
+        message: t('profiled_synced_successfully'),
+        description: t('profile_synced_successfully_description'),
+      },
+      {
+        headers: { 'Set-Cookie': await commitSession(session) },
+      }
+    );
   }
   return null;
 };

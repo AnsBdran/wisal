@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjsAr from 'dayjs/locale/ar';
 import { ReactionType } from '~/.server/db/schema';
-import { UserRecord } from './types';
+import { Suggestion, UserRecord } from './types';
 import { Group, rem, Text } from '@mantine/core';
 import { Icon } from '@iconify/react';
 import { createColumnHelper, flexRender } from '@tanstack/react-table';
@@ -12,7 +12,11 @@ import {
   RoleCell,
   SwitchCell,
   UserCell,
-} from './components/main/table/bits';
+} from './components/main/table/users-cells';
+import {
+  SuggestionActions,
+  IsAcceptedChip,
+} from './components/main/table/suggestions-cells';
 
 export const fromNow = (date: string, lang: string) => {
   dayjs.extend(relativeTime);
@@ -105,4 +109,25 @@ export const getUsersColumns = () => {
 
 export const waiit = async (time: number = 1000) => {
   return await new Promise((res) => setTimeout(res, time));
+};
+
+export const getSuggestionsColumns = () => {
+  const columnHelper = createColumnHelper<Suggestion>();
+  return [
+    columnHelper.accessor('title', {
+      header: 'title',
+    }),
+    columnHelper.accessor('description', {
+      header: 'description',
+    }),
+    columnHelper.accessor('isAccepted', {
+      header: 'is_accepted',
+      cell: (info) =>
+        flexRender(IsAcceptedChip, { defaultValue: info.getValue() }),
+    }),
+    columnHelper.display({
+      header: 'actions',
+      cell: (info) => flexRender(SuggestionActions, { row: info.row.original }),
+    }),
+  ];
 };
