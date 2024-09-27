@@ -17,7 +17,7 @@ export const suggestions = pgTable('suggestions', {
     .notNull(),
   title: varchar('title', { length: 255 }).notNull(),
   description: text('description'),
-  isAccepted: boolean('is_accepted').default(false),
+  isAccepted: boolean('is_accepted').default(false).notNull(),
 });
 
 export const choices = pgTable('choices', {

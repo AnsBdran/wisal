@@ -18,9 +18,8 @@ export const ProfileForm = ({ user }: { user: UserRecord }) => {
     shouldRevalidate: 'onInput',
     shouldValidate: 'onBlur',
   });
-  console.log('form app', fields.username.errors);
   const { t, i18n } = useTranslation(['form', 'settings']);
-  console.log('dirty', form.dirty);
+
   return (
     <>
       <Form method='post' onSubmit={form.onSubmit} noValidate id={form.id}>

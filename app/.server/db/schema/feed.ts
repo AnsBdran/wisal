@@ -24,7 +24,7 @@ export const posts = pgTable('posts', {
   updatedAt: timestamp('updated_at', { withTimezone: true })
     .defaultNow()
     .$onUpdate(now),
-  title: varchar('name', { length: 255 }).notNull(),
+  title: varchar('title', { length: 255 }).notNull(),
   content: text('content').notNull(),
   userID: integer('user_id')
     .references(() => users.id, { onDelete: 'cascade' })

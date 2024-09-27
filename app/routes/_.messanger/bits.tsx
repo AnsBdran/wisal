@@ -10,15 +10,26 @@ import {
   UnstyledButton,
   Tooltip,
   rem,
+  Stack,
+  Alert,
+  Button,
+  Modal,
+  LoadingOverlay,
+  Divider,
 } from '@mantine/core';
-import { Link, useNavigate } from '@remix-run/react';
+import { Link, useFetcher, useNavigate } from '@remix-run/react';
 import { SerializeFrom } from '@remix-run/node';
 import { loader } from './route';
+import { loader as apiLoader } from '~/routes/api.data';
 import { Icon } from '@iconify/react';
 import styles from './messanger.module.css';
-import { getFullName } from '~/lib/utils';
+import { getProfileInfo, getProfileInfoText } from '~/lib/utils';
 import { icons } from '~/lib/icons';
 import { useTranslation } from 'react-i18next';
+import { INTENTS } from '~/lib/constants';
+import { useDisclosure } from '@mantine/hooks';
+import { ReactNode } from 'react';
+import { findOrCreateChat } from '~/.server/utils';
 
 export const Chat = ({
   chat,
@@ -79,7 +90,11 @@ export const Chat = ({
         </Tooltip>
         <Avatar.Group onClick={(e) => e.stopPropagation()}>
           {chat.chat.members.slice(0, 5).map((member) => (
-            <Tooltip withArrow key={member.id} label={getFullName(member.user)}>
+            <Tooltip
+              withArrow
+              key={member.id}
+              label={getProfileInfoText(member.user)}
+            >
               <Avatar
                 size='sm'
                 src={member.user.profileImage}
@@ -96,5 +111,87 @@ export const Chat = ({
         </Avatar.Group>
       </Group>
     </UnstyledButton>
+  );
+};
+
+export const EmptyMessanger = ({ hidden }: { hidden: boolean }) => {
+  const { t } = useTranslation();
+  return (
+    <>
+      <Stack hidden={hidden} my={'xl'}>
+        <Alert title={t('empty_messanger')}>
+          {t('empty_messanger_description')}
+        </Alert>
+        <ChooseUserToMessage>
+          <Button variant='gradient' size='lg'>
+            {t('start_first_chat')}
+          </Button>
+        </ChooseUserToMessage>
+        {/* 
+        <Modal opened={opened && fetcher.data?.users} onClose={close}>
+          {fetcher.data?.users.map((u) => (
+            <Box key={u.id}>{getProfileInfoText(u)}</Box>
+          ))}
+        </Modal> */}
+      </Stack>
+    </>
+  );
+};
+
+export const ChooseUserToMessage = ({
+  children,
+}: // userID,
+{
+  children: ReactNode;
+  // userID: number;
+}) => {
+  const [opened, { open, close }] = useDisclosure();
+  const usersFetcher = useFetcher<typeof apiLoader>();
+  const chatFetcher = useFetcher();
+  const { t } = useTranslation();
+
+  return (
+    <>
+      <Box
+        onClick={() => {
+          usersFetcher.load(`/api/data?intent=${INTENTS.fetchUsers}`);
+          open();
+        }}
+      >
+        {children}
+      </Box>
+      <LoadingOverlay visible={usersFetcher.state === 'loading'} />
+      <Modal
+        opened={opened}
+        onClose={close}
+        title={t('choose_User_to_chat_with')}
+      >
+        {usersFetcher.data?.users.map((u) => (
+          <Box
+            py={'xs'}
+            key={u.id}
+            style={{
+              borderBottom: '.5px solid',
+              borderColor: 'var(--mantine-color-dimmed)',
+            }}
+            onClick={() =>
+              chatFetcher.submit(
+                {
+                  intent: INTENTS.findOrCreateChat,
+                  // formID: userID,
+                  targetID: u.id,
+                },
+                {
+                  method: 'POST',
+                }
+              )
+            }
+          >
+            {getProfileInfo(u)}
+            {/* <Divider /> */}
+          </Box>
+        ))}
+      </Modal>
+    </>
   );
 };

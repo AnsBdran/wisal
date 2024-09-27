@@ -1,0 +1,23 @@
+.formWrapper {
+  /* background-color: red; */
+  /* height: calc(100% - var(--mantine-header-height)); */
+  /* background-color: var(--mantine-baloo); */
+}
+
+.dropZoneIcon {
+  width: rem(52);
+  height: rem(52);
+  color: var(--mantine-color-dimmed);
+}
+
+.uploadedImage {
+  border: 2px solid var(--mantine-color-dimmed);
+  padding: 2px;
+  position: relative;
+
+  & svg {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}

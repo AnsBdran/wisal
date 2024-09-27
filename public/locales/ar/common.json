@@ -41,7 +41,7 @@
   "posts_per_page": "عدد المنشورات في كل صفحة",
   "apply": "تطبيق",
   "successfully_logged_out": "تم تسجيل الخروج بنجاح.",
-  "Log_back_in": "يجب عليك تسجيل الدخول لتتمكن من تصفح المحتوى.",
+  "log_back_in": "يجب عليك تسجيل الدخول لتتمكن من تصفح المحتوى.",
   "require_login": "يجب عليك تسجيل الدخول",
   "require_login_description": "للوصول للمحتوى، سجِّل دخولك أولاً.",
   "you_are_unauthorized": "غير مسموح لك بالوصول.",
@@ -49,5 +49,15 @@
   "dashboard": "لوحة التحكم",
   "users": "المستخدمون",
   "view_suggestions": "رؤية المقترحات",
-  "suggestions": "المقترحات"
+  "suggestions": "المقترحات",
+  "empty_messanger": "لا يتوفر لديك أي محادثات لعرضها.",
+  "empty_messanger_description": "قم بالإنضمام إلى المحادثات الجماعية، أو ابدأ بالتراسل عبر المحادثات الخاصة.",
+  "start_first_chat": "ابدأ المحادثة الأولى",
+  "show_more": "إظهار المزيد",
+  "hide": "إخفاء",
+  "show": "إظهار",
+  "chats": "المحادثات",
+  "create_chat": "إنشاء محادثة",
+  "private_chat": "محادثة خاصة",
+  "choose_User_to_chat_with": "اختر شخصاً تود التحدث معه"
 }

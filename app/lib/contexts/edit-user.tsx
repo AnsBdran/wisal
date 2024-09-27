@@ -16,12 +16,14 @@ type EditUserType = {
 };
 const initialState = {} as EditUserType;
 
-type EditUserContext = {
+type EditUserContextType = {
   editUser: EditUserType;
   setEditUser: Dispatch<SetStateAction<EditUserType>>;
 };
 
-const EditUserContext = createContext<EditUserContext>({} as EditUserContext);
+const EditUserContext = createContext<EditUserContextType>(
+  {} as EditUserContextType
+);
 
 export const EditUserContextProvider = ({
   children,

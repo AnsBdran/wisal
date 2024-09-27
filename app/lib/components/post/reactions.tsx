@@ -20,8 +20,8 @@ import styles from './post.module.css';
 import { useTranslation } from 'react-i18next';
 import { useFetcher } from '@remix-run/react';
 import {
+  getProfileInfoText,
   getFullName,
-  getFullNameString,
   getReactionIconData,
 } from '~/lib/utils';
 import { SerializeFrom } from '@remix-run/node';
@@ -132,13 +132,13 @@ export const ReactionsStats = ({
           >
             <Avatar
               src={r.user.profileImage}
-              name={getFullNameString(r.user)}
+              name={getFullName(r.user)}
               color='initials'
               radius='md'
             />
           </Indicator>
 
-          {getFullName(r.user)}
+          {getProfileInfoText(r.user)}
         </Group>
       </Box>
     );

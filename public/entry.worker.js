@@ -337,6 +337,7 @@ const route21 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePrope
   default: worker_runtime_default
 }, Symbol.toStringTag, { value: "Module" }));
 const assets = [
+  "/dome.jpg",
   "/entry.worker.js",
   "/favicon.ico",
   "/locales/ar/common.json",
@@ -480,7 +481,7 @@ const routes = {
     index: void 0,
     caseSensitive: void 0,
     hasLoader: true,
-    hasAction: false,
+    hasAction: true,
     hasWorkerLoader: false,
     hasWorkerAction: false,
     module: route10

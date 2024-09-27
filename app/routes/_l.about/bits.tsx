@@ -145,11 +145,13 @@ export const InProgressFeatures = () => {
         </Text>
         العمل عليها:
       </Title>
-      <List mt={0}>
+      <List mt={0} icon={<Icon icon={icons.specialStar} />}>
         <List.Item>العمل بدون إتصال بالإنترنت.</List.Item>
         <List.Item>التفاعل على التعليقات.</List.Item>
         <List.Item>زيادة سرعة التطبيق.</List.Item>
         <List.Item>إرسال الصور عبر المحادثات الخاصة و الجماعية.</List.Item>
+        <List.Item>إنهاء ترجمة النسخة الإنجليزية من التطبيق.</List.Item>
+        <List.Item>إضفاء المزيد من الحيوية على التطبيق.</List.Item>
         <List.Item></List.Item>
       </List>
     </Box>

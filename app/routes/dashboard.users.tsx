@@ -39,18 +39,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const intent = fd.get('intent');
   const userID = fd.get('userID');
   const role = fd.get('role') as UserRole;
-  console.log('we are hit');
-  console.log('we are trying to edit something');
-  console.log('++++++++++++++++++++++++++++++');
   switch (intent) {
     case INTENTS.editUserRole: {
-      console.log('we are trying to edit user role');
-      console.log('++++++++++++++++++++++++++++++');
       await db.update(users).set({ role }).where(eq(users.id, userID));
       return json({ success: true });
     }
     case INTENTS.editUserIsFamily:
-      console.log('we are trying to edit user fmaily');
       {
         await db
           .update(users)

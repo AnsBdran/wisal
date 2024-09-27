@@ -52,6 +52,7 @@ const Header = ({ user }: { user?: UserSession }) => {
                   </Menu.Item>
                   <Menu.Item
                     hidden={user.role === 'user'}
+                    variant='outline'
                     component={Link}
                     to='/dashboard'
                     leftSection={<Icon icon={icons.dashboard} />}

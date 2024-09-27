@@ -3,7 +3,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjsAr from 'dayjs/locale/ar';
 import { ReactionType } from '~/.server/db/schema';
 import { Suggestion, UserRecord } from './types';
-import { Group, rem, Text } from '@mantine/core';
+import { Avatar, Group, rem, Text } from '@mantine/core';
 import { Icon } from '@iconify/react';
 import { createColumnHelper, flexRender } from '@tanstack/react-table';
 import { icons } from './icons';
@@ -16,6 +16,7 @@ import {
 import {
   SuggestionActions,
   IsAcceptedChip,
+  Description,
 } from './components/main/table/suggestions-cells';
 
 export const fromNow = (date: string, lang: string) => {
@@ -31,7 +32,30 @@ export const fromNow = (date: string, lang: string) => {
   // return dayjs(date).locale('es').fromNow()
 };
 
-export const getFullName = (user: UserRecord) => {
+export const getProfileInfo = (user: UserRecord) => {
+  return (
+    <Group gap='xs'>
+      <Avatar
+        src={user.profileImage}
+        color='initials'
+        name={getFullName(user)}
+        radius={'xs'}
+      />
+      <Text>
+        {user.firstName} {user.lastName}
+      </Text>
+      {user.isFamily ||
+        (user.role === 'super_admin' && (
+          <Icon
+            icon={icons.verified}
+            fontSize={rem('14px')}
+            color='var(--mantine-primary-color-9)'
+          />
+        ))}
+    </Group>
+  );
+};
+export const getProfileInfoText = (user: UserRecord) => {
   return (
     <Group gap='2px'>
       <Text>
@@ -49,7 +73,7 @@ export const getFullName = (user: UserRecord) => {
   );
 };
 
-export const getFullNameString = (user) => `${user.firstName} ${user.lastName}`;
+export const getFullName = (user) => `${user.firstName} ${user.lastName}`;
 export const firstLetters = (user) =>
   `${user.firstName.charAt(0)} ${user.lastName.charAt(0)}`;
 
@@ -119,6 +143,7 @@ export const getSuggestionsColumns = () => {
     }),
     columnHelper.accessor('description', {
       header: 'description',
+      cell: (info) => flexRender(Description, { value: info.getValue() }),
     }),
     columnHelper.accessor('isAccepted', {
       header: 'is_accepted',

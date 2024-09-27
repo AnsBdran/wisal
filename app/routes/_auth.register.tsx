@@ -28,7 +28,6 @@ const Register = () => {
     form,
     { firstName, lastName, password, passwordConfirmation, username },
   ] = useForm<z.infer<RegisterSchema>>({ lastResult });
-  console.log('password error', passwordConfirmation.errors);
   return (
     <>
       <Form method='post' id={form.id} onSubmit={form.onSubmit}>
@@ -79,7 +78,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
   const submission = parseWithZod(formData, { schema: registerSchema });
-  console.log('action called ++++++++=');
   if (submission.status !== 'success') {
     return submission.reply();
   }

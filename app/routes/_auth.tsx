@@ -21,8 +21,9 @@ const AuthLayout = () => {
             onChange={(value) => {
               navigate(`${value}`);
             }}
+            defaultValue={location.pathname}
           >
-            <Tabs.List grow defaultValue={location.pathname}>
+            <Tabs.List grow>
               <Tabs.Tab value='/login'>{t('login')}</Tabs.Tab>
               <Tabs.Tab value='/register'>{t('register')}</Tabs.Tab>
             </Tabs.List>

@@ -39,7 +39,6 @@ const Settings = () => {
   const { i18n, t } = useTranslation();
   const { user, locale } = useLoaderData<typeof loader>();
   const fetcher = useFetcher();
-  console.log('in settings route', user);
   return (
     <>
       <Box>
@@ -112,7 +111,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       description: t('profile_updated'),
     });
   } else if (intent === INTENTS.editApp) {
-    console.log('we are getting something');
     const submission = parseWithZod(formData, { schema: appSchema });
     if (submission.status !== 'success') {
       return json(submission.reply());
@@ -134,7 +132,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       }
     );
   } else if (intent === INTENTS.syncProfileData) {
-    console.log('trying to sync');
     const userRecord = await db
       .select()
       .from(users)
@@ -147,7 +144,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return jsonWithSuccess(
       { success: true },
       {
-        message: t('profiled_synced_successfully'),
+        message: t('profile_synced_successfully'),
         description: t('profile_synced_successfully_description'),
       },
       {

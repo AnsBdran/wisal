@@ -31,5 +31,12 @@
   "title_long": "Post title is too long.",
   "invalid_image_file": "Invalid image file.",
   "invalid_image_size": "Invalid image size.",
-  "content_required": "Post content is required."
+  "content_required": "Post content is required.",
+  "empty_feed": "Your feed is empty.",
+  "empty_feed_description": "The is no posts to view, be the first one to create a new post.",
+  "create_the_first_post": "Create the first post",
+  "drop_files_here": "Drag images here or click to select files",
+  "drop_files_here_description": "Attach as many files as you like, each file should not exceed 3mb",
+  "error_while_uploading": "Some error happened while uploading",
+  "error_while_uploading_description": "Please try uploading again."
 }

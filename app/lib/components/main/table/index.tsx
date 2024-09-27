@@ -17,7 +17,6 @@ const _Table = ({ data, columns }) => {
     getCoreRowModel: getCoreRowModel(),
   });
   const { t } = useTranslation('dashboard');
-  console.log('+++++++++', 'table re-rendered');
   return (
     <>
       <Table>

@@ -5,11 +5,10 @@ import { INTENTS } from '~/lib/constants';
 import { useEditUserContext } from '~/lib/contexts/edit-user';
 import { icons } from '~/lib/icons';
 import { UserRecord } from '~/lib/types';
-import { getFullName, getFullNameString } from '~/lib/utils';
+import { getProfileInfoText, getFullName } from '~/lib/utils';
 
 export const SwitchCell = ({ defaultValue }: { defaultValue: boolean }) => {
   const { setEditUser } = useEditUserContext();
-  console.log('switch cell re-rendered', defaultValue);
   return (
     <>
       <Switch
@@ -29,7 +28,6 @@ export const SwitchCell = ({ defaultValue }: { defaultValue: boolean }) => {
 };
 // export const SwitchCell = ({ defaultValue }: { defaultValue: boolean }) => {
 //   const { setEditUser } = useEditUserContext();
-//   console.log('switch cell re-rendered', defaultValue);
 //   return (
 //     <>
 //       <Switch
@@ -53,13 +51,13 @@ export const UserCell = ({ row }: { row: UserRecord }) => {
     <>
       <Group>
         <Avatar
-          name={getFullNameString(row)}
+          name={getFullName(row)}
           color='initials'
           src={row.profileImage}
           radius='sm'
           size='sm'
         />
-        {getFullName(row)}
+        {getProfileInfoText(row)}
       </Group>
     </>
   );
@@ -96,7 +94,6 @@ export const UserCell = ({ row }: { row: UserRecord }) => {
 export const CellActions = ({ row }: { row: UserRecord }) => {
   const fetcher = useFetcher();
   const { editUser } = useEditUserContext();
-  console.log('actions cell re-rendered');
 
   const submit = () => {
     fetcher.submit(

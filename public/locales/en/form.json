@@ -26,5 +26,7 @@
   "bio": "bio",
   "email_invalid": "Invalid email",
   "confirm": "confirm",
-  "credentials_invalid": "Check that you have provided the correct username and password."
+  "credentials_invalid": "Check that you have provided the correct username and password.",
+  "successfully_logged_in": "You have successfully logged in.",
+  "successfully_logged_in_description": "You can now start messaging and browse content."
 }

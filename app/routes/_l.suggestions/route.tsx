@@ -47,9 +47,7 @@ const Suggestions = () => {
 export default Suggestions;
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  console.log('suggestion action called');
   const user = await authenticator.isAuthenticated(request);
-  console.log('the user in the action ', user);
   const userID = Number(user?.id);
   const fd = await request.formData();
   const intent = fd.get('intent');
@@ -61,7 +59,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       await waiit();
       const submission = parseWithZod(fd, { schema: suggestionSchema });
       if (submission.status !== 'success') {
-        console.log('submission failed');
         return submission.reply();
       }
       const { title, description } = submission.value;

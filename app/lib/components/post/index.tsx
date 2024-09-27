@@ -20,7 +20,7 @@ import {
   Reactions,
   ReactionsStats,
 } from './bits';
-import { fromNow, getFullName } from '~/lib/utils';
+import { fromNow, getProfileInfoText } from '~/lib/utils';
 import { useState } from 'react';
 import { icons } from '~/lib/icons';
 import { useFetcher } from '@remix-run/react';
@@ -77,7 +77,7 @@ export default function Post({
       <Group justify='space-between' mt='md'>
         <Group className={styles.user} align='center'>
           <Avatar src={post.user.profileImage} size={24} radius='md' />
-          {getFullName(post.user)}
+          {getProfileInfoText(post.user)}
         </Group>
         <Group gap={8} mr={0}>
           <Reactions post={post} />

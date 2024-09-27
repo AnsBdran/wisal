@@ -157,7 +157,9 @@ const seedImages = async () => {
         postID: _posts[j].id,
         format: faker.internet.protocol(),
         publicID: faker.color.cssSupportedFunction(),
-
+        height: faker.number.int({ min: 240, max: 4600 }),
+        width: faker.number.int({ min: 240, max: 4600 }),
+        url: faker.image.url(),
         // key: `users-${userss[j].id}`,
       });
     }

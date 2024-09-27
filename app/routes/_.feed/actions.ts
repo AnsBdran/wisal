@@ -1,9 +1,15 @@
+import { parseWithZod } from '@conform-to/zod';
 import { and, eq } from 'drizzle-orm';
 import { db } from '~/.server/db';
-import { postReactions, comments } from '~/.server/db/schema';
+import { postReactions, comments, posts, images } from '~/.server/db/schema';
+import { postSchema } from '~/lib/schemas';
 
-export const react = async (type, postID, userID) => {
+// ++++++++++++++++++++++++++++++++++++++++
+// ++++++++++++++++++++++++++++++++++++++++
+export const react = async (fd: FormData, userID: number) => {
   await new Promise((res) => setTimeout(res, 1000));
+  const postID = Number(fd.get('postID'));
+  const type = fd.get('type');
 
   const isReacted = await db
     .selectDistinct()
@@ -43,11 +49,12 @@ export const react = async (type, postID, userID) => {
   }
 };
 
-export const comment = async (
-  content: string,
-  postID: number,
-  userID: number
-) => {
+// ++++++++++++++++++++++++++++++++++++++++
+// ++++++++++++++++++++++++++++++++++++++++
+export const comment = async (fd: FormData, userID: number) => {
+  const content = fd.get('content') as string;
+  const postID = Number(fd.get('postID'));
+
   if (!content) {
     return { fail: true };
   }
@@ -56,17 +63,56 @@ export const comment = async (
   return { action: 'added' };
 };
 
-export const commentUpdate = async (
-  content: string,
-  commentID: number
-  // userID: number
-) => {
+// ++++++++++++++++++++++++++++++++++++++++
+// ++++++++++++++++++++++++++++++++++++++++
+export const commentUpdate = async (fd: FormData) => {
+  const content = fd.get('content') as string;
+  const commentID = Number(fd.get('commentID'));
   await db.update(comments).set({ content }).where(eq(comments.id, commentID));
 
   return { action: 'updated' };
 };
 
-export const deleteComment = async (commentID: number) => {
+// ++++++++++++++++++++++++++++++++++++++++
+// ++++++++++++++++++++++++++++++++++++++++
+export const deleteComment = async (fd: FormData) => {
+  const commentID = Number(fd.get('commentID'));
+
   await db.delete(comments).where(eq(comments.id, commentID));
   return { action: 'deleted' };
+};
+
+export const post = async (formData: FormData, userID: number) => {
+  const submission = parseWithZod(formData, { schema: postSchema });
+
+  if (submission.status !== 'success') {
+    return submission.reply();
+  }
+
+  // extract submission values
+  const { content, images: _images, title } = submission.value;
+
+  const post = await db
+    .insert(posts)
+    .values({
+      content,
+      title: title ?? '',
+      userID,
+    })
+    .returning();
+
+  if (_images?.length) {
+    await db.insert(images).values(
+      _images.map((i) => ({
+        format: i.format,
+        height: i.height,
+        postID: post[0].id,
+        publicID: i.publicID,
+        secureURL: i.secureURL,
+        url: i.url,
+        width: i.width,
+      }))
+    );
+  }
+  return { success: true };
 };

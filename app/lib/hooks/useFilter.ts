@@ -13,8 +13,6 @@ export const useFilter = () => {
   );
   const [users, setUsers] = useState<string[]>([]);
 
-  console.log({ users, tag, order, orderBy });
-
   const applyFilters = () => {
     setSearchParams((prev) => {
       orderBy && orderBy !== 'time' && prev.set('orderBy', orderBy);

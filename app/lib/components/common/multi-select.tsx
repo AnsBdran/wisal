@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { users } from '~/.server/db/schema';
 import { INTENTS } from '~/lib/constants';
 import { icons } from '~/lib/icons';
-import { getFullName } from '~/lib/utils';
+import { getProfileInfoText } from '~/lib/utils';
 
 const MultiSelect = ({
   value,
@@ -34,7 +34,6 @@ const MultiSelect = ({
 
   // const isFetching = fetcher.state === 'loading';
   // const status = fetcher.data;
-  // console.log('status ', status);
 
   useEffect(() => {
     if (fetcher.state !== 'loading' && fetcher.data !== undefined) {
@@ -84,10 +83,10 @@ const MultiSelect = ({
           <Avatar
             size='xs'
             src={item.profileImage}
-            name={getFullName(item)}
+            name={getProfileInfoText(item)}
             color='initials'
           />
-          <span>{getFullName(item)}</span>
+          <span>{getProfileInfoText(item)}</span>
         </Group>
       </Combobox.Option>
     ));

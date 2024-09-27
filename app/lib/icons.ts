@@ -45,4 +45,10 @@ export const icons = {
   speedMeter: 'line-md:speedometer-loop',
   sync: 'material-symbols:directory-sync-rounded',
   users: 'ph:users-three-duotone',
+  upload: 'material-symbols:upload-sharp',
+  photos: 'material-symbols:photo-library-outline-rounded',
+  specialStar: 'noto:eight-pointed-star',
+  chats: 'ph:wechat-logo-bold',
+  addChat: 'mage:message-dots-round-plus',
+  usersGroup: 'ci:users-group',
 };

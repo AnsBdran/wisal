@@ -31,5 +31,7 @@
   "confirm": "تأكيد",
   "login": "تسجيل الدخول",
   "register": "التسجيل",
-  "credentials_invalid": "الرجاء التحقق من تطابق اسم المستخدم لكلمة المرور."
+  "credentials_invalid": "الرجاء التحقق من تطابق اسم المستخدم لكلمة المرور.",
+  "successfully_logged_in": "تم تسجيل الدخول بنجاح.",
+  "successfully_logged_in_description": "يمكنك الآن التواصل والتراسل وتصفح المحتوى."
 }

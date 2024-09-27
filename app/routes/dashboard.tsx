@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { authenticateOrToast, getUserLocale } from '~/.server/utils';
 import Header from '~/lib/components/main/header';
 import { HEADER_HEIGHT } from '~/lib/constants';
+import { EditSuggestionContextProvider } from '~/lib/contexts/edit-suggestion';
 import { icons } from '~/lib/icons';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -29,8 +30,6 @@ export const handle = {
 
 const Dashboard = () => {
   const { user } = useLoaderData<typeof loader>();
-  console.log('in dashboard, user is ', user);
-  console.log('user', user);
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -68,7 +67,9 @@ const Dashboard = () => {
                 </Tabs.Tab>
               </Tabs.List>
             </Tabs>
-            <Outlet />
+            <EditSuggestionContextProvider>
+              <Outlet />
+            </EditSuggestionContextProvider>
           </Container>
         </AppShell.Main>
       </AppShell>

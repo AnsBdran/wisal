@@ -10,69 +10,110 @@ import cloudinary from 'cloudinary';
 import { writeAsyncIterableToWritable } from '@remix-run/node';
 import { userPrefs } from '~/services/user-prefs.server';
 import { UserRecord, UserSession } from '~/lib/types';
+import { sql } from 'drizzle-orm';
 
-export const getPagination = ({ page }) => {
+export const getPagination = ({ page }: { page: number }) => {
   return {
     limit: ITEMS_PER_PAGE,
     offset: (page - 1) * ITEMS_PER_PAGE,
   };
 };
 
-export const findOrCreateChat = async (fromID: number, toID: number) => {
-  const existingchat = await db.query.chats.findFirst({
-    // where: (chat, { and, eq, inArray }) => {
-    //   const sq = await db
-    //     .select()
-    //     .from(chatMembers)
-    //     .where(
-    //       and(eq(chatMembers.chatID, chat.id), eq(chatMembers.userID, fromID))
-    //     );
-    //   const sq2 = await db
-    //     .select()
-    //     .from(chatMembers)
-    //     .where(
-    //       and(eq(chatMembers.chatID, chat.id), eq(chatMembers.userID, toID))
-    //     );
-    //   return and(eq(sq.length, 1), eq(sq2.length, 1));
-    // },
-    // where(fields, operators) {
-    //     return operators.and(fie)
-    // },
-    // with: {
-    //   members: {
-    //     where(fields, operators) {
-    //         return fields.
-    //     },
-    //   },
-    // },
+export const findOrCreateChat = async (fromID: number, targetID: number) => {
+  // Find chats where both users are members
+  const existingChats = await db.query.chats.findMany({
+    with: {
+      members: true,
+    },
+    // where: (chat, { eq }) => eq(sql`array_length(${chat.members}, 1)`, 2),
   });
-  // const existingchat = await db.query.chats.findFirst({
-  //   with: {
-  //     members: {
-  //       where(fields, { and, eq }) {
-  //         return and(eq(fields.userID, fromID), eq(fields.userID, toID));
-  //       },
-  //     },
-  //   },
-  // });
-  if (existingchat) {
-    return existingchat;
+
+  // Filter to find a chat with exactly these two users
+  const privateChat = existingChats.find(chat => 
+    chat.members.length === 2 &&
+    chat.members.some(member => member.userID === fromID) &&
+    chat.members.some(member => member.userID === targetID)
+  );
+
+  if (privateChat) {
+    return privateChat;
   }
 
-  const newChat = await db
-    .insert(chats)
-    .values({
-      name: `new chat`,
-    })
-    .returning();
+  // If no existing chat, create a new one
+  const newChat = await db.transaction(async (tx) => {
+    const [insertedChat] = await tx
+      .insert(chats)
+      .values({
+        name: `Private Chat`,
+      })
+      .returning();
 
-  await db.insert(chatMembers).values([
-    { chatID: newChat[0].id, userID: fromID },
-    { chatID: newChat[0].id, userID: toID },
-  ]);
+    await tx.insert(chatMembers).values([
+      { chatID: insertedChat.id, userID: fromID },
+      { chatID: insertedChat.id, userID: targetID },
+    ]);
 
-  return newChat[0];
+    return insertedChat;
+  });
+
+  return newChat;
 };
+
+// export const findOrCreateChat = async (fromID: number, toID: number) => {
+//   const existingchat = await db.query.chats.findFirst({
+//     // where: (chat, { and, eq, inArray }) => {
+//     //   const sq = await db
+//     //     .select()
+//     //     .from(chatMembers)
+//     //     .where(
+//     //       and(eq(chatMembers.chatID, chat.id), eq(chatMembers.userID, fromID))
+//     //     );
+//     //   const sq2 = await db
+//     //     .select()
+//     //     .from(chatMembers)
+//     //     .where(
+//     //       and(eq(chatMembers.chatID, chat.id), eq(chatMembers.userID, toID))
+//     //     );
+//     //   return and(eq(sq.length, 1), eq(sq2.length, 1));
+//     // },
+//     // where(fields, operators) {
+//     //     return operators.and(fie)
+//     // },
+//     // with: {
+//     //   members: {
+//     //     where(fields, operators) {
+//     //         return fields.
+//     //     },
+//     //   },
+//     // },
+//   });
+//   // const existingchat = await db.query.chats.findFirst({
+//   //   with: {
+//   //     members: {
+//   //       where(fields, { and, eq }) {
+//   //         return and(eq(fields.userID, fromID), eq(fields.userID, toID));
+//   //       },
+//   //     },
+//   //   },
+//   // });
+//   if (existingchat) {
+//     return existingchat;
+//   }
+
+//   const newChat = await db
+//     .insert(chats)
+//     .values({
+//       name: `محادثة جديدة`,
+//     })
+//     .returning();
+
+//   await db.insert(chatMembers).values([
+//     { chatID: newChat[0].id, userID: fromID },
+//     { chatID: newChat[0].id, userID: toID },
+//   ]);
+
+//   return newChat[0];
+// };
 
 export const createEventStream = (request: Request, eventName: string) => {
   return eventStream(request.signal, (send) => {

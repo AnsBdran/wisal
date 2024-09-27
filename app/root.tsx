@@ -12,7 +12,7 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from '@remix-run/react';
-import { theme } from './lib/theme';
+import { cssVariablesResolver, theme } from './lib/theme';
 import NotFound from '~/lib/components/main/not-found/index';
 import { getToast } from 'remix-toast';
 import { useEffect } from 'react';
@@ -22,12 +22,13 @@ import { LoaderFunctionArgs } from '@remix-run/node';
 import { ModalsProvider } from '@mantine/modals';
 import { useTranslation } from 'react-i18next';
 import { useChangeLanguage } from 'remix-i18next/react';
+import './font.css';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import '@mantine/carousel/styles.css';
-
+import '@mantine/dropzone/styles.css';
 import './tailwind.css';
-import './font.css';
+
 import { getUserLocale } from './.server/utils';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -46,7 +47,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { toast, locale, user } = useLoaderData<typeof loader>();
-  console.log('locale in root', user, locale);
   useEffect(() => {
     if (toast) {
       notifications.show({
@@ -72,7 +72,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
           detectDirection
           initialDirection={locale === 'en' ? 'ltr' : 'rtl'}
         >
-          <MantineProvider defaultColorScheme='light' theme={theme}>
+          <MantineProvider
+            // defaultColorScheme='light'
+            theme={theme}
+            cssVariablesResolver={cssVariablesResolver}
+          >
             <Notifications />
             <ModalsProvider
               labels={{ cancel: t('cancel'), confirm: t('confirm') }}

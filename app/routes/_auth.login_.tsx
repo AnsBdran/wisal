@@ -23,7 +23,8 @@ import { commitSession, getSession } from '~/services/session.server';
 import { icons } from '~/lib/icons';
 import i18next from '~/services/i18n.server';
 import { UserSession } from '~/lib/types';
-import { spreadRecordIntoSession } from '~/.server/utils';
+import { getUserLocale, spreadRecordIntoSession } from '~/.server/utils';
+import { redirectWithSuccess } from 'remix-toast';
 
 // export const handle = {
 //   i18n: 'auth',
@@ -80,12 +81,12 @@ const Login = () => {
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const submission = parseWithZod(formData, { schema: loginSchema });
-
+  const locale = await getUserLocale(request);
   if (submission.status !== 'success') {
     return submission.reply();
   }
 
-  const t = await i18next.getFixedT('ar', 'form');
+  const t = await i18next.getFixedT(locale, 'form');
 
   const userRecord = await db.query.users.findFirst({
     where: ({ username }, op) => op.eq(username, submission.value.username),
@@ -104,15 +105,16 @@ export async function action({ request }: ActionFunctionArgs) {
   const session = await getSession(request.headers.get('Cookie'));
   session.set(authenticator.sessionKey, spreadRecordIntoSession(userRecord));
 
-  return redirect('/feed', {
-    headers: { 'Set-Cookie': await commitSession(session) },
-  });
-
-  // return await authenticator.authenticate('user-pass', request, {
-  //   successRedirect: '/feed',
-  //   failureRedirect: '/login',
-  //   context: userRecord[0],
-  // });
+  return redirectWithSuccess(
+    '/feed',
+    {
+      message: t('successfully_logged_in'),
+      description: t('successfully_logged_in_description'),
+    },
+    {
+      headers: { 'Set-Cookie': await commitSession(session) },
+    }
+  );
 }
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {

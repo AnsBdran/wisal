@@ -72,12 +72,28 @@ export const appSchema = z.object({
   locale: z.enum(['ar', 'en']),
 });
 
+export const postImageSchema = z.object({
+  height: z.number().int().positive(),
+  width: z.number().int().positive(),
+  publicID: z.string().min(1),
+  secureURL: z.string().url().min(1),
+  url: z.string().url().min(1),
+  format: z.string().min(1),
+});
+
 export const postSchema = z.object({
   title: z.string().min(5, 'title_short').max(50, 'title_long').optional(),
   content: z
     .string({ required_error: 'content_required' })
     .min(25, 'content_short'),
-  images: z.array(z.instanceof(File)),
+  images: z
+    .string()
+    .transform((value) => {
+      const images = JSON.parse(value);
+      return images as z.infer<typeof postImageSchema>[];
+    })
+    .optional(),
+  // images: z.array(postImageSchema).optional(),
 });
 
 export const suggestionSchema = z.object({
@@ -85,22 +101,45 @@ export const suggestionSchema = z.object({
   description: z
     .string({ required_error: 'description_required' })
     .min(10, 'description_short'),
-  isAccepted: z.boolean().default(false),
+  isAccepted: z
+    .union([z.boolean(), z.string()])
+    .transform((value) => {
+      if (typeof value === 'string') {
+        return value === 'true';
+      }
+      return value;
+    })
+    .default(false),
 });
 
 export const suggestionChoiceSchema = z.object({
   title: z.string().min(1),
   description: z.string().min(5).optional(),
+  id: z.number().optional(),
 });
 
-export const suggestionEditSchema = suggestionSchema.merge(
-  z.object({
-    choices: z.array(suggestionChoiceSchema).min(2),
-  })
-);
+export const suggestionEditSchema = suggestionSchema
+  .merge(
+    z.object({
+      choices: z
+        .array(suggestionChoiceSchema)
+        .min(2)
+        .default([
+          { title: 'fas', description: '' },
+          { title: '', description: '' },
+        ]),
+      choicesToDelete: z.string().transform((value) => {
+        const ids = JSON.parse(value) as number[];
+        return ids.map((id) => Number(id));
+      }),
+      // choicesToDelete: z.array(z.number()),
+    })
+  )
+  .omit({ isAccepted: true });
 
 // ++++++++++++++++++++++++++++++++++++++++++
 // schemas types
 export type SuggestionSchema = typeof suggestionSchema;
 export type RegisterSchema = typeof registerSchema;
 export type SuggestionEditSchema = typeof suggestionEditSchema;
+export type SuggestionChoiceSchema = typeof suggestionChoiceSchema;

@@ -11,5 +11,19 @@
   "title_required": "عنوان المقترح مطلوب",
   "description_required": "تفاصيل المقترح مطلوبة",
   "title_short": "عنوان المقترح قصير جداً",
-  "description_short": "تفاصيل المقترح قصيرة جداً"
+  "description_short": "تفاصيل المقترح قصيرة جداً",
+  "title": "العنوان",
+  "description": "التفاصيل",
+  "choices": "الخيارات",
+  "accept": "قَبُول",
+  "reject": "رفض",
+  "accepted": "مقبول",
+  "rejected": "مرفوض",
+  "confirm": "تأكيد",
+  "edit": "تعديل",
+  "choice": "خيار",
+  "the_choice": "الخيار",
+  "choice_number": "خيار رقم",
+  "show_choices": "عرض الخيارات",
+  "choice_title_required": "عنوان الخيار مطلوب"
 }

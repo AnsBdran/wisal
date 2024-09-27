@@ -17,7 +17,7 @@ import {
 import styles from './chat.module.css';
 import { SerializeFrom } from '@remix-run/node';
 import { loader } from './route';
-import { fromNow, getFullName, getFullNameString } from '~/lib/utils';
+import { fromNow, getProfileInfoText, getFullName } from '~/lib/utils';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { icons } from '~/lib/icons';
@@ -170,14 +170,14 @@ export const Message = ({
         <Box key={m.id} className={styles.content}>
           <Stack gap='xs'>
             {!isSameSenderAsPrevious && (
-              <Text fz='xs'>{getFullName(m.sender)}</Text>
+              <Text fz='xs'>{getProfileInfoText(m.sender)}</Text>
             )}
             <Text>{m.content}</Text>
           </Stack>
           {!isSameSenderAsNext && (
             <Avatar
               src={m.sender.profileImage}
-              name={getFullName(m.sender)}
+              name={getProfileInfoText(m.sender)}
               color='initials'
               radius='xs'
               className={styles.senderAvatar}
@@ -223,10 +223,10 @@ export const JoinedUsers = ({
                   <Group>
                     <Avatar
                       color='initials'
-                      name={getFullNameString(m.user)}
+                      name={getFullName(m.user)}
                       radius='xs'
                     />
-                    {getFullName(m.user)}
+                    {getProfileInfoText(m.user)}
                   </Group>
                 </Box>
               ))}

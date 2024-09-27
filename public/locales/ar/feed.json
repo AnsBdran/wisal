@@ -31,5 +31,12 @@
   "title_long": "عنوان المنشور طويل جداً.",
   "invalid_image_file": "الصور غير صالحة.",
   "invalid_image_size": "تجاوزت الحد الأقصى لحجم الصورة.",
-  "content_required": "محتوى المنشور مطلوب"
+  "content_required": "محتوى المنشور مطلوب",
+  "empty_feed": "عذراً، لا يتوفر أي منشورات لعرضها.",
+  "empty_feed_description": "لم يتم نشر أي منشور حتَّى الآن، كن أول من يقوم بذلك",
+  "create_the_first_post": "إنشاء أول منشور",
+  "drop_files_here": "قم بالنقر أو إلقاء الصور هنا للإضافة.",
+  "drop_files_here_description": "قم بإضافة ما ترغب من الصور، كل صورة يجب ألا يتخطى حجمها 3mb.",
+  "error_while_uploading": "حدث خطأ ما أثناء رفع الصور.",
+  "error_while_uploading_description": "يرجى المحاولة مرة أخرى."
 }

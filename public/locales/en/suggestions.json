@@ -11,5 +11,17 @@
   "title_required": "Suggestion title is required",
   "description_required": "Suggestion description is required",
   "title_short": "Suggestion title is too short.",
-  "description_short": "Suggestion description is too short."
+  "description_short": "Suggestion description is too short.",
+  "title": "Title",
+  "description": "Description",
+  "choices": "Choices",
+  "accept": "Accept",
+  "reject": "Reject",
+  "accepted": "Accepted",
+  "rejected": "Rejected",
+  "choice": "choice",
+  "the_choice": "The choice",
+  "choice_number": "choice number",
+  "show_choices": "Show Choices",
+  "choice_title_required": "Choice title required"
 }

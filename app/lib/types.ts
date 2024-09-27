@@ -1,4 +1,10 @@
-import { messages, suggestions, users } from '~/.server/db/schema';
+import {
+  choices,
+  images,
+  messages,
+  suggestions,
+  users,
+} from '~/.server/db/schema';
 
 export type UserRecord = typeof users.$inferSelect;
 export type UserSession = Omit<UserRecord, 'password' | 'createdAt'>;
@@ -15,3 +21,5 @@ export type Message = typeof messages.$inferSelect & {
 };
 export type UserRole = 'user' | 'admin' | 'super_admin';
 export type Suggestion = typeof suggestions.$inferSelect;
+export type Image = typeof images.$inferSelect;
+export type Choice = typeof choices.$inferSelect;

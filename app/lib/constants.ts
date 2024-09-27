@@ -39,4 +39,5 @@ export const INTENTS = {
   cancelVote: 'CANCEL_VOTE',
   submitSuggestion: 'SUBMIT_SUGGESTION',
   syncProfileData: 'SYNC_PROFILE_DATA',
+  findOrCreateChat: 'FIND_OR_CREATE_CHAT',
 };
