@@ -22,9 +22,9 @@ import { db } from '~/.server/db';
 import { commitSession, getSession } from '~/services/session.server';
 import { icons } from '~/lib/icons';
 import i18next from '~/services/i18n.server';
-import { UserSession } from '~/lib/types';
 import { getUserLocale, spreadRecordIntoSession } from '~/.server/utils';
 import { redirectWithSuccess } from 'remix-toast';
+import bcrypt from 'bcrypt';
 
 // export const handle = {
 //   i18n: 'auth',
@@ -95,12 +95,26 @@ export async function action({ request }: ActionFunctionArgs) {
     },
   });
 
+  
   // return if there is no matching user
-  if (!userRecord || userRecord.password !== submission.value.password) {
+  if (!userRecord) {
     return submission.reply({
       formErrors: [t('credentials_invalid')],
     });
   }
+  
+  const isValidPassword = await bcrypt.compare(
+    submission.value.password,
+    userRecord.password,
+  );
+
+  console.log('is it valid', isValidPassword)
+
+if (!isValidPassword) {
+  return submission.reply({
+    formErrors: [t('credentials_invalid')]
+  })
+}
 
   const session = await getSession(request.headers.get('Cookie'));
   session.set(authenticator.sessionKey, spreadRecordIntoSession(userRecord));
