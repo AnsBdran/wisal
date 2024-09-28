@@ -25,5 +25,6 @@
   "the_choice": "الخيار",
   "choice_number": "خيار رقم",
   "show_choices": "عرض الخيارات",
-  "choice_title_required": "عنوان الخيار مطلوب"
+  "choice_title_required": "عنوان الخيار مطلوب",
+  "choices_count": "{{count}} خيارات"
 }

@@ -1,4 +1,4 @@
-export const ITEMS_PER_PAGE = 3;
+export const ITEMS_PER_PAGE = 8;
 export const HEADER_HEIGHT = 60;
 export const MESSANGER_HEADER_HEIGHT = 50;
 export const MESSANGER_FOOTER_HEIGHT = 50;

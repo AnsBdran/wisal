@@ -14,6 +14,7 @@ import {
   Modal,
   Indicator,
   ScrollAreaAutosize,
+  Alert,
 } from '@mantine/core';
 import { Icon } from '@iconify/react';
 import styles from './post.module.css';
@@ -23,6 +24,7 @@ import {
   getProfileInfoText,
   getFullName,
   getReactionIconData,
+  getProfileInfo,
 } from '~/lib/utils';
 import { SerializeFrom } from '@remix-run/node';
 import { loader } from '~/routes/_.feed/route';
@@ -129,6 +131,15 @@ export const ReactionsStats = ({
             label={<Icon icon={getReactionIconData(r.type).icon} />}
             color='transparent'
             size={24}
+          >{getProfileInfo(r.user)}
+          </Indicator>
+
+        </Group>
+        {/* <Group>
+          <Indicator
+            label={<Icon icon={getReactionIconData(r.type).icon} />}
+            color='transparent'
+            size={24}
           >
             <Avatar
               src={r.user.profileImage}
@@ -139,20 +150,21 @@ export const ReactionsStats = ({
           </Indicator>
 
           {getProfileInfoText(r.user)}
-        </Group>
+        </Group> */}
       </Box>
     );
   };
 
   return (
     <>
-      {reactions.length ? (
         <Modal
           opened={opened}
           onClose={close}
           title={t('all_post_reactions')}
           // classNames={{ root: 'overflow-hidden' }}
-        >
+          >
+          {reactions.length ? (
+            <>
           <SegmentedControl
             fullWidth
             onChange={(v) => setType(v)}
@@ -210,8 +222,13 @@ export const ReactionsStats = ({
                     .map((r) => <ReactionStat r={r} key={r.id} />)}
             </Stack>
           </ScrollAreaAutosize>
+          </>
+      ) : (
+        <Alert title={t('no_reactions_yet')}>
+          {t('no_reactions_yet_description')}
+        </Alert>
+      )}
         </Modal>
-      ) : undefined}{' '}
     </>
   );
-};
+}

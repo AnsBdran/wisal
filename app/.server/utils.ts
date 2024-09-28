@@ -1,6 +1,6 @@
 import { ITEMS_PER_PAGE } from '~/lib/constants';
 import { db } from './db';
-import { chats, chatMembers } from './db/schema';
+import { chats, chatMembers, users } from './db/schema';
 import { eventStream } from 'remix-utils/sse/server';
 import { emitter } from '~/services/emitter.server';
 import { authenticator } from '~/services/auth.server';
@@ -10,7 +10,8 @@ import cloudinary from 'cloudinary';
 import { writeAsyncIterableToWritable } from '@remix-run/node';
 import { userPrefs } from '~/services/user-prefs.server';
 import { UserRecord, UserSession } from '~/lib/types';
-import { sql } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
+import { getFullName } from '~/lib/utils';
 
 export const getPagination = ({ page }: { page: number }) => {
   return {
@@ -29,22 +30,29 @@ export const findOrCreateChat = async (fromID: number, targetID: number) => {
   });
 
   // Filter to find a chat with exactly these two users
-  const privateChat = existingChats.find(chat => 
-    chat.members.length === 2 &&
-    chat.members.some(member => member.userID === fromID) &&
-    chat.members.some(member => member.userID === targetID)
+  const privateChat = existingChats.find(
+    (chat) =>
+      chat.members.length === 2 &&
+      chat.members.some((member) => member.userID === fromID) &&
+      chat.members.some((member) => member.userID === targetID)
   );
 
   if (privateChat) {
     return privateChat;
   }
 
+  // get the target user info
+  const targetUser = await db
+    .select()
+    .from(users)
+    .where(eq(users.id, targetID));
+
   // If no existing chat, create a new one
   const newChat = await db.transaction(async (tx) => {
     const [insertedChat] = await tx
       .insert(chats)
       .values({
-        name: `Private Chat`,
+        name: getFullName(targetUser[0]),
       })
       .returning();
 

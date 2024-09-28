@@ -23,5 +23,6 @@
   "the_choice": "The choice",
   "choice_number": "choice number",
   "show_choices": "Show Choices",
-  "choice_title_required": "Choice title required"
+  "choice_title_required": "Choice title required",
+  "choices_count": "{{count}} choices"
 }

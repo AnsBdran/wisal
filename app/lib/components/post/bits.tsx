@@ -142,6 +142,7 @@ export const PostFooter = ({
           onClick={onShowCommentsBtnClicked}
           loading={showCommentsBtnLoading}
           loaderProps={{ type: 'dots' }}
+          hidden={post.comments.length === 0}
         >
           {t('view_all_comments')}
         </Button>

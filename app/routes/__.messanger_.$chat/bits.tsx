@@ -23,7 +23,7 @@ import { Icon } from '@iconify/react/dist/iconify.js';
 import { icons } from '~/lib/icons';
 import { useFetcher, useNavigate } from '@remix-run/react';
 import { INTENTS } from '~/lib/constants';
-import { act, useState } from 'react';
+import { act, useEffect, useState } from 'react';
 import { modals } from '@mantine/modals';
 
 export const Message = ({
@@ -241,6 +241,13 @@ export const JoinedUsers = ({
 export const ChatFooter = ({ chatID }: { chatID: number }) => {
   const fetcher = useFetcher();
   const { i18n } = useTranslation();
+  const [content, setContent] = useState('');
+  // useEffect(() => {
+  //   console.log('in use effect', fetcher.data);
+  //   if (fetcher.state === 'idle' && fetcher.data?.action === 'added') {
+  //     setContent('');
+  //   }
+  // });
   return (
     <fetcher.Form
       method='POST'
@@ -249,16 +256,24 @@ export const ChatFooter = ({ chatID }: { chatID: number }) => {
     >
       <Group h='100%'>
         <input type='hidden' name='chatID' value={chatID} />
-        <Input className={styles.messageInput} flex={1} name='content' />
+        <Input
+          className={styles.messageInput}
+          flex={1}
+          name='content'
+          value={content}
+          onChange={(ev) => setContent(ev.target.value)}
+        />
         <ActionIcon
           type='submit'
           variant='outline'
           size='lg'
           name='intent'
           value={INTENTS.sendMessage}
+          // onClick={() => setContent('')}
+          disabled={!content}
           loading={
-            fetcher.state === 'submitting' &&
-            fetcher.formData?.get('intent') === INTENTS.sendMessage
+            fetcher.state === 'submitting'
+            // && fetcher.formData?.get('intent') === INTENTS.sendMessage
           }
           // disabled={!fetcher.}
         >

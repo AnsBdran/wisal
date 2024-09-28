@@ -130,7 +130,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
         senderID: userID,
       });
       emitter.emit(params.chat!);
-      return { action: 'added' };
+      return json({ action: 'added' });
     }
     case INTENTS.editMessage: {
       await db

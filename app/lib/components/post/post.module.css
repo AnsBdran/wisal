@@ -56,10 +56,10 @@
   background-color: red;
 }
 
-.user {
+/* .user {
   gap: 0.2rem;
   align-items: center;
-}
+} */
 
 .footer {
   border-top: rem(1px) solid

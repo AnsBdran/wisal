@@ -1,6 +1,6 @@
 import { useForm } from '@conform-to/react';
-import { Icon } from '@iconify/react/dist/iconify.js';
-import { ActionIcon, Chip, Spoiler } from '@mantine/core';
+import { Icon } from '@iconify/react';
+import { ActionIcon, Chip, List, Popover, Spoiler, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { useEditSuggestionContext } from '~/lib/contexts/edit-suggestion';
 import { icons } from '~/lib/icons';
@@ -10,7 +10,7 @@ export const IsAcceptedChip = ({ defaultValue }: { defaultValue: boolean }) => {
   const { t } = useTranslation('dashboard');
   return (
     <>
-      <Chip checked={defaultValue} color='green'>
+      <Chip checked={defaultValue} color='green' size='xs'>
         {defaultValue ? t('accepted') : t('not_accepted')}
       </Chip>
     </>
@@ -48,9 +48,36 @@ export const SuggestionActions = ({
 export const Description = ({ value }: { value: string }) => {
   const { t } = useTranslation();
   return (
-    <Spoiler showLabel={t('show_more')} hideLabel={t('hide')}>
+    <Spoiler showLabel={t('show_more')} hideLabel={t('hide')} fz='xs'>
       {value}
     </Spoiler>
+  );
+};
+
+export const SuggestionChoices = ({ choices }: { choices: Choice[] }) => {
+  console.log('choices in cell', choices);
+  const { t } = useTranslation('suggestions');
+  const { length } = choices;
+  return (
+    <>
+      <Popover>
+        <Popover.Target>
+          <Text
+            style={{ textWrap: 'nowrap' }}
+            c={length > 0 ? 'blue' : 'dimmed'}
+          >
+            {t('choices_count', { count: length })}{' '}
+          </Text>
+        </Popover.Target>
+        <Popover.Dropdown>
+          <List>
+            {choices.map((c) => (
+              <List.Item key={c.id}>{c.title}</List.Item>
+            ))}
+          </List>
+        </Popover.Dropdown>
+      </Popover>
+    </>
   );
 };
 // export const SuggestionActions = ({

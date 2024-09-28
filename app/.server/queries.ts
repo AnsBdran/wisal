@@ -48,7 +48,7 @@ export const getPosts = async ({
           },
           user: true,
         },
-        limit,
+        limit: 5,
         orderBy(fields, operators) {
           return operators.desc(fields.createdAt);
         },

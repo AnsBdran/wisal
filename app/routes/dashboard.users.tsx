@@ -25,9 +25,7 @@ const Users = () => {
   return (
     <>
       <Title>{t('users')}</Title>
-      <EditUserContextProvider>
-        <Table columns={getUsersColumns()} data={users} />
-      </EditUserContextProvider>
+      <Table columns={getUsersColumns()} data={users} />
     </>
   );
 };
@@ -37,7 +35,7 @@ export default Users;
 export const action = async ({ request }: ActionFunctionArgs) => {
   const fd = await request.formData();
   const intent = fd.get('intent');
-  const userID = fd.get('userID');
+  const userID = Number(fd.get('userID'));
   const role = fd.get('role') as UserRole;
   switch (intent) {
     case INTENTS.editUserRole: {

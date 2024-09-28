@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjsAr from 'dayjs/locale/ar';
 import { ReactionType } from '~/.server/db/schema';
-import { Suggestion, UserRecord } from './types';
+import { Choice, Suggestion, UserRecord } from './types';
 import { Avatar, Group, rem, Text } from '@mantine/core';
 import { Icon } from '@iconify/react';
 import { createColumnHelper, flexRender } from '@tanstack/react-table';
@@ -17,12 +17,13 @@ import {
   SuggestionActions,
   IsAcceptedChip,
   Description,
+  SuggestionChoices,
 } from './components/main/table/suggestions-cells';
 
-export const fromNow = (date: string, lang: string) => {
+export const fromNow = (date: string, locale: string) => {
   dayjs.extend(relativeTime);
 
-  if (lang === 'ar') {
+  if (locale === 'ar') {
     // dayjs.locale('ar');
     dayjs.locale(dayjsAr);
   } else {
@@ -32,7 +33,7 @@ export const fromNow = (date: string, lang: string) => {
   // return dayjs(date).locale('es').fromNow()
 };
 
-export const getProfileInfo = (user: UserRecord) => {
+export const getProfileInfo = (user: UserRecord, sm?: boolean) => {
   return (
     <Group gap='xs'>
       <Avatar
@@ -40,6 +41,7 @@ export const getProfileInfo = (user: UserRecord) => {
         color='initials'
         name={getFullName(user)}
         radius={'xs'}
+        size={sm ? 'sm' : 'md'}
       />
       <Text>
         {user.firstName} {user.lastName}
@@ -136,7 +138,7 @@ export const waiit = async (time: number = 1000) => {
 };
 
 export const getSuggestionsColumns = () => {
-  const columnHelper = createColumnHelper<Suggestion>();
+  const columnHelper = createColumnHelper<Suggestion & { choices: Choice[] }>();
   return [
     columnHelper.accessor('title', {
       header: 'title',
@@ -149,6 +151,11 @@ export const getSuggestionsColumns = () => {
       header: 'is_accepted',
       cell: (info) =>
         flexRender(IsAcceptedChip, { defaultValue: info.getValue() }),
+    }),
+    columnHelper.accessor('choices', {
+      header: 'choices',
+      cell: (info) =>
+        flexRender(SuggestionChoices, { choices: info.getValue() }),
     }),
     columnHelper.display({
       header: 'actions',

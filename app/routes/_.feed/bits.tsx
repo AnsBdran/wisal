@@ -17,6 +17,7 @@ import {
   useMantineTheme,
   SimpleGrid,
   Indicator,
+  rem,
 } from '@mantine/core';
 import { icons } from '~/lib/icons';
 import { Icon } from '@iconify/react';
@@ -62,7 +63,7 @@ export const ScrollToTop = () => {
   );
 };
 
-export const PostForm = () => {
+export const PostForm = ({ close }: { close: () => void }) => {
   const fetcher = useFetcher();
   const [files, setFiles] = useState<FileWithPath[]>([]);
   const [isUploading, setIsUploading] = useState(false);
@@ -73,27 +74,31 @@ export const PostForm = () => {
     lastResult: fetcher.state === 'idle' ? fetcher.data : null,
   });
 
+  useEffect(() => {
+    if (fetcher.data?.success) {
+      close();
+    }
+  }, [fetcher.data]);
+
   const previews = files.map((file, idx) => {
     const imageUrl = URL.createObjectURL(file);
     return (
-      <Image
-        src={imageUrl}
-        alt={file.name}
-        key={idx}
-        onLoad={() => URL.revokeObjectURL(imageUrl)}
-      />
+      <Box key={idx} className={styles.preview}>
+        <Image
+          src={imageUrl}
+          alt={file.name}
+          onLoad={() => URL.revokeObjectURL(imageUrl)}
+        />
+      </Box>
     );
   });
 
   const uploadedPreviews = uploadedData.map((image, idx) => {
     return (
-      <Indicator
-        key={idx}
-        // key={`${image.secureURL}-${idx}`}
-        color='green'
-        autoContrast
-      >
-        <Image src={image.url} alt={`uploaded image`} />
+      <Indicator key={idx} color='green' autoContrast>
+        <Box className={styles.preview}>
+          <Image src={image.url} alt={`uploaded image`} />
+        </Box>
       </Indicator>
     );
   });
@@ -107,7 +112,6 @@ export const PostForm = () => {
       // h='100%'
       className={styles.formWrapper}
     >
-      {JSON.stringify({ fields }, null, 2)}
       <Stack>
         <input
           type='hidden'
@@ -168,12 +172,17 @@ export const PostForm = () => {
           <SimpleGrid
             hidden={uploadedData.length === 0}
             cols={{ base: 4, sm: 8 }}
+            styles={{
+              root: {
+                // maxHeight: '200px',
+                // overflowY: 'auto'
+                gridAutoRows: '150px',
+              },
+            }}
           >
             {uploadedPreviews}
           </SimpleGrid>
-          <SimpleGrid hidden={files.length === 0} cols={{ base: 4, sm: 8 }}>
-            {previews}
-          </SimpleGrid>
+          <Group hidden={files.length === 0}>{previews}</Group>
         </Box>
         <Group>
           <Button
@@ -182,6 +191,7 @@ export const PostForm = () => {
             name='intent'
             value={INTENTS.post}
             disabled={isUploading || !!files.length}
+            loading={fetcher.state !== 'idle'}
           >
             {t('create')}
           </Button>
@@ -393,6 +403,7 @@ export const CreatePostForm = ({ open }: { open: () => void }) => {
     </>
   );
 };
+
 export const EmptyFeed = ({
   hidden,
   open,

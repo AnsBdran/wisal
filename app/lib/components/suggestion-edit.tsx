@@ -69,7 +69,7 @@ export const SuggestionEdit = () => {
         close();
       }}
     >
-      {JSON.stringify({ editSuggestion: row, opened }, null, 2)}
+      {/* {JSON.stringify({ editSuggestion: row, opened }, null, 2)} */}
 
       <fetcher.Form
         method='POST'

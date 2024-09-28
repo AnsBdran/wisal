@@ -20,7 +20,7 @@ import {
   Reactions,
   ReactionsStats,
 } from './bits';
-import { fromNow, getProfileInfoText } from '~/lib/utils';
+import { fromNow, getProfileInfo, getProfileInfoText } from '~/lib/utils';
 import { useState } from 'react';
 import { icons } from '~/lib/icons';
 import { useFetcher } from '@remix-run/react';
@@ -29,9 +29,11 @@ import { INTENTS } from '~/lib/constants';
 export default function Post({
   post,
   userID,
+  locale
 }: {
   post: SerializeFrom<typeof loader>['posts']['data'][0];
   userID: number;
+  locale: 'en' | 'ar'
 }) {
   const theme = useMantineTheme();
   const [showAllComments, setShowAllComments] = useState(false);
@@ -67,7 +69,7 @@ export default function Post({
       )}
 
       <Text className={styles.title} fw={500}>
-        {post.title} {fromNow(post.createdAt, 'ar')}
+        {post.title} 
       </Text>
 
       <Text fz='sm' c='dimmed' lineClamp={4}>
@@ -75,9 +77,11 @@ export default function Post({
       </Text>
 
       <Group justify='space-between' mt='md'>
-        <Group className={styles.user} align='center'>
-          <Avatar src={post.user.profileImage} size={24} radius='md' />
-          {getProfileInfoText(post.user)}
+        <Group  justify='space-between' flex={1}>
+          {getProfileInfo(post.user,)}
+          <Text fz='xs' c={'dimmed'}>
+          {fromNow(post.createdAt, locale)}
+          </Text>
         </Group>
         <Group gap={8} mr={0}>
           <Reactions post={post} />
@@ -124,6 +128,7 @@ export default function Post({
         comments={commentsFetcher.data?.comments ?? []}
         userID={userID}
       />
+      
     </Card>
   );
 }

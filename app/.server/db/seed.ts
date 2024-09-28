@@ -17,17 +17,19 @@ import {
 } from './schema';
 import { users, usersPrefs } from './schema/user';
 import { fakerAR as faker } from '@faker-js/faker';
+import bcrypt from 'bcrypt'
 
 // const arr = num =>  Array.from({length: num}).fill(0)
 const COUNT = 100;
 
 const seedUsers = async () => {
   // const images = await db.select().from(images);
+  const salt = await bcrypt.genSalt(10);
   await db.insert(users).values({
     email: faker.internet.email(),
     firstName: 'أنس',
     lastName: 'بدران',
-    password: 'anas',
+    password: await bcrypt.hash('anas', salt),
     username: 'anas',
     bio: faker.word.words(),
     middleName: 'كمال',
@@ -385,7 +387,7 @@ const seed = async () => {
 const main = async () => {
   try {
     await clear();
-    // await seed();
+    await seed();
     console.log('seed successfull');
     process.exit(0);
   } catch (e) {

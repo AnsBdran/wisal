@@ -1,4 +1,11 @@
-import { Drawer, Group, Modal, Pagination, Stack } from '@mantine/core';
+import {
+  Drawer,
+  Group,
+  Modal,
+  Pagination,
+  ScrollArea,
+  Stack,
+} from '@mantine/core';
 import { useDisclosure, useWindowScroll } from '@mantine/hooks';
 import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData, useNavigate, useSearchParams } from '@remix-run/react';
@@ -11,17 +18,18 @@ import { authenticator } from '~/services/auth.server';
 import { comment, commentUpdate, deleteComment, post, react } from './actions';
 import { FeedFilters } from './filters';
 import { CreatePostForm, EmptyFeed, PostForm, ScrollToTop } from './bits';
-import { authenticateOrToast } from '~/.server/utils';
+import { authenticateOrToast, getUserLocale } from '~/.server/utils';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const page = parseInt(url.searchParams.get('page') ?? '1');
+  const locale = await getUserLocale(request);
   // const searchQueries = Object.fromEntries(url.searchParams);
   // try {
   // }
 
-  const { user, loginRedirect: redirect } = await authenticateOrToast(request);
-  if (!user) return redirect;
+  const { user, loginRedirect } = await authenticateOrToast(request);
+  if (!user) return loginRedirect;
   const posts = await getPosts({
     page,
     userID: user?.id,
@@ -31,11 +39,12 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return json({
     posts,
     user,
+    locale,
   });
 };
 
 const Feed = () => {
-  const { posts, user } = useLoaderData<typeof loader>();
+  const { posts, user, locale } = useLoaderData<typeof loader>();
   const { t } = useTranslation('feed');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -54,9 +63,9 @@ const Feed = () => {
         <Group justify='end'>
           <CreatePostForm open={postFormOpen} />
         </Group>
-        <Stack>
+        <Stack gap='xl'>
           {posts.data.map((post) => (
-            <Post post={post} key={post.id} userID={user.id} />
+            <Post locale={locale} post={post} key={post.id} userID={user.id} />
           ))}
         </Stack>
         <Pagination
@@ -78,16 +87,27 @@ const Feed = () => {
       <Drawer
         opened={postFormOpened}
         onClose={postFormClose}
-        title={t('create_the_first_post')}
+        title={t('create_new_post')}
         hiddenFrom='sm'
-        position='top'
         size='lg'
+        position='top'
+        removeScrollProps={{
+          removeScrollBar: false,
+          allowPinchZoom: true,
+          style: { overflow: 'hidden' },
+          enabled: postFormOpened,
+          gapMode: 'padding',
+        }}
       >
-        <PostForm />
+        <PostForm close={postFormClose} />
       </Drawer>
-
-      <Modal opened={postFormOpened} onClose={postFormClose} visibleFrom='sm'>
-        <PostForm />
+      <Modal
+        title={t('create_new_post')}
+        opened={postFormOpened}
+        onClose={postFormClose}
+        visibleFrom='sm'
+      >
+        <PostForm close={postFormClose} />
       </Modal>
 
       {/* filters */}

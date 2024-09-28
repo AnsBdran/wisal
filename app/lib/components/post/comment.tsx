@@ -17,6 +17,7 @@ import {
   CopyButton,
   Button,
   Modal,
+  Alert,
 } from '@mantine/core';
 import { Icon } from '@iconify/react';
 import styles from './post.module.css';
@@ -223,6 +224,7 @@ export const Comments = ({
 }) => {
   const [opened, { open, close }] = useDisclosure();
   const fetcher = useFetcher();
+  const {t} = useTranslation('feed')
   return (
     <>
       {comments.length ? (
@@ -286,7 +288,9 @@ export const Comments = ({
           ))}
         </List>
       ) : (
-        <p>no post commments</p>
+        <Alert title={t('no_comments_yet')}>
+          {t('no_comments_yet_description')}
+        </Alert>
       )}
     </>
   );

@@ -24,6 +24,7 @@ import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 import { icons } from '~/lib/icons';
 import { INTENTS } from '~/lib/constants';
+import styles from './messanger.module.css';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { user, loginRedirect: redirect } = await authenticateOrToast(request);
@@ -56,21 +57,21 @@ const Messanger = () => {
   return (
     // <Stack py='xl' >
     <>
-      <Group bg='teal' px={'xs'} py={'md'} mb={'md'} justify='space-between'>
+      <Group className={styles.messangerHeader}>
         <Group>
           <Icon icon={icons.chats} width={rem('24px')} height={rem('24px')} />
           <Title order={2}>{t('chats')}</Title>
         </Group>
-        <ActionIcon.Group>
+        <Group>
           <ChooseUserToMessage>
-            <ActionIcon variant='white'>
+            <ActionIcon variant='white' color='teal'>
               <Icon icon={icons.addChat} />
             </ActionIcon>
           </ChooseUserToMessage>
-          <ActionIcon variant='white'>
+          <ActionIcon variant='white' color='teal'>
             <Icon icon={icons.usersGroup} />
           </ActionIcon>
-        </ActionIcon.Group>
+        </Group>
       </Group>
       <Box hidden={chats.length === 0}>
         {chats.map((chat) => (

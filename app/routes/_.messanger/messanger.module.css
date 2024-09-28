@@ -23,3 +23,20 @@
     margin-right: auto;
   }
 }
+
+.messangerHeader {
+  justify-content: space-between;
+  background-color: light-dark(
+    var(--mantine-color-teal-0),
+    var(--mantine-color-teal-9)
+  );
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
+  border: 1px solid;
+  border-color: light-dark(
+    var(--mantine-color-teal-3),
+    var(--mantine-color-teal-7)
+  );
+  border-radius: var(--mantine-radius-xs);
+  margin-bottom: var(--mantine-spacing-md);
+  color: light-dark(var(--mantine-color-teal-8), var(--mantine-color-bright));
+}

@@ -28,6 +28,7 @@ import '@mantine/notifications/styles.css';
 import '@mantine/carousel/styles.css';
 import '@mantine/dropzone/styles.css';
 import './tailwind.css';
+import { ManifestLink } from '@remix-pwa/sw';
 
 import { getUserLocale } from './.server/utils';
 
@@ -64,6 +65,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <Meta />
+        <ManifestLink />
         <Links />
         <ColorSchemeScript />
       </head>

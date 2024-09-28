@@ -21,3 +21,17 @@
     right: 0;
   }
 }
+
+.preview {
+  border: 1px solid var(--mantine-color-blue-2);
+  border-radius: var(--mantine-radius-md);
+  overflow: hidden;
+  width: rem(75px);
+  height: rem(75px);
+
+  & img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+}

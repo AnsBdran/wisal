@@ -13,6 +13,7 @@ import { authenticateOrToast, getUserLocale } from '~/.server/utils';
 import Header from '~/lib/components/main/header';
 import { HEADER_HEIGHT } from '~/lib/constants';
 import { EditSuggestionContextProvider } from '~/lib/contexts/edit-suggestion';
+import { EditUserContextProvider } from '~/lib/contexts/edit-user';
 import { icons } from '~/lib/icons';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -51,16 +52,16 @@ const Dashboard = () => {
             >
               <Tabs.List grow>
                 <Tabs.Tab
-                  leftSection={<Icon icon={icons.users} />}
-                  value='/dashboard/users'
-                >
-                  {t('users')}
-                </Tabs.Tab>
-                <Tabs.Tab
                   leftSection={<Icon icon={icons.dashboard} />}
                   value='/dashboard'
                 >
                   {t('dashboard')}
+                </Tabs.Tab>
+                <Tabs.Tab
+                  leftSection={<Icon icon={icons.users} />}
+                  value='/dashboard/users'
+                >
+                  {t('users')}
                 </Tabs.Tab>
                 <Tabs.Tab value='/dashboard/suggestions'>
                   {t('suggestions')}
@@ -68,7 +69,9 @@ const Dashboard = () => {
               </Tabs.List>
             </Tabs>
             <EditSuggestionContextProvider>
-              <Outlet />
+              <EditUserContextProvider>
+                <Outlet />
+              </EditUserContextProvider>
             </EditSuggestionContextProvider>
           </Container>
         </AppShell.Main>

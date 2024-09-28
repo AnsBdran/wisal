@@ -46,6 +46,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   // await waiit(3000);
   const fd = await request.formData();
   const submission = parseWithZod(fd, { schema: suggestionEditSchema });
+  await waiit(3000);
 
   if (submission.status !== 'success') {
     return submission.reply();

@@ -152,14 +152,18 @@ export const ChooseUserToMessage = ({
 
   return (
     <>
-      <Box
+      <UnstyledButton
         onClick={() => {
           usersFetcher.load(`/api/data?intent=${INTENTS.fetchUsers}`);
           open();
         }}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+        }}
       >
         {children}
-      </Box>
+      </UnstyledButton>
       <LoadingOverlay visible={usersFetcher.state === 'loading'} />
       <Modal
         opened={opened}
