@@ -33,5 +33,13 @@
   "register": "التسجيل",
   "credentials_invalid": "الرجاء التحقق من تطابق اسم المستخدم لكلمة المرور.",
   "successfully_logged_in": "تم تسجيل الدخول بنجاح.",
-  "successfully_logged_in_description": "يمكنك الآن التواصل والتراسل وتصفح المحتوى."
+  "create": "إنشاء",
+  "group_name": "اسم المجموعة",
+  "group_description": "وصف المجموعة",
+  "choose_group_members": "اختر أعضاء المجموعة",
+
+  "successfully_logged_in_description": "يمكنك الآن التواصل والتراسل وتصفح المحتوى.",
+  "name_short": "اسم المجمعة يجب أن يكون على الأقل {{count}} أحرف.",
+  "name_required": "اسم المجموعة مطلوب",
+  "members_short": "يجب عليك "
 }

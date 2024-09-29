@@ -13,7 +13,7 @@ import { Form, useActionData } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
 import { db } from '~/.server/db';
 import { users } from '~/.server/db/schema';
-import { RegisterSchema, registerSchema } from '~/lib/schemas';
+import { RegisterSchemaType, registerSchema } from '~/lib/schemas';
 import { authenticator } from '~/services/auth.server';
 import { commitSession, getSession } from '~/services/session.server';
 import bcrypt from 'bcrypt';
@@ -27,7 +27,7 @@ const Register = () => {
   const [
     form,
     { firstName, lastName, password, passwordConfirmation, username },
-  ] = useForm<z.infer<RegisterSchema>>({ lastResult });
+  ] = useForm<z.infer<RegisterSchemaType>>({ lastResult });
   return (
     <>
       <Form method='post' id={form.id} onSubmit={form.onSubmit}>

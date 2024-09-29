@@ -28,7 +28,7 @@ import { Form, useActionData, useFetcher } from '@remix-run/react';
 import { action } from './route';
 import { HEADER_HEIGHT, INTENTS } from '~/lib/constants';
 import { z } from 'zod';
-import { postSchema } from '~/lib/schemas';
+import { postSchema, PostSchemaType } from '~/lib/schemas';
 import { useEffect, useState } from 'react';
 import { useObjectUrls } from '~/lib/hooks/useObjectUrls';
 import styles from './feed.module.css';
@@ -64,13 +64,13 @@ export const ScrollToTop = () => {
 };
 
 export const PostForm = ({ close }: { close: () => void }) => {
-  const fetcher = useFetcher();
+  const fetcher = useFetcher<typeof action>();
   const [files, setFiles] = useState<FileWithPath[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadedData, setUploadedData] = useState<Partial<ImageType>[]>([]);
   const theme = useMantineTheme();
   const { t } = useTranslation('feed');
-  const [form, fields] = useForm<z.infer<typeof postSchema>>({
+  const [form, fields] = useForm<PostSchemaType>({
     lastResult: fetcher.state === 'idle' ? fetcher.data : null,
   });
 

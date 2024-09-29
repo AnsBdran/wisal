@@ -79,20 +79,20 @@ export const ProfileForm = ({ user }: { user: UserRecord }) => {
             label={t('nickname')}
             error={t(fields.nickname.errors ?? '')}
           />
+          <Button
+            type='submit'
+            variant='gradient'
+            size='compact-xl'
+            // rightSection={<Icon className='rotate-180' icon={icons.send} />}
+            // mt={'xl'}
+            name='intent'
+            value={INTENTS.editProfile}
+            disabled={!form.dirty}
+            className={styles.submitBtn}
+          >
+            {t('confirm')}
+          </Button>
         </Stack>
-        <Button
-          type='submit'
-          variant='gradient'
-          size='compact-xl'
-          leftSection={<Icon icon={icons.send} />}
-          mt={'xl'}
-          name='intent'
-          value={INTENTS.editProfile}
-          disabled={!form.dirty}
-          className={styles.submitBtn}
-        >
-          {t('confirm')}
-        </Button>
       </Form>
     </>
   );

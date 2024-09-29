@@ -40,4 +40,9 @@ export const INTENTS = {
   submitSuggestion: 'SUBMIT_SUGGESTION',
   syncProfileData: 'SYNC_PROFILE_DATA',
   findOrCreateChat: 'FIND_OR_CREATE_CHAT',
+  createChatGroup: 'CREATE_CHAT_GROUP',
+  editSuggestion: 'EDIT_SUGGESTION',
+  changeSuggestionStatus: 'CHANGE_SUGGESTION_STATUS',
+  deleteSuggestion: 'DELETE_SUGGESTION',
+  exitChatGroup: 'EXIT_CHAT_GROUP',
 };

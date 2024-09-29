@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { users } from '~/.server/db/schema';
 import { INTENTS } from '~/lib/constants';
 import { icons } from '~/lib/icons';
-import { getProfileInfoText } from '~/lib/utils';
+import { getFullName, getProfileInfo, getProfileInfoText } from '~/lib/utils';
 
 const MultiSelect = ({
   value,
@@ -80,13 +80,14 @@ const MultiSelect = ({
           {value.includes(item.id.toString()) && (
             <Icon icon={icons.checkMark} />
           )}
-          <Avatar
+          {getProfileInfo(item)}
+          {/* <Avatar
             size='xs'
             src={item.profileImage}
-            name={getProfileInfoText(item)}
+            name={getFullName(item)}
             color='initials'
           />
-          <span>{getProfileInfoText(item)}</span>
+          <span>{getProfileInfoText(item)}</span> */}
         </Group>
       </Combobox.Option>
     ));
@@ -101,7 +102,6 @@ const MultiSelect = ({
       >
         <Combobox.DropdownTarget>
           <PillsInput
-            bg='green'
             rightSection={
               fetcher.state === 'loading' ? (
                 <Loader size={18} />

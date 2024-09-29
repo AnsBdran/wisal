@@ -8,7 +8,7 @@ import {
   Title,
 } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import MultiSelect from '~/lib/components/common/multi-select';
+import MultiSelect from '~/lib/components/common/users-multi-select';
 import { useFilter } from '~/lib/hooks/useFilter';
 
 export const FeedFilters = () => {

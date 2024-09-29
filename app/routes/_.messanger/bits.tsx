@@ -16,6 +16,10 @@ import {
   Modal,
   LoadingOverlay,
   Divider,
+  TextInput,
+  Textarea,
+  InputLabel,
+  InputError,
 } from '@mantine/core';
 import { Link, useFetcher, useNavigate } from '@remix-run/react';
 import { SerializeFrom } from '@remix-run/node';
@@ -27,9 +31,13 @@ import { getProfileInfo, getProfileInfoText } from '~/lib/utils';
 import { icons } from '~/lib/icons';
 import { useTranslation } from 'react-i18next';
 import { INTENTS } from '~/lib/constants';
-import { useDisclosure } from '@mantine/hooks';
-import { ReactNode } from 'react';
+import { useDisclosure, useFetch } from '@mantine/hooks';
+import { ReactNode, useState } from 'react';
 import { findOrCreateChat } from '~/.server/utils';
+import MultiSelect from '~/lib/components/common/users-multi-select';
+import { useForm } from '@conform-to/react';
+import { ChatGroupSchemaType } from '~/lib/schemas';
+import { modals } from '@mantine/modals';
 
 export const Chat = ({
   chat,
@@ -38,6 +46,8 @@ export const Chat = ({
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const fetcher = useFetcher();
+
   return (
     <UnstyledButton
       onClick={() => navigate(`./${chat.chatID}`)}
@@ -67,7 +77,29 @@ export const Chat = ({
           </Menu.Target>
           <Menu.Dropdown>
             {/* <Menu.Item>{t('')}</Menu.Item> */}
-            <Menu.Item color='red' leftSection={<Icon icon={icons.exit} />}>
+            <Menu.Item
+              color='red'
+              leftSection={<Icon icon={icons.exit} />}
+              onClick={(ev) => {
+                ev.stopPropagation();
+                modals.openConfirmModal({
+                  children: (
+                    <>
+                      <Text>{t('confirm_chat_exit')}</Text>
+                    </>
+                  ),
+                  onConfirm: () => {
+                    fetcher.submit(
+                      {
+                        intent: INTENTS.exitChatGroup,
+                        chatID: chat.id,
+                      },
+                      { method: 'POST' }
+                    );
+                  },
+                });
+              }}
+            >
               {t('chat_exit')}
             </Menu.Item>
           </Menu.Dropdown>
@@ -164,7 +196,7 @@ export const ChooseUserToMessage = ({
       >
         {children}
       </UnstyledButton>
-      <LoadingOverlay visible={usersFetcher.state === 'loading'} />
+      {/* <LoadingOverlay visible={usersFetcher.state === 'loading'} /> */}
       <Modal
         opened={opened}
         onClose={close}
@@ -195,6 +227,57 @@ export const ChooseUserToMessage = ({
             {/* <Divider /> */}
           </Box>
         ))}
+      </Modal>
+    </>
+  );
+};
+
+export const CreateChatGroupButton = () => {
+  const fetcher = useFetcher();
+  const [opened, { close, open }] = useDisclosure();
+  const { t } = useTranslation('form');
+  const [choosenMembers, setChoosenMembers] = useState<string[]>([]);
+  const [form, { bio, members, name }] = useForm<ChatGroupSchemaType>({
+    lastResult: fetcher.state === 'idle' ? fetcher.data : null,
+  });
+  console.log('users', choosenMembers);
+  return (
+    <>
+      <ActionIcon variant='white' color='teal' onClick={open}>
+        <Icon icon={icons.usersGroup} />
+      </ActionIcon>
+
+      <Modal opened={opened} onClose={close}>
+        <fetcher.Form method='POST' onSubmit={form.onSubmit} id={form.id}>
+          <Stack>
+            <TextInput
+              name={name.name}
+              error={t(name.errors ?? '')}
+              label={t('group_name')}
+            />
+            <Textarea
+              name={bio.name}
+              error={t(bio.errors ?? '')}
+              label={t('group_description')}
+            />
+            <input
+              type='hidden'
+              name='members'
+              value={JSON.stringify(choosenMembers)}
+            />
+            <Stack gap={0}>
+              <InputLabel mb='2px'>{t('choose_group_members')}</InputLabel>
+              <MultiSelect
+                value={choosenMembers}
+                setValue={setChoosenMembers}
+              />
+              <InputError>{t(members.errors ?? '')}</InputError>
+            </Stack>
+            <Button type='submit' name='intent' value={INTENTS.createChatGroup}>
+              {t('create')}
+            </Button>
+          </Stack>
+        </fetcher.Form>
       </Modal>
     </>
   );

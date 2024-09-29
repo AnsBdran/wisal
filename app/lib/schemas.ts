@@ -121,6 +121,7 @@ export const suggestionChoiceSchema = z.object({
 export const suggestionEditSchema = suggestionSchema
   .merge(
     z.object({
+      id: z.number().int().positive(),
       choices: z
         .array(suggestionChoiceSchema)
         .min(2)
@@ -137,9 +138,23 @@ export const suggestionEditSchema = suggestionSchema
   )
   .omit({ isAccepted: true });
 
+export const chatGroupSchema = z.object({
+  name: z.string({ required_error: 'name_required' }).min(5, 'name_short'),
+  bio: z.string().min(1).optional(),
+  members: z
+    .string()
+    .transform((stringArr) => JSON.parse(stringArr).map(Number) as number[]),
+  // members: z
+  //   .array(z.string())
+  //   .min(2, 'members_short')
+  //   .transform((stringArr) => stringArr.map(Number)),
+});
+
 // ++++++++++++++++++++++++++++++++++++++++++
 // schemas types
-export type SuggestionSchema = typeof suggestionSchema;
-export type RegisterSchema = typeof registerSchema;
-export type SuggestionEditSchema = typeof suggestionEditSchema;
-export type SuggestionChoiceSchema = typeof suggestionChoiceSchema;
+export type SuggestionSchemaType = z.infer<typeof suggestionSchema>;
+export type RegisterSchemaType = z.infer<typeof registerSchema>;
+export type SuggestionEditSchemaType = z.infer<typeof suggestionEditSchema>;
+export type SuggestionChoiceSchemaType = z.infer<typeof suggestionChoiceSchema>;
+export type ChatGroupSchemaType = z.infer<typeof chatGroupSchema>;
+export type PostSchemaType = z.infer<typeof postSchema>;

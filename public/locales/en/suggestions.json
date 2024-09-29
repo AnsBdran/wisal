@@ -24,5 +24,7 @@
   "choice_number": "choice number",
   "show_choices": "Show Choices",
   "choice_title_required": "Choice title required",
-  "choices_count": "{{count}} choices"
+  "choices_count": "{{count}} choices",
+  "accept_suggestion": "Do you want to accept this suggestion on view it to be voted on?",
+  "reject_suggestion": "Do you want to reject this suggestion and remove it from voting page?"
 }

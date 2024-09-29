@@ -71,6 +71,7 @@ export const getPosts = async ({
     },
     limit,
     offset,
+    orderBy: ({ createdAt }, { desc }) => desc(createdAt),
     // orderBy(fields, operators) {
     //   // return operators.desc(fields.createdAt);
     //   if (searchQueries.orderBy === 'reactions') {

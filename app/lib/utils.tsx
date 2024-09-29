@@ -3,7 +3,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjsAr from 'dayjs/locale/ar';
 import { ReactionType } from '~/.server/db/schema';
 import { Choice, Suggestion, UserRecord } from './types';
-import { Avatar, Group, rem, Text } from '@mantine/core';
+import { Avatar, Group, Indicator, rem, Text } from '@mantine/core';
 import { Icon } from '@iconify/react';
 import { createColumnHelper, flexRender } from '@tanstack/react-table';
 import { icons } from './icons';
@@ -36,24 +36,43 @@ export const fromNow = (date: string, locale: string) => {
 export const getProfileInfo = (user: UserRecord, sm?: boolean) => {
   return (
     <Group gap='xs'>
+      {(user.role !== 'super_admin') ? (
+             <Avatar
+             src={user.profileImage}
+             color='initials'
+             name={getFullName(user)}
+             radius={'xs'}
+             size={sm ? 'sm' : 'md'}
+             /> 
+      ) : (
+        <Indicator  
+        label={ <Icon
+        icon={icons.verified}
+        fontSize={rem('14px')}
+        color='var(--mantine-primary-color-9)'
+        />}
+         color='transparent'>
+
       <Avatar
         src={user.profileImage}
         color='initials'
         name={getFullName(user)}
         radius={'xs'}
-        size={sm ? 'sm' : 'md'}
-      />
+            size={sm ? 'sm' : 'md'}
+        />
+        </Indicator>
+      )}
       <Text>
         {user.firstName} {user.lastName}
       </Text>
-      {user.isFamily ||
+      {/* {user.isFamily ||
         (user.role === 'super_admin' && (
           <Icon
             icon={icons.verified}
             fontSize={rem('14px')}
             color='var(--mantine-primary-color-9)'
           />
-        ))}
+        ))} */}
     </Group>
   );
 };
@@ -150,7 +169,11 @@ export const getSuggestionsColumns = () => {
     columnHelper.accessor('isAccepted', {
       header: 'is_accepted',
       cell: (info) =>
-        flexRender(IsAcceptedChip, { defaultValue: info.getValue() }),
+        flexRender(IsAcceptedChip, {
+          defaultValue: info.getValue(),
+          choicesCount: info.row.original.choices.length,
+          id: info.row.original.id,
+        }),
     }),
     columnHelper.accessor('choices', {
       header: 'choices',

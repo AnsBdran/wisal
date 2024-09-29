@@ -20,27 +20,31 @@ import { useTranslation } from 'react-i18next';
 import { Fragment } from 'react/jsx-runtime';
 import { z } from 'zod';
 import { icons } from '~/lib/icons';
-import { SuggestionChoiceSchema, SuggestionEditSchema } from '~/lib/schemas';
+import {
+  SuggestionChoiceSchemaType,
+  SuggestionEditSchemaType,
+} from '~/lib/schemas';
 import { useEditSuggestionContext } from '../contexts/edit-suggestion';
+import { INTENTS } from '../constants';
 
 export const SuggestionEdit = () => {
   const fetcher = useFetcher();
   const [form, { title, description, choices }] = useForm<
-    z.infer<SuggestionEditSchema>
+    z.infer<SuggestionEditSchemaType>
   >({
     lastResult: fetcher.state === 'idle' ? fetcher.data : null,
   });
   const { t } = useTranslation('suggestions');
   const {
-    editSuggestion: row,
-    close,
-    opened,
-    setEditSuggestion,
+    suggestionRow: row,
+    // close,
+    // opened,
+    setSuggestionRow,
   } = useEditSuggestionContext();
 
   const [defaultChoices, setDefaultChoices] = useState<
-    z.infer<SuggestionChoiceSchema>[]
-  >(row!.choices as z.infer<SuggestionChoiceSchema>[]);
+    z.infer<SuggestionChoiceSchemaType>[]
+  >(row!.choices as z.infer<SuggestionChoiceSchemaType>[]);
   const [choicesOpened, { toggle: choicesToggle }] = useDisclosure();
   const [choicesToDelete, setChoicesToDelete] = useState<number[]>([]);
 
@@ -63,10 +67,11 @@ export const SuggestionEdit = () => {
   if (!row) return null;
   return (
     <Modal
-      opened={opened && !!row}
+      opened={!!row}
+      // opened={opened && !!row}
       onClose={() => {
-        setEditSuggestion(null);
-        close();
+        setSuggestionRow(null);
+        // close();
       }}
     >
       {/* {JSON.stringify({ editSuggestion: row, opened }, null, 2)} */}
@@ -82,6 +87,7 @@ export const SuggestionEdit = () => {
           name={'choicesToDelete'}
           value={JSON.stringify(choicesToDelete)}
         />
+        <input type='hidden' name='id' value={row.id} />
         <Stack>
           <TextInput
             name={title.name}
@@ -155,7 +161,12 @@ export const SuggestionEdit = () => {
               </Stack>
             </Collapse>
           </Box>
-          <Button type='submit' loading={fetcher.state !== 'idle'}>
+          <Button
+            type='submit'
+            loading={fetcher.state !== 'idle'}
+            name='intent'
+            value={INTENTS.editSuggestion}
+          >
             {t('confirm')}
           </Button>
         </Stack>

@@ -10,7 +10,7 @@ import {
 } from '@remix-run/react';
 import { useForm } from '@conform-to/react';
 import { z } from 'zod';
-import { SuggestionSchema } from '~/lib/schemas';
+import { SuggestionSchemaType } from '~/lib/schemas';
 import { useTranslation } from 'react-i18next';
 import { action } from './route';
 import { notifications } from '@mantine/notifications';
@@ -19,7 +19,7 @@ import { useEffect } from 'react';
 export const SuggestionForm = () => {
   const [opened, { open, close }] = useDisclosure();
   const lastResult = useActionData<typeof action>();
-  const [form, fields] = useForm<z.infer<SuggestionSchema>>({
+  const [form, fields] = useForm<z.infer<SuggestionSchemaType>>({
     lastResult,
   });
   const { t } = useTranslation('suggestions');

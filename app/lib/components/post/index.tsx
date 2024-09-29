@@ -7,6 +7,7 @@ import {
   Avatar,
   useMantineTheme,
   Highlight,
+  Badge,
 } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import styles from './post.module.css';
@@ -29,11 +30,11 @@ import { INTENTS } from '~/lib/constants';
 export default function Post({
   post,
   userID,
-  locale
+  locale,
 }: {
   post: SerializeFrom<typeof loader>['posts']['data'][0];
   userID: number;
-  locale: 'en' | 'ar'
+  locale: 'en' | 'ar';
 }) {
   const theme = useMantineTheme();
   const [showAllComments, setShowAllComments] = useState(false);
@@ -69,19 +70,24 @@ export default function Post({
       )}
 
       <Text className={styles.title} fw={500}>
-        {post.title} 
+        {post.title}
       </Text>
 
       <Text fz='sm' c='dimmed' lineClamp={4}>
-        <Highlight highlight='حر'>{post.content}</Highlight>
+        <Highlight highlight={['بدران', 'أنس']}>{post.content}</Highlight>
       </Text>
 
-      <Group justify='space-between' mt='md'>
-        <Group  justify='space-between' flex={1}>
-          {getProfileInfo(post.user,)}
-          <Text fz='xs' c={'dimmed'}>
+      {/* <Text fz='xs' c={'dimmed'}>
+        {fromNow(post.createdAt, locale)}
+      </Text> */}
+      <Group justify='end'>
+        <Badge fz='xs' c={'dimmed'} variant='dot'>
           {fromNow(post.createdAt, locale)}
-          </Text>
+        </Badge>
+      </Group>
+      <Group justify='space-between' mt='md'>
+        <Group justify='space-between' flex={1}>
+          {getProfileInfo(post.user)}
         </Group>
         <Group gap={8} mr={0}>
           <Reactions post={post} />
@@ -128,7 +134,6 @@ export default function Post({
         comments={commentsFetcher.data?.comments ?? []}
         userID={userID}
       />
-      
     </Card>
   );
 }

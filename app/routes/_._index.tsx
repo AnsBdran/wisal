@@ -8,8 +8,8 @@ import { useTranslation } from 'react-i18next';
 
 export const meta: MetaFunction = () => {
   return [
-    { title: 'New Remix App' },
-    { name: 'description', content: 'Welcome to Remix!' },
+    { title: 'Wisal' },
+    { name: 'description', content: 'Welcome to Wisal' },
   ];
 };
 

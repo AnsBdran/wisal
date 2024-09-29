@@ -1,17 +1,67 @@
 import { useForm } from '@conform-to/react';
 import { Icon } from '@iconify/react';
-import { ActionIcon, Chip, List, Popover, Spoiler, Text } from '@mantine/core';
+import {
+  ActionIcon,
+  Chip,
+  Group,
+  List,
+  Popover,
+  Spoiler,
+  Text,
+} from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { modals } from '@mantine/modals';
+import { useFetcher } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
+import { INTENTS } from '~/lib/constants';
 import { useEditSuggestionContext } from '~/lib/contexts/edit-suggestion';
 import { icons } from '~/lib/icons';
 import { Suggestion, Choice } from '~/lib/types';
 
-export const IsAcceptedChip = ({ defaultValue }: { defaultValue: boolean }) => {
-  const { t } = useTranslation('dashboard');
+export const IsAcceptedChip = ({
+  defaultValue,
+  choicesCount,
+  id,
+}: {
+  defaultValue: boolean;
+  choicesCount: number;
+  id: number;
+}) => {
+  const accepted = choicesCount > 2;
+  const { t } = useTranslation('suggestions');
+  const fetcher = useFetcher();
   return (
     <>
-      <Chip checked={defaultValue} color='green' size='xs'>
-        {defaultValue ? t('accepted') : t('not_accepted')}
+      <Chip
+        checked={defaultValue}
+        color='green'
+        size='xs'
+        onClick={() => {
+          if (accepted) {
+            modals.openConfirmModal({
+              children: (
+                <>
+                  {!defaultValue && <Text>{t('accept_suggestion')}</Text>}
+                  {defaultValue && <Text>{t('reject_suggestion')}</Text>}
+                </>
+              ),
+              onConfirm: () => {
+                fetcher.submit(
+                  {
+                    intent: INTENTS.changeSuggestionStatus,
+                    suggestionID: id,
+                    status: !defaultValue,
+                  },
+                  {
+                    method: 'POST',
+                  }
+                );
+              },
+            });
+          }
+        }}
+      >
+        {defaultValue ? t('accepted') : t('rejected')}
       </Chip>
     </>
   );
@@ -22,20 +72,46 @@ export const SuggestionActions = ({
 }: {
   row: Suggestion & { choices: Choice[] };
 }) => {
+  const {
+    setSuggestionRow,
+    // open
+  } = useEditSuggestionContext();
   const { t } = useTranslation('suggestions');
-  const { setEditSuggestion, open } = useEditSuggestionContext();
-  console.log('suggestion action re-rendered');
+  const fetcher = useFetcher();
   return (
     <>
       <ActionIcon.Group variant='outline'>
-        <ActionIcon variant='outline' color='red'>
+        <ActionIcon
+          variant='outline'
+          color='red'
+          onClick={() => {
+            modals.openConfirmModal({
+              children: (
+                <>
+                  <Text>{t('delete_suggestion')}</Text>
+                </>
+              ),
+              onConfirm: () => {
+                fetcher.submit(
+                  {
+                    intent: INTENTS.deleteSuggestion,
+                    suggestionID: row.id,
+                  },
+                  {
+                    method: 'POST',
+                  }
+                );
+              },
+            });
+          }}
+        >
           <Icon icon={icons.delete} />
         </ActionIcon>
         <ActionIcon
           variant='outline'
           onClick={() => {
-            setEditSuggestion(row);
-            open();
+            setSuggestionRow(row);
+            // open();
           }}
         >
           <Icon icon={icons.edit} />

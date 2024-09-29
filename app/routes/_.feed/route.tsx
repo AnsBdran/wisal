@@ -84,7 +84,7 @@ const Feed = () => {
       {/* ++++++++++++++++++++++++++++++++++++++++++++++ */}
       {/* Modals and Drawers */}
       {/* post form */}
-      <Drawer
+      {/* <Drawer
         opened={postFormOpened}
         onClose={postFormClose}
         title={t('create_new_post')}
@@ -92,20 +92,22 @@ const Feed = () => {
         size='lg'
         position='top'
         removeScrollProps={{
+          // removeScrollBar: true,
+          // allowPinchZoom: true,
+          // style: { overflow: 'hidden' },
+          enabled: false,
           removeScrollBar: false,
-          allowPinchZoom: true,
-          style: { overflow: 'hidden' },
-          enabled: postFormOpened,
-          gapMode: 'padding',
+          style: { overflow: 'scroll', backgroundColor: 'red' },
+          // gapMode: 'padding',
         }}
       >
         <PostForm close={postFormClose} />
-      </Drawer>
+      </Drawer> */}
       <Modal
         title={t('create_new_post')}
         opened={postFormOpened}
         onClose={postFormClose}
-        visibleFrom='sm'
+        // visibleFrom='sm'
       >
         <PostForm close={postFormClose} />
       </Modal>
