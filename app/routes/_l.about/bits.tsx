@@ -152,7 +152,7 @@ export const InProgressFeatures = () => {
         <List.Item>إرسال الصور عبر المحادثات الخاصة و الجماعية.</List.Item>
         <List.Item>إنهاء ترجمة النسخة الإنجليزية من التطبيق.</List.Item>
         <List.Item>إضفاء المزيد من الحيوية على التطبيق.</List.Item>
-        <List.Item></List.Item>
+        {/* <List.Item></List.Item> */}
       </List>
     </Box>
   );

@@ -155,7 +155,7 @@ export const EmptyMessanger = ({ hidden }: { hidden: boolean }) => {
           {t('empty_messanger_description')}
         </Alert>
         <ChooseUserToMessage>
-          <Button variant='gradient' size='lg'>
+          <Button variant='gradient' w='100%' size='lg'>
             {t('start_first_chat')}
           </Button>
         </ChooseUserToMessage>

@@ -51,4 +51,6 @@ export const icons = {
   chats: 'ph:wechat-logo-bold',
   addChat: 'mage:message-dots-round-plus',
   usersGroup: 'ci:users-group',
+  starBadge: 'material-symbols:award-star-outline-rounded',
+  leftArrow: 'material-symbols:line-start-arrow-notch-rounded'
 };
