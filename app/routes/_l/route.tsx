@@ -75,7 +75,7 @@ const MainLayout = () => {
                     </ActionIcon>
                     <ActionIcon variant='subtle' component='a' target='_blank' href='https://t.me/AnsBdran'>
                       <Icon icon={icons.telegram} />
-                    </ActionIcon>
+                    </ActionIcon> 
                     <ActionIcon variant='subtle' component='a' target='_blank' href='https://wa.me/+970597866163'>
                       <Icon icon={icons.whatsapp} />
                     </ActionIcon>

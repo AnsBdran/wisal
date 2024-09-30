@@ -141,12 +141,18 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     }
     case INTENTS.exitChatGroup: {
       const chatID = Number(fd.get('chatID'));
+      const userID = Number(fd.get('userID') ?? user?.id);
       console.log('we are trying to delete ++++++++++++++++');
-      await db
-        .delete(chatMembers)
-        .where(
-          and(eq(chatMembers.userID, userID), eq(chatMembers.chatID, chatID))
-        );
+      try {
+        const res = await db
+          .delete(chatMembers)
+          .where(
+            and(eq(chatMembers.userID, userID), eq(chatMembers.chatID, chatID))
+          );
+        console.log('delete result', res);
+      } catch (e) {
+        console.log('something went wrong', e);
+      }
       return { success: true };
     }
   }

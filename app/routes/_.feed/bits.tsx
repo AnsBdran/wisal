@@ -169,19 +169,7 @@ export const PostForm = ({ close }: { close: () => void }) => {
           </Group>
         </Dropzone>
         <Box>
-          <SimpleGrid
-            hidden={uploadedData.length === 0}
-            cols={{ base: 4, sm: 8 }}
-            styles={{
-              root: {
-                // maxHeight: '200px',
-                // overflowY: 'auto'
-                gridAutoRows: '150px',
-              },
-            }}
-          >
-            {uploadedPreviews}
-          </SimpleGrid>
+          <Group hidden={uploadedData.length === 0}>{uploadedPreviews}</Group>
           <Group hidden={files.length === 0}>{previews}</Group>
         </Box>
         <Group>
@@ -393,8 +381,6 @@ export const PostForm = ({ close }: { close: () => void }) => {
 // };
 
 export const CreatePostForm = ({ open }: { open: () => void }) => {
-  const { t } = useTranslation('feed');
-
   return (
     <>
       <ActionIcon onClick={open}>

@@ -15,14 +15,16 @@ import { useTranslation } from 'react-i18next';
 import { users } from '~/.server/db/schema';
 import { INTENTS } from '~/lib/constants';
 import { icons } from '~/lib/icons';
-import { getProfileInfoText } from '~/lib/utils';
+import { getFullName, getProfileInfo, getProfileInfoText } from '~/lib/utils';
 
 const MultiSelect = ({
   value,
   setValue,
+  excludedUsers
 }: {
-  value: string[];
-  setValue: Dispatch<SetStateAction<string[]>>;
+  value: number[];
+  setValue: Dispatch<SetStateAction<number[]>>;
+  excludedUsers?: number[]
 }) => {
   const [search, setSearch] = useState('');
   // const [value, setValue] = useState<string[]>([]);
@@ -53,7 +55,7 @@ const MultiSelect = ({
     },
   });
 
-  const handleValueSelect = (val: string) => {
+  const handleValueSelect = (val: number) => {
     setValue((current) =>
       current.includes(val)
         ? current.filter((v) => v !== val)
@@ -61,12 +63,12 @@ const MultiSelect = ({
     );
   };
 
-  const handleValueRemove = (val: string) =>
+  const handleValueRemove = (val: number) =>
     setValue((current) => current.filter((v) => v !== val));
 
   const values = value.map((item) => (
     <Pill key={item} withRemoveButton onRemove={() => handleValueRemove(item)}>
-      {data.find((u) => u.id.toString() == item)?.firstName}
+      {data.find((u) => u.id == item)?.firstName}
     </Pill>
   ));
 
@@ -77,16 +79,17 @@ const MultiSelect = ({
     .map((item) => (
       <Combobox.Option value={item.id.toString()} key={item.id}>
         <Group gap='sm'>
-          {value.includes(item.id.toString()) && (
+          {value.includes(item.id) && (
             <Icon icon={icons.checkMark} />
           )}
-          <Avatar
+          {getProfileInfo(item)}
+          {/* <Avatar
             size='xs'
             src={item.profileImage}
-            name={getProfileInfoText(item)}
+            name={getFullName(item)}
             color='initials'
           />
-          {getProfileInfoText(item)}
+          <span>{getProfileInfoText(item)}</span> */}
         </Group>
       </Combobox.Option>
     ));
@@ -95,13 +98,12 @@ const MultiSelect = ({
     <>
       <Combobox
         store={combobox}
-        withinPortal={false}
+        // withinPortal={false}
         onOptionSubmit={handleValueSelect}
-        zIndex={100}
+        // zIndex={100}
       >
         <Combobox.DropdownTarget>
           <PillsInput
-            bg='green'
             rightSection={
               fetcher.state === 'loading' ? (
                 <Loader size={18} />

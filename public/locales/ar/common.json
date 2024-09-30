@@ -62,5 +62,7 @@
   "choose_User_to_chat_with": "اختر شخصاً تود التحدث معه",
   "chat_group_created_successfully": "تم إنشاء المجموعة بنجاح.",
   "chat_group_created_successfully_description": "يمكنك الآن البدء في التراسل، وإضافة المزيد من الأعضاء.",
-  "confirm_chat_exit": "هل أنت متأكد من رغبتك بمغادرة المحادثة، هذه الخطوة  لايمكنك التراجع عنها."
+  "confirm_chat_exit": "هل أنت متأكد من رغبتك بمغادرة المحادثة، هذه الخطوة  لايمكنك التراجع عنها.",
+  "chat_group_updated_successfully": "تم تحديث بيانات المجموعة بنجاح.",
+  "chat_group_updated_successfully_description": "تم حفظ التعديل."
 }

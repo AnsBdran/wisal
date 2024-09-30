@@ -41,5 +41,13 @@
   "successfully_logged_in_description": "يمكنك الآن التواصل والتراسل وتصفح المحتوى.",
   "name_short": "اسم المجمعة يجب أن يكون على الأقل {{count}} أحرف.",
   "name_required": "اسم المجموعة مطلوب",
-  "members_short": "يجب عليك "
+  "members_short": "يجب عليك ",
+  "chat_name": "اسم المحادثة",
+  "chat_description": "وصف المحادثة",
+  "edit_chat": "تعديل المحادثة",
+  "edit": "تعديل",
+  "chat_members": "أعضاء المحادثة",
+  "add_new_members": "إضافة أعضاء جُدُد",
+  "confirm_chat_member_remove": "هل أنت متأكذ من رغبتك بإزالة هذا العضو من المجموعة؟",
+  "bio_short": "وصف المجموعة يجب أن يحوي على الأقل 15 حرفاً"
 }

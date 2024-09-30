@@ -17,7 +17,7 @@ import {
 } from './schema';
 import { users, usersPrefs } from './schema/user';
 import { fakerAR as faker } from '@faker-js/faker';
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcrypt';
 
 // const arr = num =>  Array.from({length: num}).fill(0)
 const COUNT = 100;
@@ -387,7 +387,7 @@ const seed = async () => {
 const main = async () => {
   try {
     await clear();
-    // await seed();
+    await seed();
     console.log('seed successfull');
     process.exit(0);
   } catch (e) {

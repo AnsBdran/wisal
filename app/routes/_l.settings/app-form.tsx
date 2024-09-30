@@ -45,7 +45,14 @@ const AppForm = ({
               ]}
             />
           </Box> */}
-            <Button type='submit' name='intent' value={INTENTS.editApp}>
+            <Button
+              type='submit'
+              name='intent'
+              size='compact-xl'
+              value={INTENTS.editApp}
+              variant='gradient'
+              disabled={!form.dirty}
+            >
               {t('confirm')}
             </Button>
           </Stack>

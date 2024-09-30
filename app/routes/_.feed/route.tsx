@@ -111,7 +111,6 @@ const Feed = () => {
       >
         <PostForm close={postFormClose} />
       </Modal>
-
       {/* filters */}
       <Drawer
         opened={opened}

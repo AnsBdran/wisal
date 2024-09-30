@@ -140,14 +140,14 @@ export const suggestionEditSchema = suggestionSchema
 
 export const chatGroupSchema = z.object({
   name: z.string({ required_error: 'name_required' }).min(5, 'name_short'),
-  bio: z.string().min(1).optional(),
+  bio: z
+    .string()
+    .min(15, 'bio_short')
+    .optional()
+    .refine((bio) => !bio || bio.length >= 15, { message: 'bio_short' }),
   members: z
     .string()
     .transform((stringArr) => JSON.parse(stringArr).map(Number) as number[]),
-  // members: z
-  //   .array(z.string())
-  //   .min(2, 'members_short')
-  //   .transform((stringArr) => stringArr.map(Number)),
 });
 
 // ++++++++++++++++++++++++++++++++++++++++++

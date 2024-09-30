@@ -7,6 +7,7 @@ import {
   json,
   Links,
   Meta,
+  MetaFunction,
   Outlet,
   Scripts,
   ScrollRestoration,
@@ -33,21 +34,26 @@ import { ManifestLink } from '@remix-pwa/sw';
 import { getUserLocale } from './.server/utils';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const user = await authenticator.isAuthenticated(request);
   const locale = await getUserLocale(request);
   const { toast, headers } = await getToast(request);
   return json(
     {
       toast,
-      user,
       locale,
     },
     { headers }
   );
 };
 
+// export const meta: MetaFunction = () => {
+//   return [
+//     { title: 'Wisal' },
+//     { name: 'description', content: 'Welcome to Wisal' },
+//   ];
+// };
+
 export function Layout({ children }: { children: React.ReactNode }) {
-  const { toast, locale, user } = useLoaderData<typeof loader>();
+  const { toast, locale } = useLoaderData<typeof loader>();
   useEffect(() => {
     if (toast) {
       notifications.show({
@@ -75,7 +81,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           initialDirection={locale === 'en' ? 'ltr' : 'rtl'}
         >
           <MantineProvider
-            // defaultColorScheme='light'
+            // defaultColorScheme='dark'
             theme={theme}
             cssVariablesResolver={cssVariablesResolver}
           >

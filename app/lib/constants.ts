@@ -45,4 +45,6 @@ export const INTENTS = {
   changeSuggestionStatus: 'CHANGE_SUGGESTION_STATUS',
   deleteSuggestion: 'DELETE_SUGGESTION',
   exitChatGroup: 'EXIT_CHAT_GROUP',
+  removeChatMember: 'REMOVE_CHAT_MEMBER',
+  editChatGroup: 'EDIT_CHAT_GROUP',
 };

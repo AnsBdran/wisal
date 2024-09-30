@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjsAr from 'dayjs/locale/ar';
-import { ReactionType } from '~/.server/db/schema';
+import { ReactionType, users } from '~/.server/db/schema';
 import { Choice, Suggestion, UserRecord } from './types';
 import { Avatar, Group, Indicator, rem, Text } from '@mantine/core';
 import { Icon } from '@iconify/react';
@@ -19,6 +19,9 @@ import {
   Description,
   SuggestionChoices,
 } from './components/main/table/suggestions-cells';
+import { useEffect, useState } from 'react';
+import { useFetcher } from '@remix-run/react';
+import { INTENTS } from './constants';
 
 export const fromNow = (date: string, locale: string) => {
   dayjs.extend(relativeTime);
@@ -36,30 +39,32 @@ export const fromNow = (date: string, locale: string) => {
 export const getProfileInfo = (user: UserRecord, sm?: boolean) => {
   return (
     <Group gap='xs'>
-      {(user.role !== 'super_admin') ? (
-             <Avatar
-             src={user.profileImage}
-             color='initials'
-             name={getFullName(user)}
-             radius={'xs'}
-             size={sm ? 'sm' : 'md'}
-             /> 
-      ) : (
-        <Indicator  
-        label={ <Icon
-        icon={icons.verified}
-        fontSize={rem('14px')}
-        color='var(--mantine-primary-color-9)'
-        />}
-         color='transparent'>
-
-      <Avatar
-        src={user.profileImage}
-        color='initials'
-        name={getFullName(user)}
-        radius={'xs'}
-            size={sm ? 'sm' : 'md'}
+      {user.role !== 'super_admin' ? (
+        <Avatar
+          src={user.profileImage}
+          color='initials'
+          name={getFullName(user)}
+          radius={'xs'}
+          size={sm ? 'sm' : 'md'}
         />
+      ) : (
+        <Indicator
+          label={
+            <Icon
+              icon={icons.verified}
+              fontSize={rem('14px')}
+              color='var(--mantine-primary-color-9)'
+            />
+          }
+          color='transparent'
+        >
+          <Avatar
+            src={user.profileImage}
+            color='initials'
+            name={getFullName(user)}
+            radius={'xs'}
+            size={sm ? 'sm' : 'md'}
+          />
         </Indicator>
       )}
       <Text>
@@ -185,4 +190,43 @@ export const getSuggestionsColumns = () => {
       cell: (info) => flexRender(SuggestionActions, { row: info.row.original }),
     }),
   ];
+};
+
+export const useGetAllUsers = ({
+  excludedUsers,
+}: {
+  excludedUsers?: number[];
+}) => {
+  const [usersData, setUsersData] = useState<(typeof users.$inferSelect)[]>([]);
+  const fetcher = useFetcher();
+  const loading = fetcher.state === 'loading';
+  console.log('in hook', usersData);
+  const fetchUsersData = () => {
+    if (usersData.length === 0 && !loading) {
+      // setLoading(true);
+      fetcher.load(`/api/data?intent=${INTENTS.fetchUsers}`);
+    }
+  };
+
+  useEffect(() => {
+    if (!loading && fetcher.data) {
+      console.log('in use Effect', fetcher.data);
+      console.log('excluded users arr', excludedUsers);
+      if (excludedUsers) {
+        console.log('excluded users if block', excludedUsers);
+        setUsersData((value) => {
+          const target = fetcher.data?.users.filter(
+            (user) => !excludedUsers.includes(user.id)
+          );
+          console.log(target.length, target);
+          return target;
+        });
+      } else {
+        setUsersData(fetcher.data?.users);
+      }
+      // setLoading(false);
+    }
+  }, [fetcher]);
+
+  return { usersData, loading, fetchUsersData };
 };

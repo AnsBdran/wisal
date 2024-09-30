@@ -1,4 +1,4 @@
-import { ITEMS_PER_PAGE } from '~/lib/constants';
+import { INTENTS, ITEMS_PER_PAGE } from '~/lib/constants';
 import { db } from './db';
 import { chats, chatMembers, users } from './db/schema';
 import { eventStream } from 'remix-utils/sse/server';
@@ -12,6 +12,8 @@ import { userPrefs } from '~/services/user-prefs.server';
 import { UserRecord, UserSession } from '~/lib/types';
 import { eq, sql } from 'drizzle-orm';
 import { getFullName } from '~/lib/utils';
+import { useEffect, useState } from 'react';
+import { useFetcher } from '@remix-run/react';
 
 export const getPagination = ({ page }: { page: number }) => {
   return {
@@ -185,3 +187,5 @@ export const spreadRecordIntoSession = (
   nickname: userRecord.nickname,
   profileImage: userRecord.profileImage,
 });
+
+

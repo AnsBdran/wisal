@@ -236,7 +236,7 @@ export const CreateChatGroupButton = () => {
   const fetcher = useFetcher();
   const [opened, { close, open }] = useDisclosure();
   const { t } = useTranslation('form');
-  const [choosenMembers, setChoosenMembers] = useState<string[]>([]);
+  const [choosenMembers, setChoosenMembers] = useState<number[]>([]);
   const [form, { bio, members, name }] = useForm<ChatGroupSchemaType>({
     lastResult: fetcher.state === 'idle' ? fetcher.data : null,
   });
