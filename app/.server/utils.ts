@@ -132,7 +132,7 @@ export const createEventStream = (request: Request, eventName: string) => {
     };
     emitter.addListener(eventName, handle);
     return () => {
-      emitter.removeListener('message', handle);
+      emitter.removeListener(eventName, handle);
     };
   });
 };
@@ -187,5 +187,3 @@ export const spreadRecordIntoSession = (
   nickname: userRecord.nickname,
   profileImage: userRecord.profileImage,
 });
-
-

@@ -21,7 +21,7 @@ import { fromNow, getProfileInfoText, getFullName } from '~/lib/utils';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { icons } from '~/lib/icons';
-import { useFetcher, useNavigate } from '@remix-run/react';
+import { Link, useFetcher, useNavigate } from '@remix-run/react';
 import { INTENTS } from '~/lib/constants';
 import { act, useEffect, useState } from 'react';
 import { modals } from '@mantine/modals';
@@ -297,17 +297,26 @@ export const ChatHeader = ({
   const navigate = useNavigate();
   return (
     <Group justify='space-between' h='100%'>
-      <ActionIcon
-        onClick={() => navigate(-1)}
-        variant='outline'
-        color='light-dark(black, white)'
-        className={styles.backBtn}
-      >
-        <Icon
-          icon={icons.arrow}
-          className={i18n.language === 'en' ? 'rotate-180' : ''}
-        />
-      </ActionIcon>
+      <Group>
+        <ActionIcon
+          onClick={() => navigate(-1)}
+          variant='outline'
+          color='light-dark(black, white)'
+          className={styles.backBtn}
+        >
+          <Icon
+            icon={icons.arrow}
+            className={i18n.language === 'en' ? 'rotate-180' : ''}
+          />
+        </ActionIcon>
+        <ActionIcon
+          variant='transparent'
+          component={Link}
+          to={`/messanger/${chat.id}/edit`}
+        >
+          <Icon icon={icons.edit} />
+        </ActionIcon>
+      </Group>
       {/* <Button
         onClick={() => navigate(-1)}
         variant='white'

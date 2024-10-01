@@ -2,9 +2,11 @@ import { SerializeFrom } from '@remix-run/node';
 import { action, loader } from './route';
 import {
   ActionIcon,
+  Badge,
   Box,
   Button,
   Group,
+  InputLabel,
   Paper,
   Stack,
   Text,
@@ -66,19 +68,21 @@ const ChatEditForm = ({
                 defaultValue={bio.initialValue}
                 error={t(bio.errors ?? '')}
               />
-              <Title order={3}>{t('add_new_members')}</Title>
-              <UserMultiSelect
-                excludedUsers={chat?.members.map((m) => m.userID)}
-                value={newMembers}
-                setValue={setNewMembers}
-              />
+              <Stack gap={'3px'}>
+                <InputLabel>{t('add_new_members')}</InputLabel>
+                <UserMultiSelect
+                  excludedUsers={chat?.members.map((m) => m.userID)}
+                  value={newMembers}
+                  setValue={setNewMembers}
+                />
+              </Stack>
               <Button type='submit' name='intent' value={INTENTS.editChatGroup}>
                 {t('edit')}
               </Button>
             </Stack>
           </Form>
           <Title order={3}>
-            {t('chat_members')} {chat?.members.length}
+            {t('chat_members')} <Badge>{chat?.members.length}</Badge>
           </Title>
           <Stack>
             {chat?.members.map((mem) => (

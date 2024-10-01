@@ -115,6 +115,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     if (submission.status !== 'success') {
       return json(submission.reply());
     }
+    const t = await i18next.getFixedT(submission.value.locale, 'settings');
     const userPrefsSession = await userPrefs.getSession(
       request.headers.get('Cookie')
     );

@@ -11,7 +11,7 @@ import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData, useNavigate, useSearchParams } from '@remix-run/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Post from '~/lib/components/post/';
+import Post from '~/routes/_.feed/post';
 import { INTENTS, ITEMS_PER_PAGE } from '~/lib/constants';
 import { getPosts } from '~/.server/queries';
 import { authenticator } from '~/services/auth.server';

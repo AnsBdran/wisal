@@ -16,7 +16,6 @@ import {
 import { authenticator } from '~/services/auth.server';
 import styles from './chat.module.css';
 import { ReactNode, useEffect, useRef } from 'react';
-import { User } from '~/lib/types';
 import { ChatFooter, ChatHeader, Message } from './bits';
 import { db } from '~/.server/db';
 import { messages } from '~/.server/db/schema';
@@ -25,6 +24,7 @@ import { ElementScrollRestoration } from '@epic-web/restore-scroll';
 import { emitter } from '~/services/emitter.server';
 import { useLiveLoader } from '~/lib/hooks/useLiveLoader';
 import { authenticateOrToast } from '~/.server/utils';
+import { UserSession } from '~/lib/types';
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const { user, loginRedirect: redirect } = await authenticateOrToast(request);
@@ -99,7 +99,7 @@ const ChatLayout = ({
   user,
 }: {
   children: ReactNode;
-  user: User;
+  user: UserSession;
 }) => {
   return (
     <AppShell header={{ height: HEADER_HEIGHT }}>
@@ -119,7 +119,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
   const chatID = Number(formData.get('chatID'));
   const intent = formData.get('intent');
   const content = String(formData.get('content'));
-  const messageID = formData.get('messageID');
+  const messageID = Number(formData.get('messageID'));
 
   switch (intent) {
     case INTENTS.sendMessage: {
