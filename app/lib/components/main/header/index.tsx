@@ -38,6 +38,13 @@ const Header = ({ user }: { user?: UserSession }) => {
                 <Menu.Dropdown>
                   <Menu.Item
                     component={Link}
+                    to='/profile'
+                    leftSection={<Icon icon={icons.profile} />}
+                  >
+                    {t('profile')}
+                  </Menu.Item>
+                  <Menu.Item
+                    component={Link}
                     to='/about'
                     leftSection={<Icon icon={icons.info} />}
                   >

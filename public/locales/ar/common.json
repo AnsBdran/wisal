@@ -1,6 +1,7 @@
 {
   "greeting": "مرحباً",
   "app_title": "وصال",
+  "app_description": "تواصل وتراسل مع أصدقائك وأحبابك.",
   "choose_app_language": "اختر لغة التطبيق",
   "scroll_to_top": "الصعود لأعلى الصفحة",
   "load_more": "تحميل المزيد",
@@ -64,5 +65,7 @@
   "chat_group_created_successfully_description": "يمكنك الآن البدء في التراسل، وإضافة المزيد من الأعضاء.",
   "confirm_chat_exit": "هل أنت متأكد من رغبتك بمغادرة المحادثة، هذه الخطوة  لايمكنك التراجع عنها.",
   "chat_group_updated_successfully": "تم تحديث بيانات المجموعة بنجاح.",
-  "chat_group_updated_successfully_description": "تم حفظ التعديل."
+  "chat_group_updated_successfully_description": "تم حفظ التعديل.",
+  "profile": "الملف الشخصي",
+  "edit_profile": "تعديل الملف الشخصي"
 }

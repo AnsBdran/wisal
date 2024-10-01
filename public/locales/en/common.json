@@ -1,6 +1,7 @@
 {
   "greeting": "Hello",
   "app_title": "Wisal",
+  "app_description": "Connect and message with your friends and family.",
   "choose_app_language": "Choose the app language",
   "scroll_to_top": "Scroll to top",
   "load_more": "Load more",
@@ -60,5 +61,7 @@
   "chats": "Chats",
   "create_chat": "Create chat",
   "private_chat": "Private chat",
-  "choose_User_to_chat_with": "Choose a user to chat with"
+  "choose_User_to_chat_with": "Choose a user to chat with",
+  "profile": "Profile",
+  "edit_profile": "Edit profile"
 }

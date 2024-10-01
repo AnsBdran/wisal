@@ -125,7 +125,7 @@ const Feed = () => {
       <Modal h={800} size='lg' opened={opened} onClose={close} visibleFrom='sm'>
         <FeedFilters />
       </Modal>
-      <ScrollToTop />
+      {/* <ScrollToTop /> */}
     </>
   );
 };

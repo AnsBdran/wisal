@@ -54,6 +54,7 @@ const MailLayout = () => {
           <Container>
             <Box
               style={{
+                marginBottom: theme.spacing.xl,
                 paddingBottom: theme.spacing.xl,
               }}
             >

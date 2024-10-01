@@ -1,9 +1,9 @@
-import { AppShell, Container, Group, Title } from '@mantine/core';
+import { AppShell, Container, Group, Stack, Title } from '@mantine/core';
 import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
 import { db } from '~/.server/db';
-import ChatEditForm from './chat-form';
+import { ChatEditForm, ChatMembers } from './chat-form';
 import { HEADER_HEIGHT, INTENTS } from '~/lib/constants';
 import { chatMembers, chats } from '~/.server/db/schema';
 import { eq, sum } from 'drizzle-orm';
@@ -11,10 +11,13 @@ import { parseWithZod } from '@conform-to/zod';
 import { chatGroupSchema } from '~/lib/schemas';
 import { redirectWithSuccess } from 'remix-toast';
 import i18next from '~/services/i18n.server';
-import { getUserLocale } from '~/.server/utils';
+import { authenticateOrToast, getUserLocale } from '~/.server/utils';
+import Header from '~/lib/components/main/header';
 
-export const loader = async ({ params }: LoaderFunctionArgs) => {
+export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const { chat: chatParam } = params;
+  const { user, loginRedirect } = await authenticateOrToast(request);
+  if (!user) return loginRedirect;
   const _chat = await db.query.chats.findFirst({
     where: (chat, { eq }) => eq(chat.id, Number(chatParam)),
     with: {
@@ -25,26 +28,27 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
       },
     },
   });
-  return json({ chat: _chat });
+  return json({ chat: _chat, user });
 };
 
 const ChatEdit = () => {
-  const { chat } = useLoaderData<typeof loader>();
+  const { chat, user } = useLoaderData<typeof loader>();
   const { t } = useTranslation('messanger');
   return (
     <>
       <AppShell header={{ height: HEADER_HEIGHT }} padding='xl'>
         <AppShell.Header>
           <Container h='100%'>
-            <Group h='100%'>
-              <Title order={4}>{chat?.name}</Title>
-            </Group>
+            <Header user={user} />
           </Container>
         </AppShell.Header>
         <AppShell.Main>
           <Container>
-            <Title mb='xl'>{t('edit_chat')}</Title>
-            <ChatEditForm chat={chat} />
+            <Stack>
+              <Title mb='md'>{t('edit_chat')}</Title>
+              <ChatEditForm chat={chat} />
+              <ChatMembers chat={chat} />
+            </Stack>
           </Container>
         </AppShell.Main>
       </AppShell>
@@ -78,21 +82,26 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         console.log('it is invalid', submission.error);
         return submission.reply();
       }
-
+      console.log('submission ++++++', submission);
       const { members, name, bio } = submission.value;
       // submit the edit values
-      await db.update(chats).set({
-        bio,
-        name,
-      });
+      await db
+        .update(chats)
+        .set({
+          bio,
+          name,
+        })
+        .where(eq(chats.id, chatID));
 
       // insert chat members
-      await db.insert(chatMembers).values(
-        members.map((m) => ({
-          chatID,
-          userID: m,
-        }))
-      );
+      if (members.length > 0) {
+        await db.insert(chatMembers).values(
+          members.map((m) => ({
+            chatID,
+            userID: m,
+          }))
+        );
+      }
       console.log('member added', members);
 
       return redirectWithSuccess(`/messanger/${chatID}`, {

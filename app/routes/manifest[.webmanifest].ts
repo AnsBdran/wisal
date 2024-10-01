@@ -12,25 +12,25 @@ export const loader = () => {
       theme_color: '#c34138',
       icons: [
         {
-          src: 'public/icons/manifest-icon-192.maskable.png',
+          src: '/icons/manifest-icon-192.maskable.png',
           sizes: '192x192',
           type: 'image/png',
           purpose: 'any',
         },
         {
-          src: 'public/icons/manifest-icon-192.maskable.png',
+          src: '/icons/manifest-icon-192.maskable.png',
           sizes: '192x192',
           type: 'image/png',
           purpose: 'maskable',
         },
         {
-          src: 'public/icons/manifest-icon-512.maskable.png',
+          src: '/icons/manifest-icon-512.maskable.png',
           sizes: '512x512',
           type: 'image/png',
           purpose: 'any',
         },
         {
-          src: 'public/icons/manifest-icon-512.maskable.png',
+          src: '/icons/manifest-icon-512.maskable.png',
           sizes: '512x512',
           type: 'image/png',
           purpose: 'maskable',

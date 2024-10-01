@@ -49,7 +49,7 @@ export default function Post({
   return (
     <Card withBorder radius='md' className={styles.card}>
       {!!post.images.length && (
-        <Card.Section className={styles.image}>
+        <Card.Section>
           <Carousel
             withIndicators={post.images.length > 1}
             withControls={false}
@@ -61,7 +61,7 @@ export default function Post({
             }}
           >
             {post.images.map((image, i) => (
-              <Carousel.Slide key={image.id}>
+              <Carousel.Slide key={image.id} className={styles.image}>
                 <Image src={post.images[i]?.url} height={180} />
               </Carousel.Slide>
             ))}
