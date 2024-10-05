@@ -1,4 +1,6 @@
 {
-    "edit_chat": "تعديل المحادثة",
-    "edit_chat_title": "تعديل المحادثة {{chat}}"
+  "edit_chat": "تعديل المحادثة",
+  "edit_chat_title": "تعديل المحادثة {{chat}}",
+  "get_back": "التراجع",
+  "chat_info": "تفاصيل المجموعة"
 }

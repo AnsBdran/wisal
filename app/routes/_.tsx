@@ -6,6 +6,7 @@ import {
   TabsList,
   useMantineTheme,
 } from '@mantine/core';
+
 import {
   useNavigate,
   Outlet,
@@ -17,7 +18,6 @@ import Header from '~/lib/components/main/header/index';
 import Footer from '~/lib/components/main/footer';
 import { useTranslation } from 'react-i18next';
 import { LoaderFunction } from '@remix-run/node';
-import { authenticator } from '~/services/auth.server';
 import { HEADER_HEIGHT } from '~/lib/constants';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { icons } from '~/lib/icons';
@@ -47,7 +47,8 @@ const MailLayout = () => {
           // offset: true,
         }}
         footer={{ collapsed: true, height: 120 }}
-        p='sm'
+        px={{ base: 0, sm: 'sm' }}
+        py='lg'
       >
         <Header user={user} />
         <AppShell.Main>
@@ -85,9 +86,8 @@ const MailLayout = () => {
                 </Tabs.Tab>
                 <Tabs.Tab
                   flex={1}
-                  value='/messanger'
+                  value='/messenger'
                   leftSection={<Icon icon={icons.messaging} />}
-                  z
                 >
                   {t('messaging')}
                 </Tabs.Tab>

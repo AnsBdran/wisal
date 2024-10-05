@@ -31,19 +31,20 @@ import '@mantine/dropzone/styles.css';
 import './tailwind.css';
 import { ManifestLink } from '@remix-pwa/sw';
 
-import { getUserLocale } from './.server/utils';
+// import { getUserLocale } from './.server/utils';
 import i18next from './services/i18n.server';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const locale = await getUserLocale(request);
+  // const locale = await getUserLocale(request);
   const { toast, headers } = await getToast(request);
-  const t = await i18next.getFixedT(locale);
+  const t = await i18next.getFixedT('ar', 'common');
+  // const t = await i18next.getFixedT(locale, 'common');
   const title = t('app_title');
   const description = t('app_description');
   return json(
     {
       toast,
-      locale,
+      // locale,
       title,
       description,
     },
@@ -51,19 +52,22 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   );
 };
 
-export const meta: MetaFunction = ({
-  data
-}: {
-  data: Awaited<SerializeFrom<typeof loader>>;
-}) => {
-  return [
-    { title: data.title },
-    { name: 'description', content: data.description },
-  ];
-};
+export const meta: MetaFunction = ({ data }) =>
+  // : {
+  //   data: Awaited<SerializeFrom<typeof loader>>;
+  // }
+  {
+    return [
+      { title: data.title },
+      { name: 'description', content: data.description },
+    ];
+  };
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const { toast, locale } = useLoaderData<typeof loader>();
+  const {
+    toast,
+    //  locale
+  } = useLoaderData<typeof loader>();
   useEffect(() => {
     if (toast) {
       notifications.show({
@@ -73,15 +77,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
     }
   }, [toast]);
   const { t } = useTranslation();
-  useChangeLanguage(locale);
+  // useChangeLanguage(locale);
 
   return (
-    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+    <html lang='ar' dir='rtl'>
+      {/* </html><html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}> */}
       <head>
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <Meta />
-        <ManifestLink />
+        {/* <ManifestLink /> */}
         <ManfiestIcons />
         <link rel='manifest' href='/manifest.webmanifest'></link>
         <Links />
@@ -90,7 +95,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body>
         <DirectionProvider
           detectDirection
-          initialDirection={locale === 'en' ? 'ltr' : 'rtl'}
+          initialDirection='rtl'
+          // initialDirection={locale === 'en' ? 'ltr' : 'rtl'}
         >
           <MantineProvider
             // defaultColorScheme='dark'

@@ -434,6 +434,42 @@ const routes = {
     hasWorkerAction: false,
     module: route0
   },
+  "routes/messenger.$type.$chat.stream": {
+    id: "routes/messenger.$type.$chat.stream",
+    parentId: "root",
+    path: "messenger/:type/:chat/stream",
+    index: void 0,
+    caseSensitive: void 0,
+    hasLoader: true,
+    hasAction: false,
+    hasWorkerLoader: false,
+    hasWorkerAction: false,
+    module: route1
+  },
+  "routes/messenger.$type.$chat.edit": {
+    id: "routes/messenger.$type.$chat.edit",
+    parentId: "root",
+    path: "messenger/:type/:chat/edit",
+    index: void 0,
+    caseSensitive: void 0,
+    hasLoader: true,
+    hasAction: true,
+    hasWorkerLoader: false,
+    hasWorkerAction: false,
+    module: route2
+  },
+  "routes/__.messenger_.$type.$chat": {
+    id: "routes/__.messenger_.$type.$chat",
+    parentId: "root",
+    path: "messenger/:type/:chat",
+    index: void 0,
+    caseSensitive: void 0,
+    hasLoader: true,
+    hasAction: true,
+    hasWorkerLoader: false,
+    hasWorkerAction: false,
+    module: route3
+  },
   "routes/manifest[.webmanifest]": {
     id: "routes/manifest[.webmanifest]",
     parentId: "root",
@@ -444,48 +480,12 @@ const routes = {
     hasAction: false,
     hasWorkerLoader: false,
     hasWorkerAction: false,
-    module: route1
-  },
-  "routes/messanger.$chat.stream": {
-    id: "routes/messanger.$chat.stream",
-    parentId: "root",
-    path: "messanger/:chat/stream",
-    index: void 0,
-    caseSensitive: void 0,
-    hasLoader: true,
-    hasAction: false,
-    hasWorkerLoader: false,
-    hasWorkerAction: false,
-    module: route2
+    module: route4
   },
   "routes/dashboard.suggestions": {
     id: "routes/dashboard.suggestions",
     parentId: "routes/dashboard",
     path: "suggestions",
-    index: void 0,
-    caseSensitive: void 0,
-    hasLoader: true,
-    hasAction: true,
-    hasWorkerLoader: false,
-    hasWorkerAction: false,
-    module: route3
-  },
-  "routes/messanger.$chat.edit": {
-    id: "routes/messanger.$chat.edit",
-    parentId: "root",
-    path: "messanger/:chat/edit",
-    index: void 0,
-    caseSensitive: void 0,
-    hasLoader: true,
-    hasAction: true,
-    hasWorkerLoader: false,
-    hasWorkerAction: false,
-    module: route4
-  },
-  "routes/__.messanger_.$chat": {
-    id: "routes/__.messanger_.$chat",
-    parentId: "root",
-    path: "messanger/:chat",
     index: void 0,
     caseSensitive: void 0,
     hasLoader: true,
@@ -554,10 +554,10 @@ const routes = {
     hasWorkerAction: false,
     module: route10
   },
-  "routes/_.messanger": {
-    id: "routes/_.messanger",
+  "routes/_.messenger": {
+    id: "routes/_.messenger",
     parentId: "routes/_",
-    path: "messanger",
+    path: "messenger",
     index: void 0,
     caseSensitive: void 0,
     hasLoader: true,

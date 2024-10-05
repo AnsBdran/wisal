@@ -163,11 +163,12 @@ export const authenticateOrToast = async (request: Request) => {
 };
 
 export const getUserLocale = async (request: Request): Promise<'ar' | 'en'> => {
-  const userPrefsSession = await userPrefs.getSession(
-    request.headers.get('Cookie')
-  );
-  const locale = userPrefsSession.get('locale');
-  return locale === 'en' ? 'en' : 'ar';
+  // const userPrefsSession = await userPrefs.getSession(
+  //   request.headers.get('Cookie')
+  // );
+  // const locale = userPrefsSession.get('locale');
+  // return locale === 'en' ? 'en' : 'ar';
+  return 'ar';
 };
 
 export const spreadRecordIntoSession = (

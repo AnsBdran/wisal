@@ -67,5 +67,9 @@
   "chat_group_updated_successfully": "تم تحديث بيانات المجموعة بنجاح.",
   "chat_group_updated_successfully_description": "تم حفظ التعديل.",
   "profile": "الملف الشخصي",
-  "edit_profile": "تعديل الملف الشخصي"
+  "edit_profile": "تعديل الملف الشخصي",
+  "error_while_uploading": "حدث خطأ ما أثناء رفع الصور.",
+  "error_while_uploading_description": "يرجى المحاولة مرة أخرى.",
+  "drop_files_here": "قم بالنقر أو إلقاء الصور هنا للإضافة.",
+  "drop_files_here_description": "قم بإضافة ما ترغب من الصور، كل صورة يجب ألا يتخطى حجمها 3mb."
 }

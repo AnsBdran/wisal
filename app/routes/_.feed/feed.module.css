@@ -35,3 +35,10 @@
     object-fit: cover;
   }
 }
+
+.introContainer {
+  border: 4px dashed
+    light-dark(var(--mantine-color-blue-3), var(--mantine-color-dark-3));
+  border-style: ridge;
+  padding: var(--mantine-spacing-xs);
+}

@@ -1,1 +1,0 @@
-ALTER TABLE "votes" ADD CONSTRAINT "votes_choice_id_user_id_suggestion_id_unique" UNIQUE("choice_id","user_id","suggestion_id");
