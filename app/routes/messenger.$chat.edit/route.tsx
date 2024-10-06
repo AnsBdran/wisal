@@ -26,35 +26,35 @@ import { icons } from '~/lib/icons';
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   // const { chat: chatParam } = params;
-  const chatID = params.chat!
+  const chatID = params.chat!;
   const { user, loginRedirect } = await authenticateOrToast(request);
   if (!user) return loginRedirect;
-  const type = params.type;
-  if (type === 'group') {
-    const _chat = await db.query.chats.findFirst({
-      where: (chat, { eq }) => eq(chat.id, chatID),
-      with: {
-        members: {
-          with: {
-            user: true,
-          },
+  // const type = params.type;
+  // if (type === 'group') {
+  const _chat = await db.query.chats.findFirst({
+    where: (chat, { eq }) => eq(chat.id, chatID),
+    with: {
+      members: {
+        with: {
+          user: true,
         },
       },
-    });
-    return json({ chat: _chat, user });
-  } else if (type === 'direct') {
-    const _chat = await db.query.directChats.findFirst({
-      where: (chat, { eq }) => eq(chat.id, chatID),
-      with: {
-        members: {
-          with: {
-            user: true,
-          },
-        },
-      },
-    });
-    return json({ chat: _chat, user });
-  }
+    },
+  });
+  return json({ chat: _chat, user });
+  // } else if (type === 'direct') {
+  //   const _chat = await db.query.directChats.findFirst({
+  //     where: (chat, { eq }) => eq(chat.id, chatID),
+  //     with: {
+  //       members: {
+  //         with: {
+  //           user: true,
+  //         },
+  //       },
+  //     },
+  //   });
+  //   return json({ chat: _chat, user });
+  // }
 };
 
 const ChatEdit = () => {

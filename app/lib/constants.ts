@@ -47,4 +47,5 @@ export const INTENTS = {
   exitChatGroup: 'EXIT_CHAT_GROUP',
   removeChatMember: 'REMOVE_CHAT_MEMBER',
   editChatGroup: 'EDIT_CHAT_GROUP',
+  editPost: 'EDIT_POST',
 };

@@ -37,9 +37,10 @@
   "create_the_first_post": "إنشاء أول منشور",
   "drop_files_here": "قم بالنقر أو إلقاء الصور هنا للإضافة.",
   "drop_files_here_description": "قم بإضافة ما ترغب من الصور، كل صورة يجب ألا يتخطى حجمها 3mb.",
-  
   "no_comments_yet_description": "لا تتوفر أي تعليقات على هذا المنشور حتى الآن.",
   "no_comments_yet": "لا يوجد أي تعليق.",
   "no_reactions_yet": "لا يوجد أي تفاعلات لعرضها.",
-  "no_reactions_yet_description": "لم يتم التفاعل على هذا المنشور بعد."
+  "edit": "تعديل",
+  "no_reactions_yet_description": "لم يتم التفاعل على هذا المنشور بعد.",
+  "edit_post": "تعديل المنشور"
 }

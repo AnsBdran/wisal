@@ -53,9 +53,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     case INTENTS.findChat: {
       const fromID = searchParams.get('fromID');
       const toID = searchParams.get('toID');
-      const chatType = searchParams.get('chatType');
-      const chat = await findOrCreateDirectChat(Number(fromID), Number(toID));
-      return redirect(`/messenger/${chat.id}`);
+      const chatID = await findOrCreateDirectChat(Number(fromID), Number(toID));
+      return redirect(`/messenger/${chatID}`);
     }
     default:
       return null;

@@ -82,6 +82,8 @@ export const PostFooter = ({
   onShowReactionsBtnClicked,
   showReactionsBtnLoading,
   userID,
+  opened,
+  toggle,
 }: {
   post: SerializeFrom<typeof loader>['posts']['data'][0];
   onShowCommentsBtnClicked: (e: unknown) => void;
@@ -89,8 +91,10 @@ export const PostFooter = ({
   onShowReactionsBtnClicked: (e: unknown) => void;
   showReactionsBtnLoading: boolean;
   userID: number;
+  opened: boolean;
+  toggle: () => void;
 }) => {
-  const [opened, { toggle }] = useDisclosure();
+  // const [opened, { toggle }] = useDisclosure();
   const theme = useMantineTheme();
   const { t } = useTranslation();
   return (

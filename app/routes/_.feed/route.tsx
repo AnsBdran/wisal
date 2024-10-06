@@ -1,5 +1,6 @@
 import {
   ActionIcon,
+  Box,
   Drawer,
   Group,
   Modal,
@@ -10,13 +11,20 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData, useNavigate, useSearchParams } from '@remix-run/react';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Post from '~/routes/_.feed/components/post';
 import { INTENTS, ITEMS_PER_PAGE } from '~/lib/constants';
 import { getPosts } from '~/.server/queries';
 import { authenticator } from '~/services/auth.server';
-import { comment, commentUpdate, deleteComment, post, react } from './actions';
+import {
+  comment,
+  commentUpdate,
+  deleteComment,
+  editPost,
+  post,
+  react,
+} from './actions';
 import { FeedFilters } from './filters';
 import { EmptyFeed, PostForm, ScrollToTop } from './components';
 import { authenticateOrToast } from '~/.server/utils';
@@ -24,6 +32,7 @@ import { icons } from '~/lib/icons';
 import { Icon } from '@iconify/react';
 import AppIntro from './components/app-intro';
 import { useUserSessionContext } from '~/lib/contexts/user-session';
+import { EditPost } from './components/post/edit';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -57,6 +66,10 @@ const Feed = () => {
     introOpened,
     { open: introOpen, close: introClose, toggle: toggleIntro },
   ] = useDisclosure();
+  // const [
+  //   editPostFormOpened,
+  //   { open: editPostFormOPen, close: editPostFormClose },
+  // ] = useDisclosure();
 
   const [activePage, setActivePage] = useState<number>(
     page ? parseInt(page) : 1
@@ -82,7 +95,10 @@ const Feed = () => {
         <AppIntro opened={introOpened} close={introClose} />
         <SimpleGrid cols={{ base: 1, md: 2 }}>
           {posts.data.map((post) => (
-            <Post post={post} key={post.id} userID={user.id} />
+            <Box key={post.id}>
+              <Post post={post} userID={user.id} />
+              {/* post edit form */}
+            </Box>
           ))}
         </SimpleGrid>
         <Pagination
@@ -146,6 +162,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       return await deleteComment(formData);
     case INTENTS.post:
       return await post(formData, userID);
+    case INTENTS.editPost:
+      return await editPost(formData);
   }
 };
 

@@ -31,10 +31,17 @@ import { useDisclosure } from '@mantine/hooks';
 import { INTENTS } from '~/lib/constants';
 import { modals } from '@mantine/modals';
 
-export const AddComment = ({ postID }: { postID: number }) => {
+export const AddComment = ({
+  postID,
+  openFirstFive,
+}: {
+  postID: number;
+  openFirstFive: () => void;
+}) => {
   const { i18n, t } = useTranslation();
   const theme = useMantineTheme();
   const fetcher = useFetcher();
+  const [opened, { toggle, open, close }] = useDisclosure();
   // const lastResult = useActionData()
   // const [form, fields] = useForm({
   //   shouldValidate: 'onBlur',
@@ -43,10 +50,17 @@ export const AddComment = ({ postID }: { postID: number }) => {
   //     return parseWithZod(formData, {schema: commentSchema})
   //   }
   // })
+
+  useEffect(() => {
+    if (fetcher.data?.action === 'added') {
+      close();
+      openFirstFive();
+    }
+  }, [fetcher.data]);
   return (
-    <Popover>
+    <Popover opened={opened} onClose={close}>
       <Popover.Target>
-        <ActionIcon className={styles.action}>
+        <ActionIcon className={styles.action} onClick={toggle}>
           <Icon
             icon={icons.comment}
             // style={{ width: rem(16), height: rem(16) }}
@@ -224,7 +238,7 @@ export const Comments = ({
 }) => {
   const [opened, { open, close }] = useDisclosure();
   const fetcher = useFetcher();
-  const {t} = useTranslation('feed')
+  const { t } = useTranslation('feed');
   return (
     <>
       {comments.length ? (

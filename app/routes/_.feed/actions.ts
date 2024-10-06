@@ -82,6 +82,8 @@ export const deleteComment = async (fd: FormData) => {
   return { action: 'deleted' };
 };
 
+// +++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++
 export const post = async (formData: FormData, userID: number) => {
   const submission = parseWithZod(formData, { schema: postSchema });
 
@@ -114,5 +116,31 @@ export const post = async (formData: FormData, userID: number) => {
       }))
     );
   }
+  return { success: true };
+};
+
+// +++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++
+export const editPost = async (fd: FormData) => {
+  const postID = Number(fd.get('postID'));
+
+  const submission = parseWithZod(fd, { schema: postSchema });
+
+  console.log('payload', submission.payload, submission.value);
+  if (submission.status !== 'success') {
+    return submission.reply();
+  }
+  console.log('payload', submission.payload, submission.value);
+  const { content, title } = submission.value;
+  await db
+    .update(posts)
+    .set({
+      content,
+      title,
+      updatedAt: new Date(),
+      isEdited: true,
+    })
+    .where(eq(posts.id, postID));
+  console.log('editing the post', postID);
   return { success: true };
 };

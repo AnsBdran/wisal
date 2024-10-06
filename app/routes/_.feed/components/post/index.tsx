@@ -8,6 +8,8 @@ import {
   useMantineTheme,
   Highlight,
   Badge,
+  Button,
+  Modal,
 } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import styles from './post.module.css';
@@ -27,22 +29,32 @@ import { icons } from '~/lib/icons';
 import { useFetcher } from '@remix-run/react';
 import { INTENTS } from '~/lib/constants';
 import { useTranslation } from 'react-i18next';
+import { EditPost } from './edit';
+import { useDisclosure } from '@mantine/hooks';
 
 export default function Post({
   post,
   userID,
-}: // locale,
+}: // editPostFormOpen,
+// locale,
 {
   post: SerializeFrom<typeof loader>['posts']['data'][0];
   userID: number;
+  // editPostFormOpen: () => void;
   // locale: 'en' | 'ar';
 }) {
   const theme = useMantineTheme();
   const [showAllComments, setShowAllComments] = useState(false);
   const [showAllReactions, setShowAllReactions] = useState(false);
+  const [opened, { toggle, open }] = useDisclosure();
+
   const commentsFetcher = useFetcher();
   const reactionsFetcher = useFetcher();
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
+  const [
+    editPostFormOpened,
+    { open: editPostFormOpen, close: editPostFormClose },
+  ] = useDisclosure();
   // const data = useActionData();
   // const postData = useRouteLoaderData<typeof postDataLoader>(
   //   'routes/api.post-data'
@@ -88,12 +100,21 @@ export default function Post({
         </Badge>
       </Group>
       <Group justify='space-between' mt='md'>
-        <Group justify='space-between' flex={1}>
+        <Group flex={1}>
           {getProfileInfo(post.user)}
+
+          <Button
+            size='compact-xs'
+            variant='outline'
+            hidden={post.userID !== userID}
+            onClick={editPostFormOpen}
+          >
+            {t('edit')}
+          </Button>
         </Group>
         <Group gap={8} mr={0}>
           <Reactions post={post} />
-          <AddComment postID={post.id} />
+          <AddComment postID={post.id} openFirstFive={open} />
 
           <ActionIcon className={styles.action}>
             <Icon icon={icons.share} color={theme.colors.blue[6]} />
@@ -121,6 +142,8 @@ export default function Post({
           showReactionsBtnLoading={reactionsFetcher.state === 'loading'}
           post={post}
           userID={userID}
+          opened={opened}
+          toggle={toggle}
         />
       </Card.Section>
 
@@ -136,6 +159,16 @@ export default function Post({
         comments={commentsFetcher.data?.comments ?? []}
         userID={userID}
       />
+
+      {post.userID === userID && (
+        <Modal opened={editPostFormOpened} onClose={editPostFormClose}>
+          <EditPost
+            post={post}
+            userID={userID}
+            editPostFormClose={editPostFormClose}
+          />
+        </Modal>
+      )}
     </Card>
   );
 }
