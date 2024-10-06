@@ -26,7 +26,7 @@ export const DirectChat = ({ directChat }: { directChat: DirectChatType }) => {
   const fetcher = useFetcher();
   return (
     <UnstyledButton
-      onClick={() => navigate(`./direct/${directChat.chatID}`)}
+      onClick={() => navigate(`./${directChat.chatID}`)}
       className={styles.chatContainer}
     >
       <Group className={styles.upperRow}>

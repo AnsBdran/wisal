@@ -20,6 +20,7 @@ import {
   Textarea,
   InputLabel,
   InputError,
+  Indicator,
 } from '@mantine/core';
 import { Link, useFetcher, useNavigate } from '@remix-run/react';
 import { SerializeFrom } from '@remix-run/node';
@@ -33,12 +34,13 @@ import { useTranslation } from 'react-i18next';
 import { INTENTS } from '~/lib/constants';
 import { useDisclosure, useFetch } from '@mantine/hooks';
 import { ReactNode, useState } from 'react';
-import { findOrCreateChat } from '~/.server/utils';
+import { findOrCreateDirectChat } from '~/.server/utils';
 import MultiSelect from '~/lib/components/common/users-multi-select';
 import { useForm } from '@conform-to/react';
 import { ChatGroupSchemaType } from '~/lib/schemas';
 import { modals } from '@mantine/modals';
 import { GroupChatType } from '~/lib/types';
+
 export const GroupChat = ({
   groupChat: chatGroupMember,
 }: {
@@ -51,17 +53,19 @@ export const GroupChat = ({
 
   return (
     <UnstyledButton
-      onClick={() => navigate(`./group/${chatGroupMember.chatID}`)}
+      onClick={() => navigate(`./${chatGroupMember.chatID}`)}
       className={styles.chatContainer}
     >
       <Group className={styles.upperRow}>
-        <Avatar
-          src={chatGroupMember.chat.image}
-          color='initials'
-          variant='outline'
-          radius='sm'
-          name={chatGroupMember.chat.name}
-        />
+        <Indicator color='teal'>
+          <Avatar
+            src={chatGroupMember.chat.image}
+            color='initials'
+            variant='outline'
+            radius='sm'
+            name={chatGroupMember.chat.name}
+          />
+        </Indicator>
         <Title order={4} className={styles.title}>
           {chatGroupMember.chat.name}
         </Title>
@@ -135,7 +139,7 @@ export const GroupChat = ({
               />
             </Tooltip>
           ))}
-          <Avatar size='sm'>
+          <Avatar size='sm' hidden={chatGroupMember.chat.members.length < 6}>
             <Icon icon={icons.add} fontSize='.7em' />
             <Text span fz='xs'>
               {

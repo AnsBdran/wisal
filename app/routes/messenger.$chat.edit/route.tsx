@@ -26,7 +26,7 @@ import { icons } from '~/lib/icons';
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   // const { chat: chatParam } = params;
-  const chatID = Number(params.chat);
+  const chatID = params.chat!
   const { user, loginRedirect } = await authenticateOrToast(request);
   if (!user) return loginRedirect;
   const type = params.type;
@@ -96,7 +96,7 @@ export default ChatEdit;
 export const action = async ({ request }: ActionFunctionArgs) => {
   const fd = await request.formData();
   const intent = fd.get('intent');
-  const chatID = Number(fd.get('chatID'));
+  const chatID = fd.get('chatID') as string;
   const userID = Number(fd.get('userID'));
   const memberID = Number(fd.get('memberID'));
   const locale = await getUserLocale(request);
@@ -110,7 +110,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       return json({ success: true });
     }
     case INTENTS.editChatGroup: {
-      const chatID = Number(fd.get('chatID'));
       console.log('editing chat +++++++++++++++++ ');
       const submission = parseWithZod(fd, { schema: chatGroupSchema });
       if (submission.status !== 'success') {

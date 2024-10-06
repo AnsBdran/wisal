@@ -26,6 +26,7 @@ import { Link, useFetcher, useNavigate } from '@remix-run/react';
 import { INTENTS } from '~/lib/constants';
 import { act, useEffect, useState } from 'react';
 import { modals } from '@mantine/modals';
+import { ChatWithMembers } from '~/lib/types';
 
 export const ChatInfo = ({
   info,
@@ -33,7 +34,7 @@ export const ChatInfo = ({
   onClose,
 }: {
   opened: boolean;
-  info: SerializeFrom<typeof loader>['chat']['data'];
+  info: ChatWithMembers;
   onClose: () => void;
 }) => {
   const { t } = useTranslation('messanger');
@@ -44,6 +45,9 @@ export const ChatInfo = ({
       onClose={onClose}
       position='bottom'
       size='xl'
+      removeScrollProps={{
+        enabled: false,
+      }}
     >
       <Drawer.Overlay />
       <Drawer.Content>
@@ -53,24 +57,33 @@ export const ChatInfo = ({
         </Drawer.Header>
         <Drawer.Body>
           <Stack>
-            <Title order={3}>{info.id}</Title>
+            <Group>
+              <Text c='dimmed'>اسم المجموعة</Text>
+              <Title order={3}>{info.name}</Title>
+            </Group>
+            <Group>
+              <Text c='dimmed'>وصف المجموعة</Text>
+              <Title order={3}>{info.bio}</Title>
+            </Group>
+            <Title order={3}>أعضاء المجموعة</Title>
+            <ScrollArea flex={1}>
+              <Stack>
+                {info.members.map((m) => (
+                  // {info.chat.members.map((m) => (
+                  <Box key={m.userID}>
+                    <Group>
+                      <Avatar
+                        color='initials'
+                        name={getFullName(m.user)}
+                        radius='xs'
+                      />
+                      {getProfileInfoText(m.user)}
+                    </Group>
+                  </Box>
+                ))}
+              </Stack>
+            </ScrollArea>
           </Stack>
-          <ScrollArea flex={1}>
-            <Stack>
-              {info.members.map((m) => (
-                <Box key={m.userID}>
-                  <Group>
-                    <Avatar
-                      color='initials'
-                      name={getFullName(m.user)}
-                      radius='xs'
-                    />
-                    {getProfileInfoText(m.user)}
-                  </Group>
-                </Box>
-              ))}
-            </Stack>
-          </ScrollArea>
         </Drawer.Body>
       </Drawer.Content>
     </Drawer.Root>

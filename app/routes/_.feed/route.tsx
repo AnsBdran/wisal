@@ -10,7 +10,7 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData, useNavigate, useSearchParams } from '@remix-run/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Post from '~/routes/_.feed/components/post';
 import { INTENTS, ITEMS_PER_PAGE } from '~/lib/constants';
@@ -23,6 +23,7 @@ import { authenticateOrToast } from '~/.server/utils';
 import { icons } from '~/lib/icons';
 import { Icon } from '@iconify/react';
 import AppIntro from './components/app-intro';
+import { useUserSessionContext } from '~/lib/contexts/user-session';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -30,6 +31,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   const { user, loginRedirect } = await authenticateOrToast(request);
   if (!user) return loginRedirect;
+  console.log('user in feed loader is', user);
   const posts = await getPosts({
     page,
     userID: user?.id,
@@ -59,6 +61,12 @@ const Feed = () => {
   const [activePage, setActivePage] = useState<number>(
     page ? parseInt(page) : 1
   );
+
+  // console.log('the user we are trying to set is', user);
+  // const { setUserSession } = useUserSessionContext();
+  // useEffect(() => {
+  //   setUserSession(user);
+  // }, [user, setUserSession]);
 
   return (
     <>
@@ -113,7 +121,7 @@ const Feed = () => {
       >
         <FeedFilters />
       </Drawer>
-      <Modal h={800} size='lg' opened={opened} onClose={close} visibleFrom='sm'>
+      <Modal size='lg' opened={opened} onClose={close} visibleFrom='sm'>
         <FeedFilters />
       </Modal>
       {/* <ScrollToTop /> */}

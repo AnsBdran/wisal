@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1727886878584,
-      "tag": "0000_dusty_scourge",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1727887320281,
-      "tag": "0001_low_marvex",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1727887394673,
-      "tag": "0002_warm_human_torch",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1727887493396,
-      "tag": "0003_stormy_firelord",
+      "when": 1728127465694,
+      "tag": "0000_damp_major_mapleleaf",
       "breakpoints": true
     }
   ]

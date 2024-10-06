@@ -8,40 +8,37 @@ import { ChatType, MessagesWithSender } from '~/lib/types';
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const getChatMessages = async ({
   id,
-  type,
-}: {
-  id: number;
-  type: 'group' | 'direct';
+}: // type,
+{
+  id: string;
+  // type: 'group' | 'direct';
 }) => {
-  if (type === 'group') {
-    const messages = await db.query.messages.findMany({
-      where({ chatID, chatType }, { eq, and }) {
-        return and(eq(chatID, id), eq(chatType, 'group'));
-      },
-      with: {
-        sender: true,
-      },
-      orderBy(fields, operators) {
-        return operators.desc(fields.createdAt);
-      },
-      limit: 50,
-    });
+  // if (type === 'group') {
+  const messages = await db.query.messages.findMany({
+    where({ chatID, chatType }, { eq, and }) {
+      return eq(chatID, id);
+    },
+    with: {
+      sender: true,
+    },
+    orderBy(fields, operators) {
+      return operators.desc(fields.createdAt);
+    },
+    limit: 50,
+  });
 
-    return messages;
-  } else {
-    const messages = await db.query.messages.findMany({
-      where: ({ chatType, chatID }, { eq, and }) =>
-        and(eq(chatType, 'direct'), eq(chatID, id)),
-      with: {
-        sender: true,
-      },
-      orderBy(fields, operators) {
-        return operators.desc(fields.createdAt);
-      },
-      limit: 50,
-    });
-    return messages;
-  }
+  return messages;
+  // const messages = await db.query.messages.findMany({
+  //   where: ({ chatType, chatID }, { eq, and }) => eq(chatID, id)
+  //   with: {
+  //     sender: true,
+  //   },
+  //   orderBy(fields, operators) {
+  //     return operators.desc(fields.createdAt);
+  //   },
+  //   limit: 50,
+  // });
+  // return messages;
 };
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -110,33 +107,41 @@ export const getPosts = async ({
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// type: 'group' | 'direct';
+// : Promise<{
+//   messages: MessagesWithSender;
+//   data: ChatType;
+//   type: 'group' | 'direct';
+// }>
 export const getChatData = async ({
   chatID,
-  type,
-}: {
-  chatID: number;
-  type: 'group' | 'direct';
-}): Promise<{ messages: MessagesWithSender; data: ChatType }> => {
-  const messages = await getChatMessages({ id: chatID, type });
+}: // type,
+{
+  chatID: string;
+}) => {
+  const messages = await getChatMessages({ id: chatID });
 
-  if (type === 'group') {
-    const chat = await db.query.chats.findFirst({
-      where({ id }, { eq }) {
-        return eq(id, chatID);
-      },
-      with: {
-        members: {
-          with: {
-            user: true,
-          },
+  // if (type === 'group') {
+  const groupChat = await db.query.chats.findFirst({
+    where({ id }, { eq }) {
+      return eq(id, chatID);
+    },
+    with: {
+      members: {
+        with: {
+          user: true,
         },
       },
-    });
-    if (!chat)
-      throw new Response(null, { status: 404, statusText: 'not found' });
-    return { messages, data: chat };
+    },
+  });
+  // if (!chat)
+  //   throw new Response(null, { status: 404, statusText: 'not found' });
+  // return { messages, data: chat };
+  // } else {
+  if (groupChat) {
+    return { messages, data: groupChat, type: 'group' };
   } else {
-    const chat = await db.query.directChats.findFirst({
+    const directChat = await db.query.directChats.findFirst({
       where: ({ id }, { eq }) => eq(id, chatID),
       with: {
         members: {
@@ -144,9 +149,10 @@ export const getChatData = async ({
         },
       },
     });
-    if (!chat)
+    if (!directChat) {
       throw new Response(null, { status: 404, statusText: 'Not Found' });
-    return { messages, data: chat };
+    }
+    return { messages, data: directChat, type: 'direct' };
   }
 };
 

@@ -23,7 +23,7 @@ import {
   CreateChatGroupButton,
   EmptyMessenger,
 } from './components';
-import { authenticateOrToast, findOrCreateChat } from '~/.server/utils';
+import { authenticateOrToast, findOrCreateDirectChat } from '~/.server/utils';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 import { icons } from '~/lib/icons';
@@ -99,8 +99,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   switch (intent) {
     case INTENTS.findOrCreateChat: {
-      const chat = await findOrCreateChat(userID, targetID);
-      return redirect(`/messenger/direct/${chat.id}`);
+      const chatID = await findOrCreateDirectChat(userID, targetID);
+      return redirect(`/messenger/${chatID}`);
     }
     case INTENTS.createChatGroup: {
       return await createChatGroup(fd, userID);

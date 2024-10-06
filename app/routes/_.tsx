@@ -23,6 +23,8 @@ import { Icon } from '@iconify/react/dist/iconify.js';
 import { icons } from '~/lib/icons';
 import { useHeadroom } from '@mantine/hooks';
 import { authenticateOrToast } from '~/.server/utils';
+import { useUserSessionContext } from '~/lib/contexts/user-session';
+import { useEffect } from 'react';
 
 export const loader: LoaderFunction = async ({ request }) => {
   // const user = await authenticator.isAuthenticated(request);
@@ -38,6 +40,11 @@ const MailLayout = () => {
   const pinned = useHeadroom({ fixedAt: 0 });
   const location = useLocation();
   const theme = useMantineTheme();
+  const { setUserSession } = useUserSessionContext();
+  useEffect(() => {
+    console.log('use effect ran');
+    setUserSession(user);
+  }, [user, setUserSession]);
   return (
     <>
       <AppShell

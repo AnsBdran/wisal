@@ -8,6 +8,7 @@ import {
   primaryKey,
   unique,
   jsonb,
+  uuid,
 } from 'drizzle-orm/pg-core';
 import { users } from './user';
 import { relations } from 'drizzle-orm';
@@ -27,7 +28,7 @@ export const messages = pgTable('messages', {
   contentType: MessageContentType('content_type').default('text').notNull(),
   content: varchar('content').notNull(),
   // content: jsonb('content').notNull(),
-  chatID: integer('chat_id').notNull(),
+  chatID: uuid('chat_id').notNull(),
   // .references((): any => .id),
   senderID: integer('from_id')
     .references(() => users.id, { onDelete: 'cascade' })
@@ -57,7 +58,7 @@ export const messages = pgTable('messages', {
 // });
 
 export const chats = pgTable('chats', {
-  id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
+  id: uuid('id').primaryKey().defaultRandom(),
   createdAt: timestamp('created_at', { withTimezone: true })
     .defaultNow()
     .notNull(),
@@ -72,7 +73,7 @@ export const chats = pgTable('chats', {
 });
 
 export const directChats = pgTable('direct_chats', {
-  id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
+  id: uuid('id').primaryKey().defaultRandom(),
   createdAt: timestamp('created_at', { withTimezone: true })
     .defaultNow()
     .notNull(),
@@ -81,7 +82,7 @@ export const directChats = pgTable('direct_chats', {
 
 export const chatMembers = pgTable('chat_members', {
   id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
-  chatID: integer('chat_id')
+  chatID: uuid('chat_id')
     .references(() => chats.id, { onDelete: 'cascade' })
     .notNull(),
   joinedAt: timestamp('joined_at', { withTimezone: true })
@@ -100,7 +101,7 @@ export const chatMembers = pgTable('chat_members', {
 export const directChatMembers = pgTable(
   'direct_chat_members',
   {
-    chatID: integer('chat_id')
+    chatID: uuid('chat_id')
       .references(() => directChats.id)
       .notNull(),
 

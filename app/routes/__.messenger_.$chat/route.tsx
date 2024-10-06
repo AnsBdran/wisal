@@ -33,23 +33,23 @@ import { waiit } from '~/lib/utils';
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const { user, loginRedirect: redirect } = await authenticateOrToast(request);
   if (!user) return redirect;
-  const type = String(params.type);
+  // const type = String(params.type);
   // TODO: handle invalid IDs or types
   // if (type !== 'group' && type !== 'direct') {
   //   throw new Response(null, { status: 404, statusText: 'not found' });
   // }
   const chat = await getChatData({
-    chatID: Number(params.chat),
-    type: type as 'group' | 'direct',
+    chatID: params.chat!,
+    // type: type as 'group' | 'direct',
   });
   // if (!chat) {
   //   throw new Response(null, { status: 404, statusText: 'Not Found' });
   // }
-  return json({ user, chat, type });
+  return json({ user, chat });
 };
 
 const Chat = () => {
-  const { user, chat, type } = useLiveLoader<typeof loader>();
+  const { user, chat } = useLiveLoader<typeof loader>();
   const chatEndRef = useRef<HTMLDivElement>(null);
   const scrollToBottom = () => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -76,8 +76,7 @@ const Chat = () => {
       >
         {/* chat header */}
         <Box h={rem(MESSENGER_HEADER_HEIGHT)} className={styles.chatHeader}>
-          
-            <ChatHeader chat={chat.data} />
+          <ChatHeader chat={chat} userID={user.id} />
         </Box>
 
         <Stack id='messages_chat' className={styles.messagesContainer}>
@@ -94,15 +93,13 @@ const Chat = () => {
         </Stack>
         <ElementScrollRestoration
           elementQuery='#messages_chat'
-          key={chat.data.chatID}
+          key={chat.data.id}
           nonce=''
         />
 
         {/* chat footer */}
         <Box h={rem(MESSENGER_FOOTER_HEIGHT)} className={styles.chatFooter}>
-          <ChatFooter chatID={chat.data.chatID} />
-
-          {/* {chat.data.name} */}
+          <ChatFooter chatID={chat.data.id} />
         </Box>
       </Stack>
     </ChatLayout>
@@ -129,13 +126,10 @@ const ChatLayout = ({
 };
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {
-  console.log('the action called++++++++++++');
   const userID = (await authenticator.isAuthenticated(request))?.id;
   if (!userID) {
-    console.log('no user', userID);
     return new Response(null, { status: 404 });
   }
-  console.log('yes user', userID);
   const fd = await request.formData();
   const intent = fd.get('intent');
   const messageID = Number(fd.get('messageID'));

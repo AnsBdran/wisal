@@ -26,7 +26,7 @@ import { act, FormEvent, useEffect, useRef, useState } from 'react';
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { useUpload } from '~/lib/hooks/useUpload';
 
-export const ChatFooter = ({ chatID }: { chatID: number }) => {
+export const ChatFooter = ({ chatID }: { chatID: string }) => {
   const textFetcher = useFetcher();
   const imageFetcher = useFetcher();
   const { i18n } = useTranslation();
@@ -57,7 +57,7 @@ export const ChatFooter = ({ chatID }: { chatID: number }) => {
     fd.append('intent', INTENTS.sendMessage);
     textFetcher.submit(fd, {
       method: 'POST',
-      action: `/messenger/${params.type}/${chatID}`,
+      action: `/messenger/${chatID}`,
     });
   };
 

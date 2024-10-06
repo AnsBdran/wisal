@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { db } from '.';
 import {
   comments,
@@ -298,14 +298,14 @@ const seedChatsMembers = async () => {
         //     max: allUsers.length - 1,
         //   });
         //   const selectedUser = allUsers.splice(randomIndex, 1)[0];
-          await db
-            .insert(directChatMembers)
-            .values({
-              chatID: _directChats[i].id,
-              userID: _users[i + j].id,
-              // userID: selectedUser.id,
-            })
-            .onConflictDoNothing();
+        await db
+          .insert(directChatMembers)
+          .values({
+            chatID: _directChats[i].id,
+            userID: _users[i + j].id,
+            // userID: selectedUser.id,
+          })
+          .onConflictDoNothing();
         // }
       }
     }

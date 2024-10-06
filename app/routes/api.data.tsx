@@ -6,7 +6,7 @@ import {
 } from '@remix-run/node';
 import { db } from '~/.server/db';
 import { users } from '~/.server/db/schema';
-import { findOrCreateChat } from '~/.server/utils';
+import { findOrCreateDirectChat } from '~/.server/utils';
 import { INTENTS } from '~/lib/constants';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -54,7 +54,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       const fromID = searchParams.get('fromID');
       const toID = searchParams.get('toID');
       const chatType = searchParams.get('chatType');
-      const chat = await findOrCreateChat(Number(fromID), Number(toID), );
+      const chat = await findOrCreateDirectChat(Number(fromID), Number(toID));
       return redirect(`/messenger/${chat.id}`);
     }
     default:

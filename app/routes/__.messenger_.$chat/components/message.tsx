@@ -101,7 +101,7 @@ export const Message = ({
       >
         {m.contentType === 'image' ? (
           <>
-            <Stack>
+            <Stack gap={0}>
               {!isSameSenderAsPrevious && (
                 <Text className={styles.senderName}>
                   {getProfileInfoText(m.sender)}
@@ -178,10 +178,7 @@ const EditMessage = ({
           id: 'edit-modal',
           children: (
             <>
-              <fetcher.Form
-                method='post'
-                action={`/messenger/${params.type}/${m.chatID}`}
-              >
+              <fetcher.Form method='post' action={`/messenger/${m.chatID}`}>
                 <Stack>
                   <TextInput
                     defaultValue={m.content}
@@ -253,7 +250,7 @@ const DeleteMessage = ({
               },
               {
                 method: 'post',
-                action: `/messenger/${params.type}/${m.chatID}`,
+                action: `/messenger/${m.chatID}`,
               }
             );
           },

@@ -36,7 +36,7 @@ export const sendMessage = async (
 ) => {
   const contentType = String(fd.get('contentType'));
   const chatType = String(fd.get('chatType')) === 'group' ? 'group' : 'direct';
-  const chatID = Number(fd.get('chatID'));
+  const chatID = fd.get('chatID') as string;
   console.log('trying to send ++++++++++++++++++++++++==');
   if (!chatID) return;
   if (contentType === 'text') {
@@ -62,7 +62,7 @@ export const sendMessage = async (
       })) as []
     );
   }
-  emitter.emit(`${params.chat}-${params.type}`);
+  emitter.emit(`${params.chat}`);
   return json({ action: 'added' });
 };
 
@@ -71,6 +71,6 @@ export const editMessage = async (fd: FormData, params: Params) => {
 
   const content = String(fd.get('content'));
   await db.update(messages).set({ content }).where(eq(messages.id, messageID));
-  emitter.emit(`${params.chat}-${params.type}`);
+  emitter.emit(`${params.chat}`);
   return { success: true };
 };
