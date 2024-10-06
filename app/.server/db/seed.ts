@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { db } from '.';
 import {
   comments,
@@ -14,6 +14,9 @@ import {
   suggestions,
   choices,
   votes,
+  directChats,
+  directChatMembers,
+  messageReactions,
 } from './schema';
 import { users, usersPrefs } from './schema/user';
 import { fakerAR as faker } from '@faker-js/faker';
@@ -241,33 +244,70 @@ const seedCommentsReactions = async () => {
 // }
 
 const seedChats = async () => {
+  const _users = await db.select({ id: users.id }).from(users);
   for (let i = 0; i < 25; i++) {
     await db.insert(chats).values({
       name: faker.lorem.words(),
       bio: faker.lorem.sentence(),
       image: faker.image.urlLoremFlickr(),
+      creatorID: faker.helpers.arrayElement(_users).id,
     });
+  }
+
+  const directChatsCount = Math.floor(_users.length / 4);
+  for (let i = 0; i < directChatsCount; i++) {
+    await db.insert(directChats).values({});
   }
 };
 
 const seedChatsMembers = async () => {
   const _chats = await db.select().from(chats);
-  const userss = await db.select().from(users);
+  const _users = await db.select().from(users);
+  const _directChats = await db.select().from(directChats);
   // const anas = await db.select().from(users).where(eq(users.username, 'anas'));
   for (let j = 0; j < _chats.length; j++) {
-    for (let i = 0; i < userss.length; i++) {
+    for (let i = 0; i < _users.length; i++) {
       faker.helpers.maybe(
         async () => {
           await db.insert(chatMembers).values({
             chatID: _chats[j].id,
+            role: faker.helpers.maybe(
+              () => faker.helpers.arrayElement(['admin', 'member']),
+              { probability: 0.4 }
+            ),
             leftAt: faker.helpers.maybe(() => faker.date.future(), {
               probability: 0.1,
             }),
-            userID: userss[i].id,
+            isBanned: faker.datatype.boolean({ probability: 0.4 }),
+            isMuted: faker.datatype.boolean({ probability: 0.4 }),
+            // : faker.helpers.maybe(() => 2 ,{probability: .4} )
+            userID: _users[i].id,
           });
         },
         { probability: 0.5 }
       );
+    }
+
+    // direct chat members
+    // const allUsers = [..._users];
+    for (let i = 0; i < _directChats.length; i++) {
+      for (let j = 0; j < 2; j++) {
+        // if (allUsers.length > 0) {
+        //   const randomIndex = faker.number.int({
+        //     min: 0,
+        //     max: allUsers.length - 1,
+        //   });
+        //   const selectedUser = allUsers.splice(randomIndex, 1)[0];
+        await db
+          .insert(directChatMembers)
+          .values({
+            chatID: _directChats[i].id,
+            userID: _users[i + j].id,
+            // userID: selectedUser.id,
+          })
+          .onConflictDoNothing();
+        // }
+      }
     }
   }
 };
@@ -275,6 +315,7 @@ const seedChatsMembers = async () => {
 const seedMessages = async () => {
   const _chats = await db.select().from(chats);
   const _users = await db.select().from(users);
+  const _dirctChats = await db.select().from(directChats);
 
   for (let k = 0; k < _chats.length; k++) {
     const messagesCount = faker.helpers.rangeToNumber({ min: 30, max: 70 });
@@ -287,13 +328,81 @@ const seedMessages = async () => {
         lastMessageTime = new Date(
           lastMessageTime.getTime() + timeIncrement * 60 * 1000
         );
+        const contentType: 'text' | 'image' =
+          faker.helpers.maybe(() =>
+            faker.helpers.arrayElement(['text', 'image'])
+          ) ?? 'text';
         await db.insert(messages).values({
-          content: faker.lorem.sentence(),
+          content:
+            contentType === 'text'
+              ? faker.lorem.sentence()
+              : faker.image.urlLoremFlickr(),
           chatID: _chats[k].id,
           createdAt: lastMessageTime,
           senderID: sender,
+          contentType,
+          chatType: 'group',
         });
       }
+    }
+  }
+
+  for (let k = 0; k < _dirctChats.length; k++) {
+    const _users = await db
+      .select()
+      .from(directChatMembers)
+      .where(eq(directChatMembers.chatID, _dirctChats[k].id));
+    const messagesCount = faker.helpers.rangeToNumber({ min: 30, max: 70 });
+    for (let i = 0; i < messagesCount; i++) {
+      let lastMessageTime = faker.date.past();
+      const fromSameSender = faker.helpers.rangeToNumber({ min: 1, max: 7 });
+      const sender = faker.helpers.arrayElement(_users).userID;
+      for (let j = 0; j < fromSameSender; j++) {
+        const timeIncrement = faker.helpers.rangeToNumber({ min: 1, max: 5 });
+        lastMessageTime = new Date(
+          lastMessageTime.getTime() + timeIncrement * 60 * 1000
+        );
+        const contentType: 'text' | 'image' =
+          faker.helpers.maybe(() =>
+            faker.helpers.arrayElement(['text', 'image'])
+          ) ?? 'text';
+        await db.insert(messages).values({
+          content:
+            contentType === 'text'
+              ? faker.lorem.sentence()
+              : faker.image.urlLoremFlickr(),
+          chatID: _dirctChats[k].id,
+          createdAt: lastMessageTime,
+          senderID: sender,
+          contentType,
+          chatType: 'direct',
+        });
+      }
+    }
+  }
+};
+
+const seedMessageReactions = async () => {
+  const _messages = await db.select().from(messages);
+  const _users = await db.select().from(users);
+
+  for (let i = 0; i < _messages.length; i++) {
+    const reactionsCount = faker.helpers.rangeToNumber({ min: 0, max: 7 });
+    const _theUsers = faker.helpers.arrayElements(_users, reactionsCount);
+    for (let k = 0; k < reactionsCount; k++) {
+      await db.insert(messageReactions).values({
+        messageID: _messages[i].id,
+        userID: _theUsers[k].id,
+        type: faker.helpers.arrayElement([
+          'angry',
+          'dislike',
+          'like',
+          'haha',
+          'wow',
+          'love',
+          'angry',
+        ]),
+      });
     }
   }
 };
@@ -353,7 +462,10 @@ const clear = async () => {
   await db.delete(comments);
   //   await db.delete(reaction);
   await db.delete(chats);
+  await db.delete(directChats);
   await db.delete(chatMembers);
+  await db.delete(directChatMembers);
+  await db.delete(messageReactions);
   await db.delete(messages);
   await db.delete(commentReactions);
   await db.delete(postReactions);
@@ -382,6 +494,7 @@ const seed = async () => {
   await seedPostsToTags();
   await seedPrefs();
   await seedSuggestions();
+  await seedMessageReactions();
 };
 
 const main = async () => {

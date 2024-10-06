@@ -16,3 +16,14 @@ export const ItemsPerPage = pgEnum('items_per_page', [
   'twelve',
   'fifteen',
 ]);
+export const ChatMemberRole = pgEnum('chat_member_role', ['admin', 'member']);
+
+export const UserStatus = pgEnum('user_status', ['active', 'idle', 'offline']);
+
+export const MessageContentType = pgEnum('message_content_type', [
+  'text',
+  'image',
+  'file',
+]);
+
+export const ChatType = pgEnum('chat_type', ['group', 'direct']);

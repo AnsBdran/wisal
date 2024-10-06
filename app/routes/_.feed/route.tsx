@@ -1,35 +1,37 @@
 import {
+  ActionIcon,
   Drawer,
   Group,
   Modal,
   Pagination,
-  ScrollArea,
+  SimpleGrid,
   Stack,
 } from '@mantine/core';
-import { useDisclosure, useWindowScroll } from '@mantine/hooks';
+import { useDisclosure } from '@mantine/hooks';
 import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData, useNavigate, useSearchParams } from '@remix-run/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Post from '~/routes/_.feed/post';
+import Post from '~/routes/_.feed/components/post';
 import { INTENTS, ITEMS_PER_PAGE } from '~/lib/constants';
 import { getPosts } from '~/.server/queries';
 import { authenticator } from '~/services/auth.server';
 import { comment, commentUpdate, deleteComment, post, react } from './actions';
 import { FeedFilters } from './filters';
-import { CreatePostForm, EmptyFeed, PostForm, ScrollToTop } from './bits';
-import { authenticateOrToast, getUserLocale } from '~/.server/utils';
+import { EmptyFeed, PostForm, ScrollToTop } from './components';
+import { authenticateOrToast } from '~/.server/utils';
+import { icons } from '~/lib/icons';
+import { Icon } from '@iconify/react';
+import AppIntro from './components/app-intro';
+import { useUserSessionContext } from '~/lib/contexts/user-session';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const page = parseInt(url.searchParams.get('page') ?? '1');
-  const locale = await getUserLocale(request);
-  // const searchQueries = Object.fromEntries(url.searchParams);
-  // try {
-  // }
 
   const { user, loginRedirect } = await authenticateOrToast(request);
   if (!user) return loginRedirect;
+  console.log('user in feed loader is', user);
   const posts = await getPosts({
     page,
     userID: user?.id,
@@ -39,12 +41,11 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return json({
     posts,
     user,
-    locale,
   });
 };
 
 const Feed = () => {
-  const { posts, user, locale } = useLoaderData<typeof loader>();
+  const { posts, user } = useLoaderData<typeof loader>();
   const { t } = useTranslation('feed');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -52,22 +53,38 @@ const Feed = () => {
   const [opened, { close, open }] = useDisclosure();
   const [postFormOpened, { close: postFormClose, open: postFormOpen }] =
     useDisclosure();
+  const [
+    introOpened,
+    { open: introOpen, close: introClose, toggle: toggleIntro },
+  ] = useDisclosure();
 
   const [activePage, setActivePage] = useState<number>(
     page ? parseInt(page) : 1
   );
 
+  // console.log('the user we are trying to set is', user);
+  // const { setUserSession } = useUserSessionContext();
+  // useEffect(() => {
+  //   setUserSession(user);
+  // }, [user, setUserSession]);
+
   return (
     <>
       <Stack hidden={posts.count === 0}>
         <Group justify='end'>
-          <CreatePostForm open={postFormOpen} />
+          <ActionIcon onClick={toggleIntro}>
+            <Icon icon={icons.info} />
+          </ActionIcon>
+          <ActionIcon onClick={postFormOpen}>
+            <Icon icon={icons.add} />
+          </ActionIcon>
         </Group>
-        <Stack gap='xl'>
+        <AppIntro opened={introOpened} close={introClose} />
+        <SimpleGrid cols={{ base: 1, md: 2 }}>
           {posts.data.map((post) => (
-            <Post locale={locale} post={post} key={post.id} userID={user.id} />
+            <Post post={post} key={post.id} userID={user.id} />
           ))}
-        </Stack>
+        </SimpleGrid>
         <Pagination
           total={Math.ceil(posts.count / ITEMS_PER_PAGE)}
           value={activePage}
@@ -83,34 +100,16 @@ const Feed = () => {
 
       {/* ++++++++++++++++++++++++++++++++++++++++++++++ */}
       {/* Modals and Drawers */}
+
       {/* post form */}
-      {/* <Drawer
-        opened={postFormOpened}
-        onClose={postFormClose}
-        title={t('create_new_post')}
-        hiddenFrom='sm'
-        size='lg'
-        position='top'
-        removeScrollProps={{
-          // removeScrollBar: true,
-          // allowPinchZoom: true,
-          // style: { overflow: 'hidden' },
-          enabled: false,
-          removeScrollBar: false,
-          style: { overflow: 'scroll', backgroundColor: 'red' },
-          // gapMode: 'padding',
-        }}
-      >
-        <PostForm close={postFormClose} />
-      </Drawer> */}
       <Modal
         title={t('create_new_post')}
         opened={postFormOpened}
         onClose={postFormClose}
-        // visibleFrom='sm'
       >
         <PostForm close={postFormClose} />
       </Modal>
+
       {/* filters */}
       <Drawer
         opened={opened}
@@ -122,7 +121,7 @@ const Feed = () => {
       >
         <FeedFilters />
       </Drawer>
-      <Modal h={800} size='lg' opened={opened} onClose={close} visibleFrom='sm'>
+      <Modal size='lg' opened={opened} onClose={close} visibleFrom='sm'>
         <FeedFilters />
       </Modal>
       {/* <ScrollToTop /> */}

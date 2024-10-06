@@ -6,6 +6,7 @@ import {
   TabsList,
   useMantineTheme,
 } from '@mantine/core';
+
 import {
   useNavigate,
   Outlet,
@@ -17,12 +18,13 @@ import Header from '~/lib/components/main/header/index';
 import Footer from '~/lib/components/main/footer';
 import { useTranslation } from 'react-i18next';
 import { LoaderFunction } from '@remix-run/node';
-import { authenticator } from '~/services/auth.server';
 import { HEADER_HEIGHT } from '~/lib/constants';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { icons } from '~/lib/icons';
 import { useHeadroom } from '@mantine/hooks';
 import { authenticateOrToast } from '~/.server/utils';
+import { useUserSessionContext } from '~/lib/contexts/user-session';
+import { useEffect } from 'react';
 
 export const loader: LoaderFunction = async ({ request }) => {
   // const user = await authenticator.isAuthenticated(request);
@@ -38,6 +40,11 @@ const MailLayout = () => {
   const pinned = useHeadroom({ fixedAt: 0 });
   const location = useLocation();
   const theme = useMantineTheme();
+  const { setUserSession } = useUserSessionContext();
+  useEffect(() => {
+    console.log('use effect ran');
+    setUserSession(user);
+  }, [user, setUserSession]);
   return (
     <>
       <AppShell
@@ -47,7 +54,8 @@ const MailLayout = () => {
           // offset: true,
         }}
         footer={{ collapsed: true, height: 120 }}
-        p='sm'
+        px={{ base: 0, sm: 'sm' }}
+        py='lg'
       >
         <Header user={user} />
         <AppShell.Main>
@@ -85,9 +93,8 @@ const MailLayout = () => {
                 </Tabs.Tab>
                 <Tabs.Tab
                   flex={1}
-                  value='/messanger'
+                  value='/messenger'
                   leftSection={<Icon icon={icons.messaging} />}
-                  z
                 >
                   {t('messaging')}
                 </Tabs.Tab>

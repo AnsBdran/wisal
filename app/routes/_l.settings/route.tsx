@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import { INTENTS } from '~/lib/constants';
 import { icons } from '~/lib/icons';
 import { authenticator } from '~/services/auth.server';
-import { ProfileForm } from './profile-form';
 import { db } from '~/.server/db';
 import { users } from '~/.server/db/schema';
 import { eq } from 'drizzle-orm';
@@ -14,7 +13,7 @@ import { parseWithZod } from '@conform-to/zod';
 import { appSchema, profileSchema } from '~/lib/schemas';
 import { jsonWithSuccess, redirectWithSuccess } from 'remix-toast';
 import i18next from '~/services/i18n.server';
-import AppForm from './app-form';
+import { AppForm, ProfileForm } from './components';
 import {
   authenticateOrToast,
   getUserLocale,

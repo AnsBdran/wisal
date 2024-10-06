@@ -63,5 +63,10 @@
   "private_chat": "Private chat",
   "choose_User_to_chat_with": "Choose a user to chat with",
   "profile": "Profile",
-  "edit_profile": "Edit profile"
+  "edit_profile": "Edit profile",
+  "error_while_uploading": "Some error happened while uploading",
+  "error_while_uploading_description": "Please try uploading again.",
+
+  "drop_files_here": "Drag images here or click to select files",
+  "drop_files_here_description": "Attach as many files as you like, each file should not exceed 3mb"
 }

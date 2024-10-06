@@ -29,15 +29,18 @@ import '@mantine/notifications/styles.css';
 import '@mantine/carousel/styles.css';
 import '@mantine/dropzone/styles.css';
 import './tailwind.css';
-import { ManifestLink } from '@remix-pwa/sw';
+import { ManifestLink, useSWEffect } from '@remix-pwa/sw';
 
-import { getUserLocale } from './.server/utils';
+// import { getUserLocale } from './.server/utils';
 import i18next from './services/i18n.server';
+import { authenticateOrToast, getUserLocale } from './.server/utils';
+import { UserSessionContextProvider } from './lib/contexts/user-session';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const locale = await getUserLocale(request);
   const { toast, headers } = await getToast(request);
-  const t = await i18next.getFixedT(locale);
+  const t = await i18next.getFixedT(locale, 'common');
+  // const t = await i18next.getFixedT(locale, 'common');
   const title = t('app_title');
   const description = t('app_description');
   return json(
@@ -51,16 +54,16 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   );
 };
 
-export const meta: MetaFunction = ({
-  data
-}: {
-  data: Awaited<SerializeFrom<typeof loader>>;
-}) => {
-  return [
-    { title: data.title },
-    { name: 'description', content: data.description },
-  ];
-};
+export const meta: MetaFunction = ({ data }) =>
+  // : {
+  //   data: Awaited<SerializeFrom<typeof loader>>;
+  // }
+  {
+    return [
+      { title: data.title },
+      { name: 'description', content: data.description },
+    ];
+  };
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { toast, locale } = useLoaderData<typeof loader>();
@@ -73,15 +76,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
     }
   }, [toast]);
   const { t } = useTranslation();
-  useChangeLanguage(locale);
-
+  // useChangeLanguage(locale);
+  useSWEffect();
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <head>
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <Meta />
-        <ManifestLink />
+        {/* <ManifestLink /> */}
         <ManfiestIcons />
         <link rel='manifest' href='/manifest.webmanifest'></link>
         <Links />
@@ -101,7 +104,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <ModalsProvider
               labels={{ cancel: t('cancel'), confirm: t('confirm') }}
             >
-              {children}
+              <UserSessionContextProvider>
+                {children}
+              </UserSessionContextProvider>
             </ModalsProvider>
           </MantineProvider>
         </DirectionProvider>

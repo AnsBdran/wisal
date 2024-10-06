@@ -87,6 +87,7 @@ export const comments = pgTable('comments', {
     .references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' })
     .notNull(),
   isEdited: boolean('is_edited').default(false).notNull(),
+  replyToID: integer('reply_to_id').references((): any => comments.id),
 });
 
 export const tags = pgTable('tags', {

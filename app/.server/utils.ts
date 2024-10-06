@@ -1,6 +1,12 @@
 import { INTENTS, ITEMS_PER_PAGE } from '~/lib/constants';
 import { db } from './db';
-import { chats, chatMembers, users } from './db/schema';
+import {
+  chats,
+  chatMembers,
+  users,
+  directChats,
+  directChatMembers,
+} from './db/schema';
 import { eventStream } from 'remix-utils/sse/server';
 import { emitter } from '~/services/emitter.server';
 import { authenticator } from '~/services/auth.server';
@@ -10,7 +16,7 @@ import cloudinary from 'cloudinary';
 import { writeAsyncIterableToWritable } from '@remix-run/node';
 import { userPrefs } from '~/services/user-prefs.server';
 import { UserRecord, UserSession } from '~/lib/types';
-import { eq, sql } from 'drizzle-orm';
+import { eq, sql, and, inArray } from 'drizzle-orm';
 import { getFullName } from '~/lib/utils';
 import { useEffect, useState } from 'react';
 import { useFetcher } from '@remix-run/react';
@@ -22,52 +28,99 @@ export const getPagination = ({ page }: { page: number }) => {
   };
 };
 
-export const findOrCreateChat = async (fromID: number, targetID: number) => {
-  // Find chats where both users are members
-  const existingChats = await db.query.chats.findMany({
-    with: {
-      members: true,
-    },
-    // where: (chat, { eq }) => eq(sql`array_length(${chat.members}, 1)`, 2),
-  });
-
-  // Filter to find a chat with exactly these two users
-  const privateChat = existingChats.find(
-    (chat) =>
-      chat.members.length === 2 &&
-      chat.members.some((member) => member.userID === fromID) &&
-      chat.members.some((member) => member.userID === targetID)
-  );
-
-  if (privateChat) {
-    return privateChat;
-  }
-
-  // get the target user info
-  const targetUser = await db
+export const findOrCreateDirectChat = async (
+  fromID: number,
+  targetID: number
+) => {
+  // const searchResult = await db
+  // First, find if a direct chat already exists between the two users
+  const searchResult = await db
     .select()
-    .from(users)
-    .where(eq(users.id, targetID));
-
-  // If no existing chat, create a new one
-  const newChat = await db.transaction(async (tx) => {
-    const [insertedChat] = await tx
-      .insert(chats)
-      .values({
-        name: getFullName(targetUser[0]),
-      })
-      .returning();
-
-    await tx.insert(chatMembers).values([
-      { chatID: insertedChat.id, userID: fromID },
-      { chatID: insertedChat.id, userID: targetID },
-    ]);
-
-    return insertedChat;
-  });
-
-  return newChat;
+    .from(directChats)
+    .where(
+      and(
+        // Check if both users are members of the same chat
+        inArray(
+          directChats.id,
+          db
+            .select({ chatID: directChatMembers.chatID })
+            .from(directChatMembers)
+            .where(inArray(directChatMembers.userID, [fromID, targetID]))
+            .groupBy(directChatMembers.chatID)
+          // .having(s('count(*) = 2')) // Ensure exactly 2 members (the two users)
+        )
+      )
+    )
+    .limit(1);
+  console.log('we found ++++++++++++++++++', searchResult);
+  if (searchResult.length > 0) {
+    return searchResult[0].id;
+  }
+  const newChat = await db.insert(directChats).values({}).returning();
+  await db.insert(directChatMembers).values([
+    { chatID: newChat[0].id, userID: fromID },
+    { chatID: newChat[0].id, userID: targetID },
+  ]);
+  return newChat[0].id;
+  // });
+  // const searchResult = await db.query.directChats.findFirst({
+  //   with: {
+  //     members: {
+  //       where: (fields, { inArray }) =>
+  //         inArray(fields.userID, [fromID, targetID]),
+  //     },
+  //   },
+  // });
+  // console.log('result =============', searchResult);
+  // return searchResult?.id;
 };
+
+// export const findOrCreateChat = async (fromID: number, targetID: number) => {
+//   // Find chats where both users are members
+//   const existingChats = await db.query.chats.findMany({
+//     with: {
+//       members: true,
+//     },
+//     // where: (chat, { eq }) => eq(sql`array_length(${chat.members}, 1)`, 2),
+//   });
+
+//   // Filter to find a chat with exactly these two users
+//   const privateChat = existingChats.find(
+//     (chat) =>
+//       chat.members.length === 2 &&
+//       chat.members.some((member) => member.userID === fromID) &&
+//       chat.members.some((member) => member.userID === targetID)
+//   );
+
+//   if (privateChat) {
+//     return privateChat;
+//   }
+
+//   // get the target user info
+//   const targetUser = await db
+//     .select()
+//     .from(users)
+//     .where(eq(users.id, targetID));
+
+//   // If no existing chat, create a new one
+//   const newChat = await db.transaction(async (tx) => {
+//     const [insertedChat] = await tx
+//       .insert(chats)
+//       .values({
+//         name: getFullName(targetUser[0]),
+//       })
+//       .returning();
+
+//     await tx.insert(chatMembers).values([
+//       { chatID: insertedChat.id, userID: fromID },
+//       { chatID: insertedChat.id, userID: targetID },
+//     ]);
+
+//     return insertedChat;
+//   });
+
+//   return newChat;
+// };
 
 // export const findOrCreateChat = async (fromID: number, toID: number) => {
 //   const existingchat = await db.query.chats.findFirst({
