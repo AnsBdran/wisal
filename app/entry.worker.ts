@@ -30,7 +30,7 @@ self.addEventListener('activate', (event) => {
 
 // ++++++++++++++++++++++++++++++++++++
 // added by anas
-const version = 'v1';
+const version = 'v2';
 
 const DOCUMENT_CACHE_NAME = 'document-cache';
 const ASSET_CACHE_NAME = 'asset-cache';
@@ -38,7 +38,7 @@ const DATA_CACHE_NAME = 'data-cache';
 
 const documentCache = new EnhancedCache(DOCUMENT_CACHE_NAME, {
   version,
-  strategy: 'NetworkFirst',
+  strategy: 'CacheFirst',
   strategyOptions: {
     maxEntries: 64,
   },
