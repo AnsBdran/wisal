@@ -79,7 +79,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const { t } = useTranslation();
   // useChangeLanguage(locale);
   useSWEffect();
-  useNetworkConnection();
+  // useNetworkConnection();
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <head>

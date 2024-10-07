@@ -69,10 +69,10 @@ export const ChatFooter = ({ chatID }: { chatID: string }) => {
         content: JSON.stringify(uploadedData.map((img) => img.secureURL!)),
         chatType: params.type!,
         chatID,
+      },
+      {
+        method: 'POST',
       }
-      // {
-      //   method: 'POST',
-      // }
     );
   };
 

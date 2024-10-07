@@ -8,7 +8,7 @@ export const loader = () => {
       name: 'وصال',
       start_url: '/feed',
       display: 'standalone',
-      background_color: '#d3d7dd',
+      background_color: '#1f1f1f',
       theme_color: '#c34138',
       icons: [
         {
