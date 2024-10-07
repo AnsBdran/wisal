@@ -4,8 +4,8 @@ import { json } from '@remix-run/node';
 export const loader = () => {
   return json(
     {
-      short_name: 'Wisal',
-      name: 'Wisal',
+      short_name: 'وصال',
+      name: 'وصال',
       start_url: '/feed',
       display: 'standalone',
       background_color: '#d3d7dd',

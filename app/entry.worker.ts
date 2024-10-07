@@ -1,11 +1,14 @@
 /// <reference lib="WebWorker" />
 
 import {
+  clearUpOldCaches,
   DefaultFetchHandler,
   EnhancedCache,
   isDocumentRequest,
   isLoaderRequest,
   Logger,
+  MessageHandler,
+  SkipWaitHandler,
 } from '@remix-pwa/sw';
 
 export {};
@@ -18,14 +21,42 @@ declare let self: ServiceWorkerGlobalScope;
 
 self.addEventListener('install', (event) => {
   logger.log('Service worker installed');
-
-  event.waitUntil(self.skipWaiting());
+  event.waitUntil(
+    Promise.all([
+      assetCache.preCacheUrls(
+        self.__workerManifest.assets.filter(
+          (url) => !url.endsWith('.map') && !url.endsWith('.js')
+        )
+      ),
+      self.skipWaiting(),
+    ])
+  );
 });
 
 self.addEventListener('activate', (event) => {
   logger.log('Service worker activated');
+  event.waitUntil(
+    Promise.all([
+      clearUpOldCaches(
+        [DOCUMENT_CACHE_NAME, DATA_CACHE_NAME, ASSET_CACHE_NAME],
+        version
+      ),
+      self.clients.claim(),
+    ])
+  );
 
   event.waitUntil(self.clients.claim());
+});
+
+const skipHandler = new SkipWaitHandler();
+
+self.addEventListener('message', (event: ExtendableMessageEvent) => {
+  event.waitUntil(
+    Promise.all([
+      // new MessageHandler(event).handleMessage(event),
+      skipHandler.handleMessage(event),
+    ])
+  );
 });
 
 // ++++++++++++++++++++++++++++++++++++

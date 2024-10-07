@@ -24,6 +24,7 @@
     "@mantine/hooks": "^7.13.1",
     "@mantine/modals": "^7.13.1",
     "@mantine/notifications": "^7.13.1",
+    "@remix-pwa/client": "^3.0.7",
     "@remix-pwa/sw": "^3.0.10",
     "@remix-pwa/worker-runtime": "^2.1.4",
     "@remix-run/node": "^2.12.1",

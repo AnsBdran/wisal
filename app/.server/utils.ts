@@ -34,28 +34,21 @@ export const findOrCreateDirectChat = async (
 ) => {
   // const searchResult = await db
   // First, find if a direct chat already exists between the two users
-  const searchResult = await db
+
+  const fromChats = await db
     .select()
-    .from(directChats)
-    .where(
-      and(
-        // Check if both users are members of the same chat
-        inArray(
-          directChats.id,
-          db
-            .select({ chatID: directChatMembers.chatID })
-            .from(directChatMembers)
-            .where(inArray(directChatMembers.userID, [fromID, targetID]))
-            .groupBy(directChatMembers.chatID)
-          // .having(s('count(*) = 2')) // Ensure exactly 2 members (the two users)
-        )
-      )
-    )
-    .limit(1);
-  console.log('we found ++++++++++++++++++', searchResult);
-  if (searchResult.length > 0) {
-    return searchResult[0].id;
-  }
+    .from(directChatMembers)
+    .where(eq(directChatMembers.userID, fromID));
+  const targetChats = await db
+    .select()
+    .from(directChatMembers)
+    .where(eq(directChatMembers.userID, targetID));
+  const commonChat = fromChats.find((fromChat) =>
+    targetChats.some((targetChat) => targetChat.chatID === fromChat.chatID)
+  );
+
+  if (commonChat) return commonChat.chatID;
+
   const newChat = await db.insert(directChats).values({}).returning();
   await db.insert(directChatMembers).values([
     { chatID: newChat[0].id, userID: fromID },

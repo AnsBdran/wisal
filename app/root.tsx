@@ -35,6 +35,7 @@ import { ManifestLink, useSWEffect } from '@remix-pwa/sw';
 import i18next from './services/i18n.server';
 import { authenticateOrToast, getUserLocale } from './.server/utils';
 import { UserSessionContextProvider } from './lib/contexts/user-session';
+import { useNetworkConnection } from './lib/hooks/use-network-connection';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const locale = await getUserLocale(request);
@@ -78,6 +79,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const { t } = useTranslation();
   // useChangeLanguage(locale);
   useSWEffect();
+  useNetworkConnection();
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <head>

@@ -41,6 +41,9 @@ importers:
       '@mantine/notifications':
         specifier: ^7.13.1
         version: 7.13.1(@mantine/core@7.13.1(@mantine/hooks@7.13.1(react@18.3.1))(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.13.1(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@remix-pwa/client':
+        specifier: ^3.0.7
+        version: 3.0.7
       '@remix-pwa/sw':
         specifier: ^3.0.10
         version: 3.0.10(@remix-run/dev@2.12.1(@remix-run/react@2.12.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2))(@remix-run/serve@2.12.1(typescript@5.6.2))(@types/node@22.7.4)(sugarss@4.0.1(postcss@8.4.47))(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.4)(sugarss@4.0.1(postcss@8.4.47))))(@remix-run/react@2.12.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2)
@@ -1269,6 +1272,10 @@ packages:
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
+
+  '@remix-pwa/client@3.0.7':
+    resolution: {integrity: sha512-xTL3I9gSsQ6eI4MRFrII9VS4Axb2FiTFN3k6BRfd2WHJLK29QxcfweoWPNjwZJxge8Bv21IUX4rHK6KZz8awoA==}
+    engines: {node: '>=14.0.0'}
 
   '@remix-pwa/dev@3.1.0':
     resolution: {integrity: sha512-V/C5ae2NZtaxxu74769WeLpS4WAZtDY2k6B7BQKOCeqg0kFIIjqGegEUpitUHfmSnUkECHiOrvCs2iiTOF1E8A==}
@@ -5565,6 +5572,8 @@ snapshots:
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
+
+  '@remix-pwa/client@3.0.7': {}
 
   '@remix-pwa/dev@3.1.0(@remix-run/dev@2.12.1(@remix-run/react@2.12.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2))(@remix-run/serve@2.12.1(typescript@5.6.2))(@types/node@22.7.4)(sugarss@4.0.1(postcss@8.4.47))(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.4)(sugarss@4.0.1(postcss@8.4.47))))(esbuild@0.19.12)(rollup@4.23.0)':
     dependencies:

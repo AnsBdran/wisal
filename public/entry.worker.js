@@ -68,7 +68,17 @@ const _Logger = class _Logger {
 };
 __publicField(_Logger, "defaultOptions", { prefix: "remix-pwa", styles: { debug: { background: "#7f8c8d", color: "white", "border-radius": "0.5em", "font-weight": "bold", padding: "2px 0.5em" }, info: { background: "#3498db", color: "white", "border-radius": "0.5em", "font-weight": "bold", padding: "2px 0.5em" }, log: { background: "#2ecc71", color: "white", "border-radius": "0.5em", "font-weight": "bold", padding: "2px 0.5em" }, warn: { background: "#f39c12", color: "white", "border-radius": "0.5em", "font-weight": "bold", padding: "2px 0.5em" }, error: { background: "#c0392b", color: "white", "border-radius": "0.5em", "font-weight": "bold", padding: "2px 0.5em" }, groupCollapsed: { background: "#3498db", color: "white", "border-radius": "0.5em", "font-weight": "bold", padding: "2px 0.5em" }, groupEnd: { background: null, color: "white", "border-radius": "0.5em", "font-weight": "bold", padding: "2px 0.5em" } }, logLevel: "debug", isProductionEnv: false });
 let Logger = _Logger;
-new Logger();
+const logger$1 = new Logger();
+const clearUpOldCaches = async (e, c) => (c && (e = e.map((e2) => `${e2}-${c}`)), caches.keys().then((c2) => Promise.all([e.forEach((e2) => {
+  const { cacheActualName: a } = getCacheNameAndVersion(e2);
+  c2.filter((c3) => c3.startsWith(a) && c3 !== e2).forEach((e3) => {
+    caches.delete(e3);
+  });
+})])));
+const getCacheNameAndVersion = (e) => {
+  const c = e.split("-"), a = c.pop(), t = c.length - 1;
+  return { cacheActualName: c.slice(0, t).join("-"), version: a };
+};
 function getAugmentedNamespace(n) {
   if (n.__esModule) return n;
   var f = n.default;
@@ -104,6 +114,34 @@ function isDocumentRequest(e) {
   return isMethod$1(e, ["get"]) && "navigate" === e.mode;
 }
 const isHttpRequest = (e) => e instanceof Request ? e.url.startsWith("http") : e.toString().startsWith("http");
+const _MessageHandler = class _MessageHandler {
+  constructor(e) {
+    __publicField(this, "eventName");
+    this.eventName = e;
+  }
+  bind(e) {
+    _MessageHandler.messageHandlers[this.eventName] = e;
+  }
+  async handleMessage(e) {
+    const { data: s } = e;
+    if ("object" == typeof s && s.type && _MessageHandler.messageHandlers[s.type]) try {
+      await _MessageHandler.messageHandlers[s.type](e);
+    } catch (e2) {
+      logger$1.error(`Error handling message of type ${s.type}:`, e2);
+    }
+  }
+};
+__publicField(_MessageHandler, "messageHandlers", {});
+let MessageHandler = _MessageHandler;
+class SkipWaitHandler extends MessageHandler {
+  constructor() {
+    super("SKIP_WAITING"), this.bind(this.skipWaiting.bind(this));
+  }
+  async skipWaiting(s) {
+    const { data: i } = s;
+    "SKIP_WAITING" === i.type && self.skipWaiting();
+  }
+}
 const CACHE_TIMESTAMP_HEADER = "sw-cache-timestamp";
 class BaseStrategy {
   constructor(e, t = { maxEntries: 50, matchOptions: {} }) {
@@ -4771,19 +4809,46 @@ const logger = new Logger({
 });
 self.addEventListener("install", (event) => {
   logger.log("Service worker installed");
-  event.waitUntil(self.skipWaiting());
+  event.waitUntil(
+    Promise.all([
+      assetCache.preCacheUrls(
+        self.__workerManifest.assets.filter(
+          (url) => !url.endsWith(".map") && !url.endsWith(".js")
+        )
+      ),
+      self.skipWaiting()
+    ])
+  );
 });
 self.addEventListener("activate", (event) => {
   logger.log("Service worker activated");
+  event.waitUntil(
+    Promise.all([
+      clearUpOldCaches(
+        [DOCUMENT_CACHE_NAME, DATA_CACHE_NAME, ASSET_CACHE_NAME],
+        version
+      ),
+      self.clients.claim()
+    ])
+  );
   event.waitUntil(self.clients.claim());
 });
-const version = "v1";
+const skipHandler = new SkipWaitHandler();
+self.addEventListener("message", (event) => {
+  event.waitUntil(
+    Promise.all([
+      // new MessageHandler(event).handleMessage(event),
+      skipHandler.handleMessage(event)
+    ])
+  );
+});
+const version = "v2";
 const DOCUMENT_CACHE_NAME = "document-cache";
 const ASSET_CACHE_NAME = "asset-cache";
 const DATA_CACHE_NAME = "data-cache";
 const documentCache = new EnhancedCache(DOCUMENT_CACHE_NAME, {
   version,
-  strategy: "NetworkFirst",
+  strategy: "CacheFirst",
   strategyOptions: {
     maxEntries: 64
   }
@@ -5200,20 +5265,20 @@ const assets = [
   "/icons/apple-splash-828-1792.jpg",
   "/icons/manifest-icon-192.maskable.png",
   "/icons/manifest-icon-512.maskable.png",
-  "/locales/ar/common.json",
-  "/locales/ar/dashboard.json",
-  "/locales/ar/feed.json",
-  "/locales/ar/form.json",
-  "/locales/ar/messanger.json",
-  "/locales/ar/settings.json",
-  "/locales/ar/suggestions.json",
   "/locales/en/common.json",
   "/locales/en/dashboard.json",
   "/locales/en/feed.json",
   "/locales/en/form.json",
   "/locales/en/messanger.json",
   "/locales/en/settings.json",
-  "/locales/en/suggestions.json"
+  "/locales/en/suggestions.json",
+  "/locales/ar/common.json",
+  "/locales/ar/dashboard.json",
+  "/locales/ar/feed.json",
+  "/locales/ar/form.json",
+  "/locales/ar/messanger.json",
+  "/locales/ar/settings.json",
+  "/locales/ar/suggestions.json"
 ];
 const routes = {
   "root": {

@@ -54,7 +54,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       const fromID = searchParams.get('fromID');
       const toID = searchParams.get('toID');
       const chatID = await findOrCreateDirectChat(Number(fromID), Number(toID));
-      return redirect(`/messenger/${chatID}`);
+      console.log('we found', chatID);
+      throw redirect(`/messenger/${chatID}`);
     }
     default:
       return null;
