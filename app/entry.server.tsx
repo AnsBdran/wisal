@@ -153,7 +153,6 @@ import { I18nextProvider, initReactI18next } from 'react-i18next';
 import Backend from 'i18next-fs-backend';
 import i18n from './services/i18n'; // your i18n configuration file
 import { resolve } from 'node:path';
-import { getUserLocale } from './.server/utils';
 
 const ABORT_DELAY = 5000;
 
@@ -168,8 +167,7 @@ export default async function handleRequest(
     : 'onShellReady';
 
   let instance = createInstance();
-  // let lng = await i18next.getLocale(request);
-  let lng = await getUserLocale(request);
+  let lng = await i18next.getLocale(request);
   let ns = i18next.getRouteNamespaces(remixContext);
 
   await instance

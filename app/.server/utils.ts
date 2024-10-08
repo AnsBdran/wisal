@@ -185,11 +185,9 @@ export const createEventStream = (request: Request, eventName: string) => {
 
 export const authenticateOrToast = async (request: Request) => {
   const user = await authenticator.isAuthenticated(request);
-  const locale = await getUserLocale(request);
+  // const locale = await getUserLocale(request);
 
-  const t = await i18next.getFixedT(locale, 'common', {
-    lng: locale,
-  });
+  const t = await i18next.getFixedT(request);
 
   const feedRedirect = redirectWithInfo('/feed', {
     message: t('you_are_unauthorized'),

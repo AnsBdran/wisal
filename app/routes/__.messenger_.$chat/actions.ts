@@ -13,7 +13,7 @@ import styles from './chat.module.css';
 import { ReactNode, useEffect, useRef } from 'react';
 import { ChatFooter, ChatHeader, Message } from './components';
 import { db } from '~/.server/db';
-import { messages } from '~/.server/db/schema';
+import { chats, messages } from '~/.server/db/schema';
 import { eq } from 'drizzle-orm';
 import { ElementScrollRestoration } from '@epic-web/restore-scroll';
 import { emitter } from '~/services/emitter.server';
@@ -62,6 +62,10 @@ export const sendMessage = async (
       })) as []
     );
   }
+  await db
+    .update(chats)
+    .set({ lastMessageAt: new Date() })
+    .where(eq(chats.id, chatID));
   emitter.emit(`${params.chat}`);
   return json({ action: 'added' });
 };

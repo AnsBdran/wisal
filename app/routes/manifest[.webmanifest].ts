@@ -8,8 +8,9 @@ export const loader = () => {
       name: 'وصال',
       start_url: '/feed',
       display: 'standalone',
-      background_color: '#1f1f1f',
-      theme_color: '#c34138',
+      background_color: '#212529',
+      theme_color: '#c3fae8',
+
       icons: [
         {
           src: '/icons/manifest-icon-192.maskable.png',

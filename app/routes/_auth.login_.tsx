@@ -26,9 +26,9 @@ import { getUserLocale, spreadRecordIntoSession } from '~/.server/utils';
 import { redirectWithSuccess } from 'remix-toast';
 import bcrypt from 'bcrypt';
 
-// export const handle = {
-//   i18n: 'auth',
-// };
+export const handle = {
+  i18n: 'form',
+};
 
 const Login = () => {
   const { t } = useTranslation('form');
@@ -81,12 +81,11 @@ const Login = () => {
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const submission = parseWithZod(formData, { schema: loginSchema });
-  const locale = await getUserLocale(request);
+  const t = await i18next.getFixedT(request, 'form');
+  // const locale = await getUserLocale(request);
   if (submission.status !== 'success') {
     return submission.reply();
   }
-
-  const t = await i18next.getFixedT(locale, 'form');
 
   const userRecord = await db.query.users.findFirst({
     where: ({ username }, op) => op.eq(username, submission.value.username),
@@ -95,26 +94,25 @@ export async function action({ request }: ActionFunctionArgs) {
     },
   });
 
-  
   // return if there is no matching user
   if (!userRecord) {
     return submission.reply({
       formErrors: [t('credentials_invalid')],
     });
   }
-  
+
   const isValidPassword = await bcrypt.compare(
     submission.value.password,
-    userRecord.password,
+    userRecord.password
   );
 
-  console.log('is it valid', isValidPassword)
+  console.log('is it valid', isValidPassword);
 
-if (!isValidPassword) {
-  return submission.reply({
-    formErrors: [t('credentials_invalid')]
-  })
-}
+  if (!isValidPassword) {
+    return submission.reply({
+      formErrors: [t('credentials_invalid')],
+    });
+  }
 
   const session = await getSession(request.headers.get('Cookie'));
   session.set(authenticator.sessionKey, spreadRecordIntoSession(userRecord));

@@ -53,6 +53,10 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   });
 };
 
+export const handle = {
+  i18n: ['common', 'feed', 'form'],
+};
+
 const Feed = () => {
   const { posts, user } = useLoaderData<typeof loader>();
   const { t } = useTranslation('feed');
@@ -85,7 +89,10 @@ const Feed = () => {
     <>
       <Stack hidden={posts.count === 0}>
         <Group justify='end'>
-          <ActionIcon onClick={toggleIntro}>
+          <ActionIcon
+            onClick={toggleIntro}
+            variant={introOpened ? 'outline' : 'filled'}
+          >
             <Icon icon={icons.info} />
           </ActionIcon>
           <ActionIcon onClick={postFormOpen}>

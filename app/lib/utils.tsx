@@ -36,9 +36,17 @@ export const fromNow = (date: string, locale: string) => {
   // return dayjs(date).locale('es').fromNow()
 };
 
-export const getProfileInfo = (user: UserRecord, sm?: boolean) => {
+export const getProfileInfo = (
+  user: UserRecord,
+  { sm, reverse }: { sm?: boolean; reverse?: boolean } = {}
+) => {
   return (
-    <Group gap='xs'>
+    <Group
+      gap='xs'
+      style={{
+        flexDirection: reverse ? 'row-reverse' : 'row',
+      }}
+    >
       {user.role !== 'super_admin' ? (
         <Avatar
           src={user.profileImage}

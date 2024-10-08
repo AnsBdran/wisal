@@ -4842,7 +4842,7 @@ self.addEventListener("message", (event) => {
     ])
   );
 });
-const version = "v2";
+const version = "v3";
 const DOCUMENT_CACHE_NAME = "document-cache";
 const ASSET_CACHE_NAME = "asset-cache";
 const DATA_CACHE_NAME = "data-cache";
@@ -5226,8 +5226,10 @@ const route23 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePrope
 const assets = [
   "/dome.jpg",
   "/entry.worker.js",
+  "/favicon.png",
   "/favicon.svg",
   "/logo.png",
+  "/logo.svg",
   "/icons/apple-icon-180.png",
   "/icons/apple-splash-1125-2436.jpg",
   "/icons/apple-splash-1136-640.jpg",

@@ -8,5 +8,6 @@ export const userPrefs = createCookieSessionStorage({
     name: 'user-prefs',
     sameSite: 'lax',
     path: '/',
+    maxAge: 60 * 60 * 24 * 90,
   },
 });

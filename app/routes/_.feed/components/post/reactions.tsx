@@ -131,9 +131,9 @@ export const ReactionsStats = ({
             label={<Icon icon={getReactionIconData(r.type).icon} />}
             color='transparent'
             size={24}
-          >{getProfileInfo(r.user)}
+          >
+            {getProfileInfo(r.user)}
           </Indicator>
-
         </Group>
         {/* <Group>
           <Indicator
@@ -157,78 +157,83 @@ export const ReactionsStats = ({
 
   return (
     <>
-        <Modal
-          opened={opened}
-          onClose={close}
-          title={t('all_post_reactions')}
-          // classNames={{ root: 'overflow-hidden' }}
-          >
-          {reactions.length ? (
-            <>
-          <SegmentedControl
-            fullWidth
-            onChange={(v) => setType(v)}
-            styles={{
-              label: {
-                height: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              },
-            }}
-            data={[
-              {
-                label: (
-                  <Center>
-                    <Text>{t('all')}</Text>
-                  </Center>
-                ),
-                value: 'all',
-              },
-              ...REACTIONS.filter((type) =>
-                reactions.map((r) => r.type).includes(type)
-              ).map((r) => ({
-                value: r,
-                label: (
-                  <Center>
-                    <Text>
-                      <Indicator
-                        color='transparent'
-                        position='bottom-start'
-                        label={
-                          reactions.filter((reaction) => reaction.type === r)
-                            .length
-                        }
-                      >
-                        <Icon
-                          style={{ flex: 1 }}
-                          icon={getReactionIconData(r).icon}
-                          color={getReactionIconData(r).color}
-                        />
-                      </Indicator>
-                    </Text>
-                  </Center>
-                ),
-              })),
-            ]}
-            flex={1}
-          />
-          <ScrollAreaAutosize>
-            <Stack py='xl' px='sm'>
-              {type === 'all'
-                ? reactions.map((r) => <ReactionStat r={r} key={r.id} />)
-                : reactions
-                    .filter((r) => r.type === type)
-                    .map((r) => <ReactionStat r={r} key={r.id} />)}
-            </Stack>
-          </ScrollAreaAutosize>
+      <Modal
+        opened={opened}
+        onClose={close}
+        title={t('all_post_reactions')}
+        styles={{
+          content: {
+            overflow: 'hidden',
+          },
+        }}
+        // classNames={{ root: 'overflow-hidden' }}
+      >
+        {reactions.length ? (
+          <>
+            <SegmentedControl
+              fullWidth
+              onChange={(v) => setType(v)}
+              styles={{
+                label: {
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                },
+              }}
+              data={[
+                {
+                  label: (
+                    <Center>
+                      <Text>{t('all')}</Text>
+                    </Center>
+                  ),
+                  value: 'all',
+                },
+                ...REACTIONS.filter((type) =>
+                  reactions.map((r) => r.type).includes(type)
+                ).map((r) => ({
+                  value: r,
+                  label: (
+                    <Center>
+                      <Text>
+                        <Indicator
+                          color='transparent'
+                          position='bottom-start'
+                          label={
+                            reactions.filter((reaction) => reaction.type === r)
+                              .length
+                          }
+                        >
+                          <Icon
+                            style={{ flex: 1 }}
+                            icon={getReactionIconData(r).icon}
+                            color={getReactionIconData(r).color}
+                          />
+                        </Indicator>
+                      </Text>
+                    </Center>
+                  ),
+                })),
+              ]}
+              flex={1}
+            />
+            <ScrollAreaAutosize mah={500} py='xl'>
+              <Stack py='xl' px='sm'>
+                {type === 'all'
+                  ? reactions.map((r) => <ReactionStat r={r} key={r.id} />)
+                  : reactions
+                      .filter((r) => r.type === type)
+                      .map((r) => <ReactionStat r={r} key={r.id} />)}
+              </Stack>
+            </ScrollAreaAutosize>
           </>
-      ) : (
-        <Alert title={t('no_reactions_yet')}>
-          {t('no_reactions_yet_description')}
-        </Alert>
-      )}
-        </Modal>
+        ) : (
+          <Alert title={t('no_reactions_yet')}>
+            {t('no_reactions_yet_description')}
+          </Alert>
+        )}
+      </Modal>
     </>
   );
-}
+};

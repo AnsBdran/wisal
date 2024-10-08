@@ -57,7 +57,7 @@ export const GroupChat = ({
       className={styles.chatContainer}
     >
       <Group className={styles.upperRow}>
-        <Indicator color='teal'>
+        <Indicator color='teal' zIndex={4}>
           <Avatar
             src={chatGroupMember.chat.image}
             color='initials'

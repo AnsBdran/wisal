@@ -5,10 +5,9 @@ import { getUserLocale } from '~/.server/utils';
 import { destroySession, getSession } from '~/services/session.server';
 
 export const action: ActionFunction = async ({ request }) => {
-  const locale = await getUserLocale(request);
-  const t = await i18next.getFixedT(locale, 'common', {
-    lng: locale,
-  });
+  // const locale = await i18next.getLocale(request)
+  // const locale = await getUserLocale(request);
+  const t = await i18next.getFixedT(request);
   const session = await getSession(request.headers.get('Cookie'));
 
   return redirectWithSuccess(

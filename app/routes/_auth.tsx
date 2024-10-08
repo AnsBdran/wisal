@@ -1,7 +1,11 @@
 import { Container, AppShell, Title, Card, Tabs } from '@mantine/core';
 import { Outlet, useLocation, useNavigate } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
-import Header from '~/lib/components/main/header/index';
+
+export const handle = {
+  // this is important to prevent flickering
+  i18n: 'common',
+};
 
 const AuthLayout = () => {
   const { t } = useTranslation();

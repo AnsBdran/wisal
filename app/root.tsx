@@ -33,17 +33,14 @@ import { ManifestLink, useSWEffect } from '@remix-pwa/sw';
 
 // import { getUserLocale } from './.server/utils';
 import i18next from './services/i18n.server';
-import { authenticateOrToast, getUserLocale } from './.server/utils';
 import { UserSessionContextProvider } from './lib/contexts/user-session';
-import { useNetworkConnection } from './lib/hooks/use-network-connection';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const locale = await getUserLocale(request);
   const { toast, headers } = await getToast(request);
-  const t = await i18next.getFixedT(locale, 'common');
-  // const t = await i18next.getFixedT(locale, 'common');
+  const t = await i18next.getFixedT(request);
   const title = t('app_title');
   const description = t('app_description');
+  const locale = await i18next.getLocale(request);
   return json(
     {
       toast,
@@ -67,7 +64,9 @@ export const meta: MetaFunction = ({ data }) =>
   };
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const { toast, locale } = useLoaderData<typeof loader>();
+  const data = useLoaderData<typeof loader>();
+  console.log('root loader returned', data);
+  const { toast, locale } = data;
   useEffect(() => {
     if (toast) {
       notifications.show({
@@ -77,8 +76,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
     }
   }, [toast]);
   const { t } = useTranslation();
-  // useChangeLanguage(locale);
+  useChangeLanguage(locale);
   useSWEffect();
+
   // useNetworkConnection();
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>

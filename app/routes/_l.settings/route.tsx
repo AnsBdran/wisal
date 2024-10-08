@@ -90,8 +90,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const user = await authenticator.isAuthenticated(request);
   const userID = Number(user?.id);
   const intent = formData.get('intent');
-  const locale = await getUserLocale(request);
-  const t = await i18next.getFixedT(locale, 'settings', { lng: locale });
+  // const locale = await getUserLocale(request);
+  const t = await i18next.getFixedT(request, 'settings');
   const response = await authenticateOrToast(request);
   if (!response.user) return response.loginRedirect;
 

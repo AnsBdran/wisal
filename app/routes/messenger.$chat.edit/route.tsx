@@ -99,8 +99,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const chatID = fd.get('chatID') as string;
   const userID = Number(fd.get('userID'));
   const memberID = Number(fd.get('memberID'));
-  const locale = await getUserLocale(request);
-  const t = await i18next.getFixedT(locale);
+  // const locale = await getUserLocale(request);
+  const t = await i18next.getFixedT(request);
 
   switch (intent) {
     case INTENTS.removeChatMember: {

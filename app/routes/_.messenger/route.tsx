@@ -42,6 +42,10 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return json({ chats });
 };
 
+export const handle = {
+  i18n: ['common', 'messenger', 'form'],
+};
+
 const Messenger = () => {
   const { chats } = useLoaderData<typeof loader>();
   const { t } = useTranslation();

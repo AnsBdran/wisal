@@ -1,33 +1,16 @@
 import {
-  ActionIcon,
   Avatar,
   Box,
-  Button,
-  CopyButton,
   Drawer,
   Group,
-  Input,
-  Menu,
-  rem,
   ScrollArea,
   Stack,
   Text,
-  TextInput,
   Title,
 } from '@mantine/core';
-import styles from '../chat.module.css';
-import { SerializeFrom } from '@remix-run/node';
-import { loader } from '../route';
-import { fromNow, getProfileInfoText, getFullName } from '~/lib/utils';
 import { useTranslation } from 'react-i18next';
-import { Icon } from '@iconify/react/dist/iconify.js';
-import { icons } from '~/lib/icons';
-import { Link, useFetcher, useNavigate } from '@remix-run/react';
-import { INTENTS } from '~/lib/constants';
-import { act, useEffect, useState } from 'react';
-import { modals } from '@mantine/modals';
 import { ChatWithMembers } from '~/lib/types';
-
+import { getFullName, getProfileInfoText } from '~/lib/utils';
 export const ChatInfo = ({
   info,
   opened,
@@ -40,33 +23,36 @@ export const ChatInfo = ({
   const { t } = useTranslation('messanger');
   return (
     <Drawer.Root
-      style={{ overflow: 'hidden' }}
+      // style={{ overflow: 'hidden' }}
       opened={opened}
       onClose={onClose}
       position='bottom'
       size='xl'
       removeScrollProps={{
         enabled: false,
+        removeScrollBar: true,
       }}
     >
       <Drawer.Overlay />
-      <Drawer.Content>
+      <Drawer.Content style={{ overflow: 'hidden' }}>
         <Drawer.Header>
           <Drawer.Title>{t('chat_info')}</Drawer.Title>
           <Drawer.CloseButton />
         </Drawer.Header>
         <Drawer.Body>
-          <Stack>
+          <Stack bg={'indigo'}>
             <Group>
               <Text c='dimmed'>اسم المجموعة</Text>
               <Title order={3}>{info.name}</Title>
             </Group>
-            <Group>
+            <Text component={Group}>
               <Text c='dimmed'>وصف المجموعة</Text>
-              <Title order={3}>{info.bio}</Title>
-            </Group>
+              <Title order={3} style={{ textWrap: 'wrap' }}>
+                {info.bio}
+              </Title>
+            </Text>
             <Title order={3}>أعضاء المجموعة</Title>
-            <ScrollArea flex={1}>
+            <ScrollArea style={{ flexGrow: 1, flexBasis: 400 }}>
               <Stack>
                 {info.members.map((m) => (
                   // {info.chat.members.map((m) => (

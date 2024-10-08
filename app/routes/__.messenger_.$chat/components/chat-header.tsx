@@ -105,9 +105,11 @@ const ChatDirectHeader = ({
 }) => {
   const otherUser = chat.members.find((u) => u.userID !== userID);
   return (
-    <Group h='100%'>
+    <Group h='100%' justify='space-between'>
       <BackBtn />
-      {getProfileInfo(otherUser!.user)}
+      {getProfileInfo(otherUser!.user, {
+        reverse: true,
+      })}
     </Group>
   );
 };

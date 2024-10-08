@@ -7,6 +7,7 @@ import {
   Center,
   Container,
   Group,
+  Image,
   Menu,
   ThemeIcon,
   Title,
@@ -18,17 +19,24 @@ import { Icon } from '@iconify/react';
 import { UserRecord, UserSession } from '~/lib/types';
 import styles from './header.module.css';
 import { icons } from '~/lib/icons';
+// import Logo from '/favicon.svg';
+import Logo from '~/logo';
 
 const Header = ({ user }: { user?: UserSession }) => {
   const { i18n, t } = useTranslation();
   const { toggleColorScheme, colorScheme } = useMantineColorScheme();
   return (
-    <AppShellHeader>
+    <AppShellHeader zIndex={99}>
       <Container className='h-full '>
         <Group className='h-full justify-between'>
-          <Link to='/'>
-            <Title order={4}>{t('app_title')}</Title>
-          </Link>
+          <Center to='/' component={Link} h='100%' w={80} bg={'grapes'}>
+            {/* <Image
+              src='/logo.svg'
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            /> */}
+            <Logo />
+            {/* <Title order={4}>{t('app_title')}</Title> */}
+          </Center>
           <Group>
             {user ? (
               <Menu>
