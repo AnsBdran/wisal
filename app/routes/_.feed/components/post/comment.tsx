@@ -23,7 +23,12 @@ import { Icon } from '@iconify/react';
 import styles from './post.module.css';
 import { useTranslation } from 'react-i18next';
 import { useFetcher, Link, useActionData } from '@remix-run/react';
-import { fromNow, getProfileInfoText, getReactionIconData } from '~/lib/utils';
+import {
+  fromNow,
+  getFullName,
+  getProfileInfoText,
+  getReactionIconData,
+} from '~/lib/utils';
 import { SerializeFrom } from '@remix-run/node';
 import { loader } from '~/routes/_.feed/route';
 import { icons } from '~/lib/icons';
@@ -255,7 +260,7 @@ export const Comments = ({
                       <Avatar
                         radius='md'
                         src={comment.user.profileImage}
-                        name={getProfileInfoText(comment.user)}
+                        name={getFullName(comment.user)}
                         color='initials'
                         onClick={open}
                       />

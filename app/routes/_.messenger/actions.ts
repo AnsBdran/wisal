@@ -23,7 +23,7 @@ export const createChatGroup = async (fd: FormData, userID: number) => {
   await db
     .insert(chatMembers)
     .values(members.map((m) => ({ chatID: chat[0].id, userID: m })));
-  return redirectWithSuccess(`/messenger/group/${chat[0].id}`, {
+  return redirectWithSuccess(`/messenger/${chat[0].id}`, {
     message: 'chat_group_created_successfully',
     description: 'chat_group_created_successfully_description',
   });
