@@ -187,7 +187,7 @@ export const authenticateOrToast = async (request: Request) => {
   const user = await authenticator.isAuthenticated(request);
   // const locale = await getUserLocale(request);
 
-  const t = await i18next.getFixedT(request);
+  const t = await i18next.getFixedT(request, 'common');
 
   const feedRedirect = redirectWithInfo('/feed', {
     message: t('you_are_unauthorized'),
