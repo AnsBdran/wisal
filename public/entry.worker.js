@@ -5226,6 +5226,7 @@ const route23 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePrope
 const assets = [
   "/dome.jpg",
   "/entry.worker.js",
+  "/favicon.ico",
   "/favicon.png",
   "/favicon.svg",
   "/logo.png",
@@ -5267,20 +5268,20 @@ const assets = [
   "/icons/apple-splash-828-1792.jpg",
   "/icons/manifest-icon-192.maskable.png",
   "/icons/manifest-icon-512.maskable.png",
-  "/locales/ar/common.json",
-  "/locales/ar/dashboard.json",
-  "/locales/ar/feed.json",
-  "/locales/ar/form.json",
-  "/locales/ar/messanger.json",
-  "/locales/ar/settings.json",
-  "/locales/ar/suggestions.json",
   "/locales/en/common.json",
   "/locales/en/dashboard.json",
   "/locales/en/feed.json",
   "/locales/en/form.json",
   "/locales/en/messanger.json",
   "/locales/en/settings.json",
-  "/locales/en/suggestions.json"
+  "/locales/en/suggestions.json",
+  "/locales/ar/common.json",
+  "/locales/ar/dashboard.json",
+  "/locales/ar/feed.json",
+  "/locales/ar/form.json",
+  "/locales/ar/messanger.json",
+  "/locales/ar/settings.json",
+  "/locales/ar/suggestions.json"
 ];
 const routes = {
   "root": {

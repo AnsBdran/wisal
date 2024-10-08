@@ -29,7 +29,7 @@ const Header = ({ user }: { user?: UserSession }) => {
     <AppShellHeader zIndex={99}>
       <Container className='h-full '>
         <Group className='h-full justify-between'>
-          <Center to='/' component={Link} h='100%' w={80} bg={'grapes'}>
+          <Center to='/feed' component={Link} h='100%' w={80} bg={'grapes'}>
             {/* <Image
               src='/logo.svg'
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}

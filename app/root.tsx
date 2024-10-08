@@ -37,7 +37,7 @@ import { UserSessionContextProvider } from './lib/contexts/user-session';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { toast, headers } = await getToast(request);
-  const t = await i18next.getFixedT(request);
+  const t = await i18next.getFixedT(request, 'common');
   const title = t('app_title');
   const description = t('app_description');
   const locale = await i18next.getLocale(request);
