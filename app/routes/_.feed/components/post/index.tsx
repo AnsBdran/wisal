@@ -16,14 +16,10 @@ import styles from './post.module.css';
 import { Icon } from '@iconify/react';
 import { SerializeFrom } from '@remix-run/node';
 import { loader } from '~/routes/_.feed/route';
-import {
-  AllComments,
-  AddComment,
-  PostFooter,
-  Reactions,
-  ReactionsStats,
-} from './bits';
-import { fromNow, getProfileInfo, getProfileInfoText } from '~/lib/utils';
+import { Reactions, ReactionsStats } from './reactions';
+import { AllComments, AddComment } from './comment';
+import { PostFooter } from './post-footer';
+import { fromNow, getProfileInfo } from '~/lib/utils';
 import { useState } from 'react';
 import { icons } from '~/lib/icons';
 import { useFetcher } from '@remix-run/react';

@@ -26,6 +26,10 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return json({ user });
 };
 
+export const handle = {
+  i18n: 'common',
+};
+
 const MainLayout = () => {
   const { user } = useLoaderData<typeof loader>();
   const { t } = useTranslation();
@@ -58,25 +62,38 @@ const MainLayout = () => {
               </Group>
               <Box>
                 <Divider />
-                <Group mt='md'   justify='space-between'>
-
+                <Group mt='md' justify='space-between'>
                   {/* <Group  gap='xs' > */}
-                  <Text className='highlighted' c='dimmed' fz='xs'  >
-                    فكرة وتطوير: {' '}
-                    {/* <Icon icon={icons.leftArrow} /> */}
-                     <span >أنس بدران</span>
+                  <Text className='highlighted' c='dimmed' fz='xs'>
+                    فكرة وتطوير: {/* <Icon icon={icons.leftArrow} /> */}
+                    <span>أنس بدران</span>
                   </Text>
                   {/* <Icon icon={icons.starBadge} /> */}
- 
+
                   {/* </Group> */}
                   <Group gap={'xs'}>
-                    <ActionIcon variant='subtle' component='a' target='_blank' href='https://github.com/ansbdran'>
+                    <ActionIcon
+                      variant='subtle'
+                      component='a'
+                      target='_blank'
+                      href='https://github.com/ansbdran'
+                    >
                       <Icon icon={icons.github} />
                     </ActionIcon>
-                    <ActionIcon variant='subtle' component='a' target='_blank' href='https://t.me/AnsBdran'>
+                    <ActionIcon
+                      variant='subtle'
+                      component='a'
+                      target='_blank'
+                      href='https://t.me/AnsBdran'
+                    >
                       <Icon icon={icons.telegram} />
-                    </ActionIcon> 
-                    <ActionIcon variant='subtle' component='a' target='_blank' href='https://wa.me/+970597866163'>
+                    </ActionIcon>
+                    <ActionIcon
+                      variant='subtle'
+                      component='a'
+                      target='_blank'
+                      href='https://wa.me/+970597866163'
+                    >
                       <Icon icon={icons.whatsapp} />
                     </ActionIcon>
                   </Group>

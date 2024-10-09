@@ -3,6 +3,7 @@
   padding-inline: var(--mantine-spacing-md);
   width: 100%;
   border: 3px solid transparent;
+
   &:hover {
     border-color: light-dark(
       var(--mantine-color-blue-0),

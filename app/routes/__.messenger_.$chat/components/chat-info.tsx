@@ -20,7 +20,7 @@ export const ChatInfo = ({
   info: ChatWithMembers;
   onClose: () => void;
 }) => {
-  const { t } = useTranslation('messanger');
+  const { t } = useTranslation('messenger');
   return (
     <Drawer.Root
       // style={{ overflow: 'hidden' }}

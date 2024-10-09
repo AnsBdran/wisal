@@ -24,6 +24,10 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return json({ suggestions, user });
 };
 
+export const handle = {
+  i18n: 'suggestions',
+};
+
 const Suggestions = () => {
   const { suggestions, user } = useLoaderData<typeof loader>();
   const { t } = useTranslation('suggestions');

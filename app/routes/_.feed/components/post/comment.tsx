@@ -324,19 +324,4 @@ export const AllComments = ({ opened, close, comments, userID }) => {
       </Stack>
     </Modal>
   );
-  // return (
-  //   <Drawer.Root opened={opened} onClose={close} position='bottom'>
-  //     <Drawer.Overlay />
-  //     <Drawer.Content>
-  //       <Drawer.Header>
-  //         <Drawer.Title>{t('all_comments')}</Drawer.Title>
-  //       </Drawer.Header>
-  //       <Drawer.Body>
-  //         <Stack>
-  //           <Comments comments={comments} />
-  //         </Stack>
-  //       </Drawer.Body>
-  //     </Drawer.Content>
-  //   </Drawer.Root>
-  // );
 };

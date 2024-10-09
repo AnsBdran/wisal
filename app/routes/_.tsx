@@ -19,7 +19,7 @@ import Footer from '~/lib/components/main/footer';
 import { useTranslation } from 'react-i18next';
 import { LoaderFunction } from '@remix-run/node';
 import { HEADER_HEIGHT } from '~/lib/constants';
-import { Icon } from '@iconify/react/dist/iconify.js';
+import { Icon } from '@iconify/react';
 import { icons } from '~/lib/icons';
 import { useHeadroom } from '@mantine/hooks';
 import { authenticateOrToast } from '~/.server/utils';
@@ -27,10 +27,13 @@ import { useUserSessionContext } from '~/lib/contexts/user-session';
 import { useEffect } from 'react';
 
 export const loader: LoaderFunction = async ({ request }) => {
-  // const user = await authenticator.isAuthenticated(request);
   const { user, loginRedirect } = await authenticateOrToast(request);
   if (!user) return loginRedirect;
   return { user };
+};
+
+export const handle = {
+  i18n: 'common',
 };
 
 const MailLayout = () => {
@@ -53,7 +56,7 @@ const MailLayout = () => {
           // collapsed: !pinned,
           // offset: true,
         }}
-        footer={{ collapsed: true, height: 120 }}
+        // footer={{ collapsed: true, height: 120 }}
         px={{ base: 0, sm: 'sm' }}
         py='lg'
       >
@@ -102,9 +105,9 @@ const MailLayout = () => {
             </Tabs>
           </Container>
         </AppShell.Main>
-        <AppShell.Footer>
+        {/* <AppShell.Footer>
           <Footer />
-        </AppShell.Footer>
+        </AppShell.Footer> */}
       </AppShell>
     </>
   );

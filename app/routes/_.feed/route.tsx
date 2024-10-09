@@ -33,11 +33,12 @@ import { Icon } from '@iconify/react';
 import AppIntro from './components/app-intro';
 import { useUserSessionContext } from '~/lib/contexts/user-session';
 import { EditPost } from './components/post/edit';
+import { waiit } from '~/lib/utils';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const page = parseInt(url.searchParams.get('page') ?? '1');
-
+  // await waiit(5000);
   const { user, loginRedirect } = await authenticateOrToast(request);
   if (!user) return loginRedirect;
   console.log('user in feed loader is', user);

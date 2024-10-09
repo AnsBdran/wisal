@@ -22,9 +22,6 @@ import { icons } from '~/lib/icons';
 import { useDisclosure } from '@mantine/hooks';
 import { Comments } from './comment';
 
-export * from './comment';
-export * from './reactions';
-
 export const PostTags = ({ tags }: { tags: (typeof tag.$inferSelect)[] }) => {
   return (
     <div onClick={(e) => e.stopPropagation()}>
@@ -75,87 +72,87 @@ export const CopyContentBtn = ({ value }: { value: string }) => {
   );
 };
 
-export const PostFooter = ({
-  post,
-  onShowCommentsBtnClicked,
-  showCommentsBtnLoading,
-  onShowReactionsBtnClicked,
-  showReactionsBtnLoading,
-  userID,
-  opened,
-  toggle,
-}: {
-  post: SerializeFrom<typeof loader>['posts']['data'][0];
-  onShowCommentsBtnClicked: (e: unknown) => void;
-  showCommentsBtnLoading: boolean;
-  onShowReactionsBtnClicked: (e: unknown) => void;
-  showReactionsBtnLoading: boolean;
-  userID: number;
-  opened: boolean;
-  toggle: () => void;
-}) => {
-  // const [opened, { toggle }] = useDisclosure();
-  const theme = useMantineTheme();
-  const { t } = useTranslation();
-  return (
-    <>
-      <UnstyledButton
-        onClick={toggle}
-        className={styles.footer}
-        mt='lg'
-        // pt={'xl'}
-        style={{
-          marginTop: 'auto',
-        }}
-        bg={
-          opened
-            ? `light-dark(${theme.colors.gray[2]}, ${theme.colors.dark[9]})`
-            : undefined
-        }
-      >
-        <Group>
-          {/* copy button */}
-          {/* <PostTags
-            tags={post.tags.map((t) => t.tag) as (typeof tag.$inferSelect)[]}
-          /> */}
-          <CopyContentBtn value={post.content} />
-        </Group>
-        <Box>
-          <Button.Group opacity={0.7}>
-            <Button
-              onClick={onShowCommentsBtnClicked}
-              size='compact-sm'
-              loading={showCommentsBtnLoading}
-              loaderProps={{ type: 'dots' }}
-            >
-              {t('comments')}
-            </Button>
-            <Button
-              onClick={onShowReactionsBtnClicked}
-              size='compact-sm'
-              loading={showReactionsBtnLoading}
-              loaderProps={{
-                type: 'dots',
-              }}
-            >
-              {t('reactions')}
-            </Button>
-          </Button.Group>
-        </Box>
-      </UnstyledButton>
+// export const PostFooter = ({
+//   post,
+//   onShowCommentsBtnClicked,
+//   showCommentsBtnLoading,
+//   onShowReactionsBtnClicked,
+//   showReactionsBtnLoading,
+//   userID,
+//   opened,
+//   toggle,
+// }: {
+//   post: SerializeFrom<typeof loader>['posts']['data'][0];
+//   onShowCommentsBtnClicked: (e: unknown) => void;
+//   showCommentsBtnLoading: boolean;
+//   onShowReactionsBtnClicked: (e: unknown) => void;
+//   showReactionsBtnLoading: boolean;
+//   userID: number;
+//   opened: boolean;
+//   toggle: () => void;
+// }) => {
+//   // const [opened, { toggle }] = useDisclosure();
+//   const theme = useMantineTheme();
+//   const { t } = useTranslation();
+//   return (
+//     <>
+//       <UnstyledButton
+//         onClick={toggle}
+//         className={styles.footer}
+//         mt='lg'
+//         // pt={'xl'}
+//         style={{
+//           marginTop: 'auto',
+//         }}
+//         bg={
+//           opened
+//             ? `light-dark(${theme.colors.gray[2]}, ${theme.colors.dark[9]})`
+//             : undefined
+//         }
+//       >
+//         <Group>
+//           {/* copy button */}
+//           {/* <PostTags
+//             tags={post.tags.map((t) => t.tag) as (typeof tag.$inferSelect)[]}
+//           /> */}
+//           <CopyContentBtn value={post.content} />
+//         </Group>
+//         <Box>
+//           <Button.Group opacity={0.7}>
+//             <Button
+//               onClick={onShowCommentsBtnClicked}
+//               size='compact-sm'
+//               loading={showCommentsBtnLoading}
+//               loaderProps={{ type: 'dots' }}
+//             >
+//               {t('comments')}
+//             </Button>
+//             <Button
+//               onClick={onShowReactionsBtnClicked}
+//               size='compact-sm'
+//               loading={showReactionsBtnLoading}
+//               loaderProps={{
+//                 type: 'dots',
+//               }}
+//             >
+//               {t('reactions')}
+//             </Button>
+//           </Button.Group>
+//         </Box>
+//       </UnstyledButton>
 
-      <Collapse in={opened} className={styles.commentsContainer}>
-        <Comments comments={post.comments} userID={userID} />
-        <Button
-          w='100%'
-          onClick={onShowCommentsBtnClicked}
-          loading={showCommentsBtnLoading}
-          loaderProps={{ type: 'dots' }}
-          hidden={post.comments.length === 0}
-        >
-          {t('view_all_comments')}
-        </Button>
-      </Collapse>
-    </>
-  );
-};
+//       <Collapse in={opened} className={styles.commentsContainer}>
+//         <Comments comments={post.comments} userID={userID} />
+//         <Button
+//           w='100%'
+//           onClick={onShowCommentsBtnClicked}
+//           loading={showCommentsBtnLoading}
+//           loaderProps={{ type: 'dots' }}
+//           hidden={post.comments.length === 0}
+//         >
+//           {t('view_all_comments')}
+//         </Button>
+//       </Collapse>
+//     </>
+//   );
+// };

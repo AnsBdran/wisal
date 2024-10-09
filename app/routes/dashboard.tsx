@@ -9,7 +9,7 @@ import {
   useNavigate,
 } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
-import { authenticateOrToast, getUserLocale } from '~/.server/utils';
+import { authenticateOrToast } from '~/.server/utils';
 import Header from '~/lib/components/main/header';
 import { HEADER_HEIGHT } from '~/lib/constants';
 import { EditSuggestionContextProvider } from '~/lib/contexts/edit-suggestion';

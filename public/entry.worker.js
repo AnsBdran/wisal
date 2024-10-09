@@ -4842,13 +4842,13 @@ self.addEventListener("message", (event) => {
     ])
   );
 });
-const version = "v3";
+const version = "v4";
 const DOCUMENT_CACHE_NAME = "document-cache";
 const ASSET_CACHE_NAME = "asset-cache";
 const DATA_CACHE_NAME = "data-cache";
 const documentCache = new EnhancedCache(DOCUMENT_CACHE_NAME, {
   version,
-  strategy: "CacheFirst",
+  strategy: "NetworkFirst",
   strategyOptions: {
     maxEntries: 64
   }
@@ -5272,14 +5272,14 @@ const assets = [
   "/locales/ar/dashboard.json",
   "/locales/ar/feed.json",
   "/locales/ar/form.json",
-  "/locales/ar/messanger.json",
+  "/locales/ar/messenger.json",
   "/locales/ar/settings.json",
   "/locales/ar/suggestions.json",
   "/locales/en/common.json",
   "/locales/en/dashboard.json",
   "/locales/en/feed.json",
   "/locales/en/form.json",
-  "/locales/en/messanger.json",
+  "/locales/en/messenger.json",
   "/locales/en/settings.json",
   "/locales/en/suggestions.json"
 ];

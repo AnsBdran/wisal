@@ -22,7 +22,7 @@ import { db } from '~/.server/db';
 import { commitSession, getSession } from '~/services/session.server';
 import { icons } from '~/lib/icons';
 import i18next from '~/services/i18n.server';
-import { getUserLocale, spreadRecordIntoSession } from '~/.server/utils';
+import { spreadRecordIntoSession } from '~/.server/utils';
 import { redirectWithSuccess } from 'remix-toast';
 import bcrypt from 'bcrypt';
 
@@ -68,7 +68,7 @@ const Login = () => {
               color='red'
               icon={<Icon icon={icons.error} />}
             >
-              {form.errors}
+              {t(form.errors)}
             </Alert>
           )}
           <Button type='submit'>{t('login')}</Button>
@@ -81,8 +81,6 @@ const Login = () => {
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const submission = parseWithZod(formData, { schema: loginSchema });
-  const t = await i18next.getFixedT(request, 'form');
-  // const locale = await getUserLocale(request);
   if (submission.status !== 'success') {
     return submission.reply();
   }
@@ -97,7 +95,7 @@ export async function action({ request }: ActionFunctionArgs) {
   // return if there is no matching user
   if (!userRecord) {
     return submission.reply({
-      formErrors: [t('credentials_invalid')],
+      formErrors: ['credentials_invalid'],
     });
   }
 
@@ -110,13 +108,14 @@ export async function action({ request }: ActionFunctionArgs) {
 
   if (!isValidPassword) {
     return submission.reply({
-      formErrors: [t('credentials_invalid')],
+      formErrors: ['credentials_invalid'],
     });
   }
 
   const session = await getSession(request.headers.get('Cookie'));
   session.set(authenticator.sessionKey, spreadRecordIntoSession(userRecord));
 
+  const t = await i18next.getFixedT(request, 'form');
   return redirectWithSuccess(
     '/feed',
     {

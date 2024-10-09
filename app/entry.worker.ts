@@ -7,7 +7,6 @@ import {
   isDocumentRequest,
   isLoaderRequest,
   Logger,
-  MessageHandler,
   SkipWaitHandler,
 } from '@remix-pwa/sw';
 
@@ -61,7 +60,7 @@ self.addEventListener('message', (event: ExtendableMessageEvent) => {
 
 // ++++++++++++++++++++++++++++++++++++
 // added by anas
-const version = 'v3';
+const version = 'v4';
 
 const DOCUMENT_CACHE_NAME = 'document-cache';
 const ASSET_CACHE_NAME = 'asset-cache';
@@ -69,7 +68,7 @@ const DATA_CACHE_NAME = 'data-cache';
 
 const documentCache = new EnhancedCache(DOCUMENT_CACHE_NAME, {
   version,
-  strategy: 'CacheFirst',
+  strategy: 'NetworkFirst',
   strategyOptions: {
     maxEntries: 64,
   },

@@ -13,6 +13,7 @@ const i18next = new RemixI18Next({
         request.headers.get('Cookie')
       );
       const locale = userPrefsSession.get('locale');
+
       return locale === 'en' ? 'en' : 'ar';
     },
   },

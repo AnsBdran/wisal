@@ -55,6 +55,7 @@ export const GroupChat = ({
     <UnstyledButton
       onClick={() => navigate(`./${chatGroupMember.chatID}`)}
       className={styles.chatContainer}
+      component={Stack}
     >
       <Group className={styles.upperRow}>
         <Indicator color='teal' zIndex={4}>

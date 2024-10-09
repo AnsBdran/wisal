@@ -18,7 +18,6 @@ import NotFound from '~/lib/components/main/not-found/index';
 import { getToast } from 'remix-toast';
 import { useEffect } from 'react';
 import { notifications, Notifications } from '@mantine/notifications';
-import { authenticator } from './services/auth.server';
 import { LoaderFunctionArgs, SerializeFrom } from '@remix-run/node';
 import { ModalsProvider } from '@mantine/modals';
 import { useTranslation } from 'react-i18next';
@@ -31,7 +30,6 @@ import '@mantine/dropzone/styles.css';
 import './tailwind.css';
 import { ManifestLink, useSWEffect } from '@remix-pwa/sw';
 
-// import { getUserLocale } from './.server/utils';
 import i18next from './services/i18n.server';
 import { UserSessionContextProvider } from './lib/contexts/user-session';
 
@@ -40,11 +38,11 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const t = await i18next.getFixedT(request, 'common');
   const title = t('app_title');
   const description = t('app_description');
-  const locale = await i18next.getLocale(request);
+  // const locale = await i18next.getLocale(request);
   return json(
     {
       toast,
-      locale,
+      // locale,
       title,
       description,
     },
@@ -52,21 +50,22 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   );
 };
 
-export const meta: MetaFunction = ({ data }) =>
-  // : {
-  //   data: Awaited<SerializeFrom<typeof loader>>;
-  // }
-  {
-    return [
-      { title: data.title },
-      { name: 'description', content: data.description },
-    ];
-  };
+export const handle = {
+  i18n: 'common',
+};
+export const meta: MetaFunction = ({ data }) => {
+  return [
+    { title: data.title },
+    { name: 'description', content: data.description },
+  ];
+};
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const data = useLoaderData<typeof loader>();
-  console.log('root loader returned', data);
-  const { toast, locale } = data;
+  const {
+    toast,
+    // locale
+  } = data;
   useEffect(() => {
     if (toast) {
       notifications.show({
@@ -75,13 +74,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
       });
     }
   }, [toast]);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   useChangeLanguage(locale);
   useSWEffect();
 
-  // useNetworkConnection();
   return (
-    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+    <html lang={locale} dir={i18n.dir()}>
       <head>
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
@@ -93,10 +92,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <ColorSchemeScript />
       </head>
       <body>
-        <DirectionProvider
-          detectDirection
-          initialDirection={locale === 'en' ? 'ltr' : 'rtl'}
-        >
+        <DirectionProvider detectDirection initialDirection={i18n.dir()}>
           <MantineProvider
             // defaultColorScheme='dark'
             theme={theme}

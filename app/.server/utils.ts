@@ -185,7 +185,6 @@ export const createEventStream = (request: Request, eventName: string) => {
 
 export const authenticateOrToast = async (request: Request) => {
   const user = await authenticator.isAuthenticated(request);
-  // const locale = await getUserLocale(request);
 
   const t = await i18next.getFixedT(request, 'common');
 
@@ -206,13 +205,13 @@ export const authenticateOrToast = async (request: Request) => {
   };
 };
 
-export const getUserLocale = async (request: Request): Promise<'ar' | 'en'> => {
-  const userPrefsSession = await userPrefs.getSession(
-    request.headers.get('Cookie')
-  );
-  const locale = userPrefsSession.get('locale');
-  return locale === 'en' ? 'en' : 'ar';
-};
+// export const getUserLocale = async (request: Request): Promise<'ar' | 'en'> => {
+//   const userPrefsSession = await userPrefs.getSession(
+//     request.headers.get('Cookie')
+//   );
+//   const locale = userPrefsSession.get('locale');
+//   return locale === 'en' ? 'en' : 'ar';
+// };
 
 export const spreadRecordIntoSession = (
   userRecord: UserRecord

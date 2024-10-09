@@ -12,31 +12,30 @@ import { eq } from 'drizzle-orm';
 import { parseWithZod } from '@conform-to/zod';
 import { appSchema, profileSchema } from '~/lib/schemas';
 import { jsonWithSuccess, redirectWithSuccess } from 'remix-toast';
-import i18next from '~/services/i18n.server';
 import { AppForm, ProfileForm } from './components';
-import {
-  authenticateOrToast,
-  getUserLocale,
-  spreadRecordIntoSession,
-} from '~/.server/utils';
+import { authenticateOrToast, spreadRecordIntoSession } from '~/.server/utils';
 import { userPrefs } from '~/services/user-prefs.server';
 import { commitSession, getSession } from '~/services/session.server';
+import i18next from '~/services/i18n.server';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  // const authUser = await authenticator.isAuthenticated(request);
   const { user, loginRedirect: redirect } = await authenticateOrToast(request);
   if (!user) return redirect;
-  const locale = await getUserLocale(request);
+  // const locale = await i18next.getLocale(request);
   const userRecord = await db
     .select()
     .from(users)
     .where(eq(users.id, user?.id));
-  return json({ user: userRecord[0], locale });
+  return json({ user: userRecord[0] });
+};
+
+export const handle = {
+  i18n: ['common', 'settings', 'form'],
 };
 
 const Settings = () => {
   const { i18n, t } = useTranslation();
-  const { user, locale } = useLoaderData<typeof loader>();
+  const { user } = useLoaderData<typeof loader>();
   const fetcher = useFetcher();
   return (
     <>
@@ -75,7 +74,7 @@ const Settings = () => {
             <ProfileForm user={user} />
           </Tabs.Panel>
           <Tabs.Panel value='app_settings'>
-            <AppForm defaultValue={{ locale: locale }} />
+            <AppForm defaultValue={{ locale: i18n.language as 'en' | 'ar' }} />
           </Tabs.Panel>
         </Tabs>
       </Box>
@@ -90,7 +89,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const user = await authenticator.isAuthenticated(request);
   const userID = Number(user?.id);
   const intent = formData.get('intent');
-  // const locale = await getUserLocale(request);
   const t = await i18next.getFixedT(request, 'settings');
   const response = await authenticateOrToast(request);
   if (!response.user) return response.loginRedirect;

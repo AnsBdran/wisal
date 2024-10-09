@@ -19,7 +19,7 @@ import { parseWithZod } from '@conform-to/zod';
 import { chatGroupSchema } from '~/lib/schemas';
 import { redirectWithSuccess } from 'remix-toast';
 import i18next from '~/services/i18n.server';
-import { authenticateOrToast, getUserLocale } from '~/.server/utils';
+import { authenticateOrToast } from '~/.server/utils';
 import Header from '~/lib/components/main/header';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { icons } from '~/lib/icons';
@@ -55,6 +55,10 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   //   });
   //   return json({ chat: _chat, user });
   // }
+};
+
+export const handle = {
+  i18n: ['common', 'messenger', 'form'],
 };
 
 const ChatEdit = () => {
@@ -99,7 +103,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const chatID = fd.get('chatID') as string;
   const userID = Number(fd.get('userID'));
   const memberID = Number(fd.get('memberID'));
-  // const locale = await getUserLocale(request);
   const t = await i18next.getFixedT(request, 'common');
 
   switch (intent) {
