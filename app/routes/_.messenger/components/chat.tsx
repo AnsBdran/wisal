@@ -1,45 +1,31 @@
 import {
-  Box,
   Group,
   Avatar,
   Title,
   Text,
-  Center,
   ActionIcon,
   Menu,
   UnstyledButton,
   Tooltip,
   rem,
   Stack,
-  Alert,
-  Button,
-  Modal,
-  LoadingOverlay,
-  Divider,
-  TextInput,
-  Textarea,
-  InputLabel,
-  InputError,
   Indicator,
+  Badge,
 } from '@mantine/core';
-import { Link, useFetcher, useNavigate } from '@remix-run/react';
-import { SerializeFrom } from '@remix-run/node';
-import { loader } from '../route';
-import { loader as apiLoader } from '~/routes/api.data';
+import { useFetcher, useNavigate } from '@remix-run/react';
 import { Icon } from '@iconify/react';
 import styles from '../messenger.module.css';
 import { getProfileInfo, getProfileInfoText } from '~/lib/utils';
 import { icons } from '~/lib/icons';
 import { useTranslation } from 'react-i18next';
 import { INTENTS } from '~/lib/constants';
-import { useDisclosure, useFetch } from '@mantine/hooks';
-import { ReactNode, useState } from 'react';
-import { findOrCreateDirectChat } from '~/.server/utils';
-import MultiSelect from '~/lib/components/common/users-multi-select';
-import { useForm } from '@conform-to/react';
-import { ChatGroupSchemaType } from '~/lib/schemas';
 import { modals } from '@mantine/modals';
-import { GroupChatType } from '~/lib/types';
+import {
+  DirectChatMemberWithUser,
+  DirectChatType,
+  GroupChatType,
+} from '~/lib/types';
+import { useColorScheme } from '@mantine/hooks';
 
 export const GroupChat = ({
   groupChat: chatGroupMember,
@@ -58,15 +44,13 @@ export const GroupChat = ({
       component={Stack}
     >
       <Group className={styles.upperRow}>
-        <Indicator color='teal' zIndex={4}>
-          <Avatar
-            src={chatGroupMember.chat.image}
-            color='initials'
-            variant='outline'
-            radius='sm'
-            name={chatGroupMember.chat.name}
-          />
-        </Indicator>
+        <Avatar
+          src={chatGroupMember.chat.image}
+          color='initials'
+          variant='outline'
+          radius='sm'
+          name={chatGroupMember.chat.name}
+        />
         <Title order={4} className={styles.title}>
           {chatGroupMember.chat.name}
         </Title>
@@ -152,6 +136,34 @@ export const GroupChat = ({
             </Text>
           </Avatar>
         </Avatar.Group>
+      </Group>
+    </UnstyledButton>
+  );
+};
+
+export const DirectChat = ({ directChat }: { directChat: DirectChatType }) => {
+  const isDark = useColorScheme() === 'dark' ? true : false;
+  const otherUser = directChat.chat.members.find(
+    (member) => member.userID !== directChat.userID
+  ) as DirectChatMemberWithUser;
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  return (
+    <UnstyledButton
+      onClick={() => navigate(`./${directChat.chatID}`)}
+      className={`${styles.chatContainer} ${styles.directChatContainer}`}
+      component={Stack}
+    >
+      <Group className={styles.upperRow} justify='space-between'>
+        {getProfileInfo(otherUser.user)}
+      </Group>
+      <Group justify='space-between'>
+        <Text fz='sm' c='dimmed'>
+          {otherUser?.user.bio}
+        </Text>
+        <Badge variant={isDark ? 'white' : 'light'} size='xs'>
+          {t('private_chat')}
+        </Badge>
       </Group>
     </UnstyledButton>
   );

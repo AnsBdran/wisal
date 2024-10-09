@@ -17,11 +17,6 @@ const logger = new Logger({
 });
 
 declare let self: ServiceWorkerGlobalScope;
-const version = 'v4';
-
-const DOCUMENT_CACHE_NAME = 'document-cache';
-const ASSET_CACHE_NAME = 'asset-cache';
-const DATA_CACHE_NAME = 'data-cache';
 
 self.addEventListener('install', (event) => {
   logger.log('Service worker installed');
@@ -65,6 +60,11 @@ self.addEventListener('message', (event: ExtendableMessageEvent) => {
 
 // ++++++++++++++++++++++++++++++++++++
 // added by anas
+const version = 'v4';
+
+const DOCUMENT_CACHE_NAME = 'document-cache';
+const ASSET_CACHE_NAME = 'asset-cache';
+const DATA_CACHE_NAME = 'data-cache';
 
 const documentCache = new EnhancedCache(DOCUMENT_CACHE_NAME, {
   version,
@@ -76,7 +76,7 @@ const documentCache = new EnhancedCache(DOCUMENT_CACHE_NAME, {
 
 const assetCache = new EnhancedCache(ASSET_CACHE_NAME, {
   version,
-  strategy: 'NetworkFirst',
+  strategy: 'CacheFirst',
   strategyOptions: {
     maxAgeSeconds: 60 * 60 * 24 * 90,
     maxEntries: 100,
@@ -96,17 +96,6 @@ const dataCache = new EnhancedCache(DATA_CACHE_NAME, {
 export const defaultFetchHandler: DefaultFetchHandler = async ({ context }) => {
   const request = context.event.request;
   const url = new URL(request.url);
-
-  const isOnline = self.navigator.onLine;
-  const isImage =
-    url.hostname.includes('cloudinary') ||
-    url.pathname.includes('.png') ||
-    url.pathname.includes('.jpg') ||
-    url.pathname.includes('.jpeg') ||
-    url.pathname.includes('.webp');
-
-  const isCss = url.pathname.endsWith('.css');
-  const isFont = url.pathname.endsWith('woff2');
 
   if (isDocumentRequest(request)) {
     return documentCache.handleRequest(request);

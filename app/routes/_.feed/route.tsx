@@ -21,6 +21,7 @@ import {
   comment,
   commentUpdate,
   deleteComment,
+  deletePost,
   editPost,
   post,
   react,
@@ -172,6 +173,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       return await post(formData, userID);
     case INTENTS.editPost:
       return await editPost(formData);
+    case INTENTS.deletePost:
+      return await deletePost(formData, request);
   }
 };
 

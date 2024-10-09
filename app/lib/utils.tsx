@@ -65,6 +65,7 @@ export const getProfileInfo = (
             />
           }
           color='transparent'
+          zIndex={2}
         >
           <Avatar
             src={user.profileImage}

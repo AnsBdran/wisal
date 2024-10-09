@@ -69,7 +69,7 @@ const _Logger = class _Logger {
 __publicField(_Logger, "defaultOptions", { prefix: "remix-pwa", styles: { debug: { background: "#7f8c8d", color: "white", "border-radius": "0.5em", "font-weight": "bold", padding: "2px 0.5em" }, info: { background: "#3498db", color: "white", "border-radius": "0.5em", "font-weight": "bold", padding: "2px 0.5em" }, log: { background: "#2ecc71", color: "white", "border-radius": "0.5em", "font-weight": "bold", padding: "2px 0.5em" }, warn: { background: "#f39c12", color: "white", "border-radius": "0.5em", "font-weight": "bold", padding: "2px 0.5em" }, error: { background: "#c0392b", color: "white", "border-radius": "0.5em", "font-weight": "bold", padding: "2px 0.5em" }, groupCollapsed: { background: "#3498db", color: "white", "border-radius": "0.5em", "font-weight": "bold", padding: "2px 0.5em" }, groupEnd: { background: null, color: "white", "border-radius": "0.5em", "font-weight": "bold", padding: "2px 0.5em" } }, logLevel: "debug", isProductionEnv: false });
 let Logger = _Logger;
 const logger$1 = new Logger();
-const clearUpOldCaches = async (e, c) => (c && (e = e.map((e2) => `${e2}-${c}`)), caches.keys().then((c2) => Promise.all([e.forEach((e2) => {
+const clearUpOldCaches = async (e, c) => (e = e.map((e2) => `${e2}-${c}`), caches.keys().then((c2) => Promise.all([e.forEach((e2) => {
   const { cacheActualName: a } = getCacheNameAndVersion(e2);
   c2.filter((c3) => c3.startsWith(a) && c3 !== e2).forEach((e3) => {
     caches.delete(e3);
@@ -4807,6 +4807,10 @@ class EnhancedCache {
 const logger = new Logger({
   prefix: "wisal"
 });
+const version = "v4";
+const DOCUMENT_CACHE_NAME = "document-cache";
+const ASSET_CACHE_NAME = "asset-cache";
+const DATA_CACHE_NAME = "data-cache";
 self.addEventListener("install", (event) => {
   logger.log("Service worker installed");
   event.waitUntil(
@@ -4842,10 +4846,6 @@ self.addEventListener("message", (event) => {
     ])
   );
 });
-const version = "v4";
-const DOCUMENT_CACHE_NAME = "document-cache";
-const ASSET_CACHE_NAME = "asset-cache";
-const DATA_CACHE_NAME = "data-cache";
 const documentCache = new EnhancedCache(DOCUMENT_CACHE_NAME, {
   version,
   strategy: "NetworkFirst",
@@ -4855,7 +4855,7 @@ const documentCache = new EnhancedCache(DOCUMENT_CACHE_NAME, {
 });
 const assetCache = new EnhancedCache(ASSET_CACHE_NAME, {
   version,
-  strategy: "CacheFirst",
+  strategy: "NetworkFirst",
   strategyOptions: {
     maxAgeSeconds: 60 * 60 * 24 * 90,
     maxEntries: 100
@@ -4872,6 +4872,9 @@ const dataCache = new EnhancedCache(DATA_CACHE_NAME, {
 const defaultFetchHandler = async ({ context }) => {
   const request = context.event.request;
   const url = new URL(request.url);
+  url.hostname.includes("cloudinary") || url.pathname.includes(".png") || url.pathname.includes(".jpg") || url.pathname.includes(".jpeg") || url.pathname.includes(".webp");
+  url.pathname.endsWith(".css");
+  url.pathname.endsWith("woff2");
   if (isDocumentRequest(request)) {
     return documentCache.handleRequest(request);
   }

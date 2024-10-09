@@ -22,6 +22,7 @@ import {
   ChooseUserToMessage,
   CreateChatGroupButton,
   EmptyMessenger,
+  DirectChat,
 } from './components';
 import { authenticateOrToast, findOrCreateDirectChat } from '~/.server/utils';
 import { useTranslation } from 'react-i18next';
@@ -31,7 +32,6 @@ import { INTENTS } from '~/lib/constants';
 import styles from './messenger.module.css';
 import { getUserChats } from '~/.server/queries';
 import { DirectChatType, GroupChatType } from '~/lib/types';
-import { DirectChat } from './components/direct-chat';
 import { createChatGroup, exitChatGroup } from './actions';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {

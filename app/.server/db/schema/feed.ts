@@ -44,7 +44,7 @@ export const postReactions = pgTable(
       .references(() => users.id, { onDelete: 'cascade' })
       .notNull(),
     postID: integer('post_Id')
-      .references(() => posts.id)
+      .references(() => posts.id, { onDelete: 'cascade' })
       .notNull(),
   },
   (table) => ({

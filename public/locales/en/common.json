@@ -66,7 +66,9 @@
   "edit_profile": "Edit profile",
   "error_while_uploading": "Some error happened while uploading",
   "error_while_uploading_description": "Please try uploading again.",
-
   "drop_files_here": "Drag images here or click to select files",
-  "drop_files_here_description": "Attach as many files as you like, each file should not exceed 3mb"
+  "drop_files_here_description": "Attach as many files as you like, each file should not exceed 3mb",
+  "confirm_post_delete": "Are you absolutely sure?, You can't undo after deleting the post.",
+  "post_deleted_successfully": "Post deleted successfully.",
+  "post_deleted_successfully_description": "You request of deleting the post have been successfully done."
 }

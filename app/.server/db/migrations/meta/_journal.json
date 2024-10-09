@@ -8,6 +8,13 @@
       "when": 1728127465694,
       "tag": "0000_damp_major_mapleleaf",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1728489553169,
+      "tag": "0001_tiny_gideon",
+      "breakpoints": true
     }
   ]
 }

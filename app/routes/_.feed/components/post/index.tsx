@@ -27,6 +27,8 @@ import { INTENTS } from '~/lib/constants';
 import { useTranslation } from 'react-i18next';
 import { EditPost } from './edit';
 import { useDisclosure } from '@mantine/hooks';
+import { modals } from '@mantine/modals';
+import { PostActions } from './actions';
 
 export default function Post({
   post,
@@ -99,14 +101,11 @@ export default function Post({
         <Group flex={1}>
           {getProfileInfo(post.user)}
 
-          <Button
-            size='compact-xs'
-            variant='outline'
-            hidden={post.userID !== userID}
-            onClick={editPostFormOpen}
-          >
-            {t('edit')}
-          </Button>
+          <PostActions
+            post={post}
+            userID={userID}
+            editPostFormOpen={editPostFormOpen}
+          />
         </Group>
         <Group gap={8} mr={0}>
           <Reactions post={post} />

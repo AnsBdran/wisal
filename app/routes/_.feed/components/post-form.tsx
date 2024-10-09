@@ -51,7 +51,7 @@ export const PostForm = ({
     title: string;
     content: string;
     id: number;
-    // images:
+    images: { id: number; url: string }[];
   };
   isEditForm?: boolean;
   close: () => void;
@@ -64,6 +64,12 @@ export const PostForm = ({
     defaultValue: initialValues ? initialValues : null,
   });
 
+  // if the post is to be deleted
+  const [initialImages, setInitialImages] = useState<
+    { id: number; url: string }[]
+  >(initialValues?.images ?? []);
+  const [imagesToDelete, setImagesToDelete] = useState<number[]>([]);
+  console.log('initial values', initialValues);
   const { setFiles, isUploading, upload, uploadedData, files } = useUpload();
 
   useEffect(() => {
@@ -87,13 +93,32 @@ export const PostForm = ({
 
   const uploadedPreviews = uploadedData.map((image, idx) => {
     return (
-      <Indicator key={idx} color='green' autoContrast>
+      <Indicator key={idx} color='green'>
         <Box className={styles.preview}>
           <Image src={image.url} alt={`uploaded image`} />
         </Box>
       </Indicator>
     );
   });
+
+  const initialImagesPreviews = initialImages.map((img, idx) => (
+    <Box key={idx} className={styles.preview} pos='relative'>
+      <Image src={img.url} alt='Uploaded Image' />
+      <ActionIcon
+        onClick={() => {
+          setImagesToDelete((prev) => [...prev, img.id]);
+          setInitialImages((prev) =>
+            prev.filter((image) => image.id !== img.id)
+          );
+        }}
+        size='xs'
+        className={styles.imageDeleteBtn}
+        color='red'
+      >
+        <Icon icon={icons.close} />
+      </ActionIcon>
+    </Box>
+  ));
 
   return (
     <Box
@@ -116,7 +141,14 @@ export const PostForm = ({
           value={isEditForm ? INTENTS.editPost : INTENTS.post}
         />
         {isEditForm && (
-          <input type='hidden' name='postID' value={initialValues.id} />
+          <>
+            <input type='hidden' name='postID' value={initialValues?.id} />
+            <input
+              type='hidden'
+              name='imagesToDelete'
+              value={JSON.stringify(imagesToDelete)}
+            />
+          </>
         )}
         <TextInput
           label={t('post_title')}
@@ -171,6 +203,9 @@ export const PostForm = ({
           </Group>
         </Dropzone>
         <Box>
+          <Group hidden={initialImages.length === 0}>
+            {initialImagesPreviews}
+          </Group>
           <Group hidden={uploadedData.length === 0}>{uploadedPreviews}</Group>
           <Group hidden={files.length === 0}>{previews}</Group>
         </Box>

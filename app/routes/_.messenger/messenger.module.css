@@ -2,14 +2,38 @@
   padding-block: var(--mantine-spacing-xs);
   padding-inline: var(--mantine-spacing-md);
   width: 100%;
-  border: 3px solid transparent;
+  gap: var(--mantine-spacing-xs);
+  border: 6px solid transparent;
+  margin-block: var(--mantine-spacing-xs);
+  border-radius: var(--mantine-radius-md);
+
+  border-color: light-dark(
+    var(--mantine-color-teal-1),
+    alpha(var(--mantine-color-teal-9), 0.4)
+  );
 
   &:hover {
-    border-color: light-dark(
-      var(--mantine-color-blue-0),
-      var(--mantine-color-blue-9)
+    background-color: light-dark(
+      var(--mantine-color-teal-0),
+      alpha(var(--mantine-color-teal-9), 0.1)
     );
   }
+  /* direct chat styles */
+  &.directChatContainer {
+    border-color: light-dark(
+      var(--mantine-color-blue-1),
+      alpha(var(--mantine-color-blue-9), 0.4)
+    );
+
+    &:hover {
+      background-color: light-dark(
+        var(--mantine-color-blue-0),
+        alpha(var(--mantine-color-blue-9), 0.1)
+      );
+    }
+  }
+  /* &:hover {
+  } */
 }
 
 .upperRow {

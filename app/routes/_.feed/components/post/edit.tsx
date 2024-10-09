@@ -24,6 +24,7 @@ export const EditPost = ({
           content: post.content,
           title: post.title,
           id: post.id,
+          images: post.images.map((img) => ({ id: img.id, url: img.url })),
         }}
         isEditForm={true}
       />

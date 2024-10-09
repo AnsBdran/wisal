@@ -1,8 +1,10 @@
 import { parseWithZod } from '@conform-to/zod';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, inArray } from 'drizzle-orm';
+import { jsonWithSuccess } from 'remix-toast';
 import { db } from '~/.server/db';
 import { postReactions, comments, posts, images } from '~/.server/db/schema';
 import { postSchema } from '~/lib/schemas';
+import i18next from '~/services/i18n.server';
 
 // ++++++++++++++++++++++++++++++++++++++++
 // ++++++++++++++++++++++++++++++++++++++++
@@ -123,7 +125,9 @@ export const post = async (formData: FormData, userID: number) => {
 // +++++++++++++++++++++++++++++++++++++++
 export const editPost = async (fd: FormData) => {
   const postID = Number(fd.get('postID'));
-
+  const imagesToDelete = JSON.parse(
+    fd.get('imagesToDelete') as string
+  ) as number[];
   const submission = parseWithZod(fd, { schema: postSchema });
 
   console.log('payload', submission.payload, submission.value);
@@ -131,7 +135,7 @@ export const editPost = async (fd: FormData) => {
     return submission.reply();
   }
   console.log('payload', submission.payload, submission.value);
-  const { content, title } = submission.value;
+  const { content, title, images: _images } = submission.value;
   await db
     .update(posts)
     .set({
@@ -141,6 +145,39 @@ export const editPost = async (fd: FormData) => {
       isEdited: true,
     })
     .where(eq(posts.id, postID));
+  // set new images
+  if (_images && _images?.length > 0) {
+    await db.insert(images).values(
+      _images.map((i) => ({
+        format: i.format,
+        height: i.height,
+        postID: postID,
+        publicID: i.publicID,
+        secureURL: i.secureURL,
+        url: i.url,
+        width: i.width,
+      }))
+    );
+  }
+
+  // remove images if there is to remove
+  if (imagesToDelete.length > 0) {
+    await db.delete(images).where(inArray(images.id, imagesToDelete));
+  }
   console.log('editing the post', postID);
   return { success: true };
+};
+
+export const deletePost = async (fd: FormData, request: Request) => {
+  const t = await i18next.getFixedT(request, 'common');
+  const postID = Number(fd.get('postID'));
+
+  await db.delete(posts).where(eq(posts.id, postID));
+  return jsonWithSuccess(
+    { success: true },
+    {
+      message: t('post_deleted_successfully'),
+      description: t('post_deleted_successfully_description'),
+    }
+  );
 };

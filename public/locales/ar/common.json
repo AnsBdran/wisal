@@ -71,5 +71,8 @@
   "error_while_uploading": "حدث خطأ ما أثناء رفع الصور.",
   "error_while_uploading_description": "يرجى المحاولة مرة أخرى.",
   "drop_files_here": "قم بالنقر أو إلقاء الصور هنا للإضافة.",
-  "drop_files_here_description": "قم بإضافة ما ترغب من الصور، كل صورة يجب ألا يتخطى حجمها 3mb."
+  "drop_files_here_description": "قم بإضافة ما ترغب من الصور، كل صورة يجب ألا يتخطى حجمها 3mb.",
+  "confirm_post_delete": "هل أنت متأكذ من ذلك، لا يمكنك  التراجع بعد إتمام عملية الحذف؟",
+  "post_deleted_successfully": "تم الحذف بنجاح.",
+  "post_deleted_successfully_description": "تم حذف المنشور بنجاح."
 }
