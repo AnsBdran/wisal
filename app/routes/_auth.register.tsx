@@ -21,6 +21,10 @@ import { z } from 'zod';
 import { UserSession } from '~/lib/types';
 import { spreadRecordIntoSession } from '~/.server/utils';
 
+export const handle = {
+  i18n: 'form',
+};
+
 const Register = () => {
   const { t } = useTranslation('form');
   const lastResult = useActionData<typeof action>();

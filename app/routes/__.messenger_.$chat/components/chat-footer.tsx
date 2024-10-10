@@ -15,6 +15,8 @@ import {
   Text,
   TextInput,
   ScrollAreaAutosize,
+  useMantineTheme,
+  alpha,
 } from '@mantine/core';
 import styles from '../chat.module.css';
 import { useTranslation } from 'react-i18next';
@@ -35,7 +37,7 @@ export const ChatFooter = ({ chatID }: { chatID: string }) => {
   const { t } = useTranslation();
   const openFileExplorerRef = useRef<() => void>(null);
   const params = useParams();
-
+  const theme = useMantineTheme();
   const previews = files.map((file, idx) => {
     const imageUrl = URL.createObjectURL(file);
     return (
@@ -59,6 +61,7 @@ export const ChatFooter = ({ chatID }: { chatID: string }) => {
       method: 'POST',
       action: `/messenger/${chatID}`,
     });
+    setContent('');
   };
 
   const submitImages = () => {
@@ -97,12 +100,26 @@ export const ChatFooter = ({ chatID }: { chatID: string }) => {
             className={styles.messageInput}
             flex={1}
             name='content'
+            variant='filled'
+            // style={{
+            //   backgroundColor: 'transparent',
+            // }}
+            // styles={{
+            //   input: {
+            //     backgroundColor: 'transparent',
+            //   },
+            //   wrapper: {
+            //     border: '1px solid',
+            //     borderColor: alpha(theme.primaryColor[0], 0.3),
+            //   },
+            // }}
             value={content}
             onChange={(ev) => setContent(ev.target.value)}
           />
           <ActionIcon
             type='submit'
-            variant='outline'
+            variant='white'
+            // color='var(--mantine-primary-color-contrast)'
             size='lg'
             disabled={!content}
             loading={textFetcher.state === 'submitting'}
@@ -182,13 +199,15 @@ export const ChatFooter = ({ chatID }: { chatID: string }) => {
           }}
           loading={isUploading}
           size='lg'
-          variant='gradient'
+          variant='filled'
+          color='var(--mantine-primary-color-contrast)'
         >
           <Icon icon={icons.upload} />
         </ActionIcon>
       ) : (
         <ActionIcon
           variant='outline'
+          color='var(--mantine-primary-color-contrast)'
           size='lg'
           onClick={() => openFileExplorerRef.current?.()}
         >

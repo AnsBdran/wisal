@@ -34,25 +34,25 @@ export const ChatInfo = ({
       }}
     >
       <Drawer.Overlay />
-      <Drawer.Content style={{ overflow: 'hidden' }}>
+      <Drawer.Content style={{ overflow: 'hidden' }} pb='xl'>
         <Drawer.Header>
           <Drawer.Title>{t('chat_info')}</Drawer.Title>
           <Drawer.CloseButton />
         </Drawer.Header>
-        <Drawer.Body>
-          <Stack bg={'indigo'}>
+        <Drawer.Body h='100%' pb='xl'>
+          <Stack h='100%'>
             <Group>
               <Text c='dimmed'>اسم المجموعة</Text>
               <Title order={3}>{info.name}</Title>
             </Group>
-            <Text component={Group}>
+            <Group>
               <Text c='dimmed'>وصف المجموعة</Text>
               <Title order={3} style={{ textWrap: 'wrap' }}>
                 {info.bio}
               </Title>
-            </Text>
+            </Group>
             <Title order={3}>أعضاء المجموعة</Title>
-            <ScrollArea style={{ flexGrow: 1, flexBasis: 400 }}>
+            <ScrollArea style={{ flexGrow: 1, flexBasis: 500 }}>
               <Stack>
                 {info.members.map((m) => (
                   // {info.chat.members.map((m) => (

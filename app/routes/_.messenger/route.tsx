@@ -5,6 +5,8 @@ import {
   Divider,
   Group,
   rem,
+  ScrollArea,
+  Stack,
   ThemeIcon,
   Title,
 } from '@mantine/core';
@@ -28,7 +30,7 @@ import { authenticateOrToast, findOrCreateDirectChat } from '~/.server/utils';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 import { icons } from '~/lib/icons';
-import { INTENTS } from '~/lib/constants';
+import { BOTTOM_BAR_HEIGHT, HEADER_HEIGHT, INTENTS } from '~/lib/constants';
 import styles from './messenger.module.css';
 import { getUserChats } from '~/.server/queries';
 import { DirectChatType, GroupChatType } from '~/lib/types';
@@ -53,39 +55,57 @@ const Messenger = () => {
   return (
     // <Stack py='xl' >
     <>
-      <Group className={styles.messengerHeader}>
-        <Group>
-          <ThemeIcon
-            color='teal'
-            variant='transparent'
-            w={rem('24px')}
-            h={rem('24px')}
-          >
-            <Icon icon={icons.chats} />
-          </ThemeIcon>
-          <Title order={2}>{t('chats')}</Title>
+      <Stack
+        className={styles.messengerContainer}
+        style={{
+          height: `calc(100vh - ${HEADER_HEIGHT}px - ${BOTTOM_BAR_HEIGHT}px)`,
+          overflow: 'hidden',
+        }}
+        py='xs'
+        gap={0}
+      >
+        <Group className={styles.messengerHeader}>
+          <Group>
+            <ThemeIcon
+              color='teal'
+              variant='transparent'
+              w={rem('24px')}
+              h={rem('24px')}
+            >
+              <Icon icon={icons.chats} />
+            </ThemeIcon>
+            <Title order={2}>{t('chats')}</Title>
+          </Group>
+          <Group>
+            <ChooseUserToMessage>
+              <ActionIcon variant='white' color='teal'>
+                <Icon icon={icons.addChat} />
+              </ActionIcon>
+            </ChooseUserToMessage>
+            <CreateChatGroupButton />
+          </Group>
         </Group>
-        <Group>
-          <ChooseUserToMessage>
-            <ActionIcon variant='white' color='teal'>
-              <Icon icon={icons.addChat} />
-            </ActionIcon>
-          </ChooseUserToMessage>
-          <CreateChatGroupButton />
-        </Group>
-      </Group>
-      <Box hidden={chats.length === 0}>
-        {chats.map((chat) => (
-          <Fragment key={chat.chatID}>
-            {chat.type === 'group' ? (
-              <GroupChat groupChat={chat as GroupChatType} />
-            ) : (
-              <DirectChat directChat={chat as DirectChatType} />
-            )}
-            <Divider />
-          </Fragment>
-        ))}
-      </Box>
+        <ScrollArea
+          h='100%'
+          hidden={chats.length === 0}
+          styles={{
+            thumb: {
+              backgroundColor: 'transparent',
+            },
+          }}
+        >
+          {chats.map((chat) => (
+            <Fragment key={chat.chatID}>
+              {chat.type === 'group' ? (
+                <GroupChat groupChat={chat as GroupChatType} />
+              ) : (
+                <DirectChat directChat={chat as DirectChatType} />
+              )}
+              <Divider />
+            </Fragment>
+          ))}
+        </ScrollArea>
+      </Stack>
 
       <EmptyMessenger hidden={chats.length > 0} />
     </>

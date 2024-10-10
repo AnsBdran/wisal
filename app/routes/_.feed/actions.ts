@@ -9,7 +9,6 @@ import i18next from '~/services/i18n.server';
 // ++++++++++++++++++++++++++++++++++++++++
 // ++++++++++++++++++++++++++++++++++++++++
 export const react = async (fd: FormData, userID: number) => {
-  await new Promise((res) => setTimeout(res, 1000));
   const postID = Number(fd.get('postID'));
   const type = fd.get('type');
 

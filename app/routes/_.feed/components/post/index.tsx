@@ -100,7 +100,6 @@ export default function Post({
       <Group justify='space-between' mt='md'>
         <Group flex={1}>
           {getProfileInfo(post.user)}
-
           <PostActions
             post={post}
             userID={userID}

@@ -4,6 +4,21 @@
   /* background-color: var(--mantine-baloo); */
 }
 
+.feedHeader {
+  background-color: light-dark(
+    alpha(var(--mantine-color-cyan-0), 0.3),
+    alpha(var(--mantine-color-cyan-8), 0.2)
+  );
+
+  color: light-dark(var(--mantine-color-cyan-8), var(--mantine-color-bright));
+  border: 1px solid
+    light-dark(
+      alpha(var(--mantine-color-cyan-3), 0.4),
+      alpha(var(--mantine-color-cyan-5), 0.5)
+    );
+  padding: var(--mantine-spacing-xs);
+}
+
 .dropZoneIcon {
   width: rem(52);
   height: rem(52);
@@ -38,13 +53,16 @@
 }
 
 .introContainer {
-  border: 5px solid
-    light-dark(var(--mantine-color-teal-1), var(--mantine-color-dark-5));
+  border: 3px solid
+    light-dark(
+      alpha(var(--mantine-color-cyan-3), 0.4),
+      alpha(var(--mantine-color-cyan-7), 0.4)
+    );
   /* light-dark(var(--mantine-color-blue-3), var(--mantine-color-dark-3)); */
   /* border-style: ridge; */
   background-color: light-dark(
-    var(--mantine-color-teal-0),
-    var(--mantine-color-dark-6)
+    alpha(var(--mantine-color-cyan-0), 0.3),
+    alpha(var(--mantine-color-cyan-9), 0.1)
   );
   padding: var(--mantine-spacing-xs);
   border-radius: var(--mantine-radius-md);

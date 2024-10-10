@@ -6,5 +6,5 @@
     "**/*.less",
     "node_modules/@mantine/core/styles.css"
   ],
-  "cSpell.words": ["cloudinary", "iconify", "wisal"]
+  "cSpell.words": ["cloudinary", "iconify", "wisal", "أعضاء"]
 }

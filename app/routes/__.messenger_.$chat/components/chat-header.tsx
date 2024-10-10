@@ -35,7 +35,7 @@ export const ChatHeader = ({
 }) => {
   // console.log('chat header', type);
   return (
-    <>
+    <Group justify='space-between' h='100%'>
       {chat.type === 'group' ? (
         <>
           <ChatGroupHeader chat={chat.data} userID={userID} />
@@ -45,7 +45,7 @@ export const ChatHeader = ({
           <ChatDirectHeader chat={chat.data} userID={userID} />
         </>
       )}
-    </>
+    </Group>
   );
 };
 
@@ -63,7 +63,7 @@ const ChatGroupHeader = ({
   // const { type } = useParams();
   console.log('in chat group header', data);
   return (
-    <Group justify='space-between' h='100%'>
+    <>
       <Group>
         <BackBtn />
         <ActionIcon
@@ -92,7 +92,7 @@ const ChatGroupHeader = ({
           info={data}
         />
       </Group>
-    </Group>
+    </>
   );
 };
 
@@ -105,11 +105,11 @@ const ChatDirectHeader = ({
 }) => {
   const otherUser = chat.members.find((u) => u.userID !== userID);
   return (
-    <Group h='100%' justify='space-between'>
+    <>
       <BackBtn />
       {getProfileInfo(otherUser!.user, {
         reverse: true,
       })}
-    </Group>
+    </>
   );
 };

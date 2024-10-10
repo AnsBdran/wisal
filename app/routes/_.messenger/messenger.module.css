@@ -3,7 +3,7 @@
   padding-inline: var(--mantine-spacing-md);
   width: 100%;
   gap: var(--mantine-spacing-xs);
-  border: 6px solid transparent;
+  border: 2px solid transparent;
   margin-block: var(--mantine-spacing-xs);
   border-radius: var(--mantine-radius-md);
 
@@ -14,8 +14,8 @@
 
   &:hover {
     background-color: light-dark(
-      var(--mantine-color-teal-0),
-      alpha(var(--mantine-color-teal-9), 0.1)
+      alpha(var(--mantine-color-teal-0), 0.4),
+      alpha(var(--mantine-color-teal-9), 0.04)
     );
   }
   /* direct chat styles */
@@ -27,8 +27,8 @@
 
     &:hover {
       background-color: light-dark(
-        var(--mantine-color-blue-0),
-        alpha(var(--mantine-color-blue-9), 0.1)
+        alpha(var(--mantine-color-blue-0), 0.4),
+        alpha(var(--mantine-color-blue-9), 0.04)
       );
     }
   }

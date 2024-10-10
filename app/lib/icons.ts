@@ -52,5 +52,6 @@ export const icons = {
   addChat: 'mage:message-dots-round-plus',
   usersGroup: 'ci:users-group',
   starBadge: 'material-symbols:award-star-outline-rounded',
-  leftArrow: 'material-symbols:line-start-arrow-notch-rounded'
+  leftArrow: 'material-symbols:line-start-arrow-notch-rounded',
+  post: 'ep:postcard',
 };

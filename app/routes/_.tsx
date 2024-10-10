@@ -18,7 +18,7 @@ import Header from '~/lib/components/main/header/index';
 import Footer from '~/lib/components/main/footer';
 import { useTranslation } from 'react-i18next';
 import { LoaderFunction } from '@remix-run/node';
-import { HEADER_HEIGHT } from '~/lib/constants';
+import { BOTTOM_BAR_HEIGHT, HEADER_HEIGHT } from '~/lib/constants';
 import { Icon } from '@iconify/react';
 import { icons } from '~/lib/icons';
 import { useHeadroom } from '@mantine/hooks';
@@ -58,7 +58,7 @@ const MailLayout = () => {
         }}
         // footer={{ collapsed: true, height: 120 }}
         px={{ base: 0, sm: 'sm' }}
-        py='lg'
+        // py='lg'
       >
         <Header user={user} />
         <AppShell.Main>
@@ -86,7 +86,7 @@ const MailLayout = () => {
               // top={1}
               inverted
             >
-              <TabsList>
+              <TabsList h={BOTTOM_BAR_HEIGHT}>
                 <Tabs.Tab
                   flex={1}
                   value='/feed'

@@ -60,7 +60,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   switch (intent) {
     case INTENTS.submitSuggestion: {
-      await waiit();
       const submission = parseWithZod(fd, { schema: suggestionSchema });
       if (submission.status !== 'success') {
         return submission.reply();

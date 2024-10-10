@@ -10,8 +10,8 @@ export const BackBtn = () => {
   return (
     <ActionIcon
       onClick={() => navigate(-1)}
-      variant='outline'
-      color='light-dark(black, white)'
+      variant='white'
+      // color='light-dark(black, white)'
     >
       <Icon
         icon={icons.arrow}

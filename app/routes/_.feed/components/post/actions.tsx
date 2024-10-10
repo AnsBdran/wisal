@@ -10,6 +10,7 @@ import {
   Badge,
   Button,
   Modal,
+  Menu,
 } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import styles from './post.module.css';
@@ -41,41 +42,50 @@ export const PostActions = ({
   const fetcher = useFetcher();
   return (
     <>
-      <Button
-        size='compact-xs'
-        variant='outline'
-        hidden={post.userID !== userID}
-        onClick={editPostFormOpen}
-        leftSection={<Icon icon={icons.edit} />}
-      >
-        {t('edit')}
-      </Button>
-      <Button
-        size='compact-xs'
-        variant='outline'
-        hidden={post.userID !== userID}
-        leftSection={<Icon icon={icons.delete} />}
-        onClick={() => {
-          modals.openConfirmModal({
-            children: (
-              <>
-                <Text>{t('confirm_post_delete')}</Text>
-              </>
-            ),
-            onConfirm: () => {
-              fetcher.submit(
-                { intent: INTENTS.deletePost, postID: post.id },
-                {
-                  method: 'POST',
-                }
-              );
-            },
-          });
-        }}
-        color='red'
-      >
-        {t('delete')}
-      </Button>
+      <Menu>
+        <Menu.Target>
+          <ActionIcon variant='transparent'>
+            <Icon icon={icons.ellipsis} />
+          </ActionIcon>
+        </Menu.Target>
+        <Menu.Dropdown>
+          <Menu.Item
+            // size='compact-xs'
+            variant='outline'
+            hidden={post.userID !== userID}
+            onClick={editPostFormOpen}
+            leftSection={<Icon icon={icons.edit} />}
+          >
+            {t('edit')}
+          </Menu.Item>
+          <Menu.Item
+            // size='compact-xs'
+            variant='outline'
+            hidden={post.userID !== userID}
+            leftSection={<Icon icon={icons.delete} />}
+            onClick={() => {
+              modals.openConfirmModal({
+                children: (
+                  <>
+                    <Text>{t('confirm_post_delete')}</Text>
+                  </>
+                ),
+                onConfirm: () => {
+                  fetcher.submit(
+                    { intent: INTENTS.deletePost, postID: post.id },
+                    {
+                      method: 'POST',
+                    }
+                  );
+                },
+              });
+            }}
+            color='red'
+          >
+            {t('delete')}
+          </Menu.Item>
+        </Menu.Dropdown>
+      </Menu>
     </>
   );
 };

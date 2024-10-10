@@ -5,8 +5,12 @@ import {
   Group,
   Modal,
   Pagination,
+  rem,
+  ScrollArea,
   SimpleGrid,
   Stack,
+  ThemeIcon,
+  Title,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
@@ -14,7 +18,12 @@ import { useLoaderData, useNavigate, useSearchParams } from '@remix-run/react';
 import { Fragment, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Post from '~/routes/_.feed/components/post';
-import { INTENTS, ITEMS_PER_PAGE } from '~/lib/constants';
+import {
+  BOTTOM_BAR_HEIGHT,
+  HEADER_HEIGHT,
+  INTENTS,
+  ITEMS_PER_PAGE,
+} from '~/lib/constants';
 import { getPosts } from '~/.server/queries';
 import { authenticator } from '~/services/auth.server';
 import {
@@ -35,6 +44,7 @@ import AppIntro from './components/app-intro';
 import { useUserSessionContext } from '~/lib/contexts/user-session';
 import { EditPost } from './components/post/edit';
 import { waiit } from '~/lib/utils';
+import styles from './feed.module.css';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -89,36 +99,65 @@ const Feed = () => {
 
   return (
     <>
-      <Stack hidden={posts.count === 0}>
-        <Group justify='end'>
-          <ActionIcon
-            onClick={toggleIntro}
-            variant={introOpened ? 'outline' : 'filled'}
-          >
-            <Icon icon={icons.info} />
-          </ActionIcon>
-          <ActionIcon onClick={postFormOpen}>
-            <Icon icon={icons.add} />
-          </ActionIcon>
+      <Stack
+        hidden={posts.count === 0}
+        py='xs'
+        style={{
+          height: `calc(100vh - ${HEADER_HEIGHT}px - ${BOTTOM_BAR_HEIGHT}px)`,
+          overflow: 'hidden',
+        }}
+      >
+        <Group justify='space-between' className={styles.feedHeader}>
+          <Group>
+            <ThemeIcon
+              color='cyan'
+              variant='transparent'
+              w={rem('24px')}
+              h={rem('24px')}
+            >
+              <Icon icon={icons.post} />
+            </ThemeIcon>
+            <Title order={2}>{t('posts')}</Title>
+          </Group>
+          <Group>
+            <ActionIcon
+              onClick={toggleIntro}
+              variant={introOpened ? 'outline' : 'filled'}
+              color='cyan'
+            >
+              <Icon icon={icons.info} />
+            </ActionIcon>
+            <ActionIcon onClick={postFormOpen} color='cyan'>
+              <Icon icon={icons.add} />
+            </ActionIcon>
+          </Group>
         </Group>
         <AppIntro opened={introOpened} close={introClose} />
-        <SimpleGrid cols={{ base: 1, md: 2 }}>
-          {posts.data.map((post) => (
-            <Box key={post.id}>
-              <Post post={post} userID={user.id} />
-              {/* post edit form */}
-            </Box>
-          ))}
-        </SimpleGrid>
-        <Pagination
-          total={Math.ceil(posts.count / ITEMS_PER_PAGE)}
-          value={activePage}
-          onChange={(page) => {
-            navigate(`?page=${page}`, { preventScrollReset: true });
-            setActivePage(page);
+        <ScrollArea
+          styles={{
+            thumb: {
+              backgroundColor: 'transparent',
+            },
           }}
-          hideWithOnePage
-        />
+        >
+          <SimpleGrid cols={{ base: 1, md: 2 }} mb='md'>
+            {posts.data.map((post) => (
+              <Box key={post.id}>
+                <Post post={post} userID={user.id} />
+                {/* post edit form */}
+              </Box>
+            ))}
+          </SimpleGrid>
+          <Pagination
+            total={Math.ceil(posts.count / ITEMS_PER_PAGE)}
+            value={activePage}
+            onChange={(page) => {
+              navigate(`?page=${page}`, { preventScrollReset: true });
+              setActivePage(page);
+            }}
+            hideWithOnePage
+          />
+        </ScrollArea>
       </Stack>
 
       <EmptyFeed hidden={posts.count > 0} open={postFormOpen} />

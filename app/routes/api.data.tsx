@@ -11,7 +11,6 @@ import { INTENTS } from '~/lib/constants';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   // authenticate the request
-  await new Promise((res) => setTimeout(res, 500));
   const { searchParams } = new URL(request.url);
   // const formData = await request.formData();
   // const id = formData.get('id') as string;

@@ -23,9 +23,14 @@
   /* background-color: var(--mantine-primary-color-filled); */
   color: var(--mantine-color-gray-text);
   background-color: light-dark(
+    alpha(var(--mantine-primary-color-7), 0.8),
+    alpha(var(--mantine-primary-color-7), 0.5)
+  );
+  color: light-dark(var(--mantine-primary-color-contrast));
+  /* background-color: light-dark(
     var(--mantine-color-gray-1),
     var(--mantine-color-dark-5)
-  );
+  ); */
   padding-inline: var(--mantine-spacing-md);
   box-shadow: var(--mantine-shadow-lg);
 }
@@ -116,9 +121,14 @@
 .incoming {
   &.textContent {
     background-color: light-dark(
-      var(--mantine-color-green-0),
-      var(--mantine-color-green-light-hover)
+      alpha(var(--mantine-color-green-0), 0.3),
+      alpha(var(--mantine-color-green-8), 0.04)
     );
+    border: 0.5px solid
+      light-dark(
+        alpha(var(--mantine-color-green-3), 0.3),
+        alpha(var(--mantine-color-green-8), 0.4)
+      );
   }
 
   @mixin rtl {
@@ -140,9 +150,14 @@
 .outgoing {
   &.textContent {
     background-color: light-dark(
-      var(--mantine-color-blue-0),
-      var(--mantine-color-blue-light-hover)
+      alpha(var(--mantine-color-blue-0), 0.3),
+      alpha(var(--mantine-color-blue-8), 0.1)
     );
+    border: 0.5px solid
+      light-dark(
+        alpha(var(--mantine-color-blue-3), 0.5),
+        alpha(var(--mantine-color-blue-8), 0.4)
+      );
   }
 
   margin-right: var(--spacing);
@@ -189,7 +204,15 @@
 }
 
 .messageInput {
-  background-color: transparent;
+  /* background-color: transparent; */
+
+  input {
+    background-color: transparent;
+    border: 0.5px solid alpha(var(--mantine-primary-color-contrast), 0.5);
+    background-color: alpha(var(--mantine-primary-color-contrast), 0.1);
+    color: var(--mantine-primary-color-contrast);
+    letter-spacing: 0.2px;
+  }
 }
 
 .imageContainer {
