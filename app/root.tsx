@@ -77,7 +77,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const { t, i18n } = useTranslation();
   const locale = i18n.language;
   useChangeLanguage(locale);
-  useSWEffect();
+  // useSWEffect();
 
   return (
     <html lang={locale} dir={i18n.dir()}>
