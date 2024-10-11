@@ -208,6 +208,7 @@ export const getUserChats = async ({ userID }: { userID: number }) => {
   });
 
   const [groups, directs] = await Promise.all([groupChats, directChats]);
+  // const [groups, directs] = await Promise.all([groupChats, directChats]);
   const chats = [
     ...groups.map((member) => ({
       type: 'group' as const,

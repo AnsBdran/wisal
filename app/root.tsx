@@ -16,7 +16,7 @@ import {
 import { cssVariablesResolver, theme } from './lib/theme';
 import NotFound from '~/lib/components/main/not-found/index';
 import { getToast } from 'remix-toast';
-import { useEffect } from 'react';
+import { startTransition, useEffect } from 'react';
 import { notifications, Notifications } from '@mantine/notifications';
 import { LoaderFunctionArgs, SerializeFrom } from '@remix-run/node';
 import { ModalsProvider } from '@mantine/modals';
@@ -28,7 +28,7 @@ import '@mantine/notifications/styles.css';
 import '@mantine/carousel/styles.css';
 import '@mantine/dropzone/styles.css';
 import './tailwind.css';
-import { ManifestLink, useSWEffect } from '@remix-pwa/sw';
+// import { ManifestLink, useSWEffect } from '@remix-pwa/sw';
 
 import i18next from './services/i18n.server';
 import { UserSessionContextProvider } from './lib/contexts/user-session';
@@ -67,12 +67,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
     // locale
   } = data;
   useEffect(() => {
-    if (toast) {
-      notifications.show({
-        title: toast.message,
-        message: toast.description,
-      });
-    }
+    startTransition(() => {
+      if (toast) {
+        notifications.show({
+          title: toast.message,
+          message: toast.description,
+        });
+      }
+    });
   }, [toast]);
   const { t, i18n } = useTranslation();
   const locale = i18n.language;
@@ -85,9 +87,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <Meta />
-        {/* <ManifestLink /> */}
-        <ManfiestIcons />
-        <link rel='manifest' href='/manifest.webmanifest'></link>
         <Links />
         <ColorSchemeScript />
       </head>
@@ -115,8 +114,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export const ManfiestIcons = () => (
+export const ManfiestMetaTags = () => (
   <>
+    <meta name='viewport' content='width=device-width,initial-scale=1' />
+    <title>وصال</title>
+    <meta name='description' content='وصال، تواصل وتراسل مع أصدقائك' />
+    <link rel='icon' href='/favicon.ico' />
+    <link rel='apple-touch-icon' href='/apple-touch-icon.png' sizes='180x180' />
+    <link rel='mask-icon' href='/mask-icon.svg' color='#FFFFFF' />
+    <meta name='theme-color' content='#ffffff' />
     <link rel='apple-touch-icon' href='/icons/apple-icon-180.png' />
 
     <meta name='apple-mobile-web-app-capable' content='yes' />

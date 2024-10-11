@@ -1,5 +1,5 @@
 // 'use client';
-import React, { useEffect } from 'react';
+import React, { startTransition, useEffect } from 'react';
 import {
   Popover,
   Group,
@@ -57,10 +57,12 @@ export const AddComment = ({
   // })
 
   useEffect(() => {
-    if (fetcher.data?.action === 'added') {
-      close();
-      openFirstFive();
-    }
+    startTransition(() => {
+      if (fetcher.data?.action === 'added') {
+        close();
+        openFirstFive();
+      }
+    });
   }, [fetcher.data]);
   return (
     <Popover opened={opened} onClose={close}>
@@ -271,13 +273,6 @@ export const Comments = ({
                           fetcher.load(
                             `/api/data?intent=${INTENTS.findChat}&fromID=${userID}&toID=${comment.userID}`
                           );
-                          // fetcher.submit(
-                          //   { fromID: userID, toID: comment.userID },
-                          //   {
-                          //     action: '/api/data',
-                          //     method: 'post',
-                          //   }
-                          // );
                         }}
                       >
                         إرسال رسالة

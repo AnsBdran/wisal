@@ -43,11 +43,6 @@ const MailLayout = () => {
   const pinned = useHeadroom({ fixedAt: 0 });
   const location = useLocation();
   const theme = useMantineTheme();
-  const { setUserSession } = useUserSessionContext();
-  useEffect(() => {
-    console.log('use effect ran');
-    setUserSession(user);
-  }, [user, setUserSession]);
   return (
     <>
       <AppShell

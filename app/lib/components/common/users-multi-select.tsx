@@ -9,7 +9,13 @@ import {
   ScrollArea,
   useCombobox,
 } from '@mantine/core';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  startTransition,
+  useEffect,
+  useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGetAllUsers } from '~/lib/utils';
 import { INTENTS } from '~/lib/constants';
@@ -34,9 +40,11 @@ const MultiSelect = ({
     loading,
   } = useGetAllUsers({ excludedUsers });
   useEffect(() => {
-    if (!loading && !data) {
-      combobox.resetSelectedOption();
-    }
+    startTransition(() => {
+      if (!loading && !data) {
+        combobox.resetSelectedOption();
+      }
+    });
   }, [data, loading]);
 
   const combobox = useCombobox({

@@ -3,7 +3,7 @@ import {
   useResolvedPath,
   useRevalidator,
 } from '@remix-run/react';
-import { useEffect } from 'react';
+import { startTransition, useEffect } from 'react';
 import { useEventSource } from 'remix-utils/sse/react';
 
 export const useLiveLoader = <T>() => {
@@ -12,7 +12,9 @@ export const useLiveLoader = <T>() => {
 
   const { revalidate } = useRevalidator();
   useEffect(() => {
-    revalidate();
+    startTransition(() => {
+      revalidate();
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
   return useLoaderData<T>();

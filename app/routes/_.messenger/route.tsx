@@ -1,7 +1,5 @@
 import {
   ActionIcon,
-  Avatar,
-  Box,
   Divider,
   Group,
   rem,
@@ -12,11 +10,11 @@ import {
 } from '@mantine/core';
 import {
   ActionFunctionArgs,
-  json,
+  defer,
   LoaderFunctionArgs,
   redirect,
 } from '@remix-run/node';
-import { Link, useLoaderData } from '@remix-run/react';
+import { Await, useLoaderData } from '@remix-run/react';
 import { authenticator } from '~/services/auth.server';
 import { Fragment } from 'react/jsx-runtime';
 import {
@@ -35,13 +33,15 @@ import styles from './messenger.module.css';
 import { getUserChats } from '~/.server/queries';
 import { DirectChatType, GroupChatType } from '~/lib/types';
 import { createChatGroup, exitChatGroup } from './actions';
+import { Suspense } from 'react';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { user, loginRedirect: redirect } = await authenticateOrToast(request);
   if (!user) return redirect;
 
-  const { chats } = await getUserChats({ userID: Number(user.id) });
-  return json({ chats });
+  const chats = getUserChats({ userID: Number(user.id) });
+  // const { chats } = await getUserChats({ userID: Number(user.id) });
+  return defer({ chats });
 };
 
 export const handle = {
@@ -87,27 +87,33 @@ const Messenger = () => {
         </Group>
         <ScrollArea
           h='100%'
-          hidden={chats.length === 0}
           styles={{
             thumb: {
               backgroundColor: 'transparent',
             },
           }}
         >
-          {chats.map((chat) => (
-            <Fragment key={chat.chatID}>
-              {chat.type === 'group' ? (
-                <GroupChat groupChat={chat as GroupChatType} />
-              ) : (
-                <DirectChat directChat={chat as DirectChatType} />
+          <Suspense fallback={<p>loading...</p>}>
+            <Await resolve={chats}>
+              {(chats) => (
+                <>
+                  {chats.chats.map((chat) => (
+                    <Fragment key={chat.chatID}>
+                      {chat.type === 'group' ? (
+                        <GroupChat groupChat={chat as GroupChatType} />
+                      ) : (
+                        <DirectChat directChat={chat as DirectChatType} />
+                      )}
+                      <Divider />
+                    </Fragment>
+                  ))}
+                  <EmptyMessenger hidden={chats.chats.length > 0} />
+                </>
               )}
-              <Divider />
-            </Fragment>
-          ))}
+            </Await>
+          </Suspense>
         </ScrollArea>
       </Stack>
-
-      <EmptyMessenger hidden={chats.length > 0} />
     </>
   );
 };

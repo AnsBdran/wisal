@@ -13,9 +13,19 @@ import {
   Title,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData, useNavigate, useSearchParams } from '@remix-run/react';
-import { Fragment, useEffect, useState } from 'react';
+import {
+  ActionFunctionArgs,
+  defer,
+  json,
+  LoaderFunctionArgs,
+} from '@remix-run/node';
+import {
+  Await,
+  useLoaderData,
+  useNavigate,
+  useSearchParams,
+} from '@remix-run/react';
+import { Fragment, Suspense, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Post from '~/routes/_.feed/components/post';
 import {
@@ -38,29 +48,24 @@ import {
 import { FeedFilters } from './filters';
 import { EmptyFeed, PostForm, ScrollToTop } from './components';
 import { authenticateOrToast } from '~/.server/utils';
-import { icons } from '~/lib/icons';
-import { Icon } from '@iconify/react';
 import AppIntro from './components/app-intro';
-import { useUserSessionContext } from '~/lib/contexts/user-session';
-import { EditPost } from './components/post/edit';
-import { waiit } from '~/lib/utils';
-import styles from './feed.module.css';
+import { FeedHeader } from './components/feed-header';
+import { db } from '~/.server/db';
+import { posts } from '~/.server/db/schema';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const page = parseInt(url.searchParams.get('page') ?? '1');
-  // await waiit(5000);
   const { user, loginRedirect } = await authenticateOrToast(request);
   if (!user) return loginRedirect;
-  console.log('user in feed loader is', user);
-  const posts = await getPosts({
+
+  const postsPromise = getPosts({
     page,
     userID: user?.id,
-    //  searchQueries,
   });
 
-  return json({
-    posts,
+  return defer({
+    posts: postsPromise,
     user,
   });
 };
@@ -82,57 +87,27 @@ const Feed = () => {
     introOpened,
     { open: introOpen, close: introClose, toggle: toggleIntro },
   ] = useDisclosure();
-  // const [
-  //   editPostFormOpened,
-  //   { open: editPostFormOPen, close: editPostFormClose },
-  // ] = useDisclosure();
 
   const [activePage, setActivePage] = useState<number>(
     page ? parseInt(page) : 1
   );
 
-  // console.log('the user we are trying to set is', user);
-  // const { setUserSession } = useUserSessionContext();
-  // useEffect(() => {
-  //   setUserSession(user);
-  // }, [user, setUserSession]);
-
   return (
     <>
       <Stack
-        hidden={posts.count === 0}
         py='xs'
         style={{
           height: `calc(100vh - ${HEADER_HEIGHT}px - ${BOTTOM_BAR_HEIGHT}px)`,
           overflow: 'hidden',
         }}
       >
-        <Group justify='space-between' className={styles.feedHeader}>
-          <Group>
-            <ThemeIcon
-              color='cyan'
-              variant='transparent'
-              w={rem('24px')}
-              h={rem('24px')}
-            >
-              <Icon icon={icons.post} />
-            </ThemeIcon>
-            <Title order={2}>{t('posts')}</Title>
-          </Group>
-          <Group>
-            <ActionIcon
-              onClick={toggleIntro}
-              variant={introOpened ? 'outline' : 'filled'}
-              color='cyan'
-            >
-              <Icon icon={icons.info} />
-            </ActionIcon>
-            <ActionIcon onClick={postFormOpen} color='cyan'>
-              <Icon icon={icons.add} />
-            </ActionIcon>
-          </Group>
-        </Group>
+        <FeedHeader
+          introOpened={introOpened}
+          postFormOpen={postFormOpen}
+          toggleIntro={toggleIntro}
+        />
         <AppIntro opened={introOpened} close={introClose} />
+
         <ScrollArea
           styles={{
             thumb: {
@@ -140,27 +115,43 @@ const Feed = () => {
             },
           }}
         >
-          <SimpleGrid cols={{ base: 1, md: 2 }} mb='md'>
-            {posts.data.map((post) => (
-              <Box key={post.id}>
-                <Post post={post} userID={user.id} />
-                {/* post edit form */}
-              </Box>
-            ))}
-          </SimpleGrid>
-          <Pagination
-            total={Math.ceil(posts.count / ITEMS_PER_PAGE)}
-            value={activePage}
-            onChange={(page) => {
-              navigate(`?page=${page}`, { preventScrollReset: true });
-              setActivePage(page);
-            }}
-            hideWithOnePage
-          />
+          <Suspense fallback={<p>loading...</p>} key='feed'>
+            <Await resolve={posts}>
+              {(posts) => {
+                console.log('inside suspense rendered', posts);
+                return (
+                  <>
+                    {posts.data.map((p) => (
+                      <Box key={p.id}></Box>
+                    ))}
+                    <SimpleGrid
+                      cols={{ base: 1, md: 2 }}
+                      mb='md'
+                      hidden={posts.count === 0}
+                    >
+                      {posts.data.map((post) => (
+                        <Box key={post.id}>
+                          <Post post={post} userID={user.id} />
+                        </Box>
+                      ))}
+                    </SimpleGrid>
+                    <Pagination
+                      total={Math.ceil(posts.count / ITEMS_PER_PAGE)}
+                      value={activePage}
+                      onChange={(page) => {
+                        navigate(`?page=${page}`, { preventScrollReset: true });
+                        setActivePage(page);
+                      }}
+                      hideWithOnePage
+                    />
+                    <EmptyFeed hidden={posts.count > 0} open={postFormOpen} />
+                  </>
+                );
+              }}
+            </Await>
+          </Suspense>
         </ScrollArea>
       </Stack>
-
-      <EmptyFeed hidden={posts.count > 0} open={postFormOpen} />
 
       {/* ++++++++++++++++++++++++++++++++++++++++++++++ */}
       {/* Modals and Drawers */}

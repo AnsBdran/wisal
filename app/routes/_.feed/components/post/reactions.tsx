@@ -196,22 +196,20 @@ export const ReactionsStats = ({
                   value: r,
                   label: (
                     <Center>
-                      <Text>
-                        <Indicator
-                          color='transparent'
-                          position='bottom-start'
-                          label={
-                            reactions.filter((reaction) => reaction.type === r)
-                              .length
-                          }
-                        >
-                          <Icon
-                            style={{ flex: 1 }}
-                            icon={getReactionIconData(r).icon}
-                            color={getReactionIconData(r).color}
-                          />
-                        </Indicator>
-                      </Text>
+                      <Indicator
+                        color='transparent'
+                        position='bottom-start'
+                        label={
+                          reactions.filter((reaction) => reaction.type === r)
+                            .length
+                        }
+                      >
+                        <Icon
+                          style={{ flex: 1 }}
+                          icon={getReactionIconData(r).icon}
+                          color={getReactionIconData(r).color}
+                        />
+                      </Indicator>
                     </Center>
                   ),
                 })),

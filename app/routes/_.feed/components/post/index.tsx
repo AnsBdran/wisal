@@ -85,9 +85,9 @@ export default function Post({
         {post.title}
       </Text>
 
-      <Text fz='sm' c='dimmed' lineClamp={4}>
-        <Highlight highlight={['بدران', 'أنس']}>{post.content}</Highlight>
-      </Text>
+      {/* <Text fz='sm' c='dimmed' lineClamp={4}> */}
+      <Highlight highlight={['بدران', 'أنس']}>{post.content}</Highlight>
+      {/* </Text> */}
 
       {/* <Text fz='xs' c={'dimmed'}>
         {fromNow(post.createdAt, locale)}

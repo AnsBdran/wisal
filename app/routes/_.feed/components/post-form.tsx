@@ -29,7 +29,7 @@ import { action } from '../route';
 import { HEADER_HEIGHT, INTENTS } from '~/lib/constants';
 import { z } from 'zod';
 import { postSchema, PostSchemaType } from '~/lib/schemas';
-import { useEffect, useState } from 'react';
+import { startTransition, useEffect, useState } from 'react';
 import { useObjectUrls } from '~/lib/hooks/useObjectUrls';
 import styles from '../feed.module.css';
 import type { ImageType } from '~/lib/types';
@@ -73,9 +73,11 @@ export const PostForm = ({
   const { setFiles, isUploading, upload, uploadedData, files } = useUpload();
 
   useEffect(() => {
-    if (fetcher.data?.success) {
-      close();
-    }
+    startTransition(() => {
+      if (fetcher.data?.success) {
+        close();
+      }
+    });
   }, [fetcher.data]);
 
   const previews = files.map((file, idx) => {
