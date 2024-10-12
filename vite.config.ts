@@ -24,6 +24,7 @@ export default defineConfig({
     RemixVitePWAPlugin({
       registerType: 'prompt',
       injectRegister: false,
+      strategies: 'injectManifest',
       pwaAssets: {
         disabled: false,
         config: true,
@@ -34,7 +35,7 @@ export default defineConfig({
         clientsClaim: true,
       },
       devOptions: {
-        enabled: true,
+        enabled: false,
         suppressWarnings: false,
         navigateFallback: '/',
         navigateFallbackAllowlist: [/^\/$/],

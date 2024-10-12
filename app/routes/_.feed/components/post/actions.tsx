@@ -44,7 +44,7 @@ export const PostActions = ({
     <>
       <Menu>
         <Menu.Target>
-          <ActionIcon variant='transparent'>
+          <ActionIcon variant='transparent' hidden={post.userID !== userID}>
             <Icon icon={icons.ellipsis} />
           </ActionIcon>
         </Menu.Target>

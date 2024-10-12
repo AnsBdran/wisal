@@ -35,6 +35,10 @@ import { getUserChats } from '~/.server/queries';
 import { DirectChatType, GroupChatType } from '~/lib/types';
 import { createChatGroup, exitChatGroup } from './actions';
 import { Suspense } from 'react';
+import {
+  ChatSkeleton,
+  MessengerSkeleton,
+} from './components/messenger-skeleton';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { user, loginRedirect: redirect } = await authenticateOrToast(request);
@@ -87,18 +91,18 @@ const Messenger = () => {
               <CreateChatGroupButton />
             </Group>
           </Group>
-          <ScrollArea
-            h='100%'
-            styles={{
-              thumb: {
-                backgroundColor: 'transparent',
-              },
-            }}
-          >
-            <Suspense fallback={<p>loading...</p>}>
-              <Await resolve={chats}>
-                {(chats) => (
-                  <>
+          <Suspense fallback={<MessengerSkeleton />}>
+            <Await resolve={chats}>
+              {(chats) => (
+                <>
+                  <ScrollArea
+                    h='100%'
+                    styles={{
+                      thumb: {
+                        backgroundColor: 'transparent',
+                      },
+                    }}
+                  >
                     {chats.chats.map((chat) => (
                       <Fragment key={chat.chatID}>
                         {chat.type === 'group' ? (
@@ -110,11 +114,11 @@ const Messenger = () => {
                       </Fragment>
                     ))}
                     <EmptyMessenger hidden={chats.chats.length > 0} />
-                  </>
-                )}
-              </Await>
-            </Suspense>
-          </ScrollArea>
+                  </ScrollArea>
+                </>
+              )}
+            </Await>
+          </Suspense>
         </Stack>
       </Container>
     </>

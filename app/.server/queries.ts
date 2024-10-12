@@ -3,6 +3,7 @@ import { db } from './db';
 import { posts, suggestions } from './db/schema';
 import { getPagination } from './utils';
 import { ChatType, MessagesWithSender } from '~/lib/types';
+import { waiit } from '~/lib/utils';
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -55,7 +56,7 @@ export const getPosts = async ({
   // searchQueries: Record<string, string>;
 }) => {
   const { limit, offset } = getPagination({ page });
-
+  await waiit(2000);
   const _posts = await db.query.posts.findMany({
     with: {
       comments: {
