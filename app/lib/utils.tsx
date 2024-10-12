@@ -3,7 +3,14 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjsAr from 'dayjs/locale/ar';
 import { ReactionType, users } from '~/.server/db/schema';
 import { Choice, Suggestion, UserRecord } from './types';
-import { Avatar, Group, Indicator, rem, Text } from '@mantine/core';
+import {
+  Avatar,
+  Group,
+  Indicator,
+  MantineColor,
+  rem,
+  Text,
+} from '@mantine/core';
 import { Icon } from '@iconify/react';
 import { createColumnHelper, flexRender } from '@tanstack/react-table';
 import { icons } from './icons';
@@ -38,7 +45,11 @@ export const fromNow = (date: string, locale: string) => {
 
 export const getProfileInfo = (
   user: UserRecord,
-  { sm, reverse }: { sm?: boolean; reverse?: boolean } = {}
+  {
+    sm,
+    reverse,
+    color = 'initials',
+  }: { sm?: boolean; reverse?: boolean; color?: MantineColor } = {}
 ) => {
   return (
     <Group
@@ -50,7 +61,7 @@ export const getProfileInfo = (
       {user.role !== 'super_admin' ? (
         <Avatar
           src={user.profileImage}
-          color='initials'
+          color={color}
           name={getFullName(user)}
           radius={'xs'}
           size={sm ? 'sm' : 'md'}

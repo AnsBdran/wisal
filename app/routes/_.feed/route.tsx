@@ -1,6 +1,7 @@
 import {
   ActionIcon,
   Box,
+  Container,
   Drawer,
   Group,
   Modal,
@@ -94,64 +95,68 @@ const Feed = () => {
 
   return (
     <>
-      <Stack
-        py='xs'
-        style={{
-          height: `calc(100vh - ${HEADER_HEIGHT}px - ${BOTTOM_BAR_HEIGHT}px)`,
-          overflow: 'hidden',
-        }}
-      >
-        <FeedHeader
-          introOpened={introOpened}
-          postFormOpen={postFormOpen}
-          toggleIntro={toggleIntro}
-        />
-        <AppIntro opened={introOpened} close={introClose} />
-
-        <ScrollArea
-          styles={{
-            thumb: {
-              backgroundColor: 'transparent',
-            },
+      <Container size='sm'>
+        <Stack
+          py='xs'
+          style={{
+            height: `calc(100vh - ${HEADER_HEIGHT}px - ${BOTTOM_BAR_HEIGHT}px)`,
+            overflow: 'hidden',
           }}
         >
-          <Suspense fallback={<p>loading...</p>} key='feed'>
-            <Await resolve={posts}>
-              {(posts) => {
-                console.log('inside suspense rendered', posts);
-                return (
-                  <>
-                    {posts.data.map((p) => (
-                      <Box key={p.id}></Box>
-                    ))}
-                    <SimpleGrid
-                      cols={{ base: 1, md: 2 }}
-                      mb='md'
-                      hidden={posts.count === 0}
-                    >
-                      {posts.data.map((post) => (
-                        <Box key={post.id}>
-                          <Post post={post} userID={user.id} />
-                        </Box>
+          <FeedHeader
+            introOpened={introOpened}
+            postFormOpen={postFormOpen}
+            toggleIntro={toggleIntro}
+          />
+          <AppIntro opened={introOpened} close={introClose} />
+
+          <ScrollArea
+            styles={{
+              thumb: {
+                backgroundColor: 'transparent',
+              },
+            }}
+          >
+            <Suspense fallback={<p>loading...</p>} key='feed'>
+              <Await resolve={posts}>
+                {(posts) => {
+                  console.log('inside suspense rendered', posts);
+                  return (
+                    <>
+                      {posts.data.map((p) => (
+                        <Box key={p.id}></Box>
                       ))}
-                    </SimpleGrid>
-                    <Pagination
-                      total={Math.ceil(posts.count / ITEMS_PER_PAGE)}
-                      value={activePage}
-                      onChange={(page) => {
-                        navigate(`?page=${page}`, { preventScrollReset: true });
-                        setActivePage(page);
-                      }}
-                      hideWithOnePage
-                    />
-                    <EmptyFeed hidden={posts.count > 0} open={postFormOpen} />
-                  </>
-                );
-              }}
-            </Await>
-          </Suspense>
-        </ScrollArea>
-      </Stack>
+                      <SimpleGrid
+                        cols={{ base: 1 }}
+                        mb='md'
+                        hidden={posts.count === 0}
+                      >
+                        {posts.data.map((post) => (
+                          <Box key={post.id}>
+                            <Post post={post} userID={user.id} />
+                          </Box>
+                        ))}
+                      </SimpleGrid>
+                      <Pagination
+                        total={Math.ceil(posts.count / ITEMS_PER_PAGE)}
+                        value={activePage}
+                        onChange={(page) => {
+                          navigate(`?page=${page}`, {
+                            preventScrollReset: true,
+                          });
+                          setActivePage(page);
+                        }}
+                        hideWithOnePage
+                      />
+                      <EmptyFeed hidden={posts.count > 0} open={postFormOpen} />
+                    </>
+                  );
+                }}
+              </Await>
+            </Suspense>
+          </ScrollArea>
+        </Stack>
+      </Container>
 
       {/* ++++++++++++++++++++++++++++++++++++++++++++++ */}
       {/* Modals and Drawers */}

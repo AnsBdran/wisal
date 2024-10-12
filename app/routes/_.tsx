@@ -40,7 +40,7 @@ const MailLayout = () => {
   const { user } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const pinned = useHeadroom({ fixedAt: 0 });
+  const pinned = useHeadroom({ fixedAt: HEADER_HEIGHT });
   const location = useLocation();
   const theme = useMantineTheme();
   return (
@@ -48,8 +48,8 @@ const MailLayout = () => {
       <AppShell
         header={{
           height: HEADER_HEIGHT,
-          // collapsed: !pinned,
-          // offset: true,
+          collapsed: !pinned,
+          offset: true,
         }}
         // footer={{ collapsed: true, height: 120 }}
         px={{ base: 0, sm: 'sm' }}
@@ -57,25 +57,19 @@ const MailLayout = () => {
       >
         <Header user={user} />
         <AppShell.Main>
-          <Container>
-            <Box
-              style={{
-                marginBottom: theme.spacing.xl,
-                paddingBottom: theme.spacing.xl,
-              }}
-            >
-              <Outlet />
-            </Box>
+          <Outlet />
+          <Container size='sm'>
             <Tabs
               defaultValue={location.pathname}
               onChange={(value) => value && navigate(value)}
               style={{
-                position: 'fixed',
-                bottom: 0,
-                left: 0,
-                right: 0,
+                // position: 'fixed',
+                // bottom: 0,
+                // left: 0,
+                // right: 0,
                 backgroundColor: 'var(--mantine-color-body',
-                maxWidth: 'var(--container-size-md)',
+                // maxWidth: 'var(--container-size-sm)',
+                width: '100%',
                 marginInline: 'auto',
               }}
               // top={1}

@@ -27,7 +27,7 @@ const Header = ({ user }: { user?: UserSession }) => {
   const { toggleColorScheme, colorScheme } = useMantineColorScheme();
   return (
     <AppShellHeader zIndex={99}>
-      <Container className='h-full '>
+      <Container className='h-full ' size='sm'>
         <Group className='h-full justify-between'>
           <Center to='/feed' component={Link} h='100%' w={80} bg={'grapes'}>
             {/* <Image

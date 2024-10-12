@@ -22,12 +22,23 @@ export default defineConfig({
     }),
     tsconfigPaths(),
     RemixVitePWAPlugin({
-      injectRegister: 'auto',
-      mode: 'development',
-      base: '/feed',
-      registerType: 'autoUpdate',
+      registerType: 'prompt',
+      injectRegister: false,
+      pwaAssets: {
+        disabled: false,
+        config: true,
+      },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,png,jpg,jpeg,ico,svg,png}'],
+        globPatterns: ['**/*.{js,html,css,png,svg,ico,png,jpeg}'],
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
+      },
+      devOptions: {
+        enabled: true,
+        suppressWarnings: false,
+        navigateFallback: '/',
+        navigateFallbackAllowlist: [/^\/$/],
+        type: 'module',
       },
       manifest: {
         name: 'وصال',
@@ -61,13 +72,56 @@ export default defineConfig({
           },
         ],
       },
-      pwaAssets: {
-        config: true,
-      },
-      devOptions: {
-        enabled: true,
-        suppressWarnings: true,
-      },
     }),
+    // RemixVitePWAPlugin({
+
+    //   strategies: 'injectManifest',
+    //   mode: 'development',
+    //   base: '/feed',
+    //   registerType: 'autoUpdate',
+    //   workbox: {
+    //     globPatterns: ['**/*.{js,css,html,png,jpg,jpeg,ico,svg,png}'],
+    //   },
+    //   manifest: {
+    //     name: 'وصال',
+    //     short_name: 'وصال',
+    //     description: 'تواصل وتراسل مع أصدقائك',
+    //     theme_color: '#ffffff',
+    //     icons: [
+    //       {
+    //         src: '/icons/manifest-icon-192.maskable.png',
+    //         sizes: '192x192',
+    //         type: 'image/png',
+    //         purpose: 'any',
+    //       },
+    //       {
+    //         src: '/icons/manifest-icon-192.maskable.png',
+    //         sizes: '192x192',
+    //         type: 'image/png',
+    //         purpose: 'maskable',
+    //       },
+    //       {
+    //         src: '/icons/manifest-icon-512.maskable.png',
+    //         sizes: '512x512',
+    //         type: 'image/png',
+    //         purpose: 'any',
+    //       },
+    //       {
+    //         src: '/icons/manifest-icon-512.maskable.png',
+    //         sizes: '512x512',
+    //         type: 'image/png',
+    //         purpose: 'maskable',
+    //       },
+    //     ],
+    //   },
+    //   pwaAssets: {
+    //     config: true,
+    //   },
+    //   devOptions: {
+    //     enabled: true,
+    //     suppressWarnings: true,
+    //     type: 'module',
+    //   },
+    // }),
   ],
 });

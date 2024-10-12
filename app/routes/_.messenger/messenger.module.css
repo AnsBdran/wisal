@@ -53,16 +53,16 @@
 .messengerHeader {
   justify-content: space-between;
   background-color: light-dark(
-    var(--mantine-color-teal-0),
-    var(--mantine-color-teal-9)
+    alpha(var(--mantine-color-indigo-0), 0.3),
+    alpha(var(--mantine-color-indigo-8), 0.2)
   );
-  padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
+  padding: var(--mantine-spacing-xs);
   border: 1px solid;
   border-color: light-dark(
-    var(--mantine-color-teal-3),
-    var(--mantine-color-teal-7)
+    alpha(var(--mantine-color-indigo-3), 0.4),
+    alpha(var(--mantine-color-indigo-5), 0.5)
   );
   border-radius: var(--mantine-radius-xs);
-  margin-bottom: var(--mantine-spacing-md);
-  color: light-dark(var(--mantine-color-teal-8), var(--mantine-color-bright));
+  /* margin-bottom: var(--mantine-spacing-md); */
+  color: light-dark(var(--mantine-color-indigo-8), var(--mantine-color-bright));
 }

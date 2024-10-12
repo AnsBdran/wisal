@@ -74,5 +74,9 @@
   "drop_files_here_description": "قم بإضافة ما ترغب من الصور، كل صورة يجب ألا يتخطى حجمها 3mb.",
   "confirm_post_delete": "هل أنت متأكذ من ذلك، لا يمكنك  التراجع بعد إتمام عملية الحذف؟",
   "post_deleted_successfully": "تم الحذف بنجاح.",
-  "post_deleted_successfully_description": "تم حذف المنشور بنجاح."
+  "post_deleted_successfully_description": "تم حذف المنشور بنجاح.",
+  "now_works_offline": "يمكنك استخدام التطبيق الآن بدون انترنت",
+  "new_content_available": "يتوفر الآن محتوى جديد، اضغط تحديث لرؤية الجديد.",
+  "reload": "تحديث",
+  "close": "إغلاق"
 }

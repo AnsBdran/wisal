@@ -1,5 +1,6 @@
 import {
   ActionIcon,
+  Container,
   Divider,
   Group,
   rem,
@@ -55,65 +56,67 @@ const Messenger = () => {
   return (
     // <Stack py='xl' >
     <>
-      <Stack
-        className={styles.messengerContainer}
-        style={{
-          height: `calc(100vh - ${HEADER_HEIGHT}px - ${BOTTOM_BAR_HEIGHT}px)`,
-          overflow: 'hidden',
-        }}
-        py='xs'
-        gap={0}
-      >
-        <Group className={styles.messengerHeader}>
-          <Group>
-            <ThemeIcon
-              color='teal'
-              variant='transparent'
-              w={rem('24px')}
-              h={rem('24px')}
-            >
-              <Icon icon={icons.chats} />
-            </ThemeIcon>
-            <Title order={2}>{t('chats')}</Title>
-          </Group>
-          <Group>
-            <ChooseUserToMessage>
-              <ActionIcon variant='white' color='teal'>
-                <Icon icon={icons.addChat} />
-              </ActionIcon>
-            </ChooseUserToMessage>
-            <CreateChatGroupButton />
-          </Group>
-        </Group>
-        <ScrollArea
-          h='100%'
-          styles={{
-            thumb: {
-              backgroundColor: 'transparent',
-            },
+      <Container size='sm'>
+        <Stack
+          className={styles.messengerContainer}
+          style={{
+            height: `calc(100vh - ${HEADER_HEIGHT}px - ${BOTTOM_BAR_HEIGHT}px)`,
+            overflow: 'hidden',
           }}
+          py='xs'
+          gap={0}
         >
-          <Suspense fallback={<p>loading...</p>}>
-            <Await resolve={chats}>
-              {(chats) => (
-                <>
-                  {chats.chats.map((chat) => (
-                    <Fragment key={chat.chatID}>
-                      {chat.type === 'group' ? (
-                        <GroupChat groupChat={chat as GroupChatType} />
-                      ) : (
-                        <DirectChat directChat={chat as DirectChatType} />
-                      )}
-                      <Divider />
-                    </Fragment>
-                  ))}
-                  <EmptyMessenger hidden={chats.chats.length > 0} />
-                </>
-              )}
-            </Await>
-          </Suspense>
-        </ScrollArea>
-      </Stack>
+          <Group className={styles.messengerHeader}>
+            <Group>
+              <ThemeIcon
+                color='indigo'
+                variant='transparent'
+                w={rem('24px')}
+                h={rem('24px')}
+              >
+                <Icon icon={icons.chats} />
+              </ThemeIcon>
+              <Title order={2}>{t('chats')}</Title>
+            </Group>
+            <Group>
+              <ChooseUserToMessage>
+                <ActionIcon color='indigo'>
+                  <Icon icon={icons.addChat} />
+                </ActionIcon>
+              </ChooseUserToMessage>
+              <CreateChatGroupButton />
+            </Group>
+          </Group>
+          <ScrollArea
+            h='100%'
+            styles={{
+              thumb: {
+                backgroundColor: 'transparent',
+              },
+            }}
+          >
+            <Suspense fallback={<p>loading...</p>}>
+              <Await resolve={chats}>
+                {(chats) => (
+                  <>
+                    {chats.chats.map((chat) => (
+                      <Fragment key={chat.chatID}>
+                        {chat.type === 'group' ? (
+                          <GroupChat groupChat={chat as GroupChatType} />
+                        ) : (
+                          <DirectChat directChat={chat as DirectChatType} />
+                        )}
+                        <Divider />
+                      </Fragment>
+                    ))}
+                    <EmptyMessenger hidden={chats.chats.length > 0} />
+                  </>
+                )}
+              </Await>
+            </Suspense>
+          </ScrollArea>
+        </Stack>
+      </Container>
     </>
   );
 };

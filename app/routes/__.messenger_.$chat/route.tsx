@@ -75,7 +75,14 @@ const Chat = () => {
         gap={0}
       >
         {/* chat header */}
-        <Box h={rem(MESSENGER_HEADER_HEIGHT)} className={styles.chatHeader}>
+        <Box
+          h={rem(MESSENGER_HEADER_HEIGHT)}
+          className={`${styles.chatHeader} ${
+            chat.type === 'group'
+              ? styles.chatGroupHeader
+              : styles.chatDirectHeader
+          }`}
+        >
           <ChatHeader chat={chat} userID={user.id} />
         </Box>
 
@@ -98,8 +105,15 @@ const Chat = () => {
         />
 
         {/* chat footer */}
-        <Box h={rem(MESSENGER_FOOTER_HEIGHT)} className={styles.chatFooter}>
-          <ChatFooter chatID={chat.data.id} />
+        <Box
+          h={rem(MESSENGER_FOOTER_HEIGHT)}
+          className={`${styles.chatFooter} ${
+            chat.type === 'group'
+              ? styles.chatGroupFooter
+              : styles.chatDirectFooter
+          }`}
+        >
+          <ChatFooter chatID={chat.data.id} chatType={chat.type} />
         </Box>
       </Stack>
     </ChatLayout>

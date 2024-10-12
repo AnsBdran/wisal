@@ -24,9 +24,6 @@
     "@mantine/hooks": "^7.13.1",
     "@mantine/modals": "^7.13.1",
     "@mantine/notifications": "^7.13.1",
-    "@remix-pwa/client": "^3.0.7",
-    "@remix-pwa/sw": "^3.0.10",
-    "@remix-pwa/worker-runtime": "^2.1.4",
     "@remix-run/node": "^2.12.1",
     "@remix-run/react": "^2.12.1",
     "@remix-run/serve": "^2.12.1",
@@ -60,7 +57,6 @@
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
     "@iconify/react": "^5.0.2",
-    "@remix-pwa/dev": "^3.1.0",
     "@remix-run/dev": "^2.12.1",
     "@types/bcrypt": "^5.0.2",
     "@types/react": "^18.3.10",
@@ -83,7 +79,9 @@
     "tailwindcss": "^3.4.13",
     "typescript": "^5.6.2",
     "vite": "^5.4.8",
-    "vite-tsconfig-paths": "^4.3.2"
+    "vite-plugin-pwa": "^0.20.5",
+    "vite-tsconfig-paths": "^4.3.2",
+    "workbox-window": "^7.1.0"
   },
   "engines": {
     "node": ">=20.0.0"

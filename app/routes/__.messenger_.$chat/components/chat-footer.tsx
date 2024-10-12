@@ -28,7 +28,13 @@ import { act, FormEvent, useEffect, useRef, useState } from 'react';
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { useUpload } from '~/lib/hooks/useUpload';
 
-export const ChatFooter = ({ chatID }: { chatID: string }) => {
+export const ChatFooter = ({
+  chatID,
+  chatType,
+}: {
+  chatID: string;
+  chatType: 'group' | 'direct';
+}) => {
   const textFetcher = useFetcher();
   const imageFetcher = useFetcher();
   const { i18n } = useTranslation();
@@ -38,6 +44,8 @@ export const ChatFooter = ({ chatID }: { chatID: string }) => {
   const openFileExplorerRef = useRef<() => void>(null);
   const params = useParams();
   const theme = useMantineTheme();
+
+  const isGroup = chatType === 'group';
   const previews = files.map((file, idx) => {
     const imageUrl = URL.createObjectURL(file);
     return (
@@ -85,52 +93,36 @@ export const ChatFooter = ({ chatID }: { chatID: string }) => {
     }
   }, [uploadedData, isUploading]);
   return (
-    <Group h='100%'>
-      {/* <input type='hidden' name='chatType' value={} /> */}
-      <Box
-        component='form'
-        // method='POST'
-        style={{ height: '100%' }}
-        onSubmit={submitText}
+    <Group
+      h={'100%'}
+      component='form'
+      style={{ height: '100%' }}
+      onSubmit={submitText}
+      flex={1}
+    >
+      <Input
+        className={`${styles.messageInput} ${
+          isGroup ? styles.messageGroupInput : styles.messageDirectInput
+        }`}
         flex={1}
+        name='content'
+        variant='filled'
+        value={content}
+        onChange={(ev) => setContent(ev.target.value)}
+      />
+      <input type='hidden' name='chatID' value={chatID} />
+      <ActionIcon
+        type='submit'
+        color={isGroup ? 'teal' : 'blue'}
+        size='lg'
+        disabled={!content}
+        loading={textFetcher.state === 'submitting'}
       >
-        <Group h={'100%'}>
-          <input type='hidden' name='chatID' value={chatID} />
-          <Input
-            className={styles.messageInput}
-            flex={1}
-            name='content'
-            variant='filled'
-            // style={{
-            //   backgroundColor: 'transparent',
-            // }}
-            // styles={{
-            //   input: {
-            //     backgroundColor: 'transparent',
-            //   },
-            //   wrapper: {
-            //     border: '1px solid',
-            //     borderColor: alpha(theme.primaryColor[0], 0.3),
-            //   },
-            // }}
-            value={content}
-            onChange={(ev) => setContent(ev.target.value)}
-          />
-          <ActionIcon
-            type='submit'
-            variant='white'
-            // color='var(--mantine-primary-color-contrast)'
-            size='lg'
-            disabled={!content}
-            loading={textFetcher.state === 'submitting'}
-          >
-            <Icon
-              icon={icons.send}
-              className={i18n.language === 'ar' ? 'rotate-180' : ''}
-            />
-          </ActionIcon>
-        </Group>
-      </Box>
+        <Icon
+          icon={icons.send}
+          className={i18n.language === 'ar' ? 'rotate-180' : ''}
+        />
+      </ActionIcon>
 
       {/* upload images section */}
       <Dropzone.FullScreen
@@ -200,14 +192,14 @@ export const ChatFooter = ({ chatID }: { chatID: string }) => {
           loading={isUploading}
           size='lg'
           variant='filled'
-          color='var(--mantine-primary-color-contrast)'
+          color={isGroup ? 'teal' : 'blue'}
         >
           <Icon icon={icons.upload} />
         </ActionIcon>
       ) : (
         <ActionIcon
           variant='outline'
-          color='var(--mantine-primary-color-contrast)'
+          color={isGroup ? 'teal' : 'blue'}
           size='lg'
           onClick={() => openFileExplorerRef.current?.()}
         >

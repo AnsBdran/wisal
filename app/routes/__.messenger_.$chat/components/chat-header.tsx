@@ -38,11 +38,11 @@ export const ChatHeader = ({
     <Group justify='space-between' h='100%'>
       {chat.type === 'group' ? (
         <>
-          <ChatGroupHeader chat={chat.data} userID={userID} />
+          <ChatGroupHeader chat={chat.data} userID={userID} color='teal' />
         </>
       ) : (
         <>
-          <ChatDirectHeader chat={chat.data} userID={userID} />
+          <ChatDirectHeader chat={chat.data} userID={userID} color='blue' />
         </>
       )}
     </Group>
@@ -52,9 +52,11 @@ export const ChatHeader = ({
 const ChatGroupHeader = ({
   chat: data,
   userID,
+  color,
 }: {
   chat: ChatWithMembers;
   userID: number;
+  color: string;
   // chat: SerializeFrom<typeof loader>['chat']['data'];
 }) => {
   const [showUsers, setShowUsers] = useState(false);
@@ -65,12 +67,13 @@ const ChatGroupHeader = ({
   return (
     <>
       <Group>
-        <BackBtn />
+        <BackBtn color='teal' />
         <ActionIcon
           variant='transparent'
           component={Link}
           to={`/messenger/${data.id}/edit`}
           hidden={data.creatorID !== userID}
+          color='teal'
         >
           <Icon icon={icons.edit} />
         </ActionIcon>
@@ -82,7 +85,7 @@ const ChatGroupHeader = ({
           src={data.image}
           name={data.name}
           radius='sm'
-          color='initials'
+          color='teal'
           onClick={() => setShowUsers(true)}
           className={styles.groupAvatar}
         />
@@ -99,16 +102,19 @@ const ChatGroupHeader = ({
 const ChatDirectHeader = ({
   chat,
   userID,
+  color,
 }: {
   chat: DirectChatWithMembers;
   userID: number;
+  color: string;
 }) => {
   const otherUser = chat.members.find((u) => u.userID !== userID);
   return (
     <>
-      <BackBtn />
+      <BackBtn color='blue' />
       {getProfileInfo(otherUser!.user, {
         reverse: true,
+        color: 'blue',
       })}
     </>
   );

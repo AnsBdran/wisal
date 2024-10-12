@@ -29,7 +29,7 @@ export const CreateChatGroupButton = () => {
   console.log('users', choosenMembers);
   return (
     <>
-      <ActionIcon variant='white' color='teal' onClick={open}>
+      <ActionIcon color='indigo' onClick={open}>
         <Icon icon={icons.usersGroup} />
       </ActionIcon>
 

@@ -18,7 +18,7 @@ export default defineConfig({
         linkMediaOptions: {
           log: true,
           addMediaScreen: true,
-          basePath: '/',
+          basePath: '/feed',
           xhtml: true,
         },
       },

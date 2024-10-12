@@ -8,12 +8,12 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  border-left: 1px solid;
-  border-right: 1px solid;
-  border-color: light-dark(
+  /* border-left: 1px solid;
+  border-right: 1px solid; */
+  /* border-color: light-dark(
     var(--mantine-color-blue-2),
     var(--mantine-color-gray-7)
-  );
+  ); */
   /* max-width: var(--max-chat-size);
   margin-inline: auto; */
 }
@@ -21,18 +21,73 @@
 .chatHeader,
 .chatFooter {
   /* background-color: var(--mantine-primary-color-filled); */
-  color: var(--mantine-color-gray-text);
+  /* color: var(--mantine-color-gray-text);
   background-color: light-dark(
     alpha(var(--mantine-primary-color-7), 0.8),
     alpha(var(--mantine-primary-color-7), 0.5)
   );
-  color: light-dark(var(--mantine-primary-color-contrast));
+  color: light-dark(var(--mantine-primary-color-contrast)); */
   /* background-color: light-dark(
     var(--mantine-color-gray-1),
     var(--mantine-color-dark-5)
   ); */
-  padding-inline: var(--mantine-spacing-md);
-  box-shadow: var(--mantine-shadow-lg);
+  /* padding-inline: var(--mantine-spacing-md); */
+  /* box-shadow: var(--mantine-shadow-lg); */
+}
+
+.chatGroupHeader,
+.chatGroupFooter {
+  background-color: light-dark(
+    alpha(var(--mantine-color-teal-0), 0.3),
+    alpha(var(--mantine-color-teal-8), 0.05)
+  );
+  padding-inline: var(--mantine-spacing-xs);
+  color: light-dark(var(--mantine-color-teal-8), var(--mantine-color-bright));
+  /* border-color: light-dark(
+    alpha(var(--mantine-color-red-3), 0.01),
+    alpha(var(--mantine-color-teal-5), 0.02)
+  ); */
+}
+
+.chatGroupHeader {
+  border-bottom: 1px solid;
+  border-color: light-dark(
+    alpha(var(--mantine-color-teal-3), 0.4),
+    alpha(var(--mantine-color-teal-5), 0.2)
+  );
+}
+
+.chatGroupFooter {
+  border-top: 0.5px solid;
+  border-color: light-dark(
+    alpha(var(--mantine-color-teal-3), 0.4),
+    alpha(var(--mantine-color-teal-5), 0.2)
+  );
+}
+
+.chatDirectHeader,
+.chatDirectFooter {
+  background-color: light-dark(
+    alpha(var(--mantine-color-blue-0), 0.3),
+    alpha(var(--mantine-color-blue-8), 0.05)
+  );
+  padding-inline: var(--mantine-spacing-xs);
+}
+
+.chatDirectFooter {
+  border-top: 0.5px solid;
+  border-color: light-dark(
+    alpha(var(--mantine-color-blue-3), 0.4),
+    alpha(var(--mantine-color-blue-5), 0.2)
+  );
+}
+
+.chatDirectHeader {
+  border-bottom: 0.5px solid;
+  border-color: light-dark(
+    alpha(var(--mantine-color-blue-3), 0.4),
+    alpha(var(--mantine-color-blue-5), 0.2)
+  );
 }
 
 .messagesContainer {
@@ -205,13 +260,41 @@
 
 .messageInput {
   /* background-color: transparent; */
-
+  height: 100%;
   input {
+    /* background-color: red; */
+    /* border: 0.5px solid alpha(var(--mantine-primary-color-contrast), 0.5); */
+    /* background-color: light-dark(
+      alpha(var(--mantine-color-dark-0), 0.2)
+        alpha(var(--mantine-color-white), 0.1)
+    ); */
     background-color: transparent;
-    border: 0.5px solid alpha(var(--mantine-primary-color-contrast), 0.5);
-    background-color: alpha(var(--mantine-primary-color-contrast), 0.1);
-    color: var(--mantine-primary-color-contrast);
+    height: 100%;
+    color: light-dark(var(--mantine-color-dark-9), var(--mantine-color-white));
     letter-spacing: 0.2px;
+    outline: none;
+    border: none;
+    box-shadow: var(--mantine-shadow-md);
+    /* align-self: stretch;
+    justify-self: stretch; */
+  }
+
+  &.messageGroupInput {
+    input {
+      background-color: light-dark(
+        alpha(var(--mantine-color-teal-1), 0.2),
+        alpha(var(--mantine-color-teal-8), 0.1)
+      );
+    }
+  }
+
+  &.messageDirectInput {
+    input {
+      background-color: light-dark(
+        alpha(var(--mantine-color-blue-1), 0.2),
+        alpha(var(--mantine-color-blue-8), 0.1)
+      );
+    }
   }
 }
 
@@ -232,6 +315,7 @@
 .chatFooter {
   position: relative;
 }
+
 .previewsContainer {
   position: absolute;
   /* inset: 0; */
