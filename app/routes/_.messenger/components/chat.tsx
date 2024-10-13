@@ -61,6 +61,7 @@ export const GroupChat = ({
               size='xs'
               className={styles.menuBtn}
               onClick={(e) => e.stopPropagation()}
+              component='i'
             >
               <Icon icon={icons.ellipsis} width={rem('10px')} />
             </ActionIcon>

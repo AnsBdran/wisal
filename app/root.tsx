@@ -28,7 +28,6 @@ import '@mantine/notifications/styles.css';
 import '@mantine/carousel/styles.css';
 import '@mantine/dropzone/styles.css';
 import './tailwind.css';
-// import { ManifestLink, useSWEffect } from '@remix-pwa/sw';
 
 import i18next from './services/i18n.server';
 import { UserSessionContextProvider } from './lib/contexts/user-session';
@@ -64,21 +63,23 @@ export const meta: MetaFunction = ({ data }) => {
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const data = useLoaderData<typeof loader>();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
+  useChangeLanguage(locale);
   const {
     toast,
     // locale
   } = data;
   useEffect(() => {
-    if (toast) {
-      notifications.show({
-        title: toast.message,
-        message: toast.description,
-      });
-    }
+    startTransition(() => {
+      if (toast) {
+        notifications.show({
+          title: toast.message,
+          message: toast.description,
+        });
+      }
+    });
   }, [toast]);
-  const { t, i18n } = useTranslation();
-  const locale = i18n.language;
-  useChangeLanguage(locale);
 
   return (
     <html lang={locale} dir={i18n.dir()}>

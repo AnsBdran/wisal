@@ -52,14 +52,12 @@ import {
   post,
   react,
 } from './actions';
-import { FeedFilters } from './filters';
-import { EmptyFeed, PostForm, ScrollToTop } from './components';
+// import { FeedFilters } from './filters';
+import { EmptyFeed, PostForm } from './components';
 import { authenticateOrToast } from '~/.server/utils';
 import AppIntro from './components/app-intro';
 import { FeedHeader } from './components/feed-header';
-import { db } from '~/.server/db';
-import { posts } from '~/.server/db/schema';
-import { FeedSkeleton, PostSkeleton } from './components/feed-skeleton';
+import { FeedSkeleton } from './components/feed-skeleton';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -75,6 +73,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return defer({
     posts: postsPromise,
     user,
+    page,
   });
 };
 
@@ -83,7 +82,7 @@ export const handle = {
 };
 
 const Feed = () => {
-  const { posts, user } = useLoaderData<typeof loader>();
+  const { posts, user, page: defaultPage } = useLoaderData<typeof loader>();
   const { t } = useTranslation('feed');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -96,9 +95,7 @@ const Feed = () => {
     { open: introOpen, close: introClose, toggle: toggleIntro },
   ] = useDisclosure();
 
-  const [activePage, setActivePage] = useState<number>(
-    page ? parseInt(page) : 1
-  );
+  const [activePage, setActivePage] = useState<number>(defaultPage);
 
   return (
     <>
@@ -120,7 +117,7 @@ const Feed = () => {
           <Suspense fallback={<FeedSkeleton />} key='feed'>
             <Await resolve={posts}>
               {(posts) => {
-                console.log('inside suspense rendered', posts);
+                // console.log('inside suspense rendered', posts);
                 return (
                   <>
                     <ScrollArea
@@ -131,9 +128,9 @@ const Feed = () => {
                       }}
                     >
                       {/* <PostSkeleton /> */}
-                      {posts.data.map((p) => (
+                      {/* {posts.data.map((p) => (
                         <Box key={p.id}></Box>
-                      ))}
+                      ))} */}
                       <SimpleGrid
                         cols={{ base: 1 }}
                         mb='md'
@@ -181,7 +178,7 @@ const Feed = () => {
       </Modal>
 
       {/* filters */}
-      <Drawer
+      {/* <Drawer
         opened={opened}
         onClose={close}
         position='bottom'
@@ -193,7 +190,7 @@ const Feed = () => {
       </Drawer>
       <Modal size='lg' opened={opened} onClose={close} visibleFrom='sm'>
         <FeedFilters />
-      </Modal>
+      </Modal> */}
       {/* <ScrollToTop /> */}
     </>
   );
