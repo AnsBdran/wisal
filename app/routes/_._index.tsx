@@ -14,7 +14,7 @@ export const meta: MetaFunction = () => {
 };
 
 export const loader: LoaderFunction = async () => {
-  return redirect('/feed');
+  throw redirect('/feed');
 };
 
 export default function Index() {

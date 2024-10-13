@@ -32,28 +32,16 @@ self.addEventListener('message', (ev) => {
   }
 });
 
-const staticRoutesRegex = /about|suggestions|settings|profile/;
-const staticRoutes = ['about', 'settings', 'profile'];
+const staticRoutes = ['about', 'settings', 'profile', 'suggestions'];
 
 const matchers = {
   feed: ({ url }) => url.pathname === '/feed',
   messenger: ({ url }) => url.pathname === '/messenger',
   style: ({ request }) => request.destination === 'style',
   chat: ({ url }) => url.pathname.startsWith('/messenger/'),
-  staticRoutes: ({ url }) => staticRoutesRegex.test(url.pathname),
   image: ({ request }) => (request.destination = 'image'),
   static: ({ url }) => staticRoutes.some((r) => r === `/${url.pathname}`),
 };
-
-// const handlers = {
-//   feed: async ({url, request, event, params}) => {
-//     const response = await fetch(request);
-//     const responseBody = await response.text();
-//     return new Response(responseBody, {
-//       headers: response.headers
-//     })
-//   }
-// }
 
 registerRoute(matchers.feed, new StaleWhileRevalidate());
 registerRoute(matchers.messenger, new StaleWhileRevalidate());
