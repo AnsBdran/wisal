@@ -85,15 +85,10 @@ export default function Post({
         {post.title}
       </Text>
 
-      {/* <Text fz='sm' c='dimmed' > */}
       <Highlight c='dimmed' lineClamp={4} fz='sm' highlight={['بدران', 'أنس']}>
         {post.content}
       </Highlight>
-      {/* </Text> */}
 
-      {/* <Text fz='xs' c={'dimmed'}>
-        {fromNow(post.createdAt, locale)}
-      </Text> */}
       <Group justify='end'>
         <Badge fz='xs' c={'dimmed'} variant='dot'>
           {fromNow(post.createdAt, i18n.language)}

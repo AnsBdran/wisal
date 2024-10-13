@@ -18,6 +18,7 @@ import {
   Button,
   Modal,
   Alert,
+  Box,
 } from '@mantine/core';
 import { Icon } from '@iconify/react';
 import styles from './post.module.css';
@@ -287,9 +288,9 @@ export const Comments = ({
                   comment={comment}
                 />
                 <Group w='100%' justify='space-between'>
-                  <Text fz='xs' c='dimmed'>
+                  <Box fz='xs' c='dimmed'>
                     {getProfileInfoText(comment.user)}
-                  </Text>
+                  </Box>
                   <Text className={styles.commentTime}>
                     {fromNow(comment.createdAt, 'ar')}
                   </Text>

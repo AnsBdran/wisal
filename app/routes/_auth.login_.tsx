@@ -6,11 +6,7 @@ import {
   TextInput,
   Title,
 } from '@mantine/core';
-import {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  redirect,
-} from '@remix-run/node';
+import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
 import { Form, useActionData } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
 import { authenticator } from '~/services/auth.server';
