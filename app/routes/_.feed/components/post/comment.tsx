@@ -57,12 +57,10 @@ export const AddComment = ({
   // })
 
   useEffect(() => {
-    startTransition(() => {
-      if (fetcher.data?.action === 'added') {
-        close();
-        openFirstFive();
-      }
-    });
+    if (fetcher.data?.action === 'added') {
+      close();
+      openFirstFive();
+    }
   }, [fetcher.data]);
   return (
     <Popover opened={opened} onClose={close}>

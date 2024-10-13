@@ -229,25 +229,23 @@ export const useGetAllUsers = ({
   };
 
   useEffect(() => {
-    startTransition(() => {
-      if (!loading && fetcher.data) {
-        console.log('in use Effect', fetcher.data);
-        console.log('excluded users arr', excludedUsers);
-        if (excludedUsers) {
-          console.log('excluded users if block', excludedUsers);
-          setUsersData((value) => {
-            const target = fetcher.data?.users.filter(
-              (user) => !excludedUsers.includes(user.id)
-            );
-            console.log(target.length, target);
-            return target;
-          });
-        } else {
-          setUsersData(fetcher.data?.users);
-        }
-        // setLoading(false);
+    if (!loading && fetcher.data) {
+      console.log('in use Effect', fetcher.data);
+      console.log('excluded users arr', excludedUsers);
+      if (excludedUsers) {
+        console.log('excluded users if block', excludedUsers);
+        setUsersData((value) => {
+          const target = fetcher.data?.users.filter(
+            (user) => !excludedUsers.includes(user.id)
+          );
+          console.log(target.length, target);
+          return target;
+        });
+      } else {
+        setUsersData(fetcher.data?.users);
       }
-    });
+      // setLoading(false);
+    }
   }, [fetcher]);
 
   return { usersData, loading, fetchUsersData };

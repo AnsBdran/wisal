@@ -2,10 +2,8 @@ import { startTransition, useEffect, useRef } from 'react';
 export function useObjectUrls() {
   const mapRef = useRef<Map<File, string> | null>(null);
   useEffect(() => {
-    startTransition(() => {
-      const map = new Map();
-      mapRef.current = map;
-    });
+    const map = new Map();
+    mapRef.current = map;
     return () => {
       for (let [file, url] of map) {
         URL.revokeObjectURL(url);

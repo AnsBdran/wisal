@@ -69,19 +69,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
     // locale
   } = data;
   useEffect(() => {
-    startTransition(() => {
-      if (toast) {
-        notifications.show({
-          title: toast.message,
-          message: toast.description,
-        });
-      }
-    });
+    if (toast) {
+      notifications.show({
+        title: toast.message,
+        message: toast.description,
+      });
+    }
   }, [toast]);
   const { t, i18n } = useTranslation();
   const locale = i18n.language;
   useChangeLanguage(locale);
-  // useSWEffect();
 
   return (
     <html lang={locale} dir={i18n.dir()}>

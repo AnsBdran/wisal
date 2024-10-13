@@ -12,9 +12,7 @@ export const useLiveLoader = <T>() => {
 
   const { revalidate } = useRevalidator();
   useEffect(() => {
-    startTransition(() => {
-      revalidate();
-    });
+    revalidate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
   return useLoaderData<T>();

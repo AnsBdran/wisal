@@ -40,11 +40,9 @@ const MultiSelect = ({
     loading,
   } = useGetAllUsers({ excludedUsers });
   useEffect(() => {
-    startTransition(() => {
-      if (!loading && !data) {
-        combobox.resetSelectedOption();
-      }
-    });
+    if (!loading && !data) {
+      combobox.resetSelectedOption();
+    }
   }, [data, loading]);
 
   const combobox = useCombobox({
