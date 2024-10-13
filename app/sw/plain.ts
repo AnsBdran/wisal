@@ -8,7 +8,7 @@ import {
 import { clientsClaim } from 'workbox-core';
 import { NavigationRoute, registerRoute } from 'workbox-routing';
 import { navigateFallback, ssr } from 'virtual:vite-pwa/remix/sw';
-import { setupRoutes } from './shared-sw';
+import { setupRoutes } from './shared';
 
 declare let self: ServiceWorkerGlobalScope;
 
