@@ -9,7 +9,7 @@
     "app/.server/db/demo.js"
   ],
   "compilerOptions": {
-    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "lib": ["DOM", "DOM.Iterable", "ES2022", "WebWorker"],
     "types": [
       "@remix-run/node",
       "vite/client",

@@ -4,14 +4,14 @@
     <style>
       .cls-1 {
         fill: none;
-        stroke: #c3fae8;
+        stroke: #333333;
         stroke-linecap: round;
         stroke-linejoin: round;
         stroke-width: 21.95px;
       }
 
       .cls-2 {
-        fill: #c3fae8;
+        fill: #333333;
         stroke-width: 0px;
       }
     </style>

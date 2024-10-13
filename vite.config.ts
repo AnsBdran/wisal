@@ -9,7 +9,23 @@ installGlobals();
 
 const { RemixPWAPreset, RemixVitePWAPlugin } = RemixVitePWA();
 
+// for testing purposes only
+const usingRemixSW = process.env.PLAIN_SW !== 'true';
+// for testing purposes only
+const virtualPwaModule = process.env.VIRTUAL_PWA_MODULE !== 'false';
+
+process.env.VITE_VIRTUAL_PWA_MODULE = virtualPwaModule.toString();
+process.env.VITE_PUBLIC_VIRTUAL_PWA_MODULE =
+  process.env.VITE_VIRTUAL_PWA_MODULE;
+process.env.VITE_BUILD_DATE = JSON.stringify(new Date().toISOString());
+
 export default defineConfig({
+  define: {
+    VITE_VIRTUAL_PWA_MODULE: process.env.VITE_VIRTUAL_PWA_MODULE,
+    VITE_PUBLIC_VIRTUAL_PWA_MODULE: process.env.VITE_VIRTUAL_PWA_MODULE,
+    VITE_BUILD_DATE: process.env.VITE_BUILD_DATE,
+  },
+
   plugins: [
     envOnlyMacros(),
     remix({
@@ -25,6 +41,9 @@ export default defineConfig({
       registerType: 'prompt',
       injectRegister: false,
       strategies: 'injectManifest',
+      srcDir: 'app/sw',
+      filename: usingRemixSW ? 'index.ts' : 'plain.ts',
+      base: '/',
       pwaAssets: {
         disabled: false,
         config: true,
@@ -35,12 +54,30 @@ export default defineConfig({
         clientsClaim: true,
       },
       devOptions: {
-        enabled: false,
-        suppressWarnings: false,
+        enabled: true,
+        suppressWarnings: true,
         navigateFallback: '/',
         navigateFallbackAllowlist: [/^\/$/],
         type: 'module',
       },
+      injectManifest: {
+        globPatterns: ['**/*.{js,html,css,png,svg,ico.jpg,jpeg}'],
+
+        // for testing
+        minify: false,
+        // for testing
+        enableWorkboxModulesLogs: true,
+      },
+      remix: {
+        injectManifest: {
+          clientsClaimMode: usingRemixSW
+            ? virtualPwaModule
+              ? true
+              : 'auto'
+            : undefined,
+        },
+      },
+
       manifest: {
         name: 'وصال',
         short_name: 'وصال',
