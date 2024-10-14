@@ -73,9 +73,11 @@ export const PostForm = ({
   const { setFiles, isUploading, upload, uploadedData, files } = useUpload();
 
   useEffect(() => {
-    if (fetcher.data?.success) {
-      close();
-    }
+    startTransition(() => {
+      if (fetcher.data?.success) {
+        close();
+      }
+    });
   }, [fetcher.data]);
 
   const previews = files.map((file, idx) => {

@@ -27,7 +27,7 @@ import {
   getProfileInfo,
 } from '~/lib/utils';
 import { SerializeFrom } from '@remix-run/node';
-import { loader } from '~/routes/_.feed/route';
+import { loader } from '~/routes/feed/route';
 import { icons } from '~/lib/icons';
 import { INTENTS, REACTIONS } from '~/lib/constants';
 import { useState } from 'react';

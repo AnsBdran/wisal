@@ -10,7 +10,7 @@ import {
 } from '~/lib/constants';
 import { authenticator } from '~/services/auth.server';
 import styles from './chat.module.css';
-import { ReactNode, useEffect, useRef } from 'react';
+import { ReactNode, startTransition, useEffect, useRef } from 'react';
 import { ChatFooter, ChatHeader, Message } from './components';
 import { db } from '~/.server/db';
 import { messages } from '~/.server/db/schema';
@@ -56,7 +56,9 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    scrollToBottom();
+    startTransition(() => {
+      scrollToBottom();
+    });
   }, [chat.messages]);
 
   const isSameSenderAsNext = (m, idx) =>

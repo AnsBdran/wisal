@@ -105,6 +105,7 @@ const Messenger = () => {
                   >
                     {chats.chats.map((chat) => (
                       <Fragment key={chat.chatID}>
+                        <p>chat</p>
                         {chat.type === 'group' ? (
                           <GroupChat groupChat={chat as GroupChatType} />
                         ) : (

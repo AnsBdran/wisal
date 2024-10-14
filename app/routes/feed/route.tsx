@@ -34,7 +34,7 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import Post from '~/routes/_.feed/components/post';
+import Post from '~/routes/feed/components/post';
 import {
   BOTTOM_BAR_HEIGHT,
   HEADER_HEIGHT,
@@ -82,11 +82,11 @@ export const handle = {
 };
 
 const Feed = () => {
-  const { posts, user, page: defaultPage } = useLoaderData<typeof loader>();
+  const { posts, user, page } = useLoaderData<typeof loader>();
   const { t } = useTranslation('feed');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const page = searchParams.get('page');
+  // const page = searchParams.get('page');
   const [opened, { close, open }] = useDisclosure();
   const [postFormOpened, { close: postFormClose, open: postFormOpen }] =
     useDisclosure();
@@ -95,7 +95,19 @@ const Feed = () => {
     { open: introOpen, close: introClose, toggle: toggleIntro },
   ] = useDisclosure();
 
-  const [activePage, setActivePage] = useState<number>(defaultPage);
+  const [activePage, setActivePage] = useState<number>(page);
+
+  console.log('feed route things', {
+    opened,
+    close,
+    open,
+    introOpen,
+    introOpened,
+    posts,
+    user,
+    page,
+    searchParams,
+  });
 
   return (
     <>
@@ -107,14 +119,14 @@ const Feed = () => {
             overflow: 'hidden',
           }}
         >
-          <FeedHeader
+          {/* <FeedHeader
             introOpened={introOpened}
             postFormOpen={postFormOpen}
             toggleIntro={toggleIntro}
-          />
+          /> */}
           <AppIntro opened={introOpened} close={introClose} />
 
-          <Suspense fallback={<FeedSkeleton />} key='feed'>
+          <Suspense fallback={<FeedSkeleton />}>
             <Await resolve={posts}>
               {(posts) => {
                 // console.log('inside suspense rendered', posts);
@@ -127,10 +139,6 @@ const Feed = () => {
                         },
                       }}
                     >
-                      {/* <PostSkeleton /> */}
-                      {/* {posts.data.map((p) => (
-                        <Box key={p.id}></Box>
-                      ))} */}
                       <SimpleGrid
                         cols={{ base: 1 }}
                         mb='md'
@@ -146,12 +154,10 @@ const Feed = () => {
                         total={Math.ceil(posts.count / ITEMS_PER_PAGE)}
                         value={activePage}
                         onChange={(page) => {
-                          startTransition(() => {
-                            navigate(`?page=${page}`, {
-                              preventScrollReset: true,
-                            });
-                            setActivePage(page);
+                          navigate(`?page=${page}`, {
+                            preventScrollReset: true,
                           });
+                          setActivePage(page);
                         }}
                         hideWithOnePage
                       />
@@ -169,13 +175,13 @@ const Feed = () => {
       {/* Modals and Drawers */}
 
       {/* post form */}
-      <Modal
+      {/* <Modal
         title={t('create_new_post')}
         opened={postFormOpened}
         onClose={postFormClose}
       >
         <PostForm close={postFormClose} />
-      </Modal>
+      </Modal> */}
 
       {/* filters */}
       {/* <Drawer

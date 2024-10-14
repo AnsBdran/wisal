@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from '@remix-run/react';
 import { tags } from '~/.server/db/schema';
 import { SerializeFrom } from '@remix-run/node';
-import { loader } from '~/routes/_.feed/route';
+import { loader } from '~/routes/feed/route';
 import { icons } from '~/lib/icons';
 import { useDisclosure } from '@mantine/hooks';
 import { Comments } from './comment';

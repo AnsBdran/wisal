@@ -15,7 +15,7 @@ import { Carousel } from '@mantine/carousel';
 import styles from './post.module.css';
 import { Icon } from '@iconify/react';
 import { SerializeFrom } from '@remix-run/node';
-import { loader } from '~/routes/_.feed/route';
+import { loader } from '~/routes/feed/route';
 import { Reactions, ReactionsStats } from './reactions';
 import { AllComments, AddComment } from './comment';
 import { PostFooter } from './post-footer';

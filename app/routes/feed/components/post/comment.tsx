@@ -31,7 +31,7 @@ import {
   getReactionIconData,
 } from '~/lib/utils';
 import { SerializeFrom } from '@remix-run/node';
-import { loader } from '~/routes/_.feed/route';
+import { loader } from '~/routes/feed/route';
 import { icons } from '~/lib/icons';
 import { useDisclosure } from '@mantine/hooks';
 import { INTENTS } from '~/lib/constants';
@@ -58,10 +58,12 @@ export const AddComment = ({
   // })
 
   useEffect(() => {
-    if (fetcher.data?.action === 'added') {
-      close();
-      openFirstFive();
-    }
+    startTransition(() => {
+      if (fetcher.data?.action === 'added') {
+        close();
+        openFirstFive();
+      }
+    });
   }, [fetcher.data]);
   return (
     <Popover opened={opened} onClose={close}>
@@ -123,8 +125,10 @@ export const CommentActions = ({
   // const data = useActionData();
 
   useEffect(() => {
-    fetcher.data && modals.closeAll();
-  }, [fetcher.data]);
+    startTransition(() => {
+      fetcher.data && modals.closeAll();
+    }, [fetcher.data]);
+  });
   return (
     <>
       <Menu>

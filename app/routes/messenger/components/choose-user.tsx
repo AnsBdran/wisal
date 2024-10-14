@@ -29,6 +29,7 @@ export const ChooseUserToMessage = ({
           display: 'flex',
           alignItems: 'center',
         }}
+        component='div'
       >
         {children}
       </UnstyledButton>
