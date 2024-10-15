@@ -30,7 +30,6 @@ import '@mantine/dropzone/styles.css';
 import './tailwind.css';
 
 import i18next from './services/i18n.server';
-import { UserSessionContextProvider } from './lib/contexts/user-session';
 import { PWABadge } from './lib/components/pwa/badge';
 import { PWAAssets } from './lib/components/pwa/assets';
 
@@ -99,10 +98,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <ModalsProvider
               labels={{ cancel: t('cancel'), confirm: t('confirm') }}
             >
-              <UserSessionContextProvider>
-                {children}
-                <PWABadge />
-              </UserSessionContextProvider>
+              {children}
+              <PWABadge />
             </ModalsProvider>
           </MantineProvider>
         </DirectionProvider>
