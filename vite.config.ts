@@ -4,7 +4,6 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import { envOnlyMacros } from 'vite-env-only';
 import { RemixVitePWA } from '@vite-pwa/remix';
 import { installGlobals } from '@remix-run/node';
-import { vercelPreset } from '@vercel/remix/vite';
 
 installGlobals();
 
@@ -34,7 +33,7 @@ export default defineConfig({
         v3_relativeSplatPath: true,
         v3_throwAbortReason: true,
       },
-      presets: [RemixPWAPreset(), vercelPreset()],
+      presets: [RemixPWAPreset()],
     }),
     tsconfigPaths(),
     RemixVitePWAPlugin({
