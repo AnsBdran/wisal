@@ -15,11 +15,12 @@ import { useTranslation } from 'react-i18next';
 import { action } from './route';
 import { notifications } from '@mantine/notifications';
 import { useEffect } from 'react';
+import { INTENTS } from '~/lib/constants';
 
 export const SuggestionForm = () => {
   const [opened, { open, close }] = useDisclosure();
   const lastResult = useActionData<typeof action>();
-  const [form, fields] = useForm<z.infer<SuggestionSchemaType>>({
+  const [form, fields] = useForm<SuggestionSchemaType>({
     lastResult,
   });
   const { t } = useTranslation('suggestions');
@@ -69,6 +70,8 @@ export const SuggestionForm = () => {
               error={t(fields.description.errors ?? '')}
             />
             <Button
+              name='intent'
+              value={INTENTS.submitSuggestion}
               type='submit'
               loading={navigation.state === 'submitting'}
               loaderProps={{ type: 'dots' }}

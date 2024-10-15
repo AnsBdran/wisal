@@ -4,7 +4,6 @@ import {
   Container,
   Tabs,
   TabsList,
-  useMantineTheme,
 } from '@mantine/core';
 
 import {
@@ -15,7 +14,6 @@ import {
 } from '@remix-run/react';
 
 import Header from '~/lib/components/main/header/index';
-import Footer from '~/lib/components/main/footer';
 import { useTranslation } from 'react-i18next';
 import { LoaderFunction } from '@remix-run/node';
 import { BOTTOM_BAR_HEIGHT, HEADER_HEIGHT } from '~/lib/constants';
@@ -23,8 +21,7 @@ import { Icon } from '@iconify/react';
 import { icons } from '~/lib/icons';
 import { useHeadroom } from '@mantine/hooks';
 import { authenticateOrToast } from '~/.server/utils';
-import { useUserSessionContext } from '~/lib/contexts/user-session';
-import { useEffect } from 'react';
+import { startTransition } from 'react';
 
 export const loader: LoaderFunction = async ({ request }) => {
   const { user, loginRedirect } = await authenticateOrToast(request);
@@ -33,16 +30,23 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export const handle = {
-  i18n: 'common',
+  i18n: ['common', 'feed', 'messenger', 'form'],
 };
 
-const MailLayout = () => {
+const MainLayout = () => {
   const { user } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const pinned = useHeadroom({ fixedAt: HEADER_HEIGHT });
   const location = useLocation();
-  const theme = useMantineTheme();
+
+  const handleTabChange = (value: string | null) => {
+    if (value) {
+      startTransition(() => {
+        navigate(value);
+      });
+    }
+  };
   return (
     <>
       <AppShell
@@ -51,28 +55,24 @@ const MailLayout = () => {
           collapsed: !pinned,
           offset: true,
         }}
-        // footer={{ collapsed: true, height: 120 }}
         px={{ base: 0, sm: 'sm' }}
-        // py='lg'
       >
         <Header user={user} />
         <AppShell.Main>
-          <Outlet />
+          <Container size='sm'>
+            <Outlet />
+          </Container>
           <Container size='sm'>
             <Tabs
-              defaultValue={location.pathname}
-              onChange={(value) => value && navigate(value)}
+              defaultValue={
+                location.pathname === '/feed' ? '/feed' : '/messenger'
+              }
+              onChange={handleTabChange}
               style={{
-                // position: 'fixed',
-                // bottom: 0,
-                // left: 0,
-                // right: 0,
-                backgroundColor: 'var(--mantine-color-body',
-                // maxWidth: 'var(--container-size-sm)',
+                backgroundColor: 'var(--mantine-color-body)',
                 width: '100%',
                 marginInline: 'auto',
               }}
-              // top={1}
               inverted
             >
               <TabsList h={BOTTOM_BAR_HEIGHT}>
@@ -94,12 +94,9 @@ const MailLayout = () => {
             </Tabs>
           </Container>
         </AppShell.Main>
-        {/* <AppShell.Footer>
-          <Footer />
-        </AppShell.Footer> */}
       </AppShell>
     </>
   );
 };
 
-export default MailLayout;
+export default MainLayout;

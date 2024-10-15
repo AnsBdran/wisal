@@ -16,9 +16,8 @@ import { users } from '~/.server/db/schema';
 import { RegisterSchemaType, registerSchema } from '~/lib/schemas';
 import { authenticator } from '~/services/auth.server';
 import { commitSession, getSession } from '~/services/session.server';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { z } from 'zod';
-import { UserSession } from '~/lib/types';
 import { spreadRecordIntoSession } from '~/.server/utils';
 
 export const handle = {

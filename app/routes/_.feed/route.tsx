@@ -34,7 +34,7 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import Post from '~/routes/feed/components/post';
+import Post from '~/routes/_.feed/components/post';
 import {
   BOTTOM_BAR_HEIGHT,
   HEADER_HEIGHT,
@@ -111,77 +111,76 @@ const Feed = () => {
 
   return (
     <>
-      <Container size='sm'>
-        <Stack
-          py='xs'
-          style={{
-            height: `calc(100vh - ${HEADER_HEIGHT}px - ${BOTTOM_BAR_HEIGHT}px)`,
-            overflow: 'hidden',
-          }}
-        >
-          {/* <FeedHeader
-            introOpened={introOpened}
-            postFormOpen={postFormOpen}
-            toggleIntro={toggleIntro}
-          /> */}
-          <AppIntro opened={introOpened} close={introClose} />
+      <Stack
+        py='xs'
+        style={{
+          height: `calc(100vh - ${HEADER_HEIGHT}px - ${BOTTOM_BAR_HEIGHT}px)`,
+          overflow: 'hidden',
+        }}
+      >
+        <FeedHeader
+          introOpened={introOpened}
+          postFormOpen={postFormOpen}
+          toggleIntro={toggleIntro}
+        />
+        <AppIntro opened={introOpened} close={introClose} />
 
-          <Suspense fallback={<FeedSkeleton />}>
-            <Await resolve={posts}>
-              {(posts) => {
-                // console.log('inside suspense rendered', posts);
-                return (
-                  <>
-                    <ScrollArea
-                      styles={{
-                        thumb: {
-                          backgroundColor: 'transparent',
-                        },
-                      }}
+        <Suspense fallback={<FeedSkeleton />}>
+          <Await resolve={posts}>
+            {(posts) => {
+              // console.log('inside suspense rendered', posts);
+              return (
+                <>
+                  <ScrollArea
+                    styles={{
+                      thumb: {
+                        backgroundColor: 'transparent',
+                      },
+                    }}
+                  >
+                    <SimpleGrid
+                      cols={{ base: 1 }}
+                      mb='md'
+                      // hidden={posts.count === 0}
                     >
-                      <SimpleGrid
-                        cols={{ base: 1 }}
-                        mb='md'
-                        hidden={posts.count === 0}
-                      >
-                        {posts.data.map((post) => (
-                          <Box key={post.id}>
-                            <Post post={post} userID={user.id} />
-                          </Box>
-                        ))}
-                      </SimpleGrid>
-                      <Pagination
-                        total={Math.ceil(posts.count / ITEMS_PER_PAGE)}
-                        value={activePage}
-                        onChange={(page) => {
-                          navigate(`?page=${page}`, {
-                            preventScrollReset: true,
-                          });
-                          setActivePage(page);
-                        }}
-                        hideWithOnePage
-                      />
-                      <EmptyFeed hidden={posts.count > 0} open={postFormOpen} />
-                    </ScrollArea>
-                  </>
-                );
-              }}
-            </Await>
-          </Suspense>
-        </Stack>
-      </Container>
+                      posts
+                      {posts.data.map((post) => (
+                        <Box key={post.id}>
+                          <Post post={post} userID={user.id} />
+                        </Box>
+                      ))}
+                    </SimpleGrid>
+                    <Pagination
+                      total={Math.ceil(posts.count / ITEMS_PER_PAGE)}
+                      value={activePage}
+                      onChange={(page) => {
+                        navigate(`?page=${page}`, {
+                          preventScrollReset: true,
+                        });
+                        setActivePage(page);
+                      }}
+                      hideWithOnePage
+                    />
+                    {/* <EmptyFeed hidden={posts.count > 0} open={postFormOpen} /> */}
+                  </ScrollArea>
+                </>
+              );
+            }}
+          </Await>
+        </Suspense>
+      </Stack>
 
       {/* ++++++++++++++++++++++++++++++++++++++++++++++ */}
       {/* Modals and Drawers */}
 
       {/* post form */}
-      {/* <Modal
+      <Modal
         title={t('create_new_post')}
         opened={postFormOpened}
         onClose={postFormClose}
       >
         <PostForm close={postFormClose} />
-      </Modal> */}
+      </Modal>
 
       {/* filters */}
       {/* <Drawer

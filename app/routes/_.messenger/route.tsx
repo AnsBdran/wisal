@@ -24,6 +24,7 @@ import {
   CreateChatGroupButton,
   EmptyMessenger,
   DirectChat,
+  MessengerSkeleton,
 } from './components';
 import { authenticateOrToast, findOrCreateDirectChat } from '~/.server/utils';
 import { useTranslation } from 'react-i18next';
@@ -35,10 +36,6 @@ import { getUserChats } from '~/.server/queries';
 import { DirectChatType, GroupChatType } from '~/lib/types';
 import { createChatGroup, exitChatGroup } from './actions';
 import { Suspense } from 'react';
-import {
-  ChatSkeleton,
-  MessengerSkeleton,
-} from './components/messenger-skeleton';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { user, loginRedirect: redirect } = await authenticateOrToast(request);
@@ -105,7 +102,6 @@ const Messenger = () => {
                   >
                     {chats.chats.map((chat) => (
                       <Fragment key={chat.chatID}>
-                        <p>chat</p>
                         {chat.type === 'group' ? (
                           <GroupChat groupChat={chat as GroupChatType} />
                         ) : (

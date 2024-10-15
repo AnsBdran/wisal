@@ -12,23 +12,20 @@
     "routeIdToServerBundleId": {
       "root": "nodejs-eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/messenger.$chat.stream": "nodejs-eyJydW50aW1lIjoibm9kZWpzIn0",
-      "routes/dashboard.suggestions": "nodejs-eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/messenger.$chat.edit": "nodejs-eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/__.messenger_.$chat": "nodejs-eyJydW50aW1lIjoibm9kZWpzIn0",
-      "routes/dashboard._index": "nodejs-eyJydW50aW1lIjoibm9kZWpzIn0",
-      "routes/dashboard.users": "nodejs-eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/_auth.register": "nodejs-eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/_l.suggestions": "nodejs-eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/_auth.login_": "nodejs-eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/_.messenger": "nodejs-eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/_l.settings": "nodejs-eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/_l.profile": "nodejs-eyJydW50aW1lIjoibm9kZWpzIn0",
-      "routes/messenger": "nodejs-eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/api.data": "nodejs-eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/_._index": "nodejs-eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/_l.about": "nodejs-eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/contact": "nodejs-eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/logout": "nodejs-eyJydW50aW1lIjoibm9kZWpzIn0",
-      "routes/feed": "nodejs-eyJydW50aW1lIjoibm9kZWpzIn0"
+      "routes/_.feed": "nodejs-eyJydW50aW1lIjoibm9kZWpzIn0"
     },
     "routes": {
       "root": {
@@ -42,22 +39,15 @@
       "routes/messenger.$chat.stream": {
         "file": "app/routes/messenger.$chat.stream.ts",
         "id": "routes/messenger.$chat.stream",
-        "path": ":chat/stream",
-        "parentId": "routes/messenger",
-        "config": {}
-      },
-      "routes/dashboard.suggestions": {
-        "file": "app/routes/dashboard.suggestions.tsx",
-        "id": "routes/dashboard.suggestions",
-        "path": "suggestions",
-        "parentId": "routes/dashboard",
+        "path": "messenger/:chat/stream",
+        "parentId": "root",
         "config": {}
       },
       "routes/messenger.$chat.edit": {
         "file": "app/routes/messenger.$chat.edit/route.tsx",
         "id": "routes/messenger.$chat.edit",
-        "path": ":chat/edit",
-        "parentId": "routes/messenger",
+        "path": "messenger/:chat/edit",
+        "parentId": "root",
         "config": {}
       },
       "routes/__.messenger_.$chat": {
@@ -65,20 +55,6 @@
         "id": "routes/__.messenger_.$chat",
         "path": "messenger/:chat",
         "parentId": "root",
-        "config": {}
-      },
-      "routes/dashboard._index": {
-        "file": "app/routes/dashboard._index.tsx",
-        "id": "routes/dashboard._index",
-        "index": true,
-        "parentId": "routes/dashboard",
-        "config": {}
-      },
-      "routes/dashboard.users": {
-        "file": "app/routes/dashboard.users.tsx",
-        "id": "routes/dashboard.users",
-        "path": "users",
-        "parentId": "routes/dashboard",
         "config": {}
       },
       "routes/_auth.register": {
@@ -102,6 +78,13 @@
         "parentId": "routes/_auth",
         "config": {}
       },
+      "routes/_.messenger": {
+        "file": "app/routes/_.messenger/route.tsx",
+        "id": "routes/_.messenger",
+        "path": "messenger",
+        "parentId": "routes/_",
+        "config": {}
+      },
       "routes/_l.settings": {
         "file": "app/routes/_l.settings/route.tsx",
         "id": "routes/_l.settings",
@@ -114,20 +97,6 @@
         "id": "routes/_l.profile",
         "path": "profile",
         "parentId": "routes/_l",
-        "config": {}
-      },
-      "routes/dashboard": {
-        "file": "app/routes/dashboard.tsx",
-        "id": "routes/dashboard",
-        "path": "dashboard",
-        "parentId": "root",
-        "config": {}
-      },
-      "routes/messenger": {
-        "file": "app/routes/messenger/route.tsx",
-        "id": "routes/messenger",
-        "path": "messenger",
-        "parentId": "root",
         "config": {}
       },
       "routes/api.data": {
@@ -165,16 +134,16 @@
         "parentId": "root",
         "config": {}
       },
+      "routes/_.feed": {
+        "file": "app/routes/_.feed/route.tsx",
+        "id": "routes/_.feed",
+        "path": "feed",
+        "parentId": "routes/_",
+        "config": {}
+      },
       "routes/_auth": {
         "file": "app/routes/_auth.tsx",
         "id": "routes/_auth",
-        "parentId": "root",
-        "config": {}
-      },
-      "routes/feed": {
-        "file": "app/routes/feed/route.tsx",
-        "id": "routes/feed",
-        "path": "feed",
         "parentId": "root",
         "config": {}
       },
@@ -215,38 +184,20 @@
       "routes/messenger.$chat.stream": {
         "file": "routes/messenger.$chat.stream.ts",
         "id": "routes/messenger.$chat.stream",
-        "path": ":chat/stream",
-        "parentId": "routes/messenger"
-      },
-      "routes/dashboard.suggestions": {
-        "file": "routes/dashboard.suggestions.tsx",
-        "id": "routes/dashboard.suggestions",
-        "path": "suggestions",
-        "parentId": "routes/dashboard"
+        "path": "messenger/:chat/stream",
+        "parentId": "root"
       },
       "routes/messenger.$chat.edit": {
         "file": "routes/messenger.$chat.edit/route.tsx",
         "id": "routes/messenger.$chat.edit",
-        "path": ":chat/edit",
-        "parentId": "routes/messenger"
+        "path": "messenger/:chat/edit",
+        "parentId": "root"
       },
       "routes/__.messenger_.$chat": {
         "file": "routes/__.messenger_.$chat/route.tsx",
         "id": "routes/__.messenger_.$chat",
         "path": "messenger/:chat",
         "parentId": "root"
-      },
-      "routes/dashboard._index": {
-        "file": "routes/dashboard._index.tsx",
-        "id": "routes/dashboard._index",
-        "index": true,
-        "parentId": "routes/dashboard"
-      },
-      "routes/dashboard.users": {
-        "file": "routes/dashboard.users.tsx",
-        "id": "routes/dashboard.users",
-        "path": "users",
-        "parentId": "routes/dashboard"
       },
       "routes/_auth.register": {
         "file": "routes/_auth.register.tsx",
@@ -266,6 +217,12 @@
         "path": "login",
         "parentId": "routes/_auth"
       },
+      "routes/_.messenger": {
+        "file": "routes/_.messenger/route.tsx",
+        "id": "routes/_.messenger",
+        "path": "messenger",
+        "parentId": "routes/_"
+      },
       "routes/_l.settings": {
         "file": "routes/_l.settings/route.tsx",
         "id": "routes/_l.settings",
@@ -277,18 +234,6 @@
         "id": "routes/_l.profile",
         "path": "profile",
         "parentId": "routes/_l"
-      },
-      "routes/dashboard": {
-        "file": "routes/dashboard.tsx",
-        "id": "routes/dashboard",
-        "path": "dashboard",
-        "parentId": "root"
-      },
-      "routes/messenger": {
-        "file": "routes/messenger/route.tsx",
-        "id": "routes/messenger",
-        "path": "messenger",
-        "parentId": "root"
       },
       "routes/api.data": {
         "file": "routes/api.data.tsx",
@@ -320,15 +265,15 @@
         "path": "logout",
         "parentId": "root"
       },
+      "routes/_.feed": {
+        "file": "routes/_.feed/route.tsx",
+        "id": "routes/_.feed",
+        "path": "feed",
+        "parentId": "routes/_"
+      },
       "routes/_auth": {
         "file": "routes/_auth.tsx",
         "id": "routes/_auth",
-        "parentId": "root"
-      },
-      "routes/feed": {
-        "file": "routes/feed/route.tsx",
-        "id": "routes/feed",
-        "path": "feed",
         "parentId": "root"
       },
       "routes/_l": {

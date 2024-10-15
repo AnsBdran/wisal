@@ -7,7 +7,7 @@ import {
   Title,
 } from '@mantine/core';
 import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
-import { Form, useActionData } from '@remix-run/react';
+import { Form, useActionData, useNavigation } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
 import { authenticator } from '~/services/auth.server';
 import { Icon } from '@iconify/react';
@@ -20,7 +20,7 @@ import { icons } from '~/lib/icons';
 import i18next from '~/services/i18n.server';
 import { spreadRecordIntoSession } from '~/.server/utils';
 import { redirectWithSuccess } from 'remix-toast';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 export const handle = {
   i18n: 'form',
@@ -37,6 +37,7 @@ const Login = () => {
       return parseWithZod(formData, { schema: loginSchema });
     },
   });
+  const navigation = useNavigation();
   return (
     // <Form method='post'>
     <>
@@ -67,7 +68,9 @@ const Login = () => {
               {t(form.errors)}
             </Alert>
           )}
-          <Button type='submit'>{t('login')}</Button>
+          <Button type='submit' loading={navigation.state !== 'idle'}>
+            {t('login')}
+          </Button>
         </Stack>
       </Form>
     </>

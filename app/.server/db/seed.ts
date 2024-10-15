@@ -20,7 +20,7 @@ import {
 } from './schema';
 import { users, usersPrefs } from './schema/user';
 import { fakerAR as faker } from '@faker-js/faker';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 // const arr = num =>  Array.from({length: num}).fill(0)
 const COUNT = 100;

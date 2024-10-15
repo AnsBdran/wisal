@@ -26,7 +26,6 @@ export default defineConfig({
     VITE_PUBLIC_VIRTUAL_PWA_MODULE: process.env.VITE_VIRTUAL_PWA_MODULE,
     VITE_BUILD_DATE: process.env.VITE_BUILD_DATE,
   },
-
   plugins: [
     envOnlyMacros(),
     remix({

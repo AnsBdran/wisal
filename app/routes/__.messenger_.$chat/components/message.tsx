@@ -102,11 +102,7 @@ export const Message = ({
         {m.contentType === 'image' ? (
           <>
             <Stack gap={0}>
-              {!isSameSenderAsPrevious && (
-                <Text className={styles.senderName}>
-                  {getProfileInfoText(m.sender)}
-                </Text>
-              )}
+              {!isSameSenderAsPrevious && getProfileInfoText(m.sender)}
               <Box className={styles.imageContainer}>
                 <Image src={m.content} className={styles.image} />
               </Box>
@@ -124,11 +120,7 @@ export const Message = ({
         ) : (
           <Box key={m.id} className={styles.textContent}>
             <Stack gap={0}>
-              {!isSameSenderAsPrevious && (
-                <Text className={styles.senderName}>
-                  {getProfileInfoText(m.sender)}
-                </Text>
-              )}
+              {!isSameSenderAsPrevious && getProfileInfoText(m.sender)}
               <Text>{m.content}</Text>
             </Stack>
             {!isSameSenderAsNext && (

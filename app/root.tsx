@@ -94,7 +94,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body>
         <DirectionProvider detectDirection initialDirection={i18n.dir()}>
           <MantineProvider
-            // defaultColorScheme='dark'
+            defaultColorScheme='dark'
             theme={theme}
             cssVariablesResolver={cssVariablesResolver}
           >
