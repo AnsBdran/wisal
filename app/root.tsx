@@ -16,7 +16,7 @@ import {
 import { cssVariablesResolver, theme } from './lib/theme';
 import NotFound from '~/lib/components/main/not-found/index';
 import { getToast } from 'remix-toast';
-import { startTransition, useEffect } from 'react';
+import { useEffect } from 'react';
 import { notifications, Notifications } from '@mantine/notifications';
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { ModalsProvider } from '@mantine/modals';
@@ -31,8 +31,8 @@ import './tailwind.css';
 
 import i18next from './services/i18n.server';
 import { UserSessionContextProvider } from './lib/contexts/user-session';
-// import { PWABadge } from './lib/components/pwa/badge';
-// import { PWAAssets } from './lib/components/pwa/assets';
+import { PWABadge } from './lib/components/pwa/badge';
+import { PWAAssets } from './lib/components/pwa/assets';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { toast, headers } = await getToast(request);
@@ -71,14 +71,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
     // locale
   } = data;
   useEffect(() => {
-    startTransition(() => {
-      if (toast) {
-        notifications.show({
-          title: toast.message,
-          message: toast.description,
-        });
-      }
-    });
+    if (toast) {
+      notifications.show({
+        title: toast.message,
+        message: toast.description,
+      });
+    }
   }, [toast]);
 
   return (
@@ -87,7 +85,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <Meta />
-        {/* <PWAAssets /> */}
+        <PWAAssets />
         <Links />
         <ColorSchemeScript />
       </head>
@@ -103,7 +101,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             >
               <UserSessionContextProvider>
                 {children}
-                {/* <PWABadge /> */}
+                <PWABadge />
               </UserSessionContextProvider>
             </ModalsProvider>
           </MantineProvider>
