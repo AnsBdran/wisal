@@ -128,7 +128,7 @@ const Feed = () => {
         <Suspense fallback={<FeedSkeleton />}>
           <Await resolve={posts}>
             {(posts) => {
-              // console.log('inside suspense rendered', posts);
+              console.log('inside suspense rendered', posts);
               return (
                 <>
                   <ScrollArea
@@ -143,7 +143,6 @@ const Feed = () => {
                       mb='md'
                       // hidden={posts.count === 0}
                     >
-                      posts
                       {posts.data.map((post) => (
                         <Box key={post.id}>
                           <Post post={post} userID={user.id} />
@@ -161,7 +160,7 @@ const Feed = () => {
                       }}
                       hideWithOnePage
                     />
-                    {/* <EmptyFeed hidden={posts.count > 0} open={postFormOpen} /> */}
+                    <EmptyFeed hidden={posts.count > 0} open={postFormOpen} />
                   </ScrollArea>
                 </>
               );

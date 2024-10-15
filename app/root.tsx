@@ -31,8 +31,8 @@ import './tailwind.css';
 
 import i18next from './services/i18n.server';
 import { UserSessionContextProvider } from './lib/contexts/user-session';
-import { PWABadge } from './lib/components/pwa/badge';
-import { PWAAssets } from './lib/components/pwa/assets';
+// import { PWABadge } from './lib/components/pwa/badge';
+// import { PWAAssets } from './lib/components/pwa/assets';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { toast, headers } = await getToast(request);
@@ -87,14 +87,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <Meta />
-        <PWAAssets />
+        {/* <PWAAssets /> */}
         <Links />
         <ColorSchemeScript />
       </head>
       <body>
         <DirectionProvider detectDirection initialDirection={i18n.dir()}>
           <MantineProvider
-            defaultColorScheme='dark'
             theme={theme}
             cssVariablesResolver={cssVariablesResolver}
           >
@@ -104,7 +103,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             >
               <UserSessionContextProvider>
                 {children}
-                <PWABadge />
+                {/* <PWABadge /> */}
               </UserSessionContextProvider>
             </ModalsProvider>
           </MantineProvider>
