@@ -1,3 +1,8 @@
+import '@mantine/core/styles.css';
+import '@mantine/notifications/styles.css';
+import '@mantine/carousel/styles.css';
+import '@mantine/dropzone/styles.css';
+
 import {
   ColorSchemeScript,
   DirectionProvider,
@@ -23,15 +28,11 @@ import { ModalsProvider } from '@mantine/modals';
 import { useTranslation } from 'react-i18next';
 import { useChangeLanguage } from 'remix-i18next/react';
 import './font.css';
-import '@mantine/core/styles.css';
-import '@mantine/notifications/styles.css';
-import '@mantine/carousel/styles.css';
-import '@mantine/dropzone/styles.css';
 import './tailwind.css';
 
 import i18next from './services/i18n.server';
-// import { PWABadge } from './lib/components/pwa/badge';
-// import { PWAAssets } from './lib/components/pwa/assets';
+import { PWABadge } from './lib/components/pwa/badge';
+import { PWAAssets } from './lib/components/pwa/assets';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { toast, headers } = await getToast(request);
@@ -83,11 +84,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <Meta />
         <Links />
-        {/* <ColorSchemeScript /> */}
       </head>
       <body>
-        <DirectionProvider>
-          {/* <DirectionProvider detectDirection initialDirection={i18n.dir()}> */}
+        <DirectionProvider detectDirection initialDirection={i18n.dir()}>
           <MantineProvider
             theme={theme}
             cssVariablesResolver={cssVariablesResolver}
@@ -97,13 +96,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
               labels={{ cancel: t('cancel'), confirm: t('confirm') }}
             >
               {children}
-              {/* <PWABadge /> */}
+              <PWABadge />
             </ModalsProvider>
           </MantineProvider>
         </DirectionProvider>
         <ScrollRestoration getKey={(location) => location.pathname} />
+        <PWAAssets />
+        {/* <ColorSchemeScript /> */}
         <Scripts />
-        {/* <PWAAssets /> */}
       </body>
     </html>
   );

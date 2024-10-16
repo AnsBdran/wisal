@@ -36,15 +36,7 @@ async function hydrate() {
         <StrictMode>
           <RemixBrowser />
         </StrictMode>
-      </I18nextProvider>,
-      {
-        onCaughtError: (error, errorInfo) => {
-          console.error('Caught error', error, errorInfo.componentStack);
-        },
-        onRecoverableError(error, errorInfo) {
-          console.log({ error, errorInfo });
-        },
-      }
+      </I18nextProvider>
     );
   });
 }
