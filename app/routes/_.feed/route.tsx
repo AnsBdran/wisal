@@ -176,8 +176,25 @@ const Feed = () => {
         title={t('create_new_post')}
         opened={postFormOpened}
         onClose={postFormClose}
+        styles={{
+          content: {
+            overflow: 'hidden',
+            display: 'flex',
+            flexDirection: 'column',
+            // height: '70vh',
+          },
+        }}
       >
-        <PostForm close={postFormClose} />
+        <ScrollArea.Autosize
+          style={{
+            flexGrow: 1,
+            // flexBasis: 500,
+            backgroundColor: 'green',
+          }}
+          offsetScrollbars
+        >
+          <PostForm close={postFormClose} />
+        </ScrollArea.Autosize>
       </Modal>
 
       {/* filters */}

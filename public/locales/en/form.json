@@ -30,5 +30,6 @@
   "successfully_logged_in": "You have successfully logged in.",
   "successfully_logged_in_description": "You can now start messaging and browse content.",
   "name_short": "Group name must be at least {{count}} characters",
-  "name_required": "Group name is required"
+  "name_required": "Group name is required",
+  "create_chat_group": "Create new chat group"
 }

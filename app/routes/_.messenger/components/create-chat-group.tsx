@@ -8,16 +8,17 @@ import {
   InputLabel,
   InputError,
 } from '@mantine/core';
-import { Link, useFetcher, useNavigate } from '@remix-run/react';
+import { useFetcher } from '@remix-run/react';
 import { Icon } from '@iconify/react';
 import { icons } from '~/lib/icons';
 import { useTranslation } from 'react-i18next';
 import { INTENTS } from '~/lib/constants';
 import { useDisclosure, useFetch } from '@mantine/hooks';
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 import MultiSelect from '~/lib/components/common/users-multi-select';
 import { useForm } from '@conform-to/react';
 import { ChatGroupSchemaType } from '~/lib/schemas';
+
 export const CreateChatGroupButton = () => {
   const fetcher = useFetcher();
   const [opened, { close, open }] = useDisclosure();
@@ -33,7 +34,7 @@ export const CreateChatGroupButton = () => {
         <Icon icon={icons.usersGroup} />
       </ActionIcon>
 
-      <Modal opened={opened} onClose={close}>
+      <Modal opened={opened} onClose={close} title={t('create_chat_group')}>
         <fetcher.Form method='POST' onSubmit={form.onSubmit} id={form.id}>
           <Stack>
             <TextInput

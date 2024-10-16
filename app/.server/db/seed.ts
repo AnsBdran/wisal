@@ -500,7 +500,7 @@ const seed = async () => {
 const main = async () => {
   try {
     await clear();
-    await seed();
+    // await seed();
     console.log('seed successfull');
     process.exit(0);
   } catch (e) {

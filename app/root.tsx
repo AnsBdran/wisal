@@ -30,12 +30,13 @@ import '@mantine/dropzone/styles.css';
 import './tailwind.css';
 
 import i18next from './services/i18n.server';
-import { PWABadge } from './lib/components/pwa/badge';
-import { PWAAssets } from './lib/components/pwa/assets';
+// import { PWABadge } from './lib/components/pwa/badge';
+// import { PWAAssets } from './lib/components/pwa/assets';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { toast, headers } = await getToast(request);
   const t = await i18next.getFixedT(request, 'common');
+
   const title = t('app_title');
   const description = t('app_description');
   const locale = await i18next.getLocale(request);
@@ -50,9 +51,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   );
 };
 
-// export const handle = {
-//   i18n: 'common',
-// };
+export const handle = {
+  i18n: 'common',
+};
 export const meta: MetaFunction = ({ data }) => {
   return [
     { title: data.title },
@@ -63,7 +64,6 @@ export const meta: MetaFunction = ({ data }) => {
 export function Layout({ children }: { children: React.ReactNode }) {
   const data = useLoaderData<typeof loader>();
   const { t, i18n } = useTranslation();
-  // const locale = i18n.language;
   const { toast, locale } = data;
 
   useChangeLanguage(locale);
@@ -82,12 +82,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <Meta />
-        <PWAAssets />
         <Links />
-        <ColorSchemeScript />
+        {/* <ColorSchemeScript /> */}
       </head>
       <body>
-        <DirectionProvider detectDirection initialDirection={i18n.dir()}>
+        <DirectionProvider>
+          {/* <DirectionProvider detectDirection initialDirection={i18n.dir()}> */}
           <MantineProvider
             theme={theme}
             cssVariablesResolver={cssVariablesResolver}
@@ -97,12 +97,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
               labels={{ cancel: t('cancel'), confirm: t('confirm') }}
             >
               {children}
-              <PWABadge />
+              {/* <PWABadge /> */}
             </ModalsProvider>
           </MantineProvider>
         </DirectionProvider>
         <ScrollRestoration getKey={(location) => location.pathname} />
         <Scripts />
+        {/* <PWAAssets /> */}
       </body>
     </html>
   );

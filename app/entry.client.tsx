@@ -1,22 +1,3 @@
-/**
- * By default, Remix will handle hydrating your app on the client for you.
- * You are free to delete this file if you'd like to, but if you ever want it revealed again, you can run `npx remix reveal` ✨
- * For more information, see https://remix.run/file-conventions/entry.client
-//  */
-
-// import { RemixBrowser } from '@remix-run/react';
-// import { startTransition, StrictMode } from 'react';
-// import { hydrateRoot } from 'react-dom/client';
-
-// startTransition(() => {
-//   hydrateRoot(
-//     document,
-//     <StrictMode>
-//       <RemixBrowser />
-//     </StrictMode>
-//   );
-// });
-
 import { RemixBrowser } from '@remix-run/react';
 import { startTransition, StrictMode } from 'react';
 import { hydrateRoot } from 'react-dom/client';
@@ -30,7 +11,6 @@ import { getInitialNamespaces } from 'remix-i18next/client';
 async function hydrate() {
   await i18next
     .use(initReactI18next) // Tell i18next to use the react-i18next plugin
-    // edited by anas
     .use(LanguageDetector) // Setup a client-side language detector
     .use(Backend) // Setup your backend
     .init({
@@ -56,16 +36,23 @@ async function hydrate() {
         <StrictMode>
           <RemixBrowser />
         </StrictMode>
-      </I18nextProvider>
+      </I18nextProvider>,
+      {
+        onCaughtError: (error, errorInfo) => {
+          console.error('Caught error', error, errorInfo.componentStack);
+        },
+        onRecoverableError(error, errorInfo) {
+          console.log({ error, errorInfo });
+        },
+      }
     );
   });
 }
 
-window.requestIdleCallback(hydrate);
-// if (window.requestIdleCallback) {
-//   window.requestIdleCallback(hydrate);
-// } else {
-//   // Safari doesn't support requestIdleCallback
-//   // https://caniuse.com/requestidlecallback
-//   window.setTimeout(hydrate, 1);
-// }
+if (window.requestIdleCallback) {
+  window.requestIdleCallback(hydrate);
+} else {
+  // Safari doesn't support requestIdleCallback
+  // https://caniuse.com/requestidlecallback
+  window.setTimeout(hydrate, 1);
+}
