@@ -20,7 +20,7 @@ const getStatsData = (stats: SerializeFrom<typeof loader>['stats']) => {
       title: 'عدد مستخدمي التطبيق',
       stats: stats.usersCount,
       description:
-        'عدد مستخدمي تطبيق الوصال الذين قرروا الإنضمام إلينا حتَّى الآن.',
+        'عدد مستخدمي تطبيق وصال الذين قرروا الإنضمام إلينا حتَّى الآن.',
     },
     {
       title: 'عدد المنشورات',

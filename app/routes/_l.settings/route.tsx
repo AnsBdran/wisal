@@ -1,5 +1,5 @@
 import { Icon } from '@iconify/react';
-import { ActionIcon, Box, Button, Group, Tabs, Title } from '@mantine/core';
+import { ActionIcon, Box, Group, Tabs, Title } from '@mantine/core';
 import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';

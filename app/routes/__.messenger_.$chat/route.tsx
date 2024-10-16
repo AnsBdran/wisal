@@ -20,15 +20,7 @@ import { emitter } from '~/services/emitter.server';
 import { useLiveLoader } from '~/lib/hooks/useLiveLoader';
 import { authenticateOrToast } from '~/.server/utils';
 import { UserSession } from '~/lib/types';
-import {
-  isRouteErrorResponse,
-  Links,
-  Meta,
-  Scripts,
-  useRouteError,
-} from '@remix-run/react';
 import { editMessage, sendMessage } from './actions';
-import { waiit } from '~/lib/utils';
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const { user, loginRedirect: redirect } = await authenticateOrToast(request);
@@ -154,7 +146,6 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
       return await sendMessage(fd, userID, params);
     }
     case INTENTS.editMessage: {
-      // await waiit(3000);
       return await editMessage(fd, params);
     }
     case INTENTS.deleteMessage: {

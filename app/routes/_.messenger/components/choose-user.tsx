@@ -1,4 +1,4 @@
-import { Box, UnstyledButton, Modal } from '@mantine/core';
+import { Box, UnstyledButton, Modal, ScrollArea } from '@mantine/core';
 import { Link, useFetcher, useNavigate } from '@remix-run/react';
 import { loader as apiLoader } from '~/routes/api.data';
 import { getProfileInfo, getProfileInfoText } from '~/lib/utils';
@@ -37,33 +37,42 @@ export const ChooseUserToMessage = ({
       <Modal
         opened={opened}
         onClose={close}
+        styles={{
+          content: {
+            overflow: 'hidden',
+            display: 'flex',
+            flexDirection: 'column',
+          },
+        }}
         title={t('choose_User_to_chat_with')}
       >
-        {usersFetcher.data?.users.map((u) => (
-          <Box
-            py={'xs'}
-            key={u.id}
-            style={{
-              borderBottom: '.5px solid',
-              borderColor: 'var(--mantine-color-dimmed)',
-            }}
-            onClick={() =>
-              chatFetcher.submit(
-                {
-                  intent: INTENTS.findOrCreateChat,
-                  // formID: userID,
-                  targetID: u.id,
-                },
-                {
-                  method: 'POST',
-                }
-              )
-            }
-          >
-            {getProfileInfo(u)}
-            {/* <Divider /> */}
-          </Box>
-        ))}
+        <ScrollArea.Autosize flex={1} mah={500} offsetScrollbars>
+          {usersFetcher.data?.users.map((u) => (
+            <Box
+              py={'xs'}
+              key={u.id}
+              style={{
+                borderBottom: '.5px solid',
+                borderColor: 'var(--mantine-color-dimmed)',
+              }}
+              onClick={() =>
+                chatFetcher.submit(
+                  {
+                    intent: INTENTS.findOrCreateChat,
+                    // formID: userID,
+                    targetID: u.id,
+                  },
+                  {
+                    method: 'POST',
+                  }
+                )
+              }
+            >
+              {getProfileInfo(u)}
+              {/* <Divider /> */}
+            </Box>
+          ))}
+        </ScrollArea.Autosize>
       </Modal>
     </>
   );

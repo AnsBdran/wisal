@@ -56,7 +56,6 @@ export const getPosts = async ({
   // searchQueries: Record<string, string>;
 }) => {
   const { limit, offset } = getPagination({ page });
-  await waiit(2000);
   const _posts = await db.query.posts.findMany({
     with: {
       comments: {

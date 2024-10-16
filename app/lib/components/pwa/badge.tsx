@@ -6,12 +6,12 @@ import {
   Button,
   Dialog,
   Group,
-  Notification,
+  // Notification,
   Stack,
   Text,
 } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import { notifications } from '@mantine/notifications';
+// import { notifications } from '@mantine/notifications';
 
 export const PWABadge = () => {
   const period = 60 * 60 * 1000;

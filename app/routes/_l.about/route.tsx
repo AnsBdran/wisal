@@ -1,4 +1,4 @@
-import { Title, Button, Group, Modal, Stack } from '@mantine/core';
+import { Title, Button, Group, Stack } from '@mantine/core';
 import { json, LoaderFunctionArgs } from '@remix-run/node';
 import { Link, useLoaderData } from '@remix-run/react';
 import { authenticator } from '~/services/auth.server';
@@ -31,7 +31,7 @@ const About = () => {
     <Stack>
       <Group justify='space-between'>
         <Title>تطبيق وصال</Title>
-        <Button component={Link} to={'/suggestions'}>
+        <Button component={Link} to='/suggestions'>
           {t('view_suggestions')}
         </Button>
       </Group>

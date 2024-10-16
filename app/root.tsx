@@ -38,21 +38,21 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const t = await i18next.getFixedT(request, 'common');
   const title = t('app_title');
   const description = t('app_description');
-  // const locale = await i18next.getLocale(request);
+  const locale = await i18next.getLocale(request);
   return json(
     {
       toast,
-      // locale,
       title,
       description,
+      locale,
     },
     { headers }
   );
 };
 
-export const handle = {
-  i18n: 'common',
-};
+// export const handle = {
+//   i18n: 'common',
+// };
 export const meta: MetaFunction = ({ data }) => {
   return [
     { title: data.title },
@@ -63,12 +63,10 @@ export const meta: MetaFunction = ({ data }) => {
 export function Layout({ children }: { children: React.ReactNode }) {
   const data = useLoaderData<typeof loader>();
   const { t, i18n } = useTranslation();
-  const locale = i18n.language;
+  // const locale = i18n.language;
+  const { toast, locale } = data;
+
   useChangeLanguage(locale);
-  const {
-    toast,
-    // locale
-  } = data;
   useEffect(() => {
     if (toast) {
       notifications.show({

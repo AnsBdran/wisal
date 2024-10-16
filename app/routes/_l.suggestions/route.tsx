@@ -6,7 +6,6 @@ import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
 import { suggestionSchema } from '~/lib/schemas';
 import { db } from '~/.server/db';
 import { suggestions, votes } from '../../.server/db/schema/review';
-import { waiit } from '~/lib/utils';
 import { getSuggestions } from '~/.server/queries';
 import { useLoaderData } from '@remix-run/react';
 import Suggestion from './suggestion';

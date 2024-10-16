@@ -86,7 +86,6 @@ const Feed = () => {
   const { t } = useTranslation('feed');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  // const page = searchParams.get('page');
   const [opened, { close, open }] = useDisclosure();
   const [postFormOpened, { close: postFormClose, open: postFormOpen }] =
     useDisclosure();

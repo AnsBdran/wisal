@@ -42,7 +42,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   if (!user) return redirect;
 
   const chats = getUserChats({ userID: Number(user.id) });
-  // const { chats } = await getUserChats({ userID: Number(user.id) });
   return defer({ chats });
 };
 
@@ -55,7 +54,6 @@ const Messenger = () => {
   const { t } = useTranslation();
 
   return (
-    // <Stack py='xl' >
     <>
       <Container size='sm'>
         <Stack

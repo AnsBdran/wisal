@@ -17,7 +17,7 @@ export const SwitchCell = ({ defaultValue }: { defaultValue: boolean }) => {
           setEditUser((prev) => ({
             ...prev,
             intent: INTENTS.editUserIsFamily,
-            isFamily: ev.currentTarget.checked,
+            isFamily: ev.currentTarget?.checked,
           }));
         }}
         onLabel={<Icon icon={icons.star} fontSize={rem('14px')} />}

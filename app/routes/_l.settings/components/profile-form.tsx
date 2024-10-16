@@ -16,8 +16,8 @@ export const ProfileForm = ({ user }: { user: UserRecord }) => {
   const [form, fields] = useForm<z.infer<typeof profileSchema>>({
     lastResult,
     defaultValue: user,
-    shouldRevalidate: 'onInput',
-    shouldValidate: 'onBlur',
+    shouldRevalidate: 'onBlur',
+    shouldValidate: 'onSubmit',
   });
   const { t, i18n } = useTranslation(['form', 'settings']);
 

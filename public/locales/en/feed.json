@@ -39,8 +39,8 @@
   "drop_files_here_description": "Attach as many files as you like, each file should not exceed 3mb",
   "no_comments_yet": "No comments found.",
   "no_comments_yet_description": "There is no comments on this post, yet.",
-
   "no_reactions_yet": "No reactions found for this post.",
   "no_reactions_yet_description": "This post hasn't been reacted on yet.",
-  "edit": "Edit"
+  "edit": "Edit",
+  "posts": "Posts"
 }
