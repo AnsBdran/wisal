@@ -7,6 +7,7 @@ import {
   Textarea,
   InputLabel,
   InputError,
+  ScrollArea,
 } from '@mantine/core';
 import { useFetcher } from '@remix-run/react';
 import { Icon } from '@iconify/react';
@@ -34,37 +35,53 @@ export const CreateChatGroupButton = () => {
         <Icon icon={icons.usersGroup} />
       </ActionIcon>
 
-      <Modal opened={opened} onClose={close} title={t('create_chat_group')}>
-        <fetcher.Form method='POST' onSubmit={form.onSubmit} id={form.id}>
-          <Stack>
-            <TextInput
-              name={name.name}
-              error={t(name.errors ?? '')}
-              label={t('group_name')}
-            />
-            <Textarea
-              name={bio.name}
-              error={t(bio.errors ?? '')}
-              label={t('group_description')}
-            />
-            <input
-              type='hidden'
-              name='members'
-              value={JSON.stringify(choosenMembers)}
-            />
-            <Stack gap={0}>
-              <InputLabel mb='2px'>{t('choose_group_members')}</InputLabel>
-              <MultiSelect
-                value={choosenMembers}
-                setValue={setChoosenMembers}
+      <Modal
+        opened={opened}
+        onClose={close}
+        title={t('create_chat_group')}
+        styles={{
+          content: {
+            overflow: 'hidden',
+          },
+        }}
+      >
+        <ScrollArea.Autosize mah={600} offsetScrollbars>
+          <fetcher.Form method='POST' onSubmit={form.onSubmit} id={form.id}>
+            <Stack>
+              <TextInput
+                name={name.name}
+                error={t(name.errors ?? '')}
+                label={t('group_name')}
               />
-              <InputError>{t(members.errors ?? '')}</InputError>
+              <Textarea
+                name={bio.name}
+                error={t(bio.errors ?? '')}
+                label={t('group_description')}
+                autosize
+              />
+              <input
+                type='hidden'
+                name='members'
+                value={JSON.stringify(choosenMembers)}
+              />
+              <Stack gap={0}>
+                <InputLabel mb='2px'>{t('choose_group_members')}</InputLabel>
+                <MultiSelect
+                  value={choosenMembers}
+                  setValue={setChoosenMembers}
+                />
+                <InputError>{t(members.errors ?? '')}</InputError>
+              </Stack>
+              <Button
+                type='submit'
+                name='intent'
+                value={INTENTS.createChatGroup}
+              >
+                {t('create')}
+              </Button>
             </Stack>
-            <Button type='submit' name='intent' value={INTENTS.createChatGroup}>
-              {t('create')}
-            </Button>
-          </Stack>
-        </fetcher.Form>
+          </fetcher.Form>
+        </ScrollArea.Autosize>
       </Modal>
     </>
   );

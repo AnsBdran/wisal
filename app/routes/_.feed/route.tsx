@@ -179,20 +179,11 @@ const Feed = () => {
         styles={{
           content: {
             overflow: 'hidden',
-            display: 'flex',
-            flexDirection: 'column',
-            // height: '70vh',
           },
         }}
+        h={500}
       >
-        <ScrollArea.Autosize
-          style={{
-            flexGrow: 1,
-            // flexBasis: 500,
-            backgroundColor: 'green',
-          }}
-          offsetScrollbars
-        >
+        <ScrollArea.Autosize mah={600} offsetScrollbars>
           <PostForm close={postFormClose} />
         </ScrollArea.Autosize>
       </Modal>

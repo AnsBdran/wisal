@@ -54,4 +54,5 @@ export const icons = {
   starBadge: 'material-symbols:award-star-outline-rounded',
   leftArrow: 'material-symbols:line-start-arrow-notch-rounded',
   post: 'ep:postcard',
+  colorTheme: 'proicons:dark-theme',
 };

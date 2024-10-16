@@ -40,13 +40,11 @@ export const ChooseUserToMessage = ({
         styles={{
           content: {
             overflow: 'hidden',
-            display: 'flex',
-            flexDirection: 'column',
           },
         }}
         title={t('choose_User_to_chat_with')}
       >
-        <ScrollArea.Autosize flex={1} mah={500} offsetScrollbars>
+        <ScrollArea.Autosize mah={600} offsetScrollbars>
           {usersFetcher.data?.users.map((u) => (
             <Box
               py={'xs'}

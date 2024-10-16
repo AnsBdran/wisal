@@ -11,6 +11,7 @@ import {
   Menu,
   ThemeIcon,
   Title,
+  useComputedColorScheme,
   useMantineColorScheme,
 } from '@mantine/core';
 import { Form, Link } from '@remix-run/react';
@@ -24,18 +25,16 @@ import Logo from '~/logo';
 
 const Header = ({ user }: { user?: UserSession }) => {
   const { i18n, t } = useTranslation();
-  const { toggleColorScheme, colorScheme } = useMantineColorScheme();
+  const { setColorScheme } = useMantineColorScheme();
+  const computedColorScheme = useComputedColorScheme('light', {
+    getInitialValueInEffect: true,
+  });
   return (
     <AppShellHeader zIndex={99}>
       <Container className='h-full ' size='sm'>
         <Group className='h-full justify-between'>
           <Center to='/feed' component={Link} h='100%' w={80} bg={'grapes'}>
-            {/* <Image
-              src='/logo.svg'
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            /> */}
             <Logo />
-            {/* <Title order={4}>{t('app_title')}</Title> */}
           </Center>
           <Group>
             {user ? (
@@ -94,22 +93,24 @@ const Header = ({ user }: { user?: UserSession }) => {
                 <Button variant='light' component={Link} to='/login'>
                   {t('login')}
                 </Button>
-                {/* <Button to='/register' variant='outline' component={Link}>
-                  {t('register')}
-                </Button> */}
               </Box>
             )}
 
             <ActionIcon
-              onClick={toggleColorScheme}
+              onClick={() => {
+                setColorScheme(
+                  computedColorScheme === 'light' ? 'dark' : 'light'
+                );
+              }}
               className={styles.themeIcon}
               variant='default'
             >
               <Icon
                 icon={
-                  colorScheme === 'light'
-                    ? 'material-symbols:sunny-rounded'
-                    : 'bi:moon-stars-fill'
+                  // colorScheme === 'light'
+                  // ? 'material-symbols:sunny-rounded'
+                  // : 'bi:moon-stars-fill'
+                  icons.colorTheme
                 }
                 className=''
                 // color={colorScheme === 'light' ? 'gray' : 'white'}

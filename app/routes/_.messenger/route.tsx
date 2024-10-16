@@ -55,67 +55,65 @@ const Messenger = () => {
 
   return (
     <>
-      <Container size='sm'>
-        <Stack
-          className={styles.messengerContainer}
-          style={{
-            height: `calc(100vh - ${HEADER_HEIGHT}px - ${BOTTOM_BAR_HEIGHT}px)`,
-            overflow: 'hidden',
-          }}
-          py='xs'
-          gap={0}
-        >
-          <Group className={styles.messengerHeader}>
-            <Group>
-              <ThemeIcon
-                color='indigo'
-                variant='transparent'
-                w={rem('24px')}
-                h={rem('24px')}
-              >
-                <Icon icon={icons.chats} />
-              </ThemeIcon>
-              <Title order={2}>{t('chats')}</Title>
-            </Group>
-            <Group>
-              <ChooseUserToMessage>
-                <ActionIcon color='indigo'>
-                  <Icon icon={icons.addChat} />
-                </ActionIcon>
-              </ChooseUserToMessage>
-              <CreateChatGroupButton />
-            </Group>
+      <Stack
+        className={styles.messengerContainer}
+        style={{
+          height: `calc(100vh - ${HEADER_HEIGHT}px - ${BOTTOM_BAR_HEIGHT}px)`,
+          overflow: 'hidden',
+        }}
+        py='xs'
+        gap={0}
+      >
+        <Group className={styles.messengerHeader}>
+          <Group>
+            <ThemeIcon
+              color='indigo'
+              variant='transparent'
+              w={rem('24px')}
+              h={rem('24px')}
+            >
+              <Icon icon={icons.chats} />
+            </ThemeIcon>
+            <Title order={2}>{t('chats')}</Title>
           </Group>
-          <Suspense fallback={<MessengerSkeleton />}>
-            <Await resolve={chats}>
-              {(chats) => (
-                <>
-                  <ScrollArea
-                    h='100%'
-                    styles={{
-                      thumb: {
-                        backgroundColor: 'transparent',
-                      },
-                    }}
-                  >
-                    {chats.chats.map((chat) => (
-                      <Fragment key={chat.chatID}>
-                        {chat.type === 'group' ? (
-                          <GroupChat groupChat={chat as GroupChatType} />
-                        ) : (
-                          <DirectChat directChat={chat as DirectChatType} />
-                        )}
-                        <Divider />
-                      </Fragment>
-                    ))}
-                    <EmptyMessenger hidden={chats.chats.length > 0} />
-                  </ScrollArea>
-                </>
-              )}
-            </Await>
-          </Suspense>
-        </Stack>
-      </Container>
+          <Group>
+            <ChooseUserToMessage>
+              <ActionIcon color='indigo'>
+                <Icon icon={icons.addChat} />
+              </ActionIcon>
+            </ChooseUserToMessage>
+            <CreateChatGroupButton />
+          </Group>
+        </Group>
+        <Suspense fallback={<MessengerSkeleton />}>
+          <Await resolve={chats}>
+            {(chats) => (
+              <>
+                <ScrollArea
+                  h='100%'
+                  styles={{
+                    thumb: {
+                      backgroundColor: 'transparent',
+                    },
+                  }}
+                >
+                  {chats.chats.map((chat) => (
+                    <Fragment key={chat.chatID}>
+                      {chat.type === 'group' ? (
+                        <GroupChat groupChat={chat as GroupChatType} />
+                      ) : (
+                        <DirectChat directChat={chat as DirectChatType} />
+                      )}
+                      <Divider />
+                    </Fragment>
+                  ))}
+                  <EmptyMessenger hidden={chats.chats.length > 0} />
+                </ScrollArea>
+              </>
+            )}
+          </Await>
+        </Suspense>
+      </Stack>
     </>
   );
 };

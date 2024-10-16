@@ -63,11 +63,11 @@ export const meta: MetaFunction = ({ data }) => {
 };
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const data = useLoaderData<typeof loader>();
+  const { locale, toast } = useLoaderData<typeof loader>();
   const { t, i18n } = useTranslation();
-  const { toast, locale } = data;
 
   useChangeLanguage(locale);
+
   useEffect(() => {
     if (toast) {
       notifications.show({
@@ -84,6 +84,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <Meta />
         <Links />
+        <PWAAssets />
+        <ColorSchemeScript />
       </head>
       <body>
         <DirectionProvider detectDirection initialDirection={i18n.dir()}>
@@ -101,8 +103,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </MantineProvider>
         </DirectionProvider>
         <ScrollRestoration getKey={(location) => location.pathname} />
-        <PWAAssets />
-        {/* <ColorSchemeScript /> */}
         <Scripts />
       </body>
     </html>
