@@ -33,9 +33,9 @@ async function hydrate() {
     hydrateRoot(
       document,
       <I18nextProvider i18n={i18next}>
-        <StrictMode>
-          <RemixBrowser />
-        </StrictMode>
+        {/* <StrictMode> */}
+        <RemixBrowser />
+        {/* </StrictMode> */}
       </I18nextProvider>
     );
   });

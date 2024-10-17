@@ -24,11 +24,11 @@ export const CreateChatGroupButton = () => {
   const fetcher = useFetcher();
   const [opened, { close, open }] = useDisclosure();
   const { t } = useTranslation('form');
-  const [choosenMembers, setChoosenMembers] = useState<number[]>([]);
+  const [chosenMembers, setChosenMembers] = useState<number[]>([]);
   const [form, { bio, members, name }] = useForm<ChatGroupSchemaType>({
     lastResult: fetcher.state === 'idle' ? fetcher.data : null,
   });
-  console.log('users', choosenMembers);
+  console.log('users', chosenMembers);
   return (
     <>
       <ActionIcon color='indigo' onClick={open}>
@@ -62,13 +62,13 @@ export const CreateChatGroupButton = () => {
               <input
                 type='hidden'
                 name='members'
-                value={JSON.stringify(choosenMembers)}
+                value={JSON.stringify(chosenMembers)}
               />
               <Stack gap={0}>
                 <InputLabel mb='2px'>{t('choose_group_members')}</InputLabel>
                 <MultiSelect
-                  value={choosenMembers}
-                  setValue={setChoosenMembers}
+                  value={chosenMembers}
+                  setValue={setChosenMembers}
                 />
                 <InputError>{t(members.errors ?? '')}</InputError>
               </Stack>

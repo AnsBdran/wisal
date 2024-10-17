@@ -1,4 +1,3 @@
-import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching';
 import {
   cleanupOutdatedCaches,
   clientsClaimMode,
