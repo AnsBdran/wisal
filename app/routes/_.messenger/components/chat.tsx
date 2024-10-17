@@ -25,7 +25,7 @@ import {
   DirectChatType,
   GroupChatType,
 } from '~/lib/types';
-import { useColorScheme } from '@mantine/hooks';
+// import { useColorScheme } from '@mantine/hooks';
 
 export const GroupChat = ({
   groupChat: chatGroupMember,
@@ -143,7 +143,7 @@ export const GroupChat = ({
 };
 
 export const DirectChat = ({ directChat }: { directChat: DirectChatType }) => {
-  const isDark = useColorScheme() === 'dark' ? true : false;
+  // const isDark = useColorScheme() === 'dark' ? true : false;
   const otherUser = directChat.chat.members.find(
     (member) => member.userID !== directChat.userID
   ) as DirectChatMemberWithUser;
@@ -162,9 +162,9 @@ export const DirectChat = ({ directChat }: { directChat: DirectChatType }) => {
         <Text fz='sm' c='dimmed'>
           {otherUser?.user.bio}
         </Text>
-        <Badge variant={isDark ? 'white' : 'light'} size='xs'>
+        {/* <Badge variant={isDark ? 'white' : 'light'} size='xs'>
           {t('private_chat')}
-        </Badge>
+        </Badge> */}
       </Group>
     </UnstyledButton>
   );

@@ -1,7 +1,6 @@
 import {
   ActionIcon,
   AppShell,
-  Button,
   Container,
   Group,
   Stack,
@@ -14,14 +13,14 @@ import { db } from '~/.server/db';
 import { ChatEditForm, ChatMembers } from './chat-form';
 import { HEADER_HEIGHT, INTENTS } from '~/lib/constants';
 import { chatMembers, chats } from '~/.server/db/schema';
-import { eq, sum } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { parseWithZod } from '@conform-to/zod';
 import { chatGroupSchema } from '~/lib/schemas';
 import { redirectWithSuccess } from 'remix-toast';
 import i18next from '~/services/i18n.server';
 import { authenticateOrToast } from '~/.server/utils';
 import Header from '~/lib/components/main/header';
-import { Icon } from '@iconify/react/dist/iconify.js';
+import { Icon } from '@iconify/react';
 import { icons } from '~/lib/icons';
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {

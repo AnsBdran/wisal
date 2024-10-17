@@ -3,15 +3,11 @@ import {
   Alert,
   Badge,
   Box,
-  Code,
   Divider,
   Group,
   List,
   rem,
-  Space,
-  Text,
   Title,
-  Highlight,
   Mark,
 } from '@mantine/core';
 import styles from '../feed.module.css';

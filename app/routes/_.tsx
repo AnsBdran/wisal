@@ -1,10 +1,4 @@
-import {
-  AppShell,
-  Box,
-  Container,
-  Tabs,
-  TabsList,
-} from '@mantine/core';
+import { AppShell, Container, Tabs, TabsList } from '@mantine/core';
 
 import {
   useNavigate,
@@ -25,8 +19,9 @@ import { startTransition } from 'react';
 
 export const loader: LoaderFunction = async ({ request }) => {
   const { user, loginRedirect } = await authenticateOrToast(request);
+  const pathname = new URL(request.url).pathname;
   if (!user) return loginRedirect;
-  return { user };
+  return { user, pathname };
 };
 
 export const handle = {
@@ -34,11 +29,11 @@ export const handle = {
 };
 
 const MainLayout = () => {
-  const { user } = useLoaderData<typeof loader>();
+  const { user, pathname } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const pinned = useHeadroom({ fixedAt: HEADER_HEIGHT });
-  const location = useLocation();
+  // const location = useLocation();
 
   const handleTabChange = (value: string | null) => {
     if (value) {
@@ -64,9 +59,7 @@ const MainLayout = () => {
           </Container>
           <Container size='sm'>
             <Tabs
-              defaultValue={
-                location.pathname === '/feed' ? '/feed' : '/messenger'
-              }
+              defaultValue={pathname === '/feed' ? '/feed' : '/messenger'}
               onChange={handleTabChange}
               style={{
                 backgroundColor: 'var(--mantine-color-body)',

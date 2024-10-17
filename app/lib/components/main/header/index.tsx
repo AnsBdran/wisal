@@ -7,25 +7,23 @@ import {
   Center,
   Container,
   Group,
-  Image,
   Menu,
-  ThemeIcon,
-  Title,
   useComputedColorScheme,
   useMantineColorScheme,
 } from '@mantine/core';
 import { Form, Link } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
-import { UserRecord, UserSession } from '~/lib/types';
+import { UserSession } from '~/lib/types';
 import styles from './header.module.css';
 import { icons } from '~/lib/icons';
-// import Logo from '/favicon.svg';
 import Logo from '~/logo';
 
 const Header = ({ user }: { user?: UserSession }) => {
   const { i18n, t } = useTranslation();
-  const { setColorScheme } = useMantineColorScheme();
+  const { setColorScheme } = useMantineColorScheme({
+    keepTransitions: true,
+  });
   const computedColorScheme = useComputedColorScheme('light', {
     getInitialValueInEffect: true,
   });
@@ -96,7 +94,7 @@ const Header = ({ user }: { user?: UserSession }) => {
               </Box>
             )}
 
-            <ActionIcon
+            {/* <ActionIcon
               onClick={() => {
                 setColorScheme(
                   computedColorScheme === 'light' ? 'dark' : 'light'
@@ -115,7 +113,7 @@ const Header = ({ user }: { user?: UserSession }) => {
                 className=''
                 // color={colorScheme === 'light' ? 'gray' : 'white'}
               />
-            </ActionIcon>
+            </ActionIcon> */}
           </Group>
         </Group>
       </Container>

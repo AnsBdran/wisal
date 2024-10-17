@@ -40,6 +40,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   const title = t('app_title');
   const description = t('app_description');
+
   const locale = await i18next.getLocale(request);
   return json(
     {
@@ -78,19 +79,21 @@ export function Layout({ children }: { children: React.ReactNode }) {
   }, [toast]);
 
   return (
-    <html lang={locale} dir={i18n.dir()}>
+    <html lang={locale} dir={i18n.dir()} data-mantine-color-scheme='light'>
       <head>
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <Meta />
-        <Links />
         <PWAAssets />
-        <ColorSchemeScript />
+        <Links />
+        {/* <ColorSchemeScript defaultColorScheme='light' /> */}
       </head>
       <body>
         <DirectionProvider detectDirection initialDirection={i18n.dir()}>
+          {/* <DirectionProvider initialDirection={i18n.dir()}> */}
           <MantineProvider
             theme={theme}
+            // defaultColorScheme='light'
             cssVariablesResolver={cssVariablesResolver}
           >
             <Notifications />
@@ -98,7 +101,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               labels={{ cancel: t('cancel'), confirm: t('confirm') }}
             >
               {children}
-              <PWABadge />
+              {/* <PWABadge /> */}
             </ModalsProvider>
           </MantineProvider>
         </DirectionProvider>

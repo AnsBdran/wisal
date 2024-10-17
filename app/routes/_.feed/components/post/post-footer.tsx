@@ -1,25 +1,14 @@
 import {
-  Popover,
   Group,
-  ActionIcon,
   useMantineTheme,
-  Badge,
-  CopyButton,
-  Tooltip,
   Button,
-  Box,
   UnstyledButton,
   Collapse,
 } from '@mantine/core';
-import { Icon } from '@iconify/react';
 import styles from './post.module.css';
 import { useTranslation } from 'react-i18next';
-import { Link } from '@remix-run/react';
-import { tags } from '~/.server/db/schema';
 import { SerializeFrom } from '@remix-run/node';
-import { loader } from '~/routes/feed/route';
-import { icons } from '~/lib/icons';
-import { useDisclosure } from '@mantine/hooks';
+import { loader } from '~/routes/_.feed/route';
 import { Comments } from './comment';
 import { CopyContentBtn } from './bits';
 

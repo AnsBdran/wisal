@@ -14,7 +14,7 @@ import { Icon } from '@iconify/react';
 import { icons } from '~/lib/icons';
 import { useTranslation } from 'react-i18next';
 import { INTENTS } from '~/lib/constants';
-import { useDisclosure, useFetch } from '@mantine/hooks';
+import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 import MultiSelect from '~/lib/components/common/users-multi-select';
 import { useForm } from '@conform-to/react';

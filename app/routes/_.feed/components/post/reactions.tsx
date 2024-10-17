@@ -4,9 +4,7 @@ import {
   Group,
   ActionIcon,
   rem,
-  useMantineTheme,
   Stack,
-  Avatar,
   Text,
   Center,
   Box,
@@ -17,17 +15,11 @@ import {
   Alert,
 } from '@mantine/core';
 import { Icon } from '@iconify/react';
-import styles from './post.module.css';
 import { useTranslation } from 'react-i18next';
 import { useFetcher } from '@remix-run/react';
-import {
-  getProfileInfoText,
-  getFullName,
-  getReactionIconData,
-  getProfileInfo,
-} from '~/lib/utils';
+import { getReactionIconData, getProfileInfo } from '~/lib/utils';
 import { SerializeFrom } from '@remix-run/node';
-import { loader } from '~/routes/feed/route';
+import { loader } from '~/routes/_.feed/route';
 import { icons } from '~/lib/icons';
 import { INTENTS, REACTIONS } from '~/lib/constants';
 import { useState } from 'react';
@@ -37,7 +29,6 @@ export const Reactions = ({
 }: {
   post: SerializeFrom<typeof loader>['posts']['data'][0];
 }) => {
-  const theme = useMantineTheme();
   const fetcher = useFetcher();
   const reactions: string[] = [
     'love',

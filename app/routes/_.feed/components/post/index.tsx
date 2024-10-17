@@ -4,18 +4,16 @@ import {
   Text,
   ActionIcon,
   Group,
-  Avatar,
   useMantineTheme,
   Highlight,
   Badge,
-  Button,
   Modal,
 } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import styles from './post.module.css';
 import { Icon } from '@iconify/react';
 import { SerializeFrom } from '@remix-run/node';
-import { loader } from '~/routes/feed/route';
+import { loader } from '~/routes/_.feed/route';
 import { Reactions, ReactionsStats } from './reactions';
 import { AllComments, AddComment } from './comment';
 import { PostFooter } from './post-footer';
@@ -27,19 +25,14 @@ import { INTENTS } from '~/lib/constants';
 import { useTranslation } from 'react-i18next';
 import { EditPost } from './edit';
 import { useDisclosure } from '@mantine/hooks';
-import { modals } from '@mantine/modals';
 import { PostActions } from './actions';
 
 export default function Post({
   post,
   userID,
-}: // editPostFormOpen,
-// locale,
-{
+}: {
   post: SerializeFrom<typeof loader>['posts']['data'][0];
   userID: number;
-  // editPostFormOpen: () => void;
-  // locale: 'en' | 'ar';
 }) {
   const theme = useMantineTheme();
   const [showAllComments, setShowAllComments] = useState(false);
@@ -53,10 +46,6 @@ export default function Post({
     editPostFormOpened,
     { open: editPostFormOpen, close: editPostFormClose },
   ] = useDisclosure();
-  // const data = useActionData();
-  // const postData = useRouteLoaderData<typeof postDataLoader>(
-  //   'routes/api.post-data'
-  // );
 
   return (
     <Card withBorder radius='md' className={styles.card}>
@@ -68,7 +57,6 @@ export default function Post({
             loop
             classNames={{
               root: styles.carousel,
-              // controls: styles.carouselControls,
               indicator: styles.carouselIndicator,
             }}
           >

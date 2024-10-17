@@ -23,15 +23,10 @@ import {
 import { Icon } from '@iconify/react';
 import styles from './post.module.css';
 import { useTranslation } from 'react-i18next';
-import { useFetcher, Link, useActionData } from '@remix-run/react';
-import {
-  fromNow,
-  getFullName,
-  getProfileInfoText,
-  getReactionIconData,
-} from '~/lib/utils';
+import { useFetcher } from '@remix-run/react';
+import { fromNow, getFullName, getProfileInfoText } from '~/lib/utils';
 import { SerializeFrom } from '@remix-run/node';
-import { loader } from '~/routes/feed/route';
+import { loader } from '~/routes/_.feed/route';
 import { icons } from '~/lib/icons';
 import { useDisclosure } from '@mantine/hooks';
 import { INTENTS } from '~/lib/constants';
@@ -118,11 +113,7 @@ export const CommentActions = ({
   isSameUser: boolean;
 }) => {
   const { t } = useTranslation();
-  const [opened, { toggle, open, close }] = useDisclosure();
-  const [deleteOpened, { open: opendDelete, close: closeDelete }] =
-    useDisclosure();
   const fetcher = useFetcher();
-  // const data = useActionData();
 
   useEffect(() => {
     startTransition(() => {

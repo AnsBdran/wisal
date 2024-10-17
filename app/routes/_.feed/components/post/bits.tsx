@@ -2,54 +2,43 @@ import {
   Popover,
   Group,
   ActionIcon,
-  useMantineTheme,
   Badge,
   CopyButton,
   Tooltip,
-  Button,
-  Box,
-  UnstyledButton,
-  Collapse,
 } from '@mantine/core';
 import { Icon } from '@iconify/react';
-import styles from './post.module.css';
 import { useTranslation } from 'react-i18next';
 import { Link } from '@remix-run/react';
-import { tags } from '~/.server/db/schema';
-import { SerializeFrom } from '@remix-run/node';
-import { loader } from '~/routes/feed/route';
 import { icons } from '~/lib/icons';
-import { useDisclosure } from '@mantine/hooks';
-import { Comments } from './comment';
 
-export const PostTags = ({ tags }: { tags: (typeof tag.$inferSelect)[] }) => {
-  return (
-    <div onClick={(e) => e.stopPropagation()}>
-      <Popover>
-        <Popover.Target>
-          <ActionIcon variant='subtle'>
-            <Icon icon={icons.tags} />
-          </ActionIcon>
-        </Popover.Target>
-        <Popover.Dropdown>
-          <Group align='center' wrap='wrap'>
-            {tags.map((tag) => (
-              <Badge
-                style={{ cursor: 'pointer' }}
-                component={Link}
-                to={`?tag=${tag?.name}`}
-                key={tag?.id}
-                radius='sm'
-              >
-                {tag?.name}
-              </Badge>
-            ))}
-          </Group>
-        </Popover.Dropdown>
-      </Popover>
-    </div>
-  );
-};
+// export const PostTags = ({ tags }: { tags: (typeof tag.$inferSelect)[] }) => {
+//   return (
+//     <div onClick={(e) => e.stopPropagation()}>
+//       <Popover>
+//         <Popover.Target>
+//           <ActionIcon variant='subtle'>
+//             <Icon icon={icons.tags} />
+//           </ActionIcon>
+//         </Popover.Target>
+//         <Popover.Dropdown>
+//           <Group align='center' wrap='wrap'>
+//             {tags.map((tag) => (
+//               <Badge
+//                 style={{ cursor: 'pointer' }}
+//                 component={Link}
+//                 to={`?tag=${tag?.name}`}
+//                 key={tag?.id}
+//                 radius='sm'
+//               >
+//                 {tag?.name}
+//               </Badge>
+//             ))}
+//           </Group>
+//         </Popover.Dropdown>
+//       </Popover>
+//     </div>
+//   );
+// };
 
 export const CopyContentBtn = ({ value }: { value: string }) => {
   const { t } = useTranslation();

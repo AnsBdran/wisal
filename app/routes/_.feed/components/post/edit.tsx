@@ -1,13 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import { SerializeFrom } from '@remix-run/node';
-import { loader } from '~/routes/feed/route';
-import { Button, TextInput, Title } from '@mantine/core';
-import { modals } from '@mantine/modals';
+import { loader } from '~/routes/_.feed/route';
 import { PostForm } from '../post-form';
 
 export const EditPost = ({
   post,
-  userID,
   editPostFormClose,
 }: {
   post: SerializeFrom<typeof loader>['posts']['data'][0];

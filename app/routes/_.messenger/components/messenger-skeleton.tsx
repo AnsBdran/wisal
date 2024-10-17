@@ -1,4 +1,4 @@
-import { alpha, Box, Group, Skeleton, Stack } from '@mantine/core';
+import { alpha, Group, Skeleton, Stack } from '@mantine/core';
 import { ITEMS_PER_PAGE } from '~/lib/constants';
 
 export const MessengerSkeleton = () => (

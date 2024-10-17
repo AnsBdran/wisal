@@ -1,7 +1,7 @@
 import { Box, UnstyledButton, Modal, ScrollArea } from '@mantine/core';
-import { Link, useFetcher, useNavigate } from '@remix-run/react';
+import { useFetcher } from '@remix-run/react';
 import { loader as apiLoader } from '~/routes/api.data';
-import { getProfileInfo, getProfileInfoText } from '~/lib/utils';
+import { getProfileInfo } from '~/lib/utils';
 import { useTranslation } from 'react-i18next';
 import { INTENTS } from '~/lib/constants';
 import { useDisclosure } from '@mantine/hooks';

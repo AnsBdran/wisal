@@ -1,38 +1,15 @@
 import {
-  ActionIcon,
   Box,
-  Container,
-  Drawer,
-  Group,
   Modal,
   Pagination,
-  rem,
   ScrollArea,
   SimpleGrid,
   Stack,
-  ThemeIcon,
-  Title,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import {
-  ActionFunctionArgs,
-  defer,
-  json,
-  LoaderFunctionArgs,
-} from '@remix-run/node';
-import {
-  Await,
-  useLoaderData,
-  useNavigate,
-  useSearchParams,
-} from '@remix-run/react';
-import {
-  Fragment,
-  startTransition,
-  Suspense,
-  useEffect,
-  useState,
-} from 'react';
+import { ActionFunctionArgs, defer, LoaderFunctionArgs } from '@remix-run/node';
+import { Await, useLoaderData, useNavigate } from '@remix-run/react';
+import { Suspense, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Post from '~/routes/_.feed/components/post';
 import {
@@ -52,7 +29,6 @@ import {
   post,
   react,
 } from './actions';
-// import { FeedFilters } from './filters';
 import { EmptyFeed, PostForm } from './components';
 import { authenticateOrToast } from '~/.server/utils';
 import AppIntro from './components/app-intro';
@@ -85,28 +61,12 @@ const Feed = () => {
   const { posts, user, page } = useLoaderData<typeof loader>();
   const { t } = useTranslation('feed');
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const [opened, { close, open }] = useDisclosure();
   const [postFormOpened, { close: postFormClose, open: postFormOpen }] =
     useDisclosure();
-  const [
-    introOpened,
-    { open: introOpen, close: introClose, toggle: toggleIntro },
-  ] = useDisclosure();
+  const [introOpened, { close: introClose, toggle: introToggle }] =
+    useDisclosure();
 
   const [activePage, setActivePage] = useState<number>(page);
-
-  console.log('feed route things', {
-    opened,
-    close,
-    open,
-    introOpen,
-    introOpened,
-    posts,
-    user,
-    page,
-    searchParams,
-  });
 
   return (
     <>
@@ -120,7 +80,7 @@ const Feed = () => {
         <FeedHeader
           introOpened={introOpened}
           postFormOpen={postFormOpen}
-          toggleIntro={toggleIntro}
+          toggleIntro={introToggle}
         />
         <AppIntro opened={introOpened} close={introClose} />
 
@@ -140,7 +100,7 @@ const Feed = () => {
                     <SimpleGrid
                       cols={{ base: 1 }}
                       mb='md'
-                      // hidden={posts.count === 0}
+                      hidden={posts.count === 0}
                     >
                       {posts.data.map((post) => (
                         <Box key={post.id}>
@@ -181,7 +141,6 @@ const Feed = () => {
             overflow: 'hidden',
           },
         }}
-        h={500}
       >
         <ScrollArea.Autosize mah={600} offsetScrollbars>
           <PostForm close={postFormClose} />

@@ -16,7 +16,6 @@ import { createColumnHelper, flexRender } from '@tanstack/react-table';
 import { icons } from './icons';
 import {
   CellActions,
-  RoleCell,
   SwitchCell,
   UserCell,
 } from './components/main/table/users-cells';
@@ -26,7 +25,7 @@ import {
   Description,
   SuggestionChoices,
 } from './components/main/table/suggestions-cells';
-import { startTransition, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFetcher } from '@remix-run/react';
 import { INTENTS } from './constants';
 
@@ -40,7 +39,6 @@ export const fromNow = (date: string, locale: string) => {
     dayjs.locale('en');
   }
   return dayjs(date).fromNow();
-  // return dayjs(date).locale('es').fromNow()
 };
 
 export const getProfileInfo = (

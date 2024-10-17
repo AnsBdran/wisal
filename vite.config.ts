@@ -13,11 +13,11 @@ export default defineConfig({
   plugins: [
     envOnlyMacros(),
     remix({
-      future: {
-        v3_fetcherPersist: true,
-        v3_relativeSplatPath: true,
-        v3_throwAbortReason: true,
-      },
+      // future: {
+      //   v3_fetcherPersist: true,
+      //   v3_relativeSplatPath: true,
+      //   v3_throwAbortReason: true,
+      // },
       presets: [RemixPWAPreset()],
     }),
     tsconfigPaths(),
@@ -40,23 +40,19 @@ export default defineConfig({
       devOptions: {
         enabled: false,
         suppressWarnings: true,
-        navigateFallback: '/',
+        navigateFallback: '/feed',
         navigateFallbackAllowlist: [/^\/$/],
         type: 'module',
       },
-      injectManifest: {
-        globPatterns: ['**/*.{js,html,css,png,svg,ico.jpg,jpeg}'],
-
-        // for testing
-        minify: false,
-        // for testing
-        enableWorkboxModulesLogs: true,
-      },
-      remix: {
-        injectManifest: {
-          clientsClaimMode: 'auto',
-        },
-      },
+      // injectManifest: {
+      //   globPatterns: ['**/*.{js,html,css,png,svg,ico.jpg,jpeg}'],
+      //   enableWorkboxModulesLogs: true,
+      // },
+      // remix: {
+      //   injectManifest: {
+      //     cleanupOutdatedCaches: true,
+      //   },
+      // },
 
       manifest: {
         name: 'وصال',
