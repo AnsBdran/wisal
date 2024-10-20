@@ -13,7 +13,7 @@ import { Form, Link } from '@remix-run/react';
 import { Icon } from '@iconify/react';
 import { UserSession } from '~/lib/types';
 import styles from './header.module.css';
-import { icons } from '~/lib/icons';
+import { Icons, icons } from '~/lib/icons';
 import Logo from '~/logo';
 import { useLocale, useTranslations } from 'use-intl';
 
@@ -42,21 +42,21 @@ const Header = ({ user }: { user?: UserSession }) => {
                   <Menu.Item
                     component={Link}
                     to='/profile'
-                    leftSection={<Icon icon={icons.profile} />}
+                    leftSection={<Icons.profile />}
                   >
                     {t('profile')}
                   </Menu.Item>
                   <Menu.Item
                     component={Link}
                     to='/about'
-                    leftSection={<Icon icon={icons.info} />}
+                    leftSection={<Icons.info />}
                   >
                     {t('about_app')}
                   </Menu.Item>
                   <Menu.Item
                     component={Link}
                     to='/settings'
-                    leftSection={<Icon icon={icons.settings} />}
+                    leftSection={<Icons.settings />}
                   >
                     {t('settings')}
                   </Menu.Item>
@@ -65,7 +65,7 @@ const Header = ({ user }: { user?: UserSession }) => {
                     variant='outline'
                     component={Link}
                     to='/dashboard'
-                    leftSection={<Icon icon={icons.dashboard} />}
+                    leftSection={<Icons.controlPanel />}
                   >
                     {t('dashboard')}
                   </Menu.Item>
@@ -76,7 +76,7 @@ const Header = ({ user }: { user?: UserSession }) => {
                         color='red'
                         component='button'
                         type='submit'
-                        leftSection={<Icon icon={icons.exit} />}
+                        leftSection={<Icons.logout />}
                       >
                         {t('logout')}
                       </Menu.Item>

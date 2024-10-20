@@ -51,12 +51,12 @@ export const CreateChatGroupButton = () => {
             <Stack>
               <TextInput
                 name={name.name}
-                error={t(name.errors ?? '')}
+                error={name.errors && t(name.errors)}
                 label={t('group_name')}
               />
               <Textarea
                 name={bio.name}
-                error={t(bio.errors ?? '')}
+                error={bio.errors && t(bio.errors)}
                 label={t('group_description')}
                 autosize
               />
@@ -71,7 +71,7 @@ export const CreateChatGroupButton = () => {
                   value={chosenMembers}
                   setValue={setChosenMembers}
                 />
-                <InputError>{t(members.errors ?? '')}</InputError>
+                <InputError>{members.errors && t(members.errors)}</InputError>
               </Stack>
               <Button
                 type='submit'

@@ -73,9 +73,9 @@ const AppIntro = ({
             style={{
               borderWidth: '2px',
               borderColor:
-                'light-dark(var(--mantine-color-teal-6), var(--mantine-color-dark-4))',
+                'light-dark(var(--mantine-color-cyan-6), var(--mantine-color-dark-4))',
               color:
-                'light-dark(var(--mantine-color-teal-9), var(--mantine-color-white))',
+                'light-dark(var(--mantine-color-cyan-9), var(--mantine-color-white))',
             }}
             // p='xs'
             py='xs'

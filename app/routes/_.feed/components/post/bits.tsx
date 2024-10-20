@@ -7,9 +7,8 @@ import {
   Tooltip,
 } from '@mantine/core';
 import { Icon } from '@iconify/react';
-import { useTranslation } from 'react-i18next';
-import { Link } from '@remix-run/react';
 import { icons } from '~/lib/icons';
+import { useTranslations } from 'use-intl';
 
 // export const PostTags = ({ tags }: { tags: (typeof tag.$inferSelect)[] }) => {
 //   return (
@@ -41,7 +40,7 @@ import { icons } from '~/lib/icons';
 // };
 
 export const CopyContentBtn = ({ value }: { value: string }) => {
-  const { t } = useTranslation();
+  const t = useTranslations('common');
   return (
     <CopyButton value={value}>
       {({ copy, copied }) => (

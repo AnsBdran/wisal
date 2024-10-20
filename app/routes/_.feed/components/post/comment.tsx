@@ -19,6 +19,7 @@ import {
   Modal,
   Alert,
   Box,
+  ScrollArea,
 } from '@mantine/core';
 import { Icon } from '@iconify/react';
 import styles from './post.module.css';
@@ -40,7 +41,7 @@ export const AddComment = ({
   postID: number;
   openFirstFive: () => void;
 }) => {
-  const t = useTranslations();
+  const t = useTranslations('common');
   const theme = useMantineTheme();
   const fetcher = useFetcher();
   const [opened, { toggle, open, close }] = useDisclosure();
@@ -308,10 +309,21 @@ export const Comments = ({
 export const AllComments = ({ opened, close, comments, userID }) => {
   const t = useTranslations('common');
   return (
-    <Modal opened={opened} onClose={close} title={t('all_comments')}>
-      <Stack>
-        <Comments comments={comments} userID={userID} />
-      </Stack>
+    <Modal
+      styles={{
+        content: {
+          overflow: 'hidden',
+        },
+      }}
+      opened={opened}
+      onClose={close}
+      title={t('all_comments')}
+    >
+      <ScrollArea.Autosize mah={600} offsetScrollbars>
+        <Stack>
+          <Comments comments={comments} userID={userID} />
+        </Stack>
+      </ScrollArea.Autosize>
     </Modal>
   );
 };

@@ -11,9 +11,8 @@ import {
   useMantineTheme,
   Indicator,
 } from '@mantine/core';
-import { icons } from '~/lib/icons';
+import { Icons, icons } from '~/lib/icons';
 import { Icon } from '@iconify/react';
-import { useTranslation } from 'react-i18next';
 import { useForm } from '@conform-to/react';
 import { useFetcher } from '@remix-run/react';
 import { action } from '../route';
@@ -51,6 +50,7 @@ export const PostForm = ({
   const [initialImages, setInitialImages] = useState<
     { id: number; url: string }[]
   >(initialValues?.images ?? []);
+
   const [imagesToDelete, setImagesToDelete] = useState<number[]>([]);
   console.log('initial values', initialValues);
   const { setFiles, isUploading, upload, uploadedData, files } = useUpload();
@@ -75,6 +75,7 @@ export const PostForm = ({
       </Box>
     );
   });
+  console.log('the files', files);
 
   const uploadedPreviews = uploadedData.map((image, idx) => {
     return (
@@ -138,13 +139,13 @@ export const PostForm = ({
         <TextInput
           label={t('post_title')}
           name={fields.title.name}
-          error={t(fields.title.errors ?? '')}
+          error={fields.title.errors && t(fields.title.errors[0])}
           defaultValue={fields.title.initialValue}
         />
         <Textarea
           label={t('post_content')}
           name={fields.content.name}
-          error={t(fields.content.errors ?? '')}
+          error={fields.content.errors && t(fields.content.errors[0])}
           defaultValue={fields.content.initialValue}
           autosize
         />
@@ -161,21 +162,19 @@ export const PostForm = ({
             style={{ pointerEvents: 'none' }}
           >
             <Dropzone.Accept>
-              <Icon
-                icon={icons.upload}
+              <Icons.upload
                 color={theme.colors.blue[6]}
                 className={styles.dropZoneIcon}
               />
             </Dropzone.Accept>
             <Dropzone.Reject>
-              <Icon
-                icon={icons.close}
+              <Icons.cancel
                 color={theme.colors.red[6]}
                 className={styles.dropZoneIcon}
               />
             </Dropzone.Reject>
             <Dropzone.Idle>
-              <Icon icon={icons.photos} className={styles.dropZoneIcon} />
+              <Icons.images className={`${styles.dropZoneIcon}`} />
             </Dropzone.Idle>
             <Box>
               <Text size='xl' inline>

@@ -6,13 +6,14 @@ import { useForm } from '@conform-to/react';
 import { z } from 'zod';
 import { appSchema } from '~/lib/schemas';
 import { INTENTS } from '~/lib/constants';
+import { useTranslations } from 'use-intl';
 
 export const AppForm = ({
   defaultValue,
 }: {
   defaultValue: { locale: 'ar' | 'en' };
 }) => {
-  const { t } = useTranslation(['settings']);
+  const t = useTranslations(['settings']);
   const lastResult = useActionData<typeof action>();
   const [form, fields] = useForm<z.infer<typeof appSchema>>({
     lastResult,

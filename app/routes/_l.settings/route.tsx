@@ -16,6 +16,8 @@ import { AppForm, ProfileForm } from './components';
 import { authenticateOrToast, spreadRecordIntoSession } from '~/.server/utils';
 import { userPrefs } from '~/services/user-prefs.server';
 import { commitSession, getSession } from '~/services/session.server';
+import { getTranslations } from '~/services/next-i18n';
+import { useLocale, useTranslations } from 'use-intl';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { user, loginRedirect: redirect } = await authenticateOrToast(request);
@@ -33,7 +35,8 @@ export const handle = {
 };
 
 const Settings = () => {
-  const { i18n, t } = useTranslation();
+  const t = useTranslations('common');
+  const locale = useLocale();
   const { user } = useLoaderData<typeof loader>();
   const fetcher = useFetcher();
   return (
@@ -73,7 +76,7 @@ const Settings = () => {
             <ProfileForm user={user} />
           </Tabs.Panel>
           <Tabs.Panel value='app_settings'>
-            <AppForm defaultValue={{ locale: i18n.language as 'en' | 'ar' }} />
+            <AppForm defaultValue={{ locale: locale as 'en' | 'ar' }} />
           </Tabs.Panel>
         </Tabs>
       </Box>
@@ -89,7 +92,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const userID = Number(user?.id);
   const intent = formData.get('intent');
   const response = await authenticateOrToast(request);
-  const t = (t) => t;
+  const t = await getTranslations(request);
   if (!response.user) return response.loginRedirect;
 
   if (intent === INTENTS.editProfile) {
@@ -103,24 +106,24 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       .where(eq(users.id, userID));
 
     return redirectWithSuccess('/feed', {
-      message: t('updated_successfully'),
-      description: t('profile_updated'),
+      message: t('common.updated_successfully'),
+      description: t('common.profile_updated'),
     });
   } else if (intent === INTENTS.editApp) {
     const submission = parseWithZod(formData, { schema: appSchema });
     if (submission.status !== 'success') {
       return json(submission.reply());
     }
-    const t = await i18next.getFixedT(submission.value.locale, 'settings');
     const userPrefsSession = await userPrefs.getSession(
       request.headers.get('Cookie')
     );
+    const t = await getTranslations(request, submission.value.locale);
     userPrefsSession.set('locale', submission.value.locale);
     return redirectWithSuccess(
       '/feed',
       {
-        message: t('updated_successfully'),
-        description: t('profile_updated'),
+        message: t('settings.updated_successfully'),
+        description: t('settings.profile_updated'),
       },
       {
         headers: {
@@ -141,8 +144,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return jsonWithSuccess(
       { success: true },
       {
-        message: t('profile_synced_successfully'),
-        description: t('profile_synced_successfully_description'),
+        message: t('settings.profile_synced_successfully'),
+        description: t('settings.profile_synced_successfully_description'),
       },
       {
         headers: { 'Set-Cookie': await commitSession(session) },

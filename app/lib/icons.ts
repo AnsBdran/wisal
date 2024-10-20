@@ -1,3 +1,18 @@
+import {
+  Newspaper,
+  MessageSquareX,
+  Profi,
+  UserRound,
+  BadgeInfo,
+  Settings,
+  Settings2,
+  SlidersHorizontal,
+  LogOut,
+  Plus,
+  Upload,
+  Image,
+  X,
+} from 'lucide-react';
 export const icons = {
   copy: 'ooui:copy-ltr',
   edit: 'ooui:edit',
@@ -55,4 +70,18 @@ export const icons = {
   leftArrow: 'material-symbols:line-start-arrow-notch-rounded',
   post: 'ep:postcard',
   colorTheme: 'proicons:dark-theme',
+};
+
+export const Icons = {
+  feed: Newspaper,
+  messenger: MessageSquareX,
+  profile: UserRound,
+  info: BadgeInfo,
+  settings: Settings2,
+  controlPanel: SlidersHorizontal,
+  logout: LogOut,
+  add: Plus,
+  upload: Upload,
+  images: Image,
+  cancel: X,
 };

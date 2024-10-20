@@ -15,3 +15,8 @@ body {
     font-weight: 500;
   }
 }
+
+svg:not(.normal) {
+  width: rem(16px);
+  height: rem(16px);
+}

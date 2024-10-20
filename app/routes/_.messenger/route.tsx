@@ -29,7 +29,7 @@ import {
 import { authenticateOrToast, findOrCreateDirectChat } from '~/.server/utils';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
-import { icons } from '~/lib/icons';
+import { Icons, icons } from '~/lib/icons';
 import { BOTTOM_BAR_HEIGHT, HEADER_HEIGHT, INTENTS } from '~/lib/constants';
 import styles from './messenger.module.css';
 import { getUserChats } from '~/.server/queries';
@@ -69,7 +69,7 @@ const Messenger = () => {
               w={rem('24px')}
               h={rem('24px')}
             >
-              <Icon icon={icons.chats} />
+              <Icons.messenger />
             </ThemeIcon>
             <Title order={2}>{t('chats')}</Title>
           </Group>

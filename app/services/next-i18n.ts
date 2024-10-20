@@ -1,10 +1,17 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { createTranslator } from 'use-intl';
+import { userPrefs } from './user-prefs.server';
 // import acceptLanguageParser from 'accept-language-parser';
 
-export function resolveLocale(request: Request) {
-  const supportedLanguages = ['en', 'ar'];
+export async function resolveLocale(request: Request) {
+  // const supportedLanguages = ['en', 'ar'];
+  const userPrefsSession = await userPrefs.getSession(
+    request.headers.get('Cookie')
+  );
+  const locale = userPrefsSession.get('locale');
+
+  // return locale === 'en' ? 'en' : 'ar';
   //   const defaultLangauge = supportedLanguages[0];
   //   const locale =
   //     acceptLanguageParser.pick(
@@ -13,7 +20,7 @@ export function resolveLocale(request: Request) {
   //     ) || defaultLangauge;
 
   //   return locale;
-  return supportedLanguages[1];
+  return locale === 'en' ? 'en' : 'ar';
 }
 
 export async function getMessages(locale: string) {
@@ -22,7 +29,10 @@ export async function getMessages(locale: string) {
   return JSON.parse(content);
 }
 
-export const getTranslations = async (request: Request) => {
-  const locale = resolveLocale(request);
+export const getTranslations = async (
+  request: Request,
+  forceLocale?: 'ar' | 'en'
+) => {
+  const locale = forceLocale ? forceLocale : await resolveLocale(request);
   return createTranslator({ locale, messages: await getMessages(locale) });
 };

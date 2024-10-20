@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { LoaderFunction } from '@remix-run/node';
 import { BOTTOM_BAR_HEIGHT, HEADER_HEIGHT } from '~/lib/constants';
 import { Icon } from '@iconify/react';
-import { icons } from '~/lib/icons';
+import { Icons, icons } from '~/lib/icons';
 import { useHeadroom } from '@mantine/hooks';
 import { authenticateOrToast } from '~/.server/utils';
 import { startTransition } from 'react';
@@ -58,7 +58,7 @@ const MainLayout = () => {
           <Container size='sm'>
             <Outlet />
           </Container>
-          <Container size='sm'>
+          <Container size='sm' h={BOTTOM_BAR_HEIGHT}>
             <Tabs
               defaultValue={pathname === '/feed' ? '/feed' : '/messenger'}
               onChange={handleTabChange}
@@ -68,19 +68,21 @@ const MainLayout = () => {
                 marginInline: 'auto',
               }}
               inverted
+              h='100%'
             >
-              <TabsList h={BOTTOM_BAR_HEIGHT}>
+              <TabsList h='100%'>
                 <Tabs.Tab
                   flex={1}
                   value='/feed'
-                  leftSection={<Icon icon={icons.communication} />}
+                  leftSection={<Icons.feed />}
+                  // leftSection={<Icon icon={icons.communication} />}
                 >
                   {t('communicating')}
                 </Tabs.Tab>
                 <Tabs.Tab
                   flex={1}
                   value='/messenger'
-                  leftSection={<Icon icon={icons.messaging} />}
+                  // leftSection={<Icons.messenger />}
                 >
                   {t('messaging')}
                 </Tabs.Tab>

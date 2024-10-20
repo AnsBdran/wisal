@@ -1,3 +1,4 @@
+import { rem } from '@mantine/core';
 import * as React from 'react';
 
 function SvgComponent(props: React.PropsWithChildren) {
@@ -7,6 +8,9 @@ function SvgComponent(props: React.PropsWithChildren) {
       data-name='Layer 2'
       xmlns='http://www.w3.org/2000/svg'
       viewBox='0 0 921.1 577.34'
+      // width={rem('48px')}
+      // height={rem('48px')}
+      className='normal'
       {...props}
     >
       <defs>

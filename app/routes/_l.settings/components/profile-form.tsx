@@ -10,6 +10,7 @@ import { z } from 'zod';
 import { profileSchema } from '~/lib/schemas';
 import { INTENTS } from '~/lib/constants';
 import styles from '../settings.module.css';
+import { useTranslations } from 'use-intl';
 
 export const ProfileForm = ({ user }: { user: UserRecord }) => {
   const lastResult = useActionData<typeof action>();
@@ -19,7 +20,7 @@ export const ProfileForm = ({ user }: { user: UserRecord }) => {
     shouldRevalidate: 'onBlur',
     shouldValidate: 'onSubmit',
   });
-  const { t, i18n } = useTranslation(['form', 'settings']);
+  const t = useTranslations('form');
 
   return (
     <>
@@ -32,14 +33,14 @@ export const ProfileForm = ({ user }: { user: UserRecord }) => {
               key={fields.firstName.key}
               label={t('first_name')}
               flex={1}
-              error={t(fields.firstName.errors ?? '')}
+              error={fields.firstName.errors && t(fields.firstName.errors[0])}
             />
             <TextInput
               defaultValue={fields.middleName.initialValue}
               name={fields.middleName.name}
               key={fields.middleName.key}
               label={t('middle_name')}
-              error={t(fields.middleName.errors ?? '')}
+              error={fields.middleName.errors && t(fields.middleName.errors[0])}
               flex={1}
             />
             <TextInput
@@ -48,7 +49,7 @@ export const ProfileForm = ({ user }: { user: UserRecord }) => {
               key={fields.lastName.key}
               label={t('last_name')}
               flex={1}
-              error={t(fields.lastName.errors ?? '')}
+              error={fields.lastName.errors && t(fields.lastName.errors[0])}
             />{' '}
           </Group>
           <TextInput
@@ -56,7 +57,7 @@ export const ProfileForm = ({ user }: { user: UserRecord }) => {
             name={fields.username.name}
             key={fields.username.key}
             label={t('username')}
-            error={t(fields.username.errors ?? '')}
+            error={fields.username.errors && t(fields.username.errors[0])}
             leftSection={<Icon icon={icons.profile} />}
           />
           <TextInput
@@ -65,7 +66,7 @@ export const ProfileForm = ({ user }: { user: UserRecord }) => {
             key={fields.email.key}
             label={t('email')}
             leftSection={<Icon icon={icons.email} />}
-            error={t(fields.email.errors ?? '')}
+            error={fields.email.errors && t(fields.email.errors)}
           />
 
           <Textarea
@@ -78,7 +79,7 @@ export const ProfileForm = ({ user }: { user: UserRecord }) => {
             name={fields.nickname.name}
             key={fields.nickname.key}
             label={t('nickname')}
-            error={t(fields.nickname.errors ?? '')}
+            error={fields.nickname.errors && t(fields.nickname.errors[0])}
           />
           <Button
             type='submit'

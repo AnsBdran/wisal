@@ -2,8 +2,14 @@ import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import '@mantine/carousel/styles.css';
 import '@mantine/dropzone/styles.css';
+import './font.css';
+import './tailwind.css';
 
-import { DirectionProvider, MantineProvider } from '@mantine/core';
+import {
+  DirectionProvider,
+  MantineProvider,
+  ColorSchemeScript,
+} from '@mantine/core';
 import {
   json,
   Links,
@@ -21,17 +27,15 @@ import { useEffect } from 'react';
 import { notifications, Notifications } from '@mantine/notifications';
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { ModalsProvider } from '@mantine/modals';
-import './font.css';
-import './tailwind.css';
 import { IntlProvider, useTranslations } from 'use-intl';
 // import { PWABadge } from './lib/components/pwa/badge';
 import { PWAAssets } from './lib/components/pwa/assets';
 import { getMessages, resolveLocale } from './services/next-i18n';
-import { ModalProvider } from 'node_modules/@mantine/core/lib/components/Modal/Modal.context';
+import { PWABadge } from './lib/components/pwa/badge';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { toast, headers } = await getToast(request);
-  const locale = resolveLocale(request);
+  const locale = await resolveLocale(request);
   // const title = t('app_title');
   // const description = t('app_description');
 
@@ -83,7 +87,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <PWAAssets />
         <Links />
-        {/* <ColorSchemeScript defaultColorScheme='light' /> */}
+        <ColorSchemeScript defaultColorScheme='light' />
       </head>
       <body>
         <IntlProvider locale={locale} messages={messages} timeZone='UTC'>
@@ -91,7 +95,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
             detectDirection
             initialDirection={locale === 'en' ? 'ltr' : 'rtl'}
           >
-            {/* <DirectionProvider initialDirection={i18n.dir()}> */}
             <MantineProvider
               theme={theme}
               cssVariablesResolver={cssVariablesResolver}
@@ -109,13 +112,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  // const { locale, messages } = useLoaderData<typeof loader>();
   const t = useTranslations();
   return (
     <ModalsProvider
       labels={{ confirm: t('common.confirm'), cancel: t('common.cancel') }}
     >
-      <Outlet />;
+      <Outlet />
+      <PWABadge />
     </ModalsProvider>
   );
 }

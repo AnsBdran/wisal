@@ -20,8 +20,8 @@
 }
 
 .dropZoneIcon {
-  width: rem(52);
-  height: rem(52);
+  width: rem(52) !important;
+  height: rem(52) !important;
   color: var(--mantine-color-dimmed);
 }
 
