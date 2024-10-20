@@ -82,6 +82,7 @@ const MainLayout = () => {
                 <Tabs.Tab
                   flex={1}
                   value='/messenger'
+                  leftSection={<Icons.messenger />}
                   // leftSection={<Icons.messenger />}
                 >
                   {t('messaging')}

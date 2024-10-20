@@ -8,13 +8,13 @@ import {
   useLocation,
   useNavigate,
 } from '@remix-run/react';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'use-intl';
 import { authenticateOrToast } from '~/.server/utils';
 import Header from '~/lib/components/main/header';
 import { HEADER_HEIGHT } from '~/lib/constants';
 import { EditSuggestionContextProvider } from '~/lib/contexts/edit-suggestion';
 import { EditUserContextProvider } from '~/lib/contexts/edit-user';
-import { icons } from '~/lib/icons';
+import { Icons, icons } from '~/lib/icons';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { user, loginRedirect, feedRedirect } = await authenticateOrToast(
@@ -33,7 +33,7 @@ const Dashboard = () => {
   const { user } = useLoaderData<typeof loader>();
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const t = useTranslations('common');
   return (
     <>
       <AppShell
@@ -51,19 +51,19 @@ const Dashboard = () => {
               defaultValue={pathname}
             >
               <Tabs.List grow>
-                <Tabs.Tab
-                  leftSection={<Icon icon={icons.dashboard} />}
-                  value='/dashboard'
-                >
+                <Tabs.Tab leftSection={<Icons.settings />} value='/dashboard'>
                   {t('dashboard')}
                 </Tabs.Tab>
                 <Tabs.Tab
-                  leftSection={<Icon icon={icons.users} />}
+                  leftSection={<Icons.users />}
                   value='/dashboard/users'
                 >
                   {t('users')}
                 </Tabs.Tab>
-                <Tabs.Tab value='/dashboard/suggestions'>
+                <Tabs.Tab
+                  value='/dashboard/suggestions'
+                  leftSection={<Icons.idea />}
+                >
                   {t('suggestions')}
                 </Tabs.Tab>
               </Tabs.List>

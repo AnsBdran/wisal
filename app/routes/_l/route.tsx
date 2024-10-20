@@ -13,7 +13,7 @@ import {
 } from '@mantine/core';
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { json, Outlet, useLoaderData } from '@remix-run/react';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'use-intl';
 import { authenticateOrToast } from '~/.server/utils';
 import Header from '~/lib/components/main/header';
 import { HEADER_HEIGHT } from '~/lib/constants';
@@ -32,7 +32,7 @@ export const handle = {
 
 const MainLayout = () => {
   const { user } = useLoaderData<typeof loader>();
-  const { t } = useTranslation();
+  const t = useTranslations('common');
   return (
     <>
       <AppShell header={{ height: HEADER_HEIGHT }} padding={'sm'}>

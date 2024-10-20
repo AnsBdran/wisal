@@ -11,7 +11,7 @@ import {
 } from '@mantine/core';
 import { useFetcher } from '@remix-run/react';
 import { Icon } from '@iconify/react';
-import { icons } from '~/lib/icons';
+import { Icons, icons } from '~/lib/icons';
 import { useTranslation } from 'react-i18next';
 import { INTENTS } from '~/lib/constants';
 import { useDisclosure } from '@mantine/hooks';
@@ -33,7 +33,7 @@ export const CreateChatGroupButton = () => {
   return (
     <>
       <ActionIcon color='indigo' onClick={open}>
-        <Icon icon={icons.usersGroup} />
+        <Icons.users />
       </ActionIcon>
 
       <Modal
@@ -51,12 +51,12 @@ export const CreateChatGroupButton = () => {
             <Stack>
               <TextInput
                 name={name.name}
-                error={name.errors && t(name.errors)}
+                error={name.errors && t(name.errors[0])}
                 label={t('group_name')}
               />
               <Textarea
                 name={bio.name}
-                error={bio.errors && t(bio.errors)}
+                error={bio.errors && t(bio.errors[0])}
                 label={t('group_description')}
                 autosize
               />

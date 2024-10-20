@@ -12,6 +12,13 @@ import {
   Upload,
   Image,
   X,
+  SunMoon,
+  MessageSquare,
+  MessagesSquare,
+  Ellipsis,
+  Users,
+  MessageCircle,
+  Lightbulb,
 } from 'lucide-react';
 export const icons = {
   copy: 'ooui:copy-ltr',
@@ -74,7 +81,7 @@ export const icons = {
 
 export const Icons = {
   feed: Newspaper,
-  messenger: MessageSquareX,
+  messenger: MessagesSquare,
   profile: UserRound,
   info: BadgeInfo,
   settings: Settings2,
@@ -84,4 +91,9 @@ export const Icons = {
   upload: Upload,
   images: Image,
   cancel: X,
+  sunMoon: SunMoon,
+  ellipsis: Ellipsis,
+  users: Users,
+  message: MessageCircle,
+  idea: Lightbulb,
 };

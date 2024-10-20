@@ -6,7 +6,7 @@ import { Faqs, InProgressFeatures, StatsGroup } from './components';
 import { db } from '~/.server/db';
 import { count } from 'drizzle-orm';
 import { messages, posts, users } from '~/.server/db/schema';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'use-intl';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const authUser = await authenticator.isAuthenticated(request);
@@ -25,7 +25,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 const About = () => {
   const { user, stats } = useLoaderData<typeof loader>();
-  const { t } = useTranslation();
+  const t = useTranslations('common');
 
   return (
     <Stack>

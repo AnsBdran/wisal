@@ -66,3 +66,16 @@
   /* margin-bottom: var(--mantine-spacing-md); */
   color: light-dark(var(--mantine-color-indigo-8), var(--mantine-color-bright));
 }
+
+.userItem {
+  background-color: light-dark(
+    alpha(var(--mantine-primary-color-0), 0.2),
+    alpha(var(--mantine-primary-color-9), 0.1)
+  );
+  border: 0.5px dashed
+    light-dark(
+      alpha(var(--mantine-primary-color-3, 0.4)),
+      alpha(var(--mantine-primary-color-7), 0.5)
+    );
+  padding-inline: var(--mantine-spacing-xs);
+}

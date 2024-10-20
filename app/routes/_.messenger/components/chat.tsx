@@ -16,7 +16,7 @@ import { useFetcher, useNavigate } from '@remix-run/react';
 import { Icon } from '@iconify/react';
 import styles from '../messenger.module.css';
 import { getProfileInfo, getProfileInfoText } from '~/lib/utils';
-import { icons } from '~/lib/icons';
+import { Icons, icons } from '~/lib/icons';
 import { useTranslation } from 'react-i18next';
 import { INTENTS } from '~/lib/constants';
 import { modals } from '@mantine/modals';
@@ -64,7 +64,7 @@ export const GroupChat = ({
               onClick={(e) => e.stopPropagation()}
               component='i'
             >
-              <Icon icon={icons.ellipsis} width={rem('10px')} />
+              <Icons.ellipsis />
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>

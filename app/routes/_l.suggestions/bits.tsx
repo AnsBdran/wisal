@@ -1,6 +1,6 @@
 import { Modal, Button, Stack, TextInput, Textarea } from '@mantine/core';
 import { Icon } from '@iconify/react';
-import { icons } from '~/lib/icons';
+import { Icons, icons } from '~/lib/icons';
 import { useDisclosure } from '@mantine/hooks';
 import {
   Form,
@@ -11,7 +11,7 @@ import {
 import { useForm } from '@conform-to/react';
 import { z } from 'zod';
 import { SuggestionSchemaType } from '~/lib/schemas';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'use-intl';
 import { action } from './route';
 import { notifications } from '@mantine/notifications';
 import { useEffect } from 'react';
@@ -23,7 +23,7 @@ export const SuggestionForm = () => {
   const [form, fields] = useForm<SuggestionSchemaType>({
     lastResult,
   });
-  const { t } = useTranslation('suggestions');
+  const t = useTranslations('suggestions');
   const navigation = useNavigation();
   const isLoading = navigation.state !== 'idle';
   useEffect(() => {
@@ -37,11 +37,7 @@ export const SuggestionForm = () => {
   }, [lastResult, navigation.state]);
   return (
     <>
-      <Button
-        variant='outline'
-        onClick={open}
-        leftSection={<Icon icon={icons.add} />}
-      >
+      <Button variant='outline' onClick={open} leftSection={<Icons.add />}>
         {t('submit_suggestion')}
       </Button>
 
@@ -60,14 +56,16 @@ export const SuggestionForm = () => {
             <TextInput
               name={fields.title.name}
               label={t('suggestion_title')}
-              error={t(fields.title.errors ?? '')}
+              error={fields.title.errors && t(fields.title.errors[0])}
             />
 
             <Textarea
               name={fields.description.name}
               label={t('suggestion_description')}
               autosize
-              error={t(fields.description.errors ?? '')}
+              error={
+                fields.description.errors && t(fields.description.errors[0])
+              }
             />
             <Button
               name='intent'

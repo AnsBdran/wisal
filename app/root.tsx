@@ -76,11 +76,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   }, [toast]);
 
   return (
-    <html
-      lang={locale}
-      dir={locale === 'en' ? 'ltr' : 'rtl'}
-      data-mantine-color-scheme='light'
-    >
+    <html lang={locale} dir={locale === 'en' ? 'ltr' : 'rtl'}>
       <head>
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />

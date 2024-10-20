@@ -76,7 +76,7 @@ const Messenger = () => {
           <Group>
             <ChooseUserToMessage>
               <ActionIcon color='indigo'>
-                <Icon icon={icons.addChat} />
+                <Icons.message />
               </ActionIcon>
             </ChooseUserToMessage>
             <CreateChatGroupButton />

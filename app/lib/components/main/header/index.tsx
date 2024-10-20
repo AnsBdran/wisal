@@ -8,6 +8,7 @@ import {
   Container,
   Group,
   Menu,
+  useMantineColorScheme,
 } from '@mantine/core';
 import { Form, Link } from '@remix-run/react';
 import { Icon } from '@iconify/react';
@@ -19,12 +20,7 @@ import { useLocale, useTranslations } from 'use-intl';
 
 const Header = ({ user }: { user?: UserSession }) => {
   const t = useTranslations('common');
-  // const { setColorScheme } = useMantineColorScheme({
-  //   keepTransitions: true,
-  // });
-  // const computedColorScheme = useComputedColorScheme('light', {
-  //   getInitialValueInEffect: true,
-  // });
+  const { toggleColorScheme } = useMantineColorScheme();
   return (
     <AppShellHeader zIndex={99}>
       <Container className='h-full ' size='sm'>
@@ -92,26 +88,13 @@ const Header = ({ user }: { user?: UserSession }) => {
               </Box>
             )}
 
-            {/* <ActionIcon
-              onClick={() => {
-                setColorScheme(
-                  computedColorScheme === 'light' ? 'dark' : 'light'
-                );
-              }}
+            <ActionIcon
+              onClick={toggleColorScheme}
               className={styles.themeIcon}
               variant='default'
             >
-              <Icon
-                icon={
-                  // colorScheme === 'light'
-                  // ? 'material-symbols:sunny-rounded'
-                  // : 'bi:moon-stars-fill'
-                  icons.colorTheme
-                }
-                className=''
-                // color={colorScheme === 'light' ? 'gray' : 'white'}
-              />
-            </ActionIcon> */}
+              <Icons.sunMoon />
+            </ActionIcon>
           </Group>
         </Group>
       </Container>

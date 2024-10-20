@@ -1,4 +1,5 @@
 import { useRegisterSW } from 'virtual:pwa-register/react';
+import { useTranslations } from 'use-intl';
 
 import { useState } from 'react';
 import {
@@ -10,12 +11,11 @@ import {
   Stack,
   Text,
 } from '@mantine/core';
-import { useTranslation } from 'react-i18next';
 // import { notifications } from '@mantine/notifications';
 
 export const PWABadge = () => {
   const period = 60 * 60 * 1000;
-  const { t } = useTranslation();
+  const t = useTranslations('common');
 
   const {
     offlineReady: [offlineReady, setOfflineReady],

@@ -1,5 +1,5 @@
 import { Group, Stack, Title } from '@mantine/core';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'use-intl';
 import { SuggestionForm } from './bits';
 import { parseWithZod } from '@conform-to/zod';
 import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
@@ -29,7 +29,7 @@ export const handle = {
 
 const Suggestions = () => {
   const { suggestions, user } = useLoaderData<typeof loader>();
-  const { t } = useTranslation('suggestions');
+  const t = useTranslations('suggestions');
   return (
     <>
       <Stack>
