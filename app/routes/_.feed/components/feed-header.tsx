@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { icons } from '~/lib/icons';
 import { Icon } from '@iconify/react';
 import styles from '../feed.module.css';
+import { useTranslations } from 'use-intl';
 
 export const FeedHeader = ({
   toggleIntro,
@@ -14,7 +15,7 @@ export const FeedHeader = ({
   postFormOpen: () => void;
   introOpened: boolean;
 }) => {
-  const { t } = useTranslation('feed');
+  const t = useTranslations('feed');
   return (
     <Group justify='space-between' className={styles.feedHeader}>
       <Group>

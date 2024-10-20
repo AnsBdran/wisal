@@ -8,7 +8,6 @@ import {
 } from '@mantine/core';
 import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
 import { Form, useActionData, useNavigation } from '@remix-run/react';
-import { useTranslation } from 'react-i18next';
 import { authenticator } from '~/services/auth.server';
 import { Icon } from '@iconify/react';
 import { useForm } from '@conform-to/react';
@@ -17,17 +16,14 @@ import { loginSchema } from '~/lib/schemas';
 import { db } from '~/.server/db';
 import { commitSession, getSession } from '~/services/session.server';
 import { icons } from '~/lib/icons';
-import i18next from '~/services/i18n.server';
 import { spreadRecordIntoSession } from '~/.server/utils';
 import { redirectWithSuccess } from 'remix-toast';
 import bcrypt from 'bcryptjs';
-
-export const handle = {
-  i18n: 'form',
-};
+import { useTranslations } from 'use-intl';
+import { getTranslations } from '~/services/next-i18n';
 
 const Login = () => {
-  const { t } = useTranslation('form');
+  const t = useTranslations('form');
   const lastResult = useActionData<typeof action>();
   const [form, fields] = useForm({
     shouldValidate: 'onInput',
@@ -48,7 +44,7 @@ const Login = () => {
             label={t('username')}
             name='username'
             defaultValue={fields.username.value}
-            error={t(fields.username.errors ?? '')}
+            error={fields.username.errors && t(fields.username.errors[0])}
             leftSection={<Icon icon={icons.profile} />}
             autoComplete='off'
           />
@@ -56,7 +52,7 @@ const Login = () => {
             label={t('password')}
             leftSection={<Icon icon={icons.lock} />}
             name='password'
-            error={t(fields.password.errors ?? '')}
+            error={fields.password.errors && t(fields.password.errors[0])}
             autoComplete='off'
           />
           {form.errors && (
@@ -65,7 +61,7 @@ const Login = () => {
               color='red'
               icon={<Icon icon={icons.error} />}
             >
-              {t(form.errors)}
+              {t(form.errors[0])}
             </Alert>
           )}
           <Button type='submit' loading={navigation.state !== 'idle'}>
@@ -113,13 +109,14 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const session = await getSession(request.headers.get('Cookie'));
   session.set(authenticator.sessionKey, spreadRecordIntoSession(userRecord));
+  // const t = (t) => t;
+  const t = await getTranslations(request);
 
-  const t = await i18next.getFixedT(request, 'form');
   return redirectWithSuccess(
     '/feed',
     {
-      message: t('successfully_logged_in'),
-      description: t('successfully_logged_in_description'),
+      message: t('form.successfully_logged_in'),
+      description: t('form.successfully_logged_in_description'),
     },
     {
       headers: { 'Set-Cookie': await commitSession(session) },

@@ -31,6 +31,7 @@ import { icons } from '~/lib/icons';
 import { useDisclosure } from '@mantine/hooks';
 import { INTENTS } from '~/lib/constants';
 import { modals } from '@mantine/modals';
+import { useTranslations } from 'use-intl';
 
 export const AddComment = ({
   postID,
@@ -39,7 +40,7 @@ export const AddComment = ({
   postID: number;
   openFirstFive: () => void;
 }) => {
-  const { i18n, t } = useTranslation();
+  const t = useTranslations();
   const theme = useMantineTheme();
   const fetcher = useFetcher();
   const [opened, { toggle, open, close }] = useDisclosure();
@@ -95,7 +96,7 @@ export const AddComment = ({
               <Icon
                 icon={icons.send}
                 // style={{ width: rem(32), height: rem(32) }}
-                className={i18n.language === 'ar' ? 'rotate-180' : ''}
+                // className={i18n.language === 'ar' ? 'rotate-180' : ''}
               />
             </ActionIcon>
           </Group>
@@ -112,7 +113,7 @@ export const CommentActions = ({
   comment: SerializeFrom<typeof loader>['posts']['data'][0]['comments'][0];
   isSameUser: boolean;
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslations('common');
   const fetcher = useFetcher();
 
   useEffect(() => {
@@ -239,7 +240,7 @@ export const Comments = ({
 }) => {
   const [opened, { open, close }] = useDisclosure();
   const fetcher = useFetcher();
-  const { t } = useTranslation('feed');
+  const t = useTranslations('feed');
   return (
     <>
       {comments.length ? (
@@ -305,7 +306,7 @@ export const Comments = ({
 };
 
 export const AllComments = ({ opened, close, comments, userID }) => {
-  const { t } = useTranslation();
+  const t = useTranslations('common');
   return (
     <Modal opened={opened} onClose={close} title={t('all_comments')}>
       <Stack>

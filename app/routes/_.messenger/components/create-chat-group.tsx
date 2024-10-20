@@ -19,11 +19,12 @@ import { useState } from 'react';
 import MultiSelect from '~/lib/components/common/users-multi-select';
 import { useForm } from '@conform-to/react';
 import { ChatGroupSchemaType } from '~/lib/schemas';
+import { useTranslations } from 'use-intl';
 
 export const CreateChatGroupButton = () => {
   const fetcher = useFetcher();
   const [opened, { close, open }] = useDisclosure();
-  const { t } = useTranslation('form');
+  const t = useTranslations('form');
   const [chosenMembers, setChosenMembers] = useState<number[]>([]);
   const [form, { bio, members, name }] = useForm<ChatGroupSchemaType>({
     lastResult: fetcher.state === 'idle' ? fetcher.data : null,

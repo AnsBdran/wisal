@@ -23,6 +23,7 @@ import { loader } from '~/routes/_.feed/route';
 import { icons } from '~/lib/icons';
 import { INTENTS, REACTIONS } from '~/lib/constants';
 import { useState } from 'react';
+import { useTranslations } from 'use-intl';
 
 export const Reactions = ({
   post,
@@ -107,7 +108,7 @@ export const ReactionsStats = ({
   close: () => void;
   reactions: SerializeFrom<typeof loader>['posts']['data'][0]['reactions'];
 }) => {
-  const { t } = useTranslation('feed');
+  const t = useTranslations('feed');
   const [type, setType] = useState('all');
 
   const ReactionStat = ({

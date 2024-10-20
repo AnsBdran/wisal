@@ -34,6 +34,7 @@ import { authenticateOrToast } from '~/.server/utils';
 import AppIntro from './components/app-intro';
 import { FeedHeader } from './components/feed-header';
 import { FeedSkeleton } from './components/feed-skeleton';
+import { useTranslations } from 'use-intl';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -53,13 +54,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   });
 };
 
-export const handle = {
-  i18n: ['common', 'feed', 'form'],
-};
-
 const Feed = () => {
   const { posts, user, page } = useLoaderData<typeof loader>();
-  const { t } = useTranslation('feed');
+  const t = useTranslations('feed');
   const navigate = useNavigate();
   const [postFormOpened, { close: postFormClose, open: postFormOpen }] =
     useDisclosure();

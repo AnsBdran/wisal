@@ -23,6 +23,7 @@ import { startTransition, useEffect, useState } from 'react';
 import styles from '../feed.module.css';
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { useUpload } from '~/lib/hooks/useUpload';
+import { useTranslations } from 'use-intl';
 
 export const PostForm = ({
   close,
@@ -40,7 +41,7 @@ export const PostForm = ({
 }) => {
   const fetcher = useFetcher<typeof action>();
   const theme = useMantineTheme();
-  const { t } = useTranslation('feed');
+  const t = useTranslations('feed');
   const [form, fields] = useForm<PostSchemaType>({
     lastResult: fetcher.state === 'idle' ? fetcher.data : null,
     defaultValue: initialValues ? initialValues : null,

@@ -11,6 +11,7 @@ import { SerializeFrom } from '@remix-run/node';
 import { loader } from '~/routes/_.feed/route';
 import { Comments } from './comment';
 import { CopyContentBtn } from './bits';
+import { useTranslations } from 'use-intl';
 
 export const PostFooter = ({
   post,
@@ -33,7 +34,7 @@ export const PostFooter = ({
 }) => {
   // const [opened, { toggle }] = useDisclosure();
   const theme = useMantineTheme();
-  const { t } = useTranslation();
+  const t = useTranslations('common');
   return (
     <>
       <UnstyledButton

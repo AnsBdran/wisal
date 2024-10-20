@@ -22,10 +22,10 @@ import { useState } from 'react';
 import { icons } from '~/lib/icons';
 import { useFetcher } from '@remix-run/react';
 import { INTENTS } from '~/lib/constants';
-import { useTranslation } from 'react-i18next';
 import { EditPost } from './edit';
 import { useDisclosure } from '@mantine/hooks';
 import { PostActions } from './actions';
+import { useTranslations, useLocale } from 'use-intl';
 
 export default function Post({
   post,
@@ -41,7 +41,8 @@ export default function Post({
 
   const commentsFetcher = useFetcher();
   const reactionsFetcher = useFetcher();
-  const { i18n, t } = useTranslation();
+  const t = useTranslations('common');
+  const locale = useLocale();
   const [
     editPostFormOpened,
     { open: editPostFormOpen, close: editPostFormClose },
@@ -79,7 +80,7 @@ export default function Post({
 
       <Group justify='end'>
         <Badge fz='xs' c={'dimmed'} variant='dot'>
-          {fromNow(post.createdAt, i18n.language)}
+          {fromNow(post.createdAt, locale)}
         </Badge>
       </Group>
       <Group justify='space-between' mt='md'>

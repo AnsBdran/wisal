@@ -3,11 +3,7 @@ import '@mantine/notifications/styles.css';
 import '@mantine/carousel/styles.css';
 import '@mantine/dropzone/styles.css';
 
-import {
-  ColorSchemeScript,
-  DirectionProvider,
-  MantineProvider,
-} from '@mantine/core';
+import { DirectionProvider, MantineProvider } from '@mantine/core';
 import {
   json,
   Links,
@@ -25,49 +21,46 @@ import { useEffect } from 'react';
 import { notifications, Notifications } from '@mantine/notifications';
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { ModalsProvider } from '@mantine/modals';
-import { useTranslation } from 'react-i18next';
-import { useChangeLanguage } from 'remix-i18next/react';
 import './font.css';
 import './tailwind.css';
-
-import i18next from './services/i18n.server';
-import { PWABadge } from './lib/components/pwa/badge';
+import { IntlProvider, useTranslations } from 'use-intl';
+// import { PWABadge } from './lib/components/pwa/badge';
 import { PWAAssets } from './lib/components/pwa/assets';
+import { getMessages, resolveLocale } from './services/next-i18n';
+import { ModalProvider } from 'node_modules/@mantine/core/lib/components/Modal/Modal.context';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { toast, headers } = await getToast(request);
-  const t = await i18next.getFixedT(request, 'common');
+  const locale = resolveLocale(request);
+  // const title = t('app_title');
+  // const description = t('app_description');
 
-  const title = t('app_title');
-  const description = t('app_description');
-
-  const locale = await i18next.getLocale(request);
   return json(
     {
       toast,
-      title,
-      description,
+      // title,
+      // description,
+      messages: await getMessages(locale),
       locale,
     },
     { headers }
   );
 };
 
-export const handle = {
-  i18n: 'common',
-};
+// export const handle = {
+//   i18n: 'common',
+// };
 export const meta: MetaFunction = ({ data }) => {
   return [
-    { title: data.title },
-    { name: 'description', content: data.description },
+    { title: 'وصال' },
+    { name: 'description', content: 'تواصل وتراسل مع أصدقائك وأحبابك.' },
+    // { title: data.title },
+    // { name: 'description', content: data.description },
   ];
 };
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const { locale, toast } = useLoaderData<typeof loader>();
-  const { t, i18n } = useTranslation();
-
-  useChangeLanguage(locale);
+  const { locale, toast, messages } = useLoaderData<typeof loader>();
 
   useEffect(() => {
     if (toast) {
@@ -79,7 +72,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
   }, [toast]);
 
   return (
-    <html lang={locale} dir={i18n.dir()} data-mantine-color-scheme='light'>
+    <html
+      lang={locale}
+      dir={locale === 'en' ? 'ltr' : 'rtl'}
+      data-mantine-color-scheme='light'
+    >
       <head>
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
@@ -89,22 +86,21 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {/* <ColorSchemeScript defaultColorScheme='light' /> */}
       </head>
       <body>
-        <DirectionProvider detectDirection initialDirection={i18n.dir()}>
-          {/* <DirectionProvider initialDirection={i18n.dir()}> */}
-          <MantineProvider
-            theme={theme}
-            // defaultColorScheme='light'
-            cssVariablesResolver={cssVariablesResolver}
+        <IntlProvider locale={locale} messages={messages} timeZone='UTC'>
+          <DirectionProvider
+            detectDirection
+            initialDirection={locale === 'en' ? 'ltr' : 'rtl'}
           >
-            <Notifications />
-            <ModalsProvider
-              labels={{ cancel: t('cancel'), confirm: t('confirm') }}
+            {/* <DirectionProvider initialDirection={i18n.dir()}> */}
+            <MantineProvider
+              theme={theme}
+              cssVariablesResolver={cssVariablesResolver}
             >
+              <Notifications />
               {children}
-              {/* <PWABadge /> */}
-            </ModalsProvider>
-          </MantineProvider>
-        </DirectionProvider>
+            </MantineProvider>
+          </DirectionProvider>
+        </IntlProvider>
         <ScrollRestoration getKey={(location) => location.pathname} />
         <Scripts />
       </body>
@@ -113,7 +109,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  // const { locale, messages } = useLoaderData<typeof loader>();
+  const t = useTranslations();
+  return (
+    <ModalsProvider
+      labels={{ confirm: t('common.confirm'), cancel: t('common.cancel') }}
+    >
+      <Outlet />;
+    </ModalsProvider>
+  );
 }
 
 export const ErrorBoundary = () => <NotFound />;

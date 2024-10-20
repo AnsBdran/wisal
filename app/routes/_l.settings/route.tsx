@@ -16,7 +16,6 @@ import { AppForm, ProfileForm } from './components';
 import { authenticateOrToast, spreadRecordIntoSession } from '~/.server/utils';
 import { userPrefs } from '~/services/user-prefs.server';
 import { commitSession, getSession } from '~/services/session.server';
-import i18next from '~/services/i18n.server';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { user, loginRedirect: redirect } = await authenticateOrToast(request);
@@ -89,8 +88,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const user = await authenticator.isAuthenticated(request);
   const userID = Number(user?.id);
   const intent = formData.get('intent');
-  const t = await i18next.getFixedT(request, 'settings');
   const response = await authenticateOrToast(request);
+  const t = (t) => t;
   if (!response.user) return response.loginRedirect;
 
   if (intent === INTENTS.editProfile) {

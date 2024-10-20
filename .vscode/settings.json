@@ -6,5 +6,7 @@
     "**/*.less",
     "node_modules/@mantine/core/styles.css"
   ],
-  "cSpell.words": ["cloudinary", "iconify", "wisal", "أعضاء"]
+  "cSpell.words": ["cloudinary", "iconify", "wisal", "أعضاء"],
+  "i18n-ally.localesPaths": ["./messages"],
+  "i18n-ally.keystyle": "nested"
 }

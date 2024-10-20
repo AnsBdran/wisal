@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { SerializeFrom } from '@remix-run/node';
 import { loader } from '~/routes/_.feed/route';
 import { PostForm } from '../post-form';
+import { useTranslations } from 'use-intl';
 
 export const EditPost = ({
   post,
@@ -11,7 +12,7 @@ export const EditPost = ({
   userID: number;
   editPostFormClose: () => void;
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslations('common');
   console.log('what we have here', post, post.id);
   return (
     <>

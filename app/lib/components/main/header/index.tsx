@@ -8,25 +8,23 @@ import {
   Container,
   Group,
   Menu,
-  useComputedColorScheme,
-  useMantineColorScheme,
 } from '@mantine/core';
 import { Form, Link } from '@remix-run/react';
-import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 import { UserSession } from '~/lib/types';
 import styles from './header.module.css';
 import { icons } from '~/lib/icons';
 import Logo from '~/logo';
+import { useLocale, useTranslations } from 'use-intl';
 
 const Header = ({ user }: { user?: UserSession }) => {
-  const { i18n, t } = useTranslation();
-  const { setColorScheme } = useMantineColorScheme({
-    keepTransitions: true,
-  });
-  const computedColorScheme = useComputedColorScheme('light', {
-    getInitialValueInEffect: true,
-  });
+  const t = useTranslations('common');
+  // const { setColorScheme } = useMantineColorScheme({
+  //   keepTransitions: true,
+  // });
+  // const computedColorScheme = useComputedColorScheme('light', {
+  //   getInitialValueInEffect: true,
+  // });
   return (
     <AppShellHeader zIndex={99}>
       <Container className='h-full ' size='sm'>

@@ -16,6 +16,7 @@ import { icons } from '~/lib/icons';
 import { useHeadroom } from '@mantine/hooks';
 import { authenticateOrToast } from '~/.server/utils';
 import { startTransition } from 'react';
+import { useTranslations } from 'use-intl';
 
 export const loader: LoaderFunction = async ({ request }) => {
   const { user, loginRedirect } = await authenticateOrToast(request);
@@ -31,7 +32,7 @@ export const handle = {
 const MainLayout = () => {
   const { user, pathname } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const t = useTranslations('common');
   const pinned = useHeadroom({ fixedAt: HEADER_HEIGHT });
   // const location = useLocation();
 

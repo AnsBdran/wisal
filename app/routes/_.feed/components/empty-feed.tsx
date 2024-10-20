@@ -1,5 +1,6 @@
 import { Alert, Button, Stack } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'use-intl';
 
 export const EmptyFeed = ({
   hidden,
@@ -8,7 +9,7 @@ export const EmptyFeed = ({
   hidden: boolean;
   open: () => void;
 }) => {
-  const { t } = useTranslation('feed');
+  const t = useTranslations('feed');
   return (
     <>
       <Stack hidden={hidden} my='xl'>

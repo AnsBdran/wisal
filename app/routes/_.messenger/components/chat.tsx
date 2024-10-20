@@ -25,6 +25,7 @@ import {
   DirectChatType,
   GroupChatType,
 } from '~/lib/types';
+import { useTranslations } from 'use-intl';
 // import { useColorScheme } from '@mantine/hooks';
 
 export const GroupChat = ({
@@ -34,7 +35,7 @@ export const GroupChat = ({
   // chatGroupMember: SerializeFrom<typeof loader>['chats'][0];
 }) => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const t = useTranslations('common');
   const fetcher = useFetcher();
 
   return (
@@ -148,7 +149,7 @@ export const DirectChat = ({ directChat }: { directChat: DirectChatType }) => {
     (member) => member.userID !== directChat.userID
   ) as DirectChatMemberWithUser;
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const t = useTranslations('common');
   return (
     <UnstyledButton
       onClick={() => navigate(`./${directChat.chatID}`)}

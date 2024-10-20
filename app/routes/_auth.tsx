@@ -1,14 +1,9 @@
 import { Container, AppShell, Title, Card, Tabs } from '@mantine/core';
 import { Outlet, useLocation, useNavigate } from '@remix-run/react';
-import { useTranslation } from 'react-i18next';
-
-export const handle = {
-  // this is important to prevent flickering
-  i18n: 'common',
-};
+import { useTranslations } from 'use-intl';
 
 const AuthLayout = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const location = useLocation();
   const navigate = useNavigate();
   return (
@@ -28,8 +23,8 @@ const AuthLayout = () => {
             defaultValue={location.pathname}
           >
             <Tabs.List grow>
-              <Tabs.Tab value='/login'>{t('login')}</Tabs.Tab>
-              <Tabs.Tab value='/register'>{t('register')}</Tabs.Tab>
+              <Tabs.Tab value='/login'>{t('common.login')}</Tabs.Tab>
+              <Tabs.Tab value='/register'>{t('common.register')}</Tabs.Tab>
             </Tabs.List>
           </Tabs>
           <Card>

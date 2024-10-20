@@ -36,6 +36,7 @@ import { getUserChats } from '~/.server/queries';
 import { DirectChatType, GroupChatType } from '~/lib/types';
 import { createChatGroup, exitChatGroup } from './actions';
 import { Suspense } from 'react';
+import { useTranslations } from 'use-intl';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { user, loginRedirect: redirect } = await authenticateOrToast(request);
@@ -45,13 +46,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return defer({ chats });
 };
 
-export const handle = {
-  i18n: ['common', 'messenger', 'form'],
-};
-
 const Messenger = () => {
   const { chats } = useLoaderData<typeof loader>();
-  const { t } = useTranslation();
+  const t = useTranslations('common');
 
   return (
     <>

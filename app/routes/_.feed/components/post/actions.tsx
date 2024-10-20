@@ -7,6 +7,7 @@ import { useFetcher } from '@remix-run/react';
 import { INTENTS } from '~/lib/constants';
 import { useTranslation } from 'react-i18next';
 import { modals } from '@mantine/modals';
+import { useTranslations } from 'use-intl';
 export const PostActions = ({
   editPostFormOpen,
   post,
@@ -16,7 +17,7 @@ export const PostActions = ({
   userID: number;
   post: SerializeFrom<typeof loader>['posts']['data'][0];
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslations('common');
   const fetcher = useFetcher();
   return (
     <>

@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { INTENTS } from '~/lib/constants';
 import { useDisclosure } from '@mantine/hooks';
 import { ReactNode } from 'react';
+import { useTranslations } from 'use-intl';
 export const ChooseUserToMessage = ({
   children,
 }: // userID,
@@ -16,7 +17,7 @@ export const ChooseUserToMessage = ({
   const [opened, { open, close }] = useDisclosure();
   const usersFetcher = useFetcher<typeof apiLoader>();
   const chatFetcher = useFetcher();
-  const { t } = useTranslation();
+  const t = useTranslations('common');
 
   return (
     <>
