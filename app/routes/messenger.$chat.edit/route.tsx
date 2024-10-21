@@ -21,6 +21,7 @@ import { authenticateOrToast } from '~/.server/utils';
 import Header from '~/lib/components/main/header';
 import { Icon } from '@iconify/react';
 import { icons } from '~/lib/icons';
+import { useTranslations } from 'use-intl';
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   // const { chat: chatParam } = params;
@@ -61,7 +62,7 @@ export const handle = {
 
 const ChatEdit = () => {
   const { chat, user } = useLoaderData<typeof loader>();
-  const { t } = useTranslation('messenger');
+  const t = useTranslations('messenger');
   const navigate = useNavigate();
   return (
     <>

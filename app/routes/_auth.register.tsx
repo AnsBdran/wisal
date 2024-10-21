@@ -21,6 +21,7 @@ import bcrypt from 'bcryptjs';
 import { spreadRecordIntoSession } from '~/.server/utils';
 import { redirectWithSuccess } from 'remix-toast';
 import { getTranslations } from '~/services/next-i18n';
+import { Icons } from '~/lib/icons';
 
 export const handle = {
   i18n: 'form',
@@ -54,11 +55,13 @@ const Register = () => {
             label={t('username')}
             name={username.name}
             error={username.errors && t(username.errors[0])}
+            leftSection={<Icons.profile />}
           />
           <PasswordInput
             label={t('password')}
             name={password.name}
             error={password.errors && t(password.errors[0])}
+            leftSection={<Icons.password />}
           />
           <PasswordInput
             label={t('password_confirmation')}
@@ -66,13 +69,16 @@ const Register = () => {
             error={
               passwordConfirmation.errors && t(passwordConfirmation.errors[0])
             }
+            leftSection={<Icons.password />}
           />
           {form.errors && (
             <Alert variant='light' color='red'>
               {t(form.errors[0])}
             </Alert>
           )}
-          <Button type='submit'>{t('register')}</Button>
+          <Button type='submit' leftSection={<Icons.register />}>
+            {t('register')}
+          </Button>
         </Stack>
       </Form>
     </>
@@ -81,11 +87,11 @@ const Register = () => {
 
 export default Register;
 
-export const loader: LoaderFunction = async ({ request }) => {
-  return authenticator.isAuthenticated(request, {
-    successRedirect: '/feed',
-  });
-};
+// export const loader: LoaderFunction = async ({ request }) => {
+//   return authenticator.isAuthenticated(request, {
+//     successRedirect: '/feed',
+//   });
+// };
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();

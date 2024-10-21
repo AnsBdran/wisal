@@ -4,9 +4,10 @@ import { ImageType } from '../types';
 import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
 import { FileWithPath } from '@mantine/dropzone';
+import { useTranslations } from 'use-intl';
 
 export const useUpload = () => {
-  const { t } = useTranslation();
+  const t = useTranslations('common');
   const [files, setFiles] = useState<FileWithPath[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadedData, setUploadedData] = useState<Partial<ImageType>[]>([]);
@@ -51,5 +52,12 @@ export const useUpload = () => {
     setIsUploading(false);
   };
 
-  return { setFiles, uploadedData, isUploading, upload, files };
+  return {
+    setFiles,
+    uploadedData,
+    isUploading,
+    upload,
+    files,
+    setUploadedData,
+  };
 };

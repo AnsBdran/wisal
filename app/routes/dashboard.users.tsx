@@ -3,6 +3,7 @@ import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
 import { json, useLoaderData } from '@remix-run/react';
 import { eq } from 'drizzle-orm';
 import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'use-intl';
 import { db } from '~/.server/db';
 import { users } from '~/.server/db/schema';
 import Table from '~/lib/components/main/table/index';
@@ -20,7 +21,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 const Users = () => {
-  const { t } = useTranslation();
+  const t = useTranslations('common');
   const { users } = useLoaderData<typeof loader>();
   return (
     <>

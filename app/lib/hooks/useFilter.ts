@@ -1,9 +1,10 @@
 import { useSearchParams } from '@remix-run/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'use-intl';
 
 export const useFilter = () => {
-  const { t } = useTranslation('feed');
+  const t = useTranslations('feed');
 
   const [tag, setTag] = useState<null | string>(null);
   const [order, setOrder] = useState<'asc' | 'desc'>('desc');

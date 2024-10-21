@@ -84,7 +84,6 @@ const Feed = () => {
         <Suspense fallback={<FeedSkeleton />}>
           <Await resolve={posts}>
             {(posts) => {
-              console.log('inside suspense rendered', posts);
               return (
                 <>
                   <ScrollArea

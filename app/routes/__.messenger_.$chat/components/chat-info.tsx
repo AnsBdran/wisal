@@ -9,6 +9,7 @@ import {
   Title,
 } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'use-intl';
 import { ChatWithMembers } from '~/lib/types';
 import { getFullName, getProfileInfoText } from '~/lib/utils';
 export const ChatInfo = ({
@@ -20,7 +21,7 @@ export const ChatInfo = ({
   info: ChatWithMembers;
   onClose: () => void;
 }) => {
-  const { t } = useTranslation('messenger');
+  const t = useTranslations('messenger');
   return (
     <Drawer.Root
       // style={{ overflow: 'hidden' }}

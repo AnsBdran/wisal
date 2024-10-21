@@ -15,7 +15,7 @@ import { parseWithZod } from '@conform-to/zod';
 import { loginSchema } from '~/lib/schemas';
 import { db } from '~/.server/db';
 import { commitSession, getSession } from '~/services/session.server';
-import { icons } from '~/lib/icons';
+import { Icons, icons } from '~/lib/icons';
 import { spreadRecordIntoSession } from '~/.server/utils';
 import { redirectWithSuccess } from 'remix-toast';
 import bcrypt from 'bcryptjs';
@@ -45,12 +45,12 @@ const Login = () => {
             name='username'
             defaultValue={fields.username.value}
             error={fields.username.errors && t(fields.username.errors[0])}
-            leftSection={<Icon icon={icons.profile} />}
+            leftSection={<Icons.profile />}
             autoComplete='off'
           />
           <PasswordInput
             label={t('password')}
-            leftSection={<Icon icon={icons.lock} />}
+            leftSection={<Icons.password />}
             name='password'
             error={fields.password.errors && t(fields.password.errors[0])}
             autoComplete='off'
@@ -64,7 +64,11 @@ const Login = () => {
               {t(form.errors[0])}
             </Alert>
           )}
-          <Button type='submit' loading={navigation.state !== 'idle'}>
+          <Button
+            type='submit'
+            loading={navigation.state !== 'idle'}
+            leftSection={<Icons.login />}
+          >
             {t('login')}
           </Button>
         </Stack>
@@ -124,10 +128,10 @@ export async function action({ request }: ActionFunctionArgs) {
   );
 }
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  return await authenticator.isAuthenticated(request, {
-    successRedirect: '/feed',
-  });
-};
+// export const loader = async ({ request }: LoaderFunctionArgs) => {
+//   return await authenticator.isAuthenticated(request, {
+//     successRedirect: '/feed',
+//   });
+// };
 
 export default Login;

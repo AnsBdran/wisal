@@ -2,7 +2,7 @@ import { Text, ActionIcon, Menu } from '@mantine/core';
 import { Icon } from '@iconify/react';
 import { SerializeFrom } from '@remix-run/node';
 import { loader } from '~/routes/_.feed/route';
-import { icons } from '~/lib/icons';
+import { Icons, icons } from '~/lib/icons';
 import { useFetcher } from '@remix-run/react';
 import { INTENTS } from '~/lib/constants';
 import { useTranslation } from 'react-i18next';
@@ -24,7 +24,7 @@ export const PostActions = ({
       <Menu>
         <Menu.Target>
           <ActionIcon variant='transparent' hidden={post.userID !== userID}>
-            <Icon icon={icons.ellipsis} />
+            <Icons.ellipsis />
           </ActionIcon>
         </Menu.Target>
         <Menu.Dropdown>
@@ -33,7 +33,7 @@ export const PostActions = ({
             variant='outline'
             hidden={post.userID !== userID}
             onClick={editPostFormOpen}
-            leftSection={<Icon icon={icons.edit} />}
+            leftSection={<Icons.edit />}
           >
             {t('edit')}
           </Menu.Item>
@@ -41,7 +41,7 @@ export const PostActions = ({
             // size='compact-xs'
             variant='outline'
             hidden={post.userID !== userID}
-            leftSection={<Icon icon={icons.delete} />}
+            leftSection={<Icons.delete />}
             onClick={() => {
               modals.openConfirmModal({
                 children: (

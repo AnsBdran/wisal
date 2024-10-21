@@ -12,6 +12,7 @@ import {
 import { modals } from '@mantine/modals';
 import { useFetcher } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'use-intl';
 import { INTENTS } from '~/lib/constants';
 import { useEditSuggestionContext } from '~/lib/contexts/edit-suggestion';
 import { icons } from '~/lib/icons';
@@ -27,7 +28,7 @@ export const IsAcceptedChip = ({
   id: number;
 }) => {
   const accepted = choicesCount > 2;
-  const { t } = useTranslation('suggestions');
+  const t = useTranslations('suggestions');
   const fetcher = useFetcher();
   return (
     <>
@@ -75,7 +76,7 @@ export const SuggestionActions = ({
     setSuggestionRow,
     // open
   } = useEditSuggestionContext();
-  const { t } = useTranslation('suggestions');
+  const t = useTranslations('suggestions');
   const fetcher = useFetcher();
   return (
     <>
@@ -121,7 +122,7 @@ export const SuggestionActions = ({
 };
 
 export const Description = ({ value }: { value: string }) => {
-  const { t } = useTranslation();
+  const t = useTranslations('common');
   return (
     <Spoiler showLabel={t('show_more')} hideLabel={t('hide')} fz='xs'>
       {value}
@@ -131,7 +132,7 @@ export const Description = ({ value }: { value: string }) => {
 
 export const SuggestionChoices = ({ choices }: { choices: Choice[] }) => {
   console.log('choices in cell', choices);
-  const { t } = useTranslation('suggestions');
+  const t = useTranslations('suggestions');
   const { length } = choices;
   return (
     <>

@@ -28,11 +28,11 @@ import { useFetcher } from '@remix-run/react';
 import { fromNow, getFullName, getProfileInfoText } from '~/lib/utils';
 import { SerializeFrom } from '@remix-run/node';
 import { loader } from '~/routes/_.feed/route';
-import { icons } from '~/lib/icons';
-import { useDisclosure } from '@mantine/hooks';
+import { Icons, icons } from '~/lib/icons';
+import { useClickOutside, useDisclosure } from '@mantine/hooks';
 import { INTENTS } from '~/lib/constants';
 import { modals } from '@mantine/modals';
-import { useTranslations } from 'use-intl';
+import { useLocale, useTranslations } from 'use-intl';
 
 export const AddComment = ({
   postID,
@@ -45,6 +45,8 @@ export const AddComment = ({
   const theme = useMantineTheme();
   const fetcher = useFetcher();
   const [opened, { toggle, open, close }] = useDisclosure();
+  const popoverRef = useClickOutside(close);
+  const locale = useLocale();
   // const lastResult = useActionData()
   // const [form, fields] = useForm({
   //   shouldValidate: 'onBlur',
@@ -63,17 +65,16 @@ export const AddComment = ({
     });
   }, [fetcher.data]);
   return (
-    <Popover opened={opened} onClose={close}>
+    <Popover opened={opened} onClose={close} closeOnClickOutside>
       <Popover.Target>
         <ActionIcon className={styles.action} onClick={toggle}>
-          <Icon
-            icon={icons.comment}
+          <Icons.comment
             // style={{ width: rem(16), height: rem(16) }}
             color={theme.colors.yellow[7]}
           />
         </ActionIcon>
       </Popover.Target>
-      <Popover.Dropdown>
+      <Popover.Dropdown px='4px' py='2px' ref={popoverRef}>
         <fetcher.Form method='post'>
           <Group align='end' gap='xs'>
             <input type='hidden' name='postID' value={postID} />
@@ -82,9 +83,10 @@ export const AddComment = ({
               variant='filled'
               name='content'
               required
+              size='xs'
             />
             <ActionIcon
-              size='lg'
+              h='100%'
               variant='filled'
               name='intent'
               value={INTENTS.comment}
@@ -94,10 +96,9 @@ export const AddComment = ({
                 fetcher.formData?.get('intent') === INTENTS.comment
               }
             >
-              <Icon
-                icon={icons.send}
+              <Icons.send
                 // style={{ width: rem(32), height: rem(32) }}
-                // className={i18n.language === 'ar' ? 'rotate-180' : ''}
+                className={locale === 'ar' ? 'rotate-180' : ''}
               />
             </ActionIcon>
           </Group>
@@ -116,7 +117,8 @@ export const CommentActions = ({
 }) => {
   const t = useTranslations('common');
   const fetcher = useFetcher();
-
+  const [opened, { close, open }] = useDisclosure();
+  const menuRef = useClickOutside(close);
   useEffect(() => {
     startTransition(() => {
       fetcher.data && modals.closeAll();
@@ -124,28 +126,37 @@ export const CommentActions = ({
   });
   return (
     <>
-      <Menu>
+      <Menu opened={opened}>
         <Menu.Target>
-          <ActionIcon size='sm' className={styles.menuIcon} variant='subtle'>
-            <Icon icon={icons.ellipsis} width={10} />
+          <ActionIcon
+            size='sm'
+            onClick={open}
+            className={styles.menuIcon}
+            variant='subtle'
+          >
+            <Icons.ellipsis width={10} />
           </ActionIcon>
         </Menu.Target>
-        <Menu.Dropdown>
+        <Menu.Dropdown ref={menuRef}>
           <CopyButton value={comment.content}>
             {({ copied, copy }) => (
               <Menu.Item
                 closeMenuOnClick={false}
-                leftSection={<Icon icon={icons.copy} />}
-                onClick={copy}
+                leftSection={copied ? <Icons.checkMark /> : <Icons.copy />}
+                onClick={() => {
+                  copy();
+                  setTimeout(close, 400);
+                }}
               >
                 {copied ? t('copied') : t('copy')}
               </Menu.Item>
             )}
           </CopyButton>
           <Menu.Item
-            leftSection={<Icon icon={icons.edit} />}
+            leftSection={<Icons.edit />}
             hidden={!isSameUser}
             onClick={() => {
+              close();
               modals.open({
                 title: t('edit'),
                 children: (
@@ -184,8 +195,9 @@ export const CommentActions = ({
           </Menu.Item>
           <Menu.Item
             hidden={!isSameUser}
-            leftSection={<Icon icon={icons.delete} />}
+            leftSection={<Icons.delete />}
             onClick={() => {
+              close();
               modals.open({
                 title: t('are_you_sure'),
                 children: (

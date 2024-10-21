@@ -20,6 +20,7 @@ import {
 import { useUserSessionContext } from '~/lib/contexts/user-session';
 import { getProfileInfo } from '~/lib/utils';
 import { BackBtn } from '~/lib/components/common/back-btn';
+import { useTranslations } from 'use-intl';
 
 // type ChatType =
 
@@ -60,7 +61,7 @@ const ChatGroupHeader = ({
   // chat: SerializeFrom<typeof loader>['chat']['data'];
 }) => {
   const [showUsers, setShowUsers] = useState(false);
-  const { t, i18n } = useTranslation();
+  const t = useTranslations('common');
   const navigate = useNavigate();
   // const { type } = useParams();
   console.log('in chat group header', data);

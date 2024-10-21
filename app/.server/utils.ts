@@ -9,6 +9,7 @@ import { UserRecord, UserSession } from '~/lib/types';
 import { eq } from 'drizzle-orm';
 import {} from 'use-intl/';
 import { getTranslations } from '~/services/next-i18n';
+import { getSession } from '~/services/session.server';
 export const getPagination = ({ page }: { page: number }) => {
   return {
     limit: ITEMS_PER_PAGE,
@@ -78,6 +79,15 @@ export const authenticateOrToast = async (request: Request) => {
     loginRedirect,
     feedRedirect,
   };
+};
+
+export const updateUserSession = async (
+  request: Request,
+  userRecord: UserRecord
+) => {
+  const session = await getSession(request.headers.get('Cookie'));
+  session.set(authenticator.sessionKey, spreadRecordIntoSession(userRecord));
+  return session;
 };
 
 export const spreadRecordIntoSession = (

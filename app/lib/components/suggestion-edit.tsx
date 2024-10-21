@@ -26,6 +26,7 @@ import {
 } from '~/lib/schemas';
 import { useEditSuggestionContext } from '../contexts/edit-suggestion';
 import { INTENTS } from '../constants';
+import { useTranslations } from 'use-intl';
 
 export const SuggestionEdit = () => {
   const fetcher = useFetcher();
@@ -34,7 +35,7 @@ export const SuggestionEdit = () => {
   >({
     lastResult: fetcher.state === 'idle' ? fetcher.data : null,
   });
-  const { t } = useTranslation('suggestions');
+  const t = useTranslations('suggestions');
   const {
     suggestionRow: row,
     // close,

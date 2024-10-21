@@ -191,7 +191,9 @@ export const PostForm = ({
             {initialImagesPreviews}
           </Group>
           <Group hidden={uploadedData.length === 0}>{uploadedPreviews}</Group>
-          <Group hidden={files.length === 0}>{previews}</Group>
+          <Group hidden={files.length === 0} justify='center'>
+            {previews}
+          </Group>
         </Box>
         <Group>
           <Button
@@ -202,16 +204,26 @@ export const PostForm = ({
           >
             {isEditForm ? t('edit') : t('create')}
           </Button>
-          <ActionIcon
-            size={'lg'}
-            disabled={files.length === 0}
-            color='green'
-            type='button'
-            onClick={upload}
-            loading={isUploading}
-          >
-            <Icon icon={icons.upload} />
-          </ActionIcon>
+          <Group gap='xs'>
+            <ActionIcon
+              color='red'
+              hidden={isEditForm || files.length === 0}
+              onClick={() => setFiles([])}
+              size='lg'
+            >
+              <Icons.cancel />
+            </ActionIcon>
+            <ActionIcon
+              size={'lg'}
+              disabled={files.length === 0}
+              color='green'
+              type='button'
+              onClick={upload}
+              loading={isUploading}
+            >
+              <Icons.upload />
+            </ActionIcon>
+          </Group>
         </Group>
       </Stack>
     </Box>

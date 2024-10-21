@@ -8,11 +8,12 @@ import {
   Title,
 } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'use-intl';
 import MultiSelect from '~/lib/components/common/users-multi-select';
 import { useFilter } from '~/lib/hooks/useFilter';
 
 export const FeedFilters = () => {
-  const { t } = useTranslation('feed');
+  const t = useTranslations('feed');
   const {
     orderByOptions,
     orderOptions,

@@ -25,6 +25,7 @@ import { modals } from '@mantine/modals';
 import { INTENTS } from '~/lib/constants';
 import UserMultiSelect from '~/lib/components/common/users-multi-select';
 import { useState } from 'react';
+import { useTranslations } from 'use-intl';
 
 export const ChatEditForm = ({
   chat,
@@ -32,7 +33,7 @@ export const ChatEditForm = ({
   chat: SerializeFrom<typeof loader>['chat'];
 }) => {
   const lastResult = useActionData<typeof action>();
-  const { t } = useTranslation('form');
+  const t = useTranslations('form');
   const [newMembers, setNewMembers] = useState<number[]>([]);
   const [form, { name, bio, members }] = useForm<ChatGroupSchemaType>({
     id: 'chat-edit-form',
@@ -91,7 +92,7 @@ export const ChatMembers = ({
   chat: SerializeFrom<typeof loader>['chat'];
 }) => {
   const lastResult = useActionData<typeof action>();
-  const { t } = useTranslation('form');
+  const t = useTranslations('form');
   const [newMembers, setNewMembers] = useState<number[]>([]);
   const [form, { name, bio, members }] = useForm<ChatGroupSchemaType>({
     id: 'chat-edit-form',

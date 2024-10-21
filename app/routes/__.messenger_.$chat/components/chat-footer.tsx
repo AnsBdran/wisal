@@ -19,7 +19,6 @@ import {
   alpha,
 } from '@mantine/core';
 import styles from '../chat.module.css';
-import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { icons } from '~/lib/icons';
 import { Link, useFetcher, useNavigate, useParams } from '@remix-run/react';
@@ -27,6 +26,7 @@ import { INTENTS, MESSENGER_FOOTER_HEIGHT } from '~/lib/constants';
 import { act, FormEvent, useEffect, useRef, useState } from 'react';
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { useUpload } from '~/lib/hooks/useUpload';
+import { useLocale, useTranslations } from 'use-intl';
 
 export const ChatFooter = ({
   chatID,
@@ -37,10 +37,10 @@ export const ChatFooter = ({
 }) => {
   const textFetcher = useFetcher();
   const imageFetcher = useFetcher();
-  const { i18n } = useTranslation();
+  const locale = useLocale();
   const [content, setContent] = useState('');
   const { setFiles, uploadedData, isUploading, upload, files } = useUpload();
-  const { t } = useTranslation();
+  const t = useTranslations('common');
   const openFileExplorerRef = useRef<() => void>(null);
   const params = useParams();
   const theme = useMantineTheme();
@@ -120,7 +120,7 @@ export const ChatFooter = ({
       >
         <Icon
           icon={icons.send}
-          className={i18n.language === 'ar' ? 'rotate-180' : ''}
+          className={locale === 'ar' ? 'rotate-180' : ''}
         />
       </ActionIcon>
 

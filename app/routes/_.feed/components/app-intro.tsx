@@ -9,10 +9,10 @@ import {
   rem,
   Title,
   Mark,
+  Highlight,
 } from '@mantine/core';
 import styles from '../feed.module.css';
-import { Icon } from '@iconify/react';
-import { icons } from '~/lib/icons';
+import { Icons, icons } from '~/lib/icons';
 
 const AppIntro = ({
   opened,
@@ -37,14 +37,20 @@ const AppIntro = ({
             color='red'
             onClick={close}
           >
-            <Icon icon={icons.close} width={rem(24)} height={rem(24)} />
+            <Icons.cancel width={rem(24)} height={rem(24)} />
           </ActionIcon>
         </Group>
         <Divider mb='sm' />
-        <Alert icon={<Icon icon={icons.info} />}>
+        <Alert icon={<Icons.info />}>
+          <Highlight highlight='النسخة التجريبية'>
+            هذه هي النسخة التجريبية الأولى من التطبيق، نتمنى منكم إبداء آرائكم
+            ومقترحاتكم للمساهمة في تطوير التطبيق في المرحلة القادمة.
+          </Highlight>
+        </Alert>
+        {/* <Alert icon={<Icon icon={icons.info} />}>
           التطبيق ما يزال في مراحل التطوير الأولى، سيتم إطلاق النسخة التجريبية
           في غضون أسبوع من تاريخ اليوم: السابع من أكتوبر.
-        </Alert>
+        </Alert> */}
         <Divider my='sm' />
         <Title order={3}>كيفية تثبيت التطبيق؟</Title>
         <List
@@ -52,6 +58,8 @@ const AppIntro = ({
           fz='xs'
           color='dimmed'
           type='ordered'
+          spacing='4px'
+          ms='md'
         >
           <List.Item>
             قم بفتح رابط التطبيق في متصفح <Mark>Google Chrome</Mark>.
@@ -66,32 +74,27 @@ const AppIntro = ({
           <List.Item>
             اضغط على <Mark>تثبيت</Mark>.
           </List.Item>
-          <Alert
-            // c='teal'
-            mt='sm'
-            variant='outline'
-            style={{
-              borderWidth: '2px',
-              borderColor:
-                'light-dark(var(--mantine-color-cyan-6), var(--mantine-color-dark-4))',
-              color:
-                'light-dark(var(--mantine-color-cyan-9), var(--mantine-color-white))',
-            }}
-            // p='xs'
-            py='xs'
-            icon={<Icon icon={icons.info} />}
-          >
+          <List.Item icon={<Icons.info />}>
             يمكنك إتباع خطوات أخرى مشابهة على متصفح آخر من اختيارك.
-          </Alert>
-          {/* <List.Item>إنشاء المنشورات والتعليق والتفاعل عليها.</List.Item>
-          <List.Item>التواصل مع أعضاء التطبيق عبر المحادثات الخاصة.</List.Item>
-          <List.Item>
-            إنشاء المحادثات الجماعية؛ والتراسل مع مجموعة من الأشخاص.
           </List.Item>
-          <List.Item>
-            تقديم المقترحات لتطوير التطبيق، والتصويت على ما تم تقديمه وقَبوله.
-          </List.Item> */}
         </List>
+        {/* <Alert
+          // c='teal'
+          mt='sm'
+          variant='outline'
+          style={{
+            borderWidth: '2px',
+            borderColor:
+              'light-dark(var(--mantine-color-cyan-6), var(--mantine-color-dark-4))',
+            color:
+              'light-dark(var(--mantine-color-cyan-9), var(--mantine-color-white))',
+          }}
+          // p='xs'
+          py='xs'
+          icon={<Icon icon={icons.info} />}
+        >
+          يمكنك إتباع خطوات أخرى مشابهة على متصفح آخر من اختيارك.
+        </Alert> */}
       </Box>
     </>
   );

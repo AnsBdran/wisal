@@ -21,6 +21,7 @@ import { useGetAllUsers } from '~/lib/utils';
 import { INTENTS } from '~/lib/constants';
 import { icons } from '~/lib/icons';
 import { getFullName, getProfileInfo, getProfileInfoText } from '~/lib/utils';
+import { useTranslations } from 'use-intl';
 
 const MultiSelect = ({
   value,
@@ -32,7 +33,7 @@ const MultiSelect = ({
   excludedUsers?: number[];
 }) => {
   const [search, setSearch] = useState('');
-  const { t } = useTranslation();
+  const t = useTranslations('common');
 
   const {
     usersData: data,

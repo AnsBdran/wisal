@@ -126,7 +126,10 @@
     "now_works_offline": "يمكنك استخدام التطبيق الآن بدون انترنت",
     "new_content_available": "يتوفر الآن محتوى جديد، اضغط تحديث لرؤية الجديد.",
     "reload": "تحديث",
-    "close": "إغلاق"
+    "close": "إغلاق",
+    "change_profile_image": "تغيير الصورة الشخصية",
+    "choose_image": "اختيار صورة",
+    "profile_image_changed": "تم تغيير صورة ملفك الشخصي بنجاح."
   },
   "settings": {
     "updated_successfully": "تم التحديث بنجاح",

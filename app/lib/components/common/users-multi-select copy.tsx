@@ -12,6 +12,7 @@ import {
 import { useFetcher } from '@remix-run/react';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'use-intl';
 import { users } from '~/.server/db/schema';
 import { INTENTS } from '~/lib/constants';
 import { icons } from '~/lib/icons';
@@ -20,11 +21,11 @@ import { getFullName, getProfileInfo, getProfileInfoText } from '~/lib/utils';
 const MultiSelect = ({
   value,
   setValue,
-  excludedUsers
+  excludedUsers,
 }: {
   value: number[];
   setValue: Dispatch<SetStateAction<number[]>>;
-  excludedUsers?: number[]
+  excludedUsers?: number[];
 }) => {
   const [search, setSearch] = useState('');
   // const [value, setValue] = useState<string[]>([]);
@@ -32,7 +33,7 @@ const MultiSelect = ({
   const [loading, setLoading] = useState(false);
 
   const fetcher = useFetcher();
-  const { t } = useTranslation();
+  const t = useTranslations('common');
 
   // const isFetching = fetcher.state === 'loading';
   // const status = fetcher.data;
@@ -79,9 +80,7 @@ const MultiSelect = ({
     .map((item) => (
       <Combobox.Option value={item.id.toString()} key={item.id}>
         <Group gap='sm'>
-          {value.includes(item.id) && (
-            <Icon icon={icons.checkMark} />
-          )}
+          {value.includes(item.id) && <Icon icon={icons.checkMark} />}
           {getProfileInfo(item)}
           {/* <Avatar
             size='xs'

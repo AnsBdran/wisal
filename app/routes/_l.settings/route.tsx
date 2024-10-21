@@ -1,10 +1,8 @@
-import { Icon } from '@iconify/react';
 import { ActionIcon, Box, Group, Tabs, Title } from '@mantine/core';
 import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
 import { useFetcher, useLoaderData } from '@remix-run/react';
-import { useTranslation } from 'react-i18next';
 import { INTENTS } from '~/lib/constants';
-import { icons } from '~/lib/icons';
+import { Icons } from '~/lib/icons';
 import { authenticator } from '~/services/auth.server';
 import { db } from '~/.server/db';
 import { users } from '~/.server/db/schema';
@@ -22,16 +20,11 @@ import { useLocale, useTranslations } from 'use-intl';
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { user, loginRedirect: redirect } = await authenticateOrToast(request);
   if (!user) return redirect;
-  // const locale = await i18next.getLocale(request);
   const userRecord = await db
     .select()
     .from(users)
     .where(eq(users.id, user?.id));
   return json({ user: userRecord[0] });
-};
-
-export const handle = {
-  i18n: ['common', 'settings', 'form'],
 };
 
 const Settings = () => {
@@ -53,7 +46,7 @@ const Settings = () => {
               );
             }}
           >
-            <Icon icon={icons.sync} />
+            <Icons.sync />
           </ActionIcon>
         </Group>
 
@@ -61,14 +54,11 @@ const Settings = () => {
           <Tabs.List grow mb='xl'>
             <Tabs.Tab
               value='profile_settings'
-              leftSection={<Icon icon={icons.profileSettings} />}
+              leftSection={<Icons.profileSettings />}
             >
               {t('profile_settings')}
             </Tabs.Tab>
-            <Tabs.Tab
-              value='app_settings'
-              leftSection={<Icon icon={icons.appSettings} />}
-            >
+            <Tabs.Tab value='app_settings' leftSection={<Icons.appSettings />}>
               {t('app_settings')}
             </Tabs.Tab>
           </Tabs.List>

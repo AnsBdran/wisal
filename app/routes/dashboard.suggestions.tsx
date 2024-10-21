@@ -5,6 +5,7 @@ import { useLoaderData } from '@remix-run/react';
 import { eq, inArray } from 'drizzle-orm';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'use-intl';
 import { db } from '~/.server/db';
 import { choices, suggestions } from '~/.server/db/schema';
 import Table from '~/lib/components/main/table';
@@ -31,7 +32,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 const Suggestions = () => {
-  const { t } = useTranslation('dashboard');
+  const t = useTranslations('dashboard');
   const { suggestions } = useLoaderData<typeof loader>();
   const { suggestionRow: editSuggestion, opened } = useEditSuggestionContext();
   return (

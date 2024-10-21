@@ -24,6 +24,7 @@ import { INTENTS } from '~/lib/constants';
 import { modals } from '@mantine/modals';
 import { Message as MessageType } from '~/lib/types';
 import { useEffect } from 'react';
+import { useTranslations } from 'use-intl';
 
 export const Message = ({
   m,
@@ -36,7 +37,7 @@ export const Message = ({
   isSameSenderAsNext: boolean;
   isSameSenderAsPrevious: boolean;
 }) => {
-  const { t, i18n } = useTranslation();
+  const t = useTranslations('common');
   return (
     <Box
       className={
@@ -150,7 +151,7 @@ const EditMessage = ({
 }) => {
   const fetcher = useFetcher();
   const isLoading = fetcher.state !== 'idle';
-  const { t } = useTranslation();
+  const t = useTranslations('common');
   const params = useParams();
   console.log('edit message rendered');
   useEffect(() => {
@@ -219,7 +220,7 @@ const DeleteMessage = ({
   userID: number;
   m: SerializeFrom<typeof loader>['chat']['messages'][0];
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslations('common');
   const fetcher = useFetcher();
   const params = useParams();
   return (

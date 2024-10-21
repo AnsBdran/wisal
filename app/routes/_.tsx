@@ -58,7 +58,7 @@ const MainLayout = () => {
           <Container size='sm'>
             <Outlet />
           </Container>
-          <Container size='sm' h={BOTTOM_BAR_HEIGHT}>
+          <Container size='sm' h={BOTTOM_BAR_HEIGHT} px={0}>
             <Tabs
               defaultValue={pathname === '/feed' ? '/feed' : '/messenger'}
               onChange={handleTabChange}

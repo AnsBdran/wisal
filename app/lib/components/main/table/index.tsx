@@ -5,6 +5,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'use-intl';
 
 export const handle = {
   i18n: ['common', 'dashboard'],
@@ -16,7 +17,7 @@ const _Table = ({ data, columns }) => {
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
-  const { t } = useTranslation('dashboard');
+  const t = useTranslations('dashboard');
   return (
     <>
       <Table>

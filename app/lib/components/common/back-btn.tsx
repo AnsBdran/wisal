@@ -2,6 +2,7 @@ import { Icon } from '@iconify/react/dist/iconify.js';
 import { ActionIcon, ActionIconVariant } from '@mantine/core';
 import { useNavigate } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
+import { useLocale, useTranslations } from 'use-intl';
 import { icons } from '~/lib/icons';
 
 export const BackBtn = ({
@@ -12,7 +13,7 @@ export const BackBtn = ({
   variant?: ActionIconVariant;
 }) => {
   const navigate = useNavigate();
-  const { i18n } = useTranslation();
+  const locale = useLocale();
   return (
     <ActionIcon
       onClick={() => navigate(-1)}
@@ -23,7 +24,7 @@ export const BackBtn = ({
     >
       <Icon
         icon={icons.arrow}
-        className={i18n.language === 'en' ? 'rotate-180' : ''}
+        className={locale === 'en' ? 'rotate-180' : ''}
       />
     </ActionIcon>
   );

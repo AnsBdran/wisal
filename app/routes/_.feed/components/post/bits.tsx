@@ -7,7 +7,7 @@ import {
   Tooltip,
 } from '@mantine/core';
 import { Icon } from '@iconify/react';
-import { icons } from '~/lib/icons';
+import { Icons, icons } from '~/lib/icons';
 import { useTranslations } from 'use-intl';
 
 // export const PostTags = ({ tags }: { tags: (typeof tag.$inferSelect)[] }) => {
@@ -52,7 +52,7 @@ export const CopyContentBtn = ({ value }: { value: string }) => {
             }}
             variant='subtle'
           >
-            <Icon icon={copied ? icons.checkMark : icons.copy} />
+            {copied ? <Icons.checkMark /> : <Icons.copy />}
           </ActionIcon>
         </Tooltip>
       )}

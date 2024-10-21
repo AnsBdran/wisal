@@ -5,6 +5,7 @@ import {
   type MetaFunction,
 } from '@remix-run/node';
 import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'use-intl';
 
 export const meta: MetaFunction = () => {
   return [
@@ -18,7 +19,7 @@ export const loader: LoaderFunction = async () => {
 };
 
 export default function Index() {
-  const { t } = useTranslation();
+  const t = useTranslations('common');
   return (
     <>
       <Title>{t('app_title')}</Title>

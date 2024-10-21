@@ -4,6 +4,7 @@ import { jsonWithSuccess } from 'remix-toast';
 import { db } from '~/.server/db';
 import { postReactions, comments, posts, images } from '~/.server/db/schema';
 import { postSchema } from '~/lib/schemas';
+import { getTranslations } from '~/services/next-i18n';
 
 // ++++++++++++++++++++++++++++++++++++++++
 // ++++++++++++++++++++++++++++++++++++++++
@@ -168,14 +169,13 @@ export const editPost = async (fd: FormData) => {
 
 export const deletePost = async (fd: FormData, request: Request) => {
   const postID = Number(fd.get('postID'));
-  const t = (t) => t;
-
+  const t = await getTranslations(request);
   await db.delete(posts).where(eq(posts.id, postID));
   return jsonWithSuccess(
     { success: true },
     {
-      message: t('post_deleted_successfully'),
-      description: t('post_deleted_successfully_description'),
+      message: t('common.post_deleted_successfully'),
+      description: t('common.post_deleted_successfully_description'),
     }
   );
 };

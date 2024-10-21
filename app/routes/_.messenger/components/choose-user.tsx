@@ -45,7 +45,7 @@ export const ChooseUserToMessage = ({
         }}
         title={t('choose_User_to_chat_with')}
       >
-        <ScrollArea.Autosize mah={600} offsetScrollbars>
+        <ScrollArea h={500} offsetScrollbars>
           <Stack>
             {usersFetcher.data?.users.map((u) => (
               <Box
@@ -74,7 +74,7 @@ export const ChooseUserToMessage = ({
               </Box>
             ))}
           </Stack>
-        </ScrollArea.Autosize>
+        </ScrollArea>
       </Modal>
     </>
   );

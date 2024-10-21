@@ -10,17 +10,17 @@ import {
   Menu,
   useMantineColorScheme,
 } from '@mantine/core';
-import { Form, Link } from '@remix-run/react';
-import { Icon } from '@iconify/react';
+import { Form, Link, useLocation } from '@remix-run/react';
 import { UserSession } from '~/lib/types';
 import styles from './header.module.css';
-import { Icons, icons } from '~/lib/icons';
+import { Icons } from '~/lib/icons';
 import Logo from '~/logo';
 import { useLocale, useTranslations } from 'use-intl';
 
 const Header = ({ user }: { user?: UserSession }) => {
   const t = useTranslations('common');
   const { toggleColorScheme } = useMantineColorScheme();
+  const { pathname } = useLocation();
   return (
     <AppShellHeader zIndex={99}>
       <Container className='h-full ' size='sm'>
@@ -82,7 +82,12 @@ const Header = ({ user }: { user?: UserSession }) => {
               </Menu>
             ) : (
               <Box className='gap-3 flex'>
-                <Button variant='light' component={Link} to='/login'>
+                <Button
+                  hidden={pathname === '/login'}
+                  variant='light'
+                  component={Link}
+                  to='/login'
+                >
                   {t('login')}
                 </Button>
               </Box>
@@ -93,7 +98,8 @@ const Header = ({ user }: { user?: UserSession }) => {
               className={styles.themeIcon}
               variant='default'
             >
-              <Icons.sunMoon />
+              <Icons.sun className={styles.sun} />
+              <Icons.moon className={styles.moon} />
             </ActionIcon>
           </Group>
         </Group>

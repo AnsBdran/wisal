@@ -19,7 +19,7 @@ import { AllComments, AddComment } from './comment';
 import { PostFooter } from './post-footer';
 import { fromNow, getProfileInfo } from '~/lib/utils';
 import { useState } from 'react';
-import { icons } from '~/lib/icons';
+import { Icons, icons } from '~/lib/icons';
 import { useFetcher } from '@remix-run/react';
 import { INTENTS } from '~/lib/constants';
 import { EditPost } from './edit';
@@ -97,7 +97,7 @@ export default function Post({
           <AddComment postID={post.id} openFirstFive={open} />
 
           <ActionIcon className={styles.action}>
-            <Icon icon={icons.share} color={theme.colors.blue[6]} />
+            <Icons.share color={theme.colors.blue[6]} />
           </ActionIcon>
         </Group>
       </Group>

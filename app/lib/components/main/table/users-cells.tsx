@@ -69,7 +69,7 @@ export const UserCell = ({ row }: { row: UserRecord }) => {
 //   defaultValue: UserRole;
 //   userID: number;
 // }) => {
-//   const { t } = useTranslation('dashboard');
+//   const { t } = useTranslations('dashboard');
 //   const { setEditUser } = useEditUserContext();
 //   return (
 //     <>

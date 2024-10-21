@@ -50,4 +50,5 @@ export const INTENTS = {
   editChatGroup: 'EDIT_CHAT_GROUP',
   editPost: 'EDIT_POST',
   deletePost: 'DELETE_POST',
+  changeProfileImage: 'CHANGE_PROFILE_IMAGE',
 };
