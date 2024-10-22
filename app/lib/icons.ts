@@ -40,6 +40,10 @@ import {
   ArrowUp,
   LucideStar,
   Verified,
+  AlertTriangle,
+  RefreshCcw,
+  UserPen,
+  AppWindow,
 } from 'lucide-react';
 import { customIcons } from './custom-icons';
 export * from './custom-icons';
@@ -128,9 +132,9 @@ export const Icons = {
   checkMark: Check,
   comment: MessageSquare,
   send: SendHorizonal,
-  sync: FolderSync,
-  profileSettings: SquareParkingOffIcon,
-  appSettings: Edit3,
+  sync: RefreshCcw,
+  profileSettings: UserPen,
+  appSettings: AppWindow,
   share: Share2,
   edit: Edit3,
   delete: RecycleIcon,
@@ -145,4 +149,5 @@ export const Icons = {
   up: ArrowUp,
   star: LucideStar,
   verified: Verified,
+  alert: AlertTriangle,
 };

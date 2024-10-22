@@ -16,7 +16,14 @@ export const InProgressFeatures = () => {
         <List.Item>العمل بدون إتصال بالإنترنت.</List.Item>
         <List.Item>التفاعل على التعليقات.</List.Item>
         <List.Item>زيادة سرعة التطبيق.</List.Item>
-        <List.Item>إرسال الصور عبر المحادثات الخاصة و الجماعية.</List.Item>
+        <List.Item
+          className='line-through'
+          // style={{
+          //   textDecoration: 'strike-through',
+          // }}
+        >
+          إرسال الصور عبر المحادثات الخاصة و الجماعية.
+        </List.Item>
         <List.Item>إنهاء ترجمة النسخة الإنجليزية من التطبيق.</List.Item>
         <List.Item>إضفاء المزيد من الحيوية على التطبيق.</List.Item>
         {/* <List.Item></List.Item> */}

@@ -348,7 +348,7 @@ const Feed = () => {
                   >
                     <SimpleGrid
                       cols={{ base: 1 }}
-                      mb='md'
+                      // mb='md'
                       hidden={posts.count === 0}
                       py='md'
                     >

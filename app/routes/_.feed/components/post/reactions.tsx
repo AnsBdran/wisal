@@ -50,7 +50,7 @@ export const Reactions = ({
           variant={post.reactions.length ? 'light' : 'transparent'}
           className={
             post.reactions[0]
-              ? post.reactions[0].type !== 'love' &&
+              ? //  post.reactions[0].type !== 'love' &&
                 post.reactions[0].type !== 'haha' &&
                 post.reactions[0].type !== 'sad'
                 ? 'p-1'
@@ -72,7 +72,8 @@ export const Reactions = ({
               key={r}
               size='xl'
               className={
-                r !== 'love' && r !== 'haha' && r !== 'sad' ? 'p-1' : ''
+                // r !== 'love' &&
+                r !== 'haha' && r !== 'sad' ? 'p-1' : ''
               }
               variant={
                 post.reactions.length
@@ -203,13 +204,13 @@ export const ReactionsStats = ({
                     <Center>
                       <Indicator
                         color='transparent'
-                        c='red'
+                        // c='red'
                         position='bottom-start'
                         label={
                           reactions.filter((reaction) => reaction.type === r)
                             .length
                         }
-                        w={rem(24)}
+                        // w={rem(24)}
                         styles={{
                           indicator: {
                             color:
@@ -222,7 +223,17 @@ export const ReactionsStats = ({
                           icon={getReactionIconData(r).icon}
                           color={getReactionIconData(r).color}
                         /> */}
-                        <Image src={emojis[r]} />
+                        <Box
+                          // w={rem(33)}
+                          h={rem(24)}
+                        >
+                          <Image
+                            src={emojis[r]}
+                            // bg='yellow'
+                            w='100%'
+                            h='100%'
+                          />
+                        </Box>
                       </Indicator>
                     </Center>
                   ),

@@ -59,6 +59,21 @@ export default defineConfig({
         short_name: 'وصال',
         description: 'تواصل وتراسل مع أصدقائك',
         theme_color: '#ffffff',
+        background_color: '#cccccc',
+        shortcuts: [
+          {
+            name: 'تواصل مع أنس',
+            short_name: 'المؤسس',
+            description: 'تواصل مع مطور التطبيق',
+            url: '/messenger',
+            icons: [
+              {
+                src: 'favicon.png',
+                sizes: '192*192',
+              },
+            ],
+          },
+        ],
         icons: [
           {
             src: '/icons/manifest-icon-192.maskable.png',

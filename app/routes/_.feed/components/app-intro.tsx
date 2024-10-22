@@ -23,7 +23,7 @@ const AppIntro = ({
 }) => {
   return (
     <>
-      <Box className={styles.introContainer} hidden={!opened}>
+      <Box className={styles.introContainer} hidden={!opened} mt='md'>
         <Group justify='space-between'>
           <Group>
             <Title order={2}>تطبيق وصال</Title>
@@ -41,7 +41,7 @@ const AppIntro = ({
           </ActionIcon>
         </Group>
         <Divider mb='sm' />
-        <Alert icon={<Icons.info />}>
+        <Alert icon={<Icons.info />} color='cyan'>
           <Highlight highlight='النسخة التجريبية'>
             هذه هي النسخة التجريبية الأولى من التطبيق، نتمنى منكم إبداء آرائكم
             ومقترحاتكم للمساهمة في تطوير التطبيق في المرحلة القادمة.
@@ -78,6 +78,13 @@ const AppIntro = ({
             يمكنك إتباع خطوات أخرى مشابهة على متصفح آخر من اختيارك.
           </List.Item>
         </List>
+
+        <Alert icon={<Icons.alert />} color='cyan' variant='filled'>
+          قد يظهر لك محتوى من النسخة القديمة للتطبيق، أو قد يظهر لك نص باللغة
+          الإنجليزية بدلاً من العربية، إذا واجهت أياً من هذا الرجاء القيام بحذف
+          البيانات الخاصة بالتطبيق ثم تسجيل الدخول مرة أخرى. <br /> سيتم العمل
+          على حل هذه المشكلة في أقرب وقت.
+        </Alert>
         {/* <Alert
           // c='teal'
           mt='sm'
