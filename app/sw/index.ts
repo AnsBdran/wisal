@@ -42,7 +42,7 @@ const matchers = {
   static: ({ url }) => staticRoutes.some((r) => r === `/${url.pathname}`),
 };
 
-registerRoute(matchers.feed, new StaleWhileRevalidate());
+registerRoute(matchers.feed, new NetworkFirst());
 registerRoute(matchers.messenger, new StaleWhileRevalidate());
 registerRoute(matchers.chat, new NetworkFirst());
 registerRoute(

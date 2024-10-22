@@ -22,7 +22,13 @@ export const ChatHeader = ({
 }) => {
   // console.log('chat header', type);
   return (
-    <Group justify='space-between' h='100%'>
+    <Group
+      justify='space-between'
+      h='100%'
+      style={{
+        boxShadow: 'var(--mantine-shadow-xl)',
+      }}
+    >
       {chat.type === 'group' ? (
         <>
           <ChatGroupHeader chat={chat.data} userID={userID} color='teal' />

@@ -114,7 +114,7 @@ export default function App() {
       labels={{ confirm: t('common.confirm'), cancel: t('common.cancel') }}
     >
       <Outlet />
-      <PWABadge />
+      {/* <PWABadge /> */}
     </ModalsProvider>
   );
 }
