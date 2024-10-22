@@ -13,12 +13,13 @@ import {
   Alert,
   Badge,
   Image,
+  rem,
 } from '@mantine/core';
 import { useFetcher } from '@remix-run/react';
 import { getProfileInfo, fromNow } from '~/lib/utils';
 import { SerializeFrom } from '@remix-run/node';
 import { loader } from '~/routes/_.feed/route';
-import { emojis } from '~/lib/icons';
+import { emojis, Icons } from '~/lib/icons';
 import { INTENTS, REACTIONS } from '~/lib/constants';
 import { useState } from 'react';
 import { useLocale, useTranslations } from 'use-intl';
@@ -41,24 +42,26 @@ export const Reactions = ({
     'dislike',
   ];
 
-  console.log('in the lab', post.reactions[0].type);
+  // console.log('in the lab', post.reactions[0].type);
   return (
     <Popover>
       <Popover.Target>
         <ActionIcon
           variant={post.reactions.length ? 'light' : 'transparent'}
           className={
-            post.reactions[0].type !== 'love' &&
-            post.reactions[0].type !== 'haha' &&
-            post.reactions[0].type !== 'sad'
-              ? 'p-1'
+            post.reactions[0]
+              ? post.reactions[0].type !== 'love' &&
+                post.reactions[0].type !== 'haha' &&
+                post.reactions[0].type !== 'sad'
+                ? 'p-1'
+                : ''
               : ''
           }
         >
           {post.reactions.length ? (
             <Image src={emojis[post.reactions[0].type]} />
           ) : (
-            'h'
+            <Icons.heart />
           )}
         </ActionIcon>
       </Popover.Target>
@@ -206,6 +209,13 @@ export const ReactionsStats = ({
                           reactions.filter((reaction) => reaction.type === r)
                             .length
                         }
+                        w={rem(24)}
+                        styles={{
+                          indicator: {
+                            color:
+                              'light-dark(var(--mantine-color-dark-8), var(--mantine-color-bright))',
+                          },
+                        }}
                       >
                         {/* <Icon
                           style={{ flex: 1 }}
