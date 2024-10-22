@@ -2,27 +2,13 @@ import { ActionIcon, Avatar, Group, Text, Title } from '@mantine/core';
 import styles from '../chat.module.css';
 import { SerializeFrom } from '@remix-run/node';
 import { loader } from '../route';
-import { useTranslation } from 'react-i18next';
-import { Icon } from '@iconify/react/dist/iconify.js';
-import { icons } from '~/lib/icons';
-import { Link, useFetcher, useNavigate, useParams } from '@remix-run/react';
-import { INTENTS } from '~/lib/constants';
-import { act, useEffect, useState } from 'react';
-import { modals } from '@mantine/modals';
+import { Icons } from '~/lib/icons';
+import { Link } from '@remix-run/react';
+import { useState } from 'react';
 import { ChatInfo } from './chat-info';
-import {
-  ChatType,
-  ChatWithMembers,
-  DirectChatType,
-  DirectChatWithMembers,
-  GroupChatType,
-} from '~/lib/types';
-import { useUserSessionContext } from '~/lib/contexts/user-session';
+import { ChatWithMembers, DirectChatWithMembers } from '~/lib/types';
 import { getProfileInfo } from '~/lib/utils';
 import { BackBtn } from '~/lib/components/common/back-btn';
-import { useTranslations } from 'use-intl';
-
-// type ChatType =
 
 export const ChatHeader = ({
   chat,
@@ -53,16 +39,16 @@ export const ChatHeader = ({
 const ChatGroupHeader = ({
   chat: data,
   userID,
-  color,
-}: {
+}: // color,
+{
   chat: ChatWithMembers;
   userID: number;
-  color: string;
+  // color: string;
   // chat: SerializeFrom<typeof loader>['chat']['data'];
 }) => {
   const [showUsers, setShowUsers] = useState(false);
-  const t = useTranslations('common');
-  const navigate = useNavigate();
+  // const t = useTranslations('common');
+  // const navigate = useNavigate();
   // const { type } = useParams();
   console.log('in chat group header', data);
   return (
@@ -76,7 +62,7 @@ const ChatGroupHeader = ({
           hidden={data.creatorID !== userID}
           color='teal'
         >
-          <Icon icon={icons.edit} />
+          <Icons.edit />
         </ActionIcon>
       </Group>
       <Group>
@@ -103,11 +89,11 @@ const ChatGroupHeader = ({
 const ChatDirectHeader = ({
   chat,
   userID,
-  color,
-}: {
+}: // color,
+{
   chat: DirectChatWithMembers;
   userID: number;
-  color: string;
+  // color: string;
 }) => {
   const otherUser = chat.members.find((u) => u.userID !== userID);
   return (

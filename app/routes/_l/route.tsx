@@ -1,4 +1,3 @@
-import { Icon } from '@iconify/react';
 import {
   ActionIcon,
   AppShell,
@@ -17,7 +16,7 @@ import { useTranslations } from 'use-intl';
 import { authenticateOrToast } from '~/.server/utils';
 import Header from '~/lib/components/main/header';
 import { HEADER_HEIGHT } from '~/lib/constants';
-import { icons } from '~/lib/icons';
+import { Icons } from '~/lib/icons';
 import styles from './l.module.css';
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { user, loginRedirect: redirect } = await authenticateOrToast(request);
@@ -78,7 +77,7 @@ const MainLayout = () => {
                       target='_blank'
                       href='https://github.com/ansbdran'
                     >
-                      <Icon icon={icons.github} />
+                      <Icons.github />
                     </ActionIcon>
                     <ActionIcon
                       variant='subtle'
@@ -86,7 +85,7 @@ const MainLayout = () => {
                       target='_blank'
                       href='https://t.me/AnsBdran'
                     >
-                      <Icon icon={icons.telegram} />
+                      <Icons.telegram />
                     </ActionIcon>
                     <ActionIcon
                       variant='subtle'
@@ -94,7 +93,7 @@ const MainLayout = () => {
                       target='_blank'
                       href='https://wa.me/+970597866163'
                     >
-                      <Icon icon={icons.whatsapp} />
+                      <Icons.whatsapp />
                     </ActionIcon>
                   </Group>
                 </Group>

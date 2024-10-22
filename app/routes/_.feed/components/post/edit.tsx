@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { SerializeFrom } from '@remix-run/node';
 import { loader } from '~/routes/_.feed/route';
 import { PostForm } from '../post-form';

@@ -2,16 +2,11 @@ import { Title } from '@mantine/core';
 import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
 import { json, useLoaderData } from '@remix-run/react';
 import { eq } from 'drizzle-orm';
-import { useTranslation } from 'react-i18next';
 import { useTranslations } from 'use-intl';
 import { db } from '~/.server/db';
 import { users } from '~/.server/db/schema';
 import Table from '~/lib/components/main/table/index';
 import { INTENTS } from '~/lib/constants';
-import {
-  EditUserContextProvider,
-  useEditUserContext,
-} from '~/lib/contexts/edit-user';
 import { UserRole } from '~/lib/types';
 import { getUsersColumns } from '~/lib/utils';
 

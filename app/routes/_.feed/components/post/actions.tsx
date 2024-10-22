@@ -1,11 +1,9 @@
 import { Text, ActionIcon, Menu } from '@mantine/core';
-import { Icon } from '@iconify/react';
 import { SerializeFrom } from '@remix-run/node';
 import { loader } from '~/routes/_.feed/route';
-import { Icons, icons } from '~/lib/icons';
+import { Icons } from '~/lib/icons';
 import { useFetcher } from '@remix-run/react';
 import { INTENTS } from '~/lib/constants';
-import { useTranslation } from 'react-i18next';
 import { modals } from '@mantine/modals';
 import { useTranslations } from 'use-intl';
 export const PostActions = ({

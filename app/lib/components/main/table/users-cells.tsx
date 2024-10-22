@@ -1,9 +1,8 @@
-import { Icon } from '@iconify/react';
-import { Avatar, Group, Switch, Select, rem, ActionIcon } from '@mantine/core';
+import { Avatar, Group, Switch, rem, ActionIcon } from '@mantine/core';
 import { useFetcher } from '@remix-run/react';
 import { INTENTS } from '~/lib/constants';
 import { useEditUserContext } from '~/lib/contexts/edit-user';
-import { icons } from '~/lib/icons';
+import { Icons } from '~/lib/icons';
 import { UserRecord } from '~/lib/types';
 import { getProfileInfoText, getFullName } from '~/lib/utils';
 
@@ -20,8 +19,8 @@ export const SwitchCell = ({ defaultValue }: { defaultValue: boolean }) => {
             isFamily: ev.currentTarget?.checked,
           }));
         }}
-        onLabel={<Icon icon={icons.star} fontSize={rem('14px')} />}
-        offLabel={<Icon icon={icons.starOutline} fontSize={rem('14px')} />}
+        onLabel={<Icons.star fontSize={rem('14px')} />}
+        offLabel={<Icons.star fontSize={rem('14px')} />}
       />
     </>
   );
@@ -112,7 +111,7 @@ export const CellActions = ({ row }: { row: UserRecord }) => {
   return (
     <>
       <ActionIcon onClick={submit} size='sm' variant='subtle'>
-        <Icon icon={icons.checkMark} />
+        <Icons.checkMark />
       </ActionIcon>
     </>
   );

@@ -1,19 +1,7 @@
-import {
-  Accordion,
-  Text,
-  Title,
-  Box,
-  Modal,
-  Button,
-  Stack,
-  List,
-} from '@mantine/core';
+import { Text } from '@mantine/core';
 import styles from '../about.module.css';
 import { SerializeFrom } from '@remix-run/node';
 import { loader } from '../route';
-import { Icon } from '@iconify/react';
-import { icons } from '~/lib/icons';
-import { useDisclosure } from '@mantine/hooks';
 const getStatsData = (stats: SerializeFrom<typeof loader>['stats']) => {
   const data = [
     {

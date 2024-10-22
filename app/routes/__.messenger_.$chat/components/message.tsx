@@ -16,13 +16,10 @@ import styles from '../chat.module.css';
 import { SerializeFrom } from '@remix-run/node';
 import { loader } from '../route';
 import { fromNow, getProfileInfoText, getFullName } from '~/lib/utils';
-import { useTranslation } from 'react-i18next';
-import { Icon } from '@iconify/react/dist/iconify.js';
-import { icons } from '~/lib/icons';
-import { Link, useFetcher, useNavigate, useParams } from '@remix-run/react';
+import { Icons } from '~/lib/icons';
+import { useFetcher, useParams } from '@remix-run/react';
 import { INTENTS } from '~/lib/constants';
 import { modals } from '@mantine/modals';
-import { Message as MessageType } from '~/lib/types';
 import { useEffect } from 'react';
 import { useTranslations } from 'use-intl';
 
@@ -59,10 +56,8 @@ export const Message = ({
                     ? 'hidden'
                     : 'visible',
               }}
-              // hidden=
             >
-              <Icon
-                icon={icons.ellipsis}
+              <Icons.ellipsis
                 style={{
                   width: rem('10px'),
                 }}
@@ -73,7 +68,7 @@ export const Message = ({
             <CopyButton value={m.content}>
               {({ copy, copied }) => (
                 <Menu.Item
-                  leftSection={<Icon icon={icons.copy} />}
+                  leftSection={<Icons.copy />}
                   onClick={copy}
                   closeMenuOnClick={false}
                   hidden={m.contentType !== 'text'}
@@ -152,7 +147,6 @@ const EditMessage = ({
   const fetcher = useFetcher();
   const isLoading = fetcher.state !== 'idle';
   const t = useTranslations('common');
-  const params = useParams();
   console.log('edit message rendered');
   useEffect(() => {
     console.log('use Effect ran', isLoading, fetcher.data);
@@ -163,7 +157,7 @@ const EditMessage = ({
   return (
     <Menu.Item
       hidden={userID !== m.senderID || hidden}
-      leftSection={<Icon icon={icons.edit} />}
+      leftSection={<Icons.edit />}
       onClick={() => {
         // edit modal
         modals.open({
@@ -226,7 +220,7 @@ const DeleteMessage = ({
   return (
     <Menu.Item
       hidden={userID !== m.senderID}
-      leftSection={<Icon icon={icons.delete} />}
+      leftSection={<Icons.delete />}
       onClick={() => {
         modals.openConfirmModal({
           title: t('confirm'),

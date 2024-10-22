@@ -8,6 +8,7 @@ import {
   FileButton,
   Image,
   Stack,
+  SimpleGrid,
 } from '@mantine/core';
 import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
 import { Link, useFetcher, useLoaderData } from '@remix-run/react';
@@ -57,7 +58,7 @@ const Profile = () => {
           </Button>
           <Button
             onClick={() => setFiles([])}
-            size='compact-sm'
+            size='compact-md'
             color='red'
             variant='light'
           >
@@ -104,16 +105,10 @@ const Profile = () => {
       <Text ta='center' c='dimmed' fz='sm'>
         {user.bio}
       </Text>
-      <Group grow mt='md'>
+      <SimpleGrid cols={{ base: 1, sm: 2 }} mt='md'>
         <Button variant='filled' component={Link} to='/settings'>
           {t('edit_profile')}
         </Button>
-        {/* <Popover>
-          <Popover.Target>
-            <Button variant='outline'>{t('change_profile_image')}</Button>
-          </Popover.Target>
-          <Popover.Dropdown></Popover.Dropdown>
-        </Popover> */}
         <FileButton onChange={(f) => setFiles([f])}>
           {(props) => (
             <Button variant='outline' {...props}>
@@ -121,7 +116,7 @@ const Profile = () => {
             </Button>
           )}
         </FileButton>
-      </Group>
+      </SimpleGrid>
       <ImagePreview />
     </Paper>
   );

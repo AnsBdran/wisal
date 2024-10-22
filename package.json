@@ -59,7 +59,6 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
-    "@iconify/react": "^5.0.2",
     "@remix-run/dev": "^2.13.1",
     "@types/bcryptjs": "^2.4.6",
     "@types/react": "^18.3.11",

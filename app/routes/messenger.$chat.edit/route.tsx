@@ -8,7 +8,6 @@ import {
 } from '@mantine/core';
 import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData, useNavigate } from '@remix-run/react';
-import { useTranslation } from 'react-i18next';
 import { db } from '~/.server/db';
 import { ChatEditForm, ChatMembers } from './chat-form';
 import { HEADER_HEIGHT, INTENTS } from '~/lib/constants';
@@ -19,8 +18,7 @@ import { chatGroupSchema } from '~/lib/schemas';
 import { redirectWithSuccess } from 'remix-toast';
 import { authenticateOrToast } from '~/.server/utils';
 import Header from '~/lib/components/main/header';
-import { Icon } from '@iconify/react';
-import { icons } from '~/lib/icons';
+import { Icons } from '~/lib/icons';
 import { useTranslations } from 'use-intl';
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
@@ -80,7 +78,7 @@ const ChatEdit = () => {
             <Stack>
               <Group>
                 <ActionIcon variant='subtle' onClick={() => navigate(-1)}>
-                  <Icon icon={icons.arrow} />
+                  <Icons.back />
                 </ActionIcon>
                 <Title>{t('edit_chat')}</Title>
               </Group>

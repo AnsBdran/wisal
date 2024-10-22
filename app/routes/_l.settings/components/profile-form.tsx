@@ -1,8 +1,6 @@
-import { Icon } from '@iconify/react';
 import { Button, Group, Stack, Textarea, TextInput } from '@mantine/core';
 import { Form, useActionData } from '@remix-run/react';
-import { useTranslation } from 'react-i18next';
-import { icons } from '~/lib/icons';
+import { Icons } from '~/lib/icons';
 import { UserRecord } from '~/lib/types';
 import { action } from '../route';
 import { useForm } from '@conform-to/react';
@@ -58,14 +56,14 @@ export const ProfileForm = ({ user }: { user: UserRecord }) => {
             key={fields.username.key}
             label={t('username')}
             error={fields.username.errors && t(fields.username.errors[0])}
-            leftSection={<Icon icon={icons.profile} />}
+            leftSection={<Icons.profile />}
           />
           <TextInput
             defaultValue={fields.email.initialValue}
             name={fields.email.name}
             key={fields.email.key}
             label={t('email')}
-            leftSection={<Icon icon={icons.email} />}
+            leftSection={<Icons.email />}
             error={fields.email.errors && t(fields.email.errors)}
           />
 

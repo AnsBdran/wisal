@@ -1,9 +1,7 @@
-// 'use client';
 import {
   Popover,
   Group,
   ActionIcon,
-  rem,
   Stack,
   Text,
   Center,
@@ -13,17 +11,19 @@ import {
   Indicator,
   ScrollAreaAutosize,
   Alert,
+  Badge,
+  Image,
 } from '@mantine/core';
-import { Icon } from '@iconify/react';
-import { useTranslation } from 'react-i18next';
 import { useFetcher } from '@remix-run/react';
-import { getReactionIconData, getProfileInfo } from '~/lib/utils';
+import { getProfileInfo, fromNow } from '~/lib/utils';
 import { SerializeFrom } from '@remix-run/node';
 import { loader } from '~/routes/_.feed/route';
-import { icons } from '~/lib/icons';
+import { emojis } from '~/lib/icons';
 import { INTENTS, REACTIONS } from '~/lib/constants';
 import { useState } from 'react';
-import { useTranslations } from 'use-intl';
+import { useLocale, useTranslations } from 'use-intl';
+import { EmojisEnum } from '~/lib/types';
+import styles from '../../feed.module.css';
 
 export const Reactions = ({
   post,
@@ -31,7 +31,7 @@ export const Reactions = ({
   post: SerializeFrom<typeof loader>['posts']['data'][0];
 }) => {
   const fetcher = useFetcher();
-  const reactions: string[] = [
+  const reactions: EmojisEnum[] = [
     'love',
     'like',
     'haha',
@@ -40,37 +40,43 @@ export const Reactions = ({
     'angry',
     'dislike',
   ];
+
+  console.log('in the lab', post.reactions[0].type);
   return (
     <Popover>
       <Popover.Target>
         <ActionIcon
-          style={{
-            color: post.reactions.length > 0 ? '' : 'red',
-          }}
-          variant={post.reactions.length ? 'light' : 'subtle'}
+          variant={post.reactions.length ? 'light' : 'transparent'}
+          className={
+            post.reactions[0].type !== 'love' &&
+            post.reactions[0].type !== 'haha' &&
+            post.reactions[0].type !== 'sad'
+              ? 'p-1'
+              : ''
+          }
         >
-          <Icon
-            icon={
-              post.reactions.length
-                ? getReactionIconData(post.reactions[0].type).icon
-                : icons.heartOutline
-            }
-            // color={theme.colors.red[6]}
-            style={{ width: rem(16), height: rem(16) }}
-          />
+          {post.reactions.length ? (
+            <Image src={emojis[post.reactions[0].type]} />
+          ) : (
+            'h'
+          )}
         </ActionIcon>
       </Popover.Target>
-      <Popover.Dropdown>
+      <Popover.Dropdown p={0}>
         <ActionIcon.Group>
           {reactions.map((r) => (
             <ActionIcon
               key={r}
+              size='xl'
+              className={
+                r !== 'love' && r !== 'haha' && r !== 'sad' ? 'p-1' : ''
+              }
               variant={
                 post.reactions.length
-                  ? post.reactions[0].type === r
+                  ? post.reactions[0].type == r
                     ? 'light'
-                    : 'default'
-                  : 'default'
+                    : 'transparent'
+                  : 'transparent'
               }
               onClick={() => {
                 fetcher.submit(
@@ -85,12 +91,7 @@ export const Reactions = ({
                 fetcher.formData?.get('type') === r
               }
             >
-              <Icon
-                icon={getReactionIconData(r)?.icon}
-                // className={`${r === 'dislike' ? 'rotate-180' : ''} ${
-                //   r === 'like' ? 'flip' : ''
-                // }`}
-              />
+              <Image src={emojis[r]} />
             </ActionIcon>
           ))}
         </ActionIcon.Group>
@@ -106,26 +107,34 @@ export const ReactionsStats = ({
 }: {
   opened: boolean;
   close: () => void;
-  reactions: SerializeFrom<typeof loader>['posts']['data'][0]['reactions'];
+  reactions: SerializeFrom<typeof loader>['posts'][0]['reactions'];
 }) => {
   const t = useTranslations('feed');
   const [type, setType] = useState('all');
+  const locale = useLocale();
 
   const ReactionStat = ({
     r,
   }: {
-    r: SerializeFrom<typeof loader>['posts']['data'][0]['reactions'][0];
+    r: SerializeFrom<typeof loader>['posts'][0]['reactions'][0];
   }) => {
     return (
       <Box>
-        <Group>
-          <Indicator
+        <Group justify='space-between'>
+          {/* <Indicator
             label={<Icon icon={getReactionIconData(r.type).icon} />}
             color='transparent'
             size={24}
-          >
+          > */}
+          <Group>
             {getProfileInfo(r.user)}
-          </Indicator>
+            <Box className={styles.userEmoji}>
+              <Image src={emojis[r.type]} />
+            </Box>
+          </Group>
+
+          {/* </Indicator> */}
+          <Badge variant='transparent'>{fromNow(r.createdAt, locale)}</Badge>
         </Group>
         {/* <Group>
           <Indicator
@@ -158,6 +167,7 @@ export const ReactionsStats = ({
             overflow: 'hidden',
           },
         }}
+        // h='80vh'
         // classNames={{ root: 'overflow-hidden' }}
       >
         {reactions.length ? (
@@ -190,17 +200,19 @@ export const ReactionsStats = ({
                     <Center>
                       <Indicator
                         color='transparent'
+                        c='red'
                         position='bottom-start'
                         label={
                           reactions.filter((reaction) => reaction.type === r)
                             .length
                         }
                       >
-                        <Icon
+                        {/* <Icon
                           style={{ flex: 1 }}
                           icon={getReactionIconData(r).icon}
                           color={getReactionIconData(r).color}
-                        />
+                        /> */}
+                        <Image src={emojis[r]} />
                       </Indicator>
                     </Center>
                   ),
@@ -208,8 +220,9 @@ export const ReactionsStats = ({
               ]}
               flex={1}
             />
-            <ScrollAreaAutosize mah={500} py='xl'>
-              <Stack py='xl' px='sm'>
+
+            <ScrollAreaAutosize mah='60vh'>
+              <Stack py='md' px='sm'>
                 {type === 'all'
                   ? reactions.map((r) => <ReactionStat r={r} key={r.id} />)
                   : reactions

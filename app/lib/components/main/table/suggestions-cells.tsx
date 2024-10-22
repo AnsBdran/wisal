@@ -1,21 +1,10 @@
-import { useForm } from '@conform-to/react';
-import { Icon } from '@iconify/react';
-import {
-  ActionIcon,
-  Chip,
-  Group,
-  List,
-  Popover,
-  Spoiler,
-  Text,
-} from '@mantine/core';
+import { ActionIcon, Chip, List, Popover, Spoiler, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { useFetcher } from '@remix-run/react';
-import { useTranslation } from 'react-i18next';
 import { useTranslations } from 'use-intl';
 import { INTENTS } from '~/lib/constants';
 import { useEditSuggestionContext } from '~/lib/contexts/edit-suggestion';
-import { icons } from '~/lib/icons';
+import { Icons } from '~/lib/icons';
 import { Suggestion, Choice } from '~/lib/types';
 
 export const IsAcceptedChip = ({
@@ -105,7 +94,7 @@ export const SuggestionActions = ({
             });
           }}
         >
-          <Icon icon={icons.delete} />
+          <Icons.delete />
         </ActionIcon>
         <ActionIcon
           variant='outline'
@@ -114,7 +103,7 @@ export const SuggestionActions = ({
             // open();
           }}
         >
-          <Icon icon={icons.edit} />
+          <Icons.edit />
         </ActionIcon>
       </ActionIcon.Group>
     </>

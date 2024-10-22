@@ -1,7 +1,6 @@
-import { Icon } from '@iconify/react';
 import { ActionIcon, Affix, Transition } from '@mantine/core';
 import { useWindowScroll } from '@mantine/hooks';
-import { icons } from '~/lib/icons';
+import { Icons } from '~/lib/icons';
 
 export const ScrollToTop = () => {
   const [scroll, scrollTo] = useWindowScroll();
@@ -14,7 +13,7 @@ export const ScrollToTop = () => {
             onClick={() => scrollTo({ y: 0 })}
             variant='light'
           >
-            <Icon icon={icons.arrowUp} />
+            <Icons.up />
           </ActionIcon>
         )}
       </Transition>

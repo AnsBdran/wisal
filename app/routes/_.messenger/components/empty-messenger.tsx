@@ -1,5 +1,4 @@
 import { Stack, Alert, Button } from '@mantine/core';
-import { useTranslation } from 'react-i18next';
 import { ChooseUserToMessage } from './choose-user';
 import { useTranslations } from 'use-intl';
 

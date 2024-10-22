@@ -11,9 +11,8 @@ import {
   rem,
   Text,
 } from '@mantine/core';
-import { Icon } from '@iconify/react';
 import { createColumnHelper, flexRender } from '@tanstack/react-table';
-import { icons } from './icons';
+import { Icons } from './icons';
 import {
   CellActions,
   SwitchCell,
@@ -67,8 +66,7 @@ export const getProfileInfo = (
       ) : (
         <Indicator
           label={
-            <Icon
-              icon={icons.verified}
+            <Icons.verified
               fontSize={rem('14px')}
               color='var(--mantine-primary-color-9)'
             />
@@ -107,8 +105,7 @@ export const getProfileInfoText = (user: UserRecord) => {
       </Text>
       {user.isFamily ||
         (user.role === 'super_admin' && (
-          <Icon
-            icon={icons.verified}
+          <Icons.verified
             fontSize={rem('14px')}
             color='var(--mantine-primary-color-9)'
           />

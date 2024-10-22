@@ -1,4 +1,3 @@
-import { Icon } from '@iconify/react/dist/iconify.js';
 import { AppShell, Container, Group, Tabs } from '@mantine/core';
 import { LoaderFunctionArgs } from '@remix-run/node';
 import {

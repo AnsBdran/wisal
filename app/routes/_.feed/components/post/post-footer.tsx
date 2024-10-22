@@ -6,7 +6,6 @@ import {
   Collapse,
 } from '@mantine/core';
 import styles from './post.module.css';
-import { useTranslation } from 'react-i18next';
 import { SerializeFrom } from '@remix-run/node';
 import { loader } from '~/routes/_.feed/route';
 import { Comments } from './comment';

@@ -1,13 +1,5 @@
-import {
-  Popover,
-  Group,
-  ActionIcon,
-  Badge,
-  CopyButton,
-  Tooltip,
-} from '@mantine/core';
-import { Icon } from '@iconify/react';
-import { Icons, icons } from '~/lib/icons';
+import { ActionIcon, CopyButton, Tooltip } from '@mantine/core';
+import { Icons } from '~/lib/icons';
 import { useTranslations } from 'use-intl';
 
 // export const PostTags = ({ tags }: { tags: (typeof tag.$inferSelect)[] }) => {

@@ -16,8 +16,7 @@ import styles from './suggestions.module.css';
 import { useEffect, useState } from 'react';
 import { useFetcher } from '@remix-run/react';
 import { INTENTS } from '~/lib/constants';
-import { Icon } from '@iconify/react';
-import { icons } from '~/lib/icons';
+import { Icons } from '~/lib/icons';
 const Suggestion = ({
   suggestion,
   userID,
@@ -103,14 +102,14 @@ const Suggestion = ({
             hidden={!value && !defaultValue}
             onClick={cancel}
           >
-            <Icon icon={icons.close} />
+            <Icons.cancel />
           </ActionIcon>
           <ActionIcon
             disabled={defaultValue === value || !value}
             onClick={submit}
             variant='light'
           >
-            <Icon icon={icons.checkMark} />
+            <Icons.checkMark />
           </ActionIcon>
         </ActionIcon.Group>
       </Paper>

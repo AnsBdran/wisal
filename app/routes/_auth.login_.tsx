@@ -6,20 +6,19 @@ import {
   TextInput,
   Title,
 } from '@mantine/core';
-import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
+import { ActionFunctionArgs } from '@remix-run/node';
 import { Form, useActionData, useNavigation } from '@remix-run/react';
 import { authenticator } from '~/services/auth.server';
-import { Icon } from '@iconify/react';
 import { useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
 import { loginSchema } from '~/lib/schemas';
 import { db } from '~/.server/db';
 import { commitSession, getSession } from '~/services/session.server';
-import { Icons, icons } from '~/lib/icons';
+import { Icons } from '~/lib/icons';
 import { spreadRecordIntoSession } from '~/.server/utils';
 import { redirectWithSuccess } from 'remix-toast';
 import bcrypt from 'bcryptjs';
-import { useTranslations } from 'use-intl';
+import { useLocale, useTranslations } from 'use-intl';
 import { getTranslations } from '~/services/next-i18n';
 
 const Login = () => {
@@ -34,6 +33,7 @@ const Login = () => {
     },
   });
   const navigation = useNavigation();
+  const locale = useLocale();
   return (
     // <Form method='post'>
     <>
@@ -59,14 +59,14 @@ const Login = () => {
             <Alert
               variant='outline'
               color='red'
-              icon={<Icon icon={icons.error} />}
+              icon={<Icons.warning className={locale === 'ar' ? '' : ''} />}
             >
               {t(form.errors[0])}
             </Alert>
           )}
           <Button
             type='submit'
-            loading={navigation.state !== 'idle'}
+            loading={navigation.state === 'submitting'}
             leftSection={<Icons.login />}
           >
             {t('login')}

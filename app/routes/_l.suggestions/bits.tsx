@@ -1,6 +1,5 @@
 import { Modal, Button, Stack, TextInput, Textarea } from '@mantine/core';
-import { Icon } from '@iconify/react';
-import { Icons, icons } from '~/lib/icons';
+import { Icons } from '~/lib/icons';
 import { useDisclosure } from '@mantine/hooks';
 import {
   Form,
@@ -9,7 +8,6 @@ import {
   useNavigation,
 } from '@remix-run/react';
 import { useForm } from '@conform-to/react';
-import { z } from 'zod';
 import { SuggestionSchemaType } from '~/lib/schemas';
 import { useTranslations } from 'use-intl';
 import { action } from './route';

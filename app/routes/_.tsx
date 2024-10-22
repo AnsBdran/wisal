@@ -1,18 +1,11 @@
 import { AppShell, Container, Tabs, TabsList } from '@mantine/core';
 
-import {
-  useNavigate,
-  Outlet,
-  useLocation,
-  useLoaderData,
-} from '@remix-run/react';
+import { useNavigate, Outlet, useLoaderData } from '@remix-run/react';
 
 import Header from '~/lib/components/main/header/index';
-import { useTranslation } from 'react-i18next';
 import { LoaderFunction } from '@remix-run/node';
 import { BOTTOM_BAR_HEIGHT, HEADER_HEIGHT } from '~/lib/constants';
-import { Icon } from '@iconify/react';
-import { Icons, icons } from '~/lib/icons';
+import { Icons } from '~/lib/icons';
 import { useHeadroom } from '@mantine/hooks';
 import { authenticateOrToast } from '~/.server/utils';
 import { startTransition } from 'react';

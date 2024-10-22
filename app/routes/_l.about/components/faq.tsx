@@ -1,19 +1,5 @@
-import {
-  Accordion,
-  Text,
-  Title,
-  Box,
-  Modal,
-  Button,
-  Stack,
-  List,
-} from '@mantine/core';
+import { Accordion, Text, Title, Box } from '@mantine/core';
 import styles from '../about.module.css';
-import { SerializeFrom } from '@remix-run/node';
-import { loader } from '../route';
-import { Icon } from '@iconify/react';
-import { icons } from '~/lib/icons';
-import { useDisclosure } from '@mantine/hooks';
 
 export const Faqs = () => {
   const data: { title: string; desc: string }[] = [

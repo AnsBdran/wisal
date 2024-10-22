@@ -1,5 +1,4 @@
 import { useForm } from '@conform-to/react';
-import { Icon } from '@iconify/react/dist/iconify.js';
 import {
   ActionIcon,
   Box,
@@ -15,11 +14,10 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useFetcher } from '@remix-run/react';
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
 import { Fragment } from 'react/jsx-runtime';
 import { z } from 'zod';
-import { icons } from '~/lib/icons';
+import { Icons } from '~/lib/icons';
 import {
   SuggestionChoiceSchemaType,
   SuggestionEditSchemaType,
@@ -115,7 +113,7 @@ export const SuggestionEdit = () => {
                 {choicesOpened ? t('choices') : t('show_choices')}
               </Button>
               <ActionIcon onClick={addChoice} hidden={!choicesOpened}>
-                <Icon icon={icons.add} />
+                <Icons.add />
               </ActionIcon>
             </Group>
             <Collapse in={choicesOpened} transitionDuration={400}>
@@ -137,7 +135,7 @@ export const SuggestionEdit = () => {
                             color='red.7'
                             onClick={() => removeChoice(idx)}
                           >
-                            <Icon icon={icons.delete} />
+                            <Icons.delete />
                           </ActionIcon>
                         </Group>
                         <TextInput

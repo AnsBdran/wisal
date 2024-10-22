@@ -1,8 +1,6 @@
 import { ActionIcon, Group, rem, ThemeIcon, Title } from '@mantine/core';
-import { useTranslation } from 'react-i18next';
 
-import { Icons, icons } from '~/lib/icons';
-import { Icon } from '@iconify/react';
+import { Icons } from '~/lib/icons';
 import styles from '../feed.module.css';
 import { useTranslations } from 'use-intl';
 

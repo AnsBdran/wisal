@@ -1,8 +1,6 @@
-import { useFetcher } from '@remix-run/react';
 import { useState } from 'react';
 import { ImageType } from '../types';
 import { notifications } from '@mantine/notifications';
-import { useTranslation } from 'react-i18next';
 import { FileWithPath } from '@mantine/dropzone';
 import { useTranslations } from 'use-intl';
 

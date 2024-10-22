@@ -1,19 +1,6 @@
-import {
-  Accordion,
-  Text,
-  Title,
-  Box,
-  Modal,
-  Button,
-  Stack,
-  List,
-} from '@mantine/core';
+import { Text, Title, Box, List } from '@mantine/core';
 import styles from '../about.module.css';
-import { SerializeFrom } from '@remix-run/node';
-import { loader } from '../route';
-import { Icon } from '@iconify/react';
-import { icons } from '~/lib/icons';
-import { useDisclosure } from '@mantine/hooks';
+import { Icons } from '~/lib/icons';
 export const InProgressFeatures = () => {
   return (
     <Box>
@@ -25,7 +12,7 @@ export const InProgressFeatures = () => {
         </Text>
         العمل عليها:
       </Title>
-      <List mt={0} icon={<Icon icon={icons.specialStar} />}>
+      <List mt={0} icon={<Icons.star />}>
         <List.Item>العمل بدون إتصال بالإنترنت.</List.Item>
         <List.Item>التفاعل على التعليقات.</List.Item>
         <List.Item>زيادة سرعة التطبيق.</List.Item>

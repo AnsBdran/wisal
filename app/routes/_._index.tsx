@@ -4,7 +4,6 @@ import {
   type LoaderFunction,
   type MetaFunction,
 } from '@remix-run/node';
-import { useTranslation } from 'react-i18next';
 import { useTranslations } from 'use-intl';
 
 export const meta: MetaFunction = () => {

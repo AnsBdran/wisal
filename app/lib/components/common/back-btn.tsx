@@ -1,9 +1,7 @@
-import { Icon } from '@iconify/react/dist/iconify.js';
 import { ActionIcon, ActionIconVariant } from '@mantine/core';
 import { useNavigate } from '@remix-run/react';
-import { useTranslation } from 'react-i18next';
-import { useLocale, useTranslations } from 'use-intl';
-import { icons } from '~/lib/icons';
+import { useLocale } from 'use-intl';
+import { Icons } from '~/lib/icons';
 
 export const BackBtn = ({
   color = 'black',
@@ -15,17 +13,8 @@ export const BackBtn = ({
   const navigate = useNavigate();
   const locale = useLocale();
   return (
-    <ActionIcon
-      onClick={() => navigate(-1)}
-      color={color}
-      variant={variant}
-      // variant='white'
-      // color='light-dark(black, white)'
-    >
-      <Icon
-        icon={icons.arrow}
-        className={locale === 'en' ? 'rotate-180' : ''}
-      />
+    <ActionIcon onClick={() => navigate(-1)} color={color} variant={variant}>
+      <Icons.back className={locale === 'en' ? 'rotate-180' : ''} />
     </ActionIcon>
   );
 };

@@ -7,17 +7,12 @@ import {
   Menu,
   UnstyledButton,
   Tooltip,
-  rem,
   Stack,
-  Indicator,
-  Badge,
 } from '@mantine/core';
 import { useFetcher, useNavigate } from '@remix-run/react';
-import { Icon } from '@iconify/react';
 import styles from '../messenger.module.css';
 import { getProfileInfo, getProfileInfoText } from '~/lib/utils';
-import { Icons, icons } from '~/lib/icons';
-import { useTranslation } from 'react-i18next';
+import { Icons } from '~/lib/icons';
 import { INTENTS } from '~/lib/constants';
 import { modals } from '@mantine/modals';
 import {
@@ -71,7 +66,7 @@ export const GroupChat = ({
             {/* <Menu.Item>{t('')}</Menu.Item> */}
             <Menu.Item
               color='red'
-              leftSection={<Icon icon={icons.exit} />}
+              leftSection={<Icons.logout />}
               onClick={(ev) => {
                 ev.stopPropagation();
                 modals.openConfirmModal({
@@ -127,7 +122,7 @@ export const GroupChat = ({
             </Tooltip>
           ))}
           <Avatar size='sm' hidden={chatGroupMember.chat.members.length < 6}>
-            <Icon icon={icons.add} fontSize='.7em' />
+            <Icons.add fontSize='.7em' />
             <Text span fz='xs'>
               {
                 chatGroupMember.chat.members.slice(

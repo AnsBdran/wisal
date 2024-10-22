@@ -16,6 +16,7 @@ import styles from './header.module.css';
 import { Icons } from '~/lib/icons';
 import Logo from '~/logo';
 import { useLocale, useTranslations } from 'use-intl';
+import { getFullName } from '~/lib/utils';
 
 const Header = ({ user }: { user?: UserSession }) => {
   const t = useTranslations('common');
@@ -32,7 +33,12 @@ const Header = ({ user }: { user?: UserSession }) => {
             {user ? (
               <Menu>
                 <Menu.Target>
-                  <Avatar />
+                  <Avatar
+                    color='initials'
+                    src={user.profileImage}
+                    name={getFullName(user)}
+                    className={styles.avatar}
+                  />
                 </Menu.Target>
                 <Menu.Dropdown>
                   <Menu.Item

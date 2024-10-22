@@ -11,7 +11,6 @@ import {
 } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import styles from './post.module.css';
-import { Icon } from '@iconify/react';
 import { SerializeFrom } from '@remix-run/node';
 import { loader } from '~/routes/_.feed/route';
 import { Reactions, ReactionsStats } from './reactions';
@@ -19,7 +18,7 @@ import { AllComments, AddComment } from './comment';
 import { PostFooter } from './post-footer';
 import { fromNow, getProfileInfo } from '~/lib/utils';
 import { useState } from 'react';
-import { Icons, icons } from '~/lib/icons';
+import { Icons } from '~/lib/icons';
 import { useFetcher } from '@remix-run/react';
 import { INTENTS } from '~/lib/constants';
 import { EditPost } from './edit';

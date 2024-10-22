@@ -10,9 +10,7 @@ import {
   ScrollArea,
 } from '@mantine/core';
 import { useFetcher } from '@remix-run/react';
-import { Icon } from '@iconify/react';
-import { Icons, icons } from '~/lib/icons';
-import { useTranslation } from 'react-i18next';
+import { Icons } from '~/lib/icons';
 import { INTENTS } from '~/lib/constants';
 import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';

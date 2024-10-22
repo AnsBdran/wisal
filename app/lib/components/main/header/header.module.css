@@ -42,3 +42,11 @@
     }
   }
 }
+
+.avatar {
+  border: 1px dotted
+    light-dark(
+      alpha(var(--mantine-color-teal-2), 0.2),
+      alpha(var(--mantine-color-teal-8), 0.4)
+    );
+}

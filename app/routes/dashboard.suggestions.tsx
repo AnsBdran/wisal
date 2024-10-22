@@ -3,21 +3,15 @@ import { Title } from '@mantine/core';
 import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { eq, inArray } from 'drizzle-orm';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useTranslations } from 'use-intl';
 import { db } from '~/.server/db';
 import { choices, suggestions } from '~/.server/db/schema';
 import Table from '~/lib/components/main/table';
 import { SuggestionEdit } from '~/lib/components/suggestion-edit';
 import { INTENTS } from '~/lib/constants';
-import {
-  EditSuggestionContextProvider,
-  useEditSuggestionContext,
-} from '~/lib/contexts/edit-suggestion';
+import { useEditSuggestionContext } from '~/lib/contexts/edit-suggestion';
 import { suggestionEditSchema } from '~/lib/schemas';
-import { Choice, Suggestion } from '~/lib/types';
-import { getSuggestionsColumns, waiit } from '~/lib/utils';
+import { getSuggestionsColumns } from '~/lib/utils';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const _suggestions = await db.query.suggestions.findMany({

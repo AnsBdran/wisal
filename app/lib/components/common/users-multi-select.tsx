@@ -1,6 +1,4 @@
-import { Icon } from '@iconify/react/dist/iconify.js';
 import {
-  Avatar,
   Combobox,
   Group,
   Loader,
@@ -9,18 +7,9 @@ import {
   ScrollArea,
   useCombobox,
 } from '@mantine/core';
-import {
-  Dispatch,
-  SetStateAction,
-  startTransition,
-  useEffect,
-  useState,
-} from 'react';
-import { useTranslation } from 'react-i18next';
-import { useGetAllUsers } from '~/lib/utils';
-import { INTENTS } from '~/lib/constants';
-import { icons } from '~/lib/icons';
-import { getFullName, getProfileInfo, getProfileInfoText } from '~/lib/utils';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Icons } from '~/lib/icons';
+import { useGetAllUsers, getProfileInfo } from '~/lib/utils';
 import { useTranslations } from 'use-intl';
 
 const MultiSelect = ({
@@ -75,9 +64,7 @@ const MultiSelect = ({
     .map((item) => (
       <Combobox.Option value={item.id.toString()} key={item.id}>
         <Group gap='sm'>
-          {value.includes(item.id.toString()) && (
-            <Icon icon={icons.checkMark} />
-          )}
+          {value.includes(item.id.toString()) && <Icons.checkMark />}
           {getProfileInfo(item)}
           {/* <Avatar
             size='xs'

@@ -1,6 +1,5 @@
 import { Box, Button, SegmentedControl, Stack, Title } from '@mantine/core';
 import { Form, useActionData } from '@remix-run/react';
-import { useTranslation } from 'react-i18next';
 import { action } from '../route';
 import { useForm } from '@conform-to/react';
 import { z } from 'zod';

@@ -37,7 +37,7 @@ const AppIntro = ({
             color='red'
             onClick={close}
           >
-            <Icons.cancel width={rem(24)} height={rem(24)} />
+            <Icons.cancel className='normal' height='33px' />
           </ActionIcon>
         </Group>
         <Divider mb='sm' />

@@ -1,5 +1,4 @@
 import { Alert, Button, Stack } from '@mantine/core';
-import { useTranslation } from 'react-i18next';
 import { useTranslations } from 'use-intl';
 
 export const EmptyFeed = ({

@@ -26,9 +26,10 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 const Suggestions = () => {
   const { suggestions, user } = useLoaderData<typeof loader>();
   const t = useTranslations('suggestions');
+
   return (
     <>
-      <Stack>
+      <Stack pb='xl'>
         <Group justify='space-between'>
           <Title>{t('suggestions')}</Title>
           <SuggestionForm />

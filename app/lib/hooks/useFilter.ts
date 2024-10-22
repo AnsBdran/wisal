@@ -1,6 +1,5 @@
 import { useSearchParams } from '@remix-run/react';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useTranslations } from 'use-intl';
 
 export const useFilter = () => {

@@ -11,8 +11,7 @@ import {
   useMantineTheme,
   Indicator,
 } from '@mantine/core';
-import { Icons, icons } from '~/lib/icons';
-import { Icon } from '@iconify/react';
+import { Icons } from '~/lib/icons';
 import { useForm } from '@conform-to/react';
 import { useFetcher } from '@remix-run/react';
 import { action } from '../route';
@@ -101,7 +100,7 @@ export const PostForm = ({
         className={styles.imageDeleteBtn}
         color='red'
       >
-        <Icon icon={icons.close} />
+        <Icons.cancel />
       </ActionIcon>
     </Box>
   ));

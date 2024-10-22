@@ -3,7 +3,6 @@ import { action, loader } from './route';
 import {
   ActionIcon,
   Badge,
-  Box,
   Button,
   Group,
   InputLabel,
@@ -15,12 +14,10 @@ import {
   Title,
 } from '@mantine/core';
 import { Form, useActionData, useFetcher } from '@remix-run/react';
-import { useTranslation } from 'react-i18next';
 import { useForm } from '@conform-to/react';
 import { ChatGroupSchemaType } from '~/lib/schemas';
 import { getProfileInfo } from '~/lib/utils';
-import { Icon } from '@iconify/react/dist/iconify.js';
-import { icons } from '~/lib/icons';
+import { Icons } from '~/lib/icons';
 import { modals } from '@mantine/modals';
 import { INTENTS } from '~/lib/constants';
 import UserMultiSelect from '~/lib/components/common/users-multi-select';
@@ -60,13 +57,13 @@ export const ChatEditForm = ({
                 label={t('chat_name')}
                 name={name.name}
                 defaultValue={name.initialValue}
-                error={t(name.errors ?? '')}
+                error={name.errors && t(name.errors[0])}
               />
               <Textarea
                 label={t('chat_description')}
                 name={bio.name}
                 defaultValue={bio.initialValue}
-                error={t(bio.errors ?? '')}
+                error={bio.errors && t(bio.errors[0])}
               />
               <Stack gap={'3px'}>
                 <InputLabel>{t('add_new_members')}</InputLabel>
@@ -76,7 +73,12 @@ export const ChatEditForm = ({
                   setValue={setNewMembers}
                 />
               </Stack>
-              <Button type='submit' name='intent' value={INTENTS.editChatGroup}>
+              <Button
+                type='submit'
+                name='intent'
+                leftSection={<Icons.edit />}
+                value={INTENTS.editChatGroup}
+              >
                 {t('edit')}
               </Button>
             </Stack>
@@ -138,7 +140,7 @@ export const ChatMembers = ({
                   });
                 }}
               >
-                <Icon icon={icons.delete} />
+                <Icons.delete />
               </ActionIcon>
             </Group>
           ))}

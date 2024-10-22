@@ -21,14 +21,12 @@ import {
   Box,
   ScrollArea,
 } from '@mantine/core';
-import { Icon } from '@iconify/react';
 import styles from './post.module.css';
-import { useTranslation } from 'react-i18next';
 import { useFetcher } from '@remix-run/react';
 import { fromNow, getFullName, getProfileInfoText } from '~/lib/utils';
 import { SerializeFrom } from '@remix-run/node';
 import { loader } from '~/routes/_.feed/route';
-import { Icons, icons } from '~/lib/icons';
+import { Icons } from '~/lib/icons';
 import { useClickOutside, useDisclosure } from '@mantine/hooks';
 import { INTENTS } from '~/lib/constants';
 import { modals } from '@mantine/modals';
@@ -212,7 +210,7 @@ export const CommentActions = ({
                         />
                         <Button.Group>
                           <Button
-                            leftSection={<Icon icon={icons.checkMark} />}
+                            leftSection={<Icons.checkMark />}
                             name='intent'
                             value={INTENTS.deleteComment}
                             type='submit'

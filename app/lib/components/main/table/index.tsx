@@ -4,7 +4,6 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { useTranslation } from 'react-i18next';
 import { useTranslations } from 'use-intl';
 
 export const handle = {

@@ -8,7 +8,6 @@ import {
   Text,
   Title,
 } from '@mantine/core';
-import { useTranslation } from 'react-i18next';
 import { useTranslations } from 'use-intl';
 import { ChatWithMembers } from '~/lib/types';
 import { getFullName, getProfileInfoText } from '~/lib/utils';

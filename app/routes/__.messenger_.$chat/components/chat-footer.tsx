@@ -1,29 +1,19 @@
 import {
   ActionIcon,
-  Avatar,
   Box,
-  Button,
-  CopyButton,
-  Drawer,
   Group,
   Input,
-  Menu,
   rem,
-  ScrollArea,
-  Stack,
   Image,
   Text,
-  TextInput,
   ScrollAreaAutosize,
   useMantineTheme,
-  alpha,
 } from '@mantine/core';
 import styles from '../chat.module.css';
-import { Icon } from '@iconify/react/dist/iconify.js';
-import { icons } from '~/lib/icons';
-import { Link, useFetcher, useNavigate, useParams } from '@remix-run/react';
+import { Icons } from '~/lib/icons';
+import { useFetcher, useParams } from '@remix-run/react';
 import { INTENTS, MESSENGER_FOOTER_HEIGHT } from '~/lib/constants';
-import { act, FormEvent, useEffect, useRef, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { useUpload } from '~/lib/hooks/useUpload';
 import { useLocale, useTranslations } from 'use-intl';
@@ -94,7 +84,7 @@ export const ChatFooter = ({
   }, [uploadedData, isUploading]);
   return (
     <Group
-      h={'100%'}
+      h='100%'
       component='form'
       style={{ height: '100%' }}
       onSubmit={submitText}
@@ -118,10 +108,7 @@ export const ChatFooter = ({
         disabled={!content}
         loading={textFetcher.state === 'submitting'}
       >
-        <Icon
-          icon={icons.send}
-          className={locale === 'ar' ? 'rotate-180' : ''}
-        />
+        <Icons.send className={locale === 'ar' ? 'rotate-180' : ''} />
       </ActionIcon>
 
       {/* upload images section */}
@@ -142,8 +129,7 @@ export const ChatFooter = ({
         >
           <Group style={{ pointerEvents: 'none' }} justify='center'>
             <Dropzone.Accept>
-              <Icon
-                icon={icons.photos}
+              <Icons.images
                 style={{
                   width: rem(52),
                   height: rem(52),
@@ -152,8 +138,7 @@ export const ChatFooter = ({
               />
             </Dropzone.Accept>
             <Dropzone.Reject>
-              <Icon
-                icon={icons.close}
+              <Icons.cancel
                 color='red'
                 style={{
                   width: rem(52),
@@ -163,8 +148,7 @@ export const ChatFooter = ({
               />
             </Dropzone.Reject>
             <Dropzone.Idle>
-              <Icon
-                icon={icons.photos}
+              <Icons.images
                 style={{
                   width: rem(52),
                   height: rem(52),
@@ -184,18 +168,28 @@ export const ChatFooter = ({
         </Box>
       </Dropzone.FullScreen>
       {files.length > 0 ? (
-        <ActionIcon
-          onClick={async () => {
-            await upload();
-            // submitImages();
-          }}
-          loading={isUploading}
-          size='lg'
-          variant='filled'
-          color={isGroup ? 'teal' : 'blue'}
-        >
-          <Icon icon={icons.upload} />
-        </ActionIcon>
+        <ActionIcon.Group>
+          <ActionIcon
+            onClick={async () => {
+              await upload();
+              // submitImages();
+            }}
+            loading={isUploading}
+            // size='lg'
+            variant='filled'
+            color={isGroup ? 'teal' : 'blue'}
+          >
+            <Icons.upload />
+          </ActionIcon>
+          <ActionIcon
+            color='red'
+            // mt='md'
+            // size='lg'
+            onClick={() => setFiles([])}
+          >
+            <Icons.cancel />
+          </ActionIcon>
+        </ActionIcon.Group>
       ) : (
         <ActionIcon
           variant='outline'
@@ -203,7 +197,7 @@ export const ChatFooter = ({
           size='lg'
           onClick={() => openFileExplorerRef.current?.()}
         >
-          <Icon icon={icons.photos} />
+          <Icons.images />
         </ActionIcon>
       )}
 
@@ -215,9 +209,9 @@ export const ChatFooter = ({
       >
         <ScrollAreaAutosize mah={500} offsetScrollbars>
           <Group>{previews}</Group>
-          <Button fullWidth mt={'md'} color='red' onClick={() => setFiles([])}>
+          {/* <Button fullWidth mt={'md'} color='red' onClick={() => setFiles([])}>
             {t('cancel')}
-          </Button>
+          </Button> */}
         </ScrollAreaAutosize>
       </Box>
     </Group>

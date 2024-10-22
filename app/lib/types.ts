@@ -52,3 +52,12 @@ export type DirectChatType = DirectChatMember & {
 export type ChatType = GroupChatType | DirectChatType;
 
 export type MessagesWithSender = (Message & { sender: UserRecord })[];
+
+export type EmojisEnum =
+  | 'love'
+  | 'like'
+  | 'haha'
+  | 'sad'
+  | 'wow'
+  | 'angry'
+  | 'dislike';
