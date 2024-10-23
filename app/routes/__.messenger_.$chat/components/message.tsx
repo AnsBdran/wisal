@@ -98,7 +98,11 @@ export const Message = ({
         {m.contentType === 'image' ? (
           <>
             <Stack gap={0}>
-              {!isSameSenderAsPrevious && getProfileInfoText(m.sender)}
+              {!isSameSenderAsPrevious && (
+                <Box className={styles.senderName}>
+                  {getProfileInfoText(m.sender)}
+                </Box>
+              )}
               <Box className={styles.imageContainer}>
                 <Image src={m.content} className={styles.image} />
               </Box>
@@ -116,7 +120,11 @@ export const Message = ({
         ) : (
           <Box key={m.id} className={styles.textContent}>
             <Stack gap={0}>
-              {!isSameSenderAsPrevious && getProfileInfoText(m.sender)}
+              {!isSameSenderAsPrevious && (
+                <Box className={styles.senderName}>
+                  {getProfileInfoText(m.sender)}
+                </Box>
+              )}
               <Text>{m.content}</Text>
             </Stack>
             {!isSameSenderAsNext && (
@@ -145,15 +153,14 @@ const EditMessage = ({
   hidden: boolean;
 }) => {
   const fetcher = useFetcher();
-  const isLoading = fetcher.state !== 'idle';
+  // const isLoading = fetcher.state !== 'idle';
   const t = useTranslations('common');
-  console.log('edit message rendered');
   useEffect(() => {
-    console.log('use Effect ran', isLoading, fetcher.data);
+    console.log('use effecting');
     if (fetcher.data?.success) {
       modals.closeAll();
     }
-  }, [fetcher.data]);
+  }, [fetcher]);
   return (
     <Menu.Item
       hidden={userID !== m.senderID || hidden}

@@ -3,6 +3,7 @@ import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
 import { getChatData } from '~/.server/queries';
 import Header from '~/lib/components/main/header/index';
 import {
+  CONTAINER_SIZE,
   HEADER_HEIGHT,
   INTENTS,
   MESSENGER_FOOTER_HEIGHT,
@@ -127,7 +128,9 @@ const ChatLayout = ({
     <AppShell header={{ height: HEADER_HEIGHT }}>
       <Header user={user} />
       <AppShell.Main>
-        <Container p={0}>{children}</Container>
+        <Container p={0} size={CONTAINER_SIZE}>
+          {children}
+        </Container>
       </AppShell.Main>
     </AppShell>
   );

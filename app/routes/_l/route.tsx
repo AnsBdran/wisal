@@ -15,7 +15,7 @@ import { json, Outlet, useLoaderData } from '@remix-run/react';
 import { useTranslations } from 'use-intl';
 import { authenticateOrToast } from '~/.server/utils';
 import Header from '~/lib/components/main/header';
-import { HEADER_HEIGHT } from '~/lib/constants';
+import { CONTAINER_SIZE, HEADER_HEIGHT } from '~/lib/constants';
 import { Icons } from '~/lib/icons';
 import styles from './l.module.css';
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -37,12 +37,12 @@ const MainLayout = () => {
       <AppShell header={{ height: HEADER_HEIGHT }} padding={'sm'}>
         <Header user={user} />
         <AppShell.Main className={styles.shellMain}>
-          <Container>
+          <Container size={CONTAINER_SIZE}>
             <Outlet />
           </Container>
         </AppShell.Main>
         <AppShell.Footer p='xl' className={styles.shellFooter}>
-          <Container h='100%'>
+          <Container h='100%' size={CONTAINER_SIZE}>
             <Stack justify='space-between' h='100%'>
               <Group>
                 <Stack gap='xs'>

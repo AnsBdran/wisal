@@ -22,12 +22,12 @@ export default defineConfig({
     }),
     tsconfigPaths(),
     RemixVitePWAPlugin({
-      registerType: 'prompt',
+      registerType: 'autoUpdate',
       injectRegister: false,
       strategies: 'injectManifest',
       srcDir: 'app/sw',
       filename: 'index.ts',
-      base: '/',
+      base: '/feed',
       pwaAssets: {
         disabled: false,
         config: true,
@@ -38,8 +38,8 @@ export default defineConfig({
         clientsClaim: true,
       },
       devOptions: {
-        enabled: false,
-        suppressWarnings: true,
+        enabled: true,
+        suppressWarnings: false,
         navigateFallback: '/feed',
         navigateFallbackAllowlist: [/^\/$/],
         type: 'module',

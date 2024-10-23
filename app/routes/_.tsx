@@ -4,7 +4,11 @@ import { useNavigate, Outlet, useLoaderData } from '@remix-run/react';
 
 import Header from '~/lib/components/main/header/index';
 import { LoaderFunction } from '@remix-run/node';
-import { BOTTOM_BAR_HEIGHT, HEADER_HEIGHT } from '~/lib/constants';
+import {
+  BOTTOM_BAR_HEIGHT,
+  CONTAINER_SIZE,
+  HEADER_HEIGHT,
+} from '~/lib/constants';
 import { Icons } from '~/lib/icons';
 import { useHeadroom } from '@mantine/hooks';
 import { authenticateOrToast } from '~/.server/utils';
@@ -48,10 +52,10 @@ const MainLayout = () => {
       >
         <Header user={user} />
         <AppShell.Main>
-          <Container size='sm'>
+          <Container size={CONTAINER_SIZE}>
             <Outlet />
           </Container>
-          <Container size='sm' h={BOTTOM_BAR_HEIGHT} px={0}>
+          <Container size={CONTAINER_SIZE} h={BOTTOM_BAR_HEIGHT} px={0}>
             <Tabs
               defaultValue={pathname === '/feed' ? '/feed' : '/messenger'}
               onChange={handleTabChange}

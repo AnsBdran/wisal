@@ -43,7 +43,7 @@ const matchers = {
 };
 
 registerRoute(matchers.feed, new NetworkFirst());
-registerRoute(matchers.messenger, new StaleWhileRevalidate());
+registerRoute(matchers.messenger, new NetworkFirst());
 registerRoute(matchers.chat, new NetworkFirst());
 registerRoute(
   matchers.image,

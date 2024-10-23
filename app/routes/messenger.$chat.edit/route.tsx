@@ -10,7 +10,7 @@ import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData, useNavigate } from '@remix-run/react';
 import { db } from '~/.server/db';
 import { ChatEditForm, ChatMembers } from './chat-form';
-import { HEADER_HEIGHT, INTENTS } from '~/lib/constants';
+import { CONTAINER_SIZE, HEADER_HEIGHT, INTENTS } from '~/lib/constants';
 import { chatMembers, chats } from '~/.server/db/schema';
 import { eq } from 'drizzle-orm';
 import { parseWithZod } from '@conform-to/zod';
@@ -68,13 +68,9 @@ const ChatEdit = () => {
         header={{ height: HEADER_HEIGHT }}
         padding={{ base: '0px', sm: 'xs', md: 'md' }}
       >
-        <AppShell.Header>
-          <Container h='100%'>
-            <Header user={user} />
-          </Container>
-        </AppShell.Header>
+        <Header user={user} />
         <AppShell.Main>
-          <Container>
+          <Container size={CONTAINER_SIZE}>
             <Stack>
               <Group>
                 <ActionIcon variant='subtle' onClick={() => navigate(-1)}>

@@ -4,6 +4,7 @@ import { Outlet, useLocation, useNavigate } from '@remix-run/react';
 import { useTranslations } from 'use-intl';
 import { authenticateOrToast } from '~/.server/utils';
 import Header from '~/lib/components/main/header';
+import { CONTAINER_SIZE } from '~/lib/constants';
 import { Icons } from '~/lib/icons';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -25,7 +26,7 @@ const AuthLayout = () => {
     >
       <Header />
       <AppShell.Main>
-        <Container>
+        <Container size={CONTAINER_SIZE}>
           <Tabs
             mb='xl'
             onChange={(value) => {

@@ -9,6 +9,7 @@ import { ChatInfo } from './chat-info';
 import { ChatWithMembers, DirectChatWithMembers } from '~/lib/types';
 import { getProfileInfo } from '~/lib/utils';
 import { BackBtn } from '~/lib/components/common/back-btn';
+import { useDisclosure } from '@mantine/hooks';
 
 export const ChatHeader = ({
   chat,
@@ -52,7 +53,8 @@ const ChatGroupHeader = ({
   // color: string;
   // chat: SerializeFrom<typeof loader>['chat']['data'];
 }) => {
-  const [showUsers, setShowUsers] = useState(false);
+  // const [showUsers, setShowUsers] = useState(false);
+  const [opened, { open, close }] = useDisclosure();
   // const t = useTranslations('common');
   // const navigate = useNavigate();
   // const { type } = useParams();
@@ -79,14 +81,10 @@ const ChatGroupHeader = ({
           name={data.name}
           radius='sm'
           color='teal'
-          onClick={() => setShowUsers(true)}
+          onClick={open}
           className={styles.groupAvatar}
         />
-        <ChatInfo
-          opened={showUsers}
-          onClose={() => setShowUsers(false)}
-          info={data}
-        />
+        <ChatInfo opened={opened} onClose={close} info={data} />
       </Group>
     </>
   );

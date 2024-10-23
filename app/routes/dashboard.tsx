@@ -10,7 +10,7 @@ import {
 import { useTranslations } from 'use-intl';
 import { authenticateOrToast } from '~/.server/utils';
 import Header from '~/lib/components/main/header';
-import { HEADER_HEIGHT } from '~/lib/constants';
+import { CONTAINER_SIZE, HEADER_HEIGHT } from '~/lib/constants';
 import { EditSuggestionContextProvider } from '~/lib/contexts/edit-suggestion';
 import { EditUserContextProvider } from '~/lib/contexts/edit-user';
 import { Icons, icons } from '~/lib/icons';
@@ -43,7 +43,7 @@ const Dashboard = () => {
       >
         <Header user={user} />
         <AppShell.Main>
-          <Container>
+          <Container size={CONTAINER_SIZE}>
             <Tabs
               mb={'xl'}
               onChange={(value) => value && navigate(value)}

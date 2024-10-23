@@ -18,8 +18,8 @@
   margin-inline: auto; */
 }
 
-.chatHeader,
-.chatFooter {
+.chatHeader {
+  padding-inline: var(--mantine-spacing-xs);
   /* background-color: var(--mantine-primary-color-filled); */
   /* color: var(--mantine-color-gray-text);
   background-color: light-dark(
@@ -35,13 +35,16 @@
   /* box-shadow: var(--mantine-shadow-lg); */
 }
 
+.chatFooter {
+  padding-inline-end: var(--mantine-spacing-xs);
+}
+
 .chatGroupHeader,
 .chatGroupFooter {
   background-color: light-dark(
-    alpha(var(--mantine-color-teal-0), 0.3),
-    alpha(var(--mantine-color-teal-8), 0.05)
+    alpha(var(--mantine-color-teal-2), 0.6),
+    alpha(var(--mantine-color-teal-8), 0.4)
   );
-  padding-inline: var(--mantine-spacing-xs);
   color: light-dark(var(--mantine-color-teal-8), var(--mantine-color-bright));
   /* border-color: light-dark(
     alpha(var(--mantine-color-red-3), 0.01),
@@ -52,16 +55,16 @@
 .chatGroupHeader {
   border-bottom: 1px solid;
   border-color: light-dark(
-    alpha(var(--mantine-color-teal-3), 0.4),
-    alpha(var(--mantine-color-teal-5), 0.2)
+    alpha(var(--mantine-color-teal-4), 0.1),
+    alpha(var(--mantine-color-teal-4), 0.4)
   );
 }
 
 .chatGroupFooter {
   border-top: 0.5px solid;
   border-color: light-dark(
-    alpha(var(--mantine-color-teal-3), 0.4),
-    alpha(var(--mantine-color-teal-5), 0.2)
+    alpha(var(--mantine-color-teal-4), 0.1),
+    alpha(var(--mantine-color-teal-4), 0.4)
   );
 }
 
@@ -194,12 +197,11 @@
     margin-right: var(--spacing);
   }
 
-  & .senderName {
+  /* & .senderName {
     color: light-dark(
       var(--mantine-color-green-8),
-      /* var(--mantine-color-green-light) */
     );
-  }
+  } */
 }
 
 .outgoing {
@@ -227,12 +229,16 @@
     background-color: var(--mantine-color-red-1);
   }
 
-  & .senderName {
+  /* & .senderName {
     color: light-dark(
       var(--mantine-color-blue-8),
-      /* var(--mantine-color-blue-light) */
     );
-  }
+  } */
+}
+
+.senderName {
+  color: var(--mantine-color-dimmed);
+  font-size: var(--mantine-font-size-xl);
 }
 
 .messageInfo {

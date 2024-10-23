@@ -175,7 +175,8 @@ export const ChatFooter = ({
               // submitImages();
             }}
             loading={isUploading}
-            // size='lg'
+            size='lg'
+            // variant='filled'
             variant='filled'
             color={isGroup ? 'teal' : 'blue'}
           >
@@ -183,8 +184,9 @@ export const ChatFooter = ({
           </ActionIcon>
           <ActionIcon
             color='red'
+            variant='filled'
             // mt='md'
-            // size='lg'
+            size='lg'
             onClick={() => setFiles([])}
           >
             <Icons.cancel />

@@ -17,6 +17,7 @@ import { Icons } from '~/lib/icons';
 import Logo from '~/logo';
 import { useLocale, useTranslations } from 'use-intl';
 import { getFullName } from '~/lib/utils';
+import { CONTAINER_SIZE } from '~/lib/constants';
 
 const Header = ({ user }: { user?: UserSession }) => {
   const t = useTranslations('common');
@@ -24,7 +25,7 @@ const Header = ({ user }: { user?: UserSession }) => {
   const { pathname } = useLocation();
   return (
     <AppShellHeader zIndex={99}>
-      <Container className='h-full ' size='sm'>
+      <Container className='h-full ' size={CONTAINER_SIZE}>
         <Group className='h-full justify-between'>
           <Center to='/feed' component={Link} h='100%' w={80} bg={'grapes'}>
             <Logo />
