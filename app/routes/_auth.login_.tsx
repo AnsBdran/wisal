@@ -6,7 +6,7 @@ import {
   TextInput,
   Title,
 } from '@mantine/core';
-import { ActionFunctionArgs } from '@remix-run/node';
+import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
 import { Form, useActionData, useNavigation } from '@remix-run/react';
 import { authenticator } from '~/services/auth.server';
 import { useForm } from '@conform-to/react';
@@ -128,10 +128,10 @@ export async function action({ request }: ActionFunctionArgs) {
   );
 }
 
-// export const loader = async ({ request }: LoaderFunctionArgs) => {
-//   return await authenticator.isAuthenticated(request, {
-//     successRedirect: '/feed',
-//   });
-// };
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  return await authenticator.isAuthenticated(request, {
+    successRedirect: '/feed',
+  });
+};
 
 export default Login;

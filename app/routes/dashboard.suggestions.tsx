@@ -32,9 +32,9 @@ const Suggestions = () => {
   return (
     <>
       <Title>{t('suggestions')}</Title>
-      {JSON.stringify({ editSuggestion, opened }, null, 2)}
+      {/* {JSON.stringify({ editSuggestion, opened }, null, 2)} */}
       <Table columns={getSuggestionsColumns()} data={suggestions} />
-      {editSuggestion && <SuggestionEdit />}
+      {/* {editSuggestion && <SuggestionEdit />} */}
     </>
   );
 };

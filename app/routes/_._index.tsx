@@ -1,10 +1,12 @@
 import { Title } from '@mantine/core';
 import {
+  LoaderFunctionArgs,
   redirect,
   type LoaderFunction,
   type MetaFunction,
 } from '@remix-run/node';
 import { useTranslations } from 'use-intl';
+import { authenticateOrToast } from '~/.server/utils';
 
 export const meta: MetaFunction = () => {
   return [
@@ -13,8 +15,14 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const loader: LoaderFunction = async () => {
-  throw redirect('/feed');
+export const loader: LoaderFunction = async ({
+  request,
+}: LoaderFunctionArgs) => {
+  const { feedRedirect, loginRedirect, user } = await authenticateOrToast(
+    request
+  );
+  if (user) return feedRedirect;
+  return loginRedirect;
 };
 
 export default function Index() {

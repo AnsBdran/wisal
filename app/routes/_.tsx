@@ -22,10 +22,6 @@ export const loader: LoaderFunction = async ({ request }) => {
   return { user, pathname };
 };
 
-export const handle = {
-  i18n: ['common', 'feed', 'messenger', 'form'],
-};
-
 const MainLayout = () => {
   const { user, pathname } = useLoaderData<typeof loader>();
   const navigate = useNavigate();

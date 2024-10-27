@@ -342,9 +342,10 @@ const Feed = () => {
                   <ScrollArea
                     styles={{
                       thumb: {
-                        backgroundColor: 'transparent',
+                        // backgroundColor: 'transparent',
                       },
                     }}
+                    offsetScrollbars
                   >
                     <SimpleGrid
                       cols={{ base: 1 }}

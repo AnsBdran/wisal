@@ -23,9 +23,6 @@ import { redirectWithSuccess } from 'remix-toast';
 import { getTranslations } from '~/services/next-i18n';
 import { Icons } from '~/lib/icons';
 
-export const handle = {
-  i18n: 'form',
-};
 
 const Register = () => {
   const t = useTranslations('form');

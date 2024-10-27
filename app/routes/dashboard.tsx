@@ -24,10 +24,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return { user };
 };
 
-export const handle = {
-  i18n: ['dashboard', 'common'],
-};
-
 const Dashboard = () => {
   const { user } = useLoaderData<typeof loader>();
   const { pathname } = useLocation();

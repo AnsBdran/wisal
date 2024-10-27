@@ -44,6 +44,13 @@ import {
   RefreshCcw,
   UserPen,
   AppWindow,
+  Delete,
+  DeleteIcon,
+  LucideDelete,
+  Recycle,
+  RemoveFormatting,
+  Edit2,
+  Trash,
 } from 'lucide-react';
 import { customIcons } from './custom-icons';
 export * from './custom-icons';
@@ -136,9 +143,8 @@ export const Icons = {
   profileSettings: UserPen,
   appSettings: AppWindow,
   share: Share2,
-  edit: Edit3,
-  delete: RecycleIcon,
-  github: Github,
+  edit: Edit2,
+  delete: Trash,
   email: Mail,
   password: Lock,
   login: LogIn,

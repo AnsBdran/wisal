@@ -6,10 +6,6 @@ import {
 } from '@tanstack/react-table';
 import { useTranslations } from 'use-intl';
 
-export const handle = {
-  i18n: ['common', 'dashboard'],
-};
-
 const _Table = ({ data, columns }) => {
   const table = useReactTable({
     data,

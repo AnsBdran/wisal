@@ -11,7 +11,7 @@ export const SwitchCell = ({ defaultValue }: { defaultValue: boolean }) => {
   return (
     <>
       <Switch
-        checked={defaultValue}
+        defaultChecked={defaultValue}
         onChange={(ev) => {
           setEditUser((prev) => ({
             ...prev,

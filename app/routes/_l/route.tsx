@@ -25,10 +25,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return json({ user });
 };
 
-export const handle = {
-  i18n: 'common',
-};
-
 const MainLayout = () => {
   const { user } = useLoaderData<typeof loader>();
   const t = useTranslations('common');

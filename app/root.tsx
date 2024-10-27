@@ -4,11 +4,16 @@ import '@mantine/carousel/styles.css';
 import '@mantine/dropzone/styles.css';
 import './font.css';
 import './tailwind.css';
+import {} from '@remix-pwa/';
 
 import {
   DirectionProvider,
   MantineProvider,
   ColorSchemeScript,
+  Dialog,
+  Text,
+  Button,
+  Stack,
 } from '@mantine/core';
 import {
   json,
@@ -29,9 +34,10 @@ import { LoaderFunctionArgs } from '@remix-run/node';
 import { ModalsProvider } from '@mantine/modals';
 import { IntlProvider, useTranslations } from 'use-intl';
 // import { PWABadge } from './lib/components/pwa/badge';
-import { PWAAssets } from './lib/components/pwa/assets';
 import { getMessages, resolveLocale } from './services/next-i18n';
-import { PWABadge } from './lib/components/pwa/badge';
+import { sendSkipWaitingMessage, useSWEffect } from '@remix-pwa/sw';
+import { usePWAManager } from '@remix-pwa/client';
+import { useDisclosure } from '@mantine/hooks';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { toast, headers } = await getToast(request);
@@ -50,10 +56,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     { headers }
   );
 };
-
-// export const handle = {
-//   i18n: 'common',
-// };
 export const meta: MetaFunction = ({ data }) => {
   return [
     { title: 'وصال' },
@@ -81,7 +83,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <Meta />
-        <PWAAssets />
         <Links />
         <ColorSchemeScript defaultColorScheme='light' />
       </head>
@@ -108,13 +109,47 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  const t = useTranslations();
+  const { swUpdate } = usePWAManager();
+  const t = useTranslations('common');
+  const [isOpened, { close }] = useDisclosure(true);
+  // if (  swUpdate.isUpdateAvailable   ) {
+  //   .show({
+  //     title: t('update_available'),
+  //     message:
+  //   })
+  // }
+  // const t = useTranslations();
+  // useSWEffect();
+
+  const UpdateDialog = () => {
+    return (
+      <Dialog
+        withBorder
+        opened={swUpdate.isUpdateAvailable && isOpened}
+        onClose={close}
+        withCloseButton
+      >
+        {/* <Dialog opened={swUpdate.isUpdateAvailable}> */}
+        <Stack>
+          <Text c='primary'>{t('update_available')}</Text>
+          <Button
+            onClick={() => {
+              sendSkipWaitingMessage(swUpdate.newWorker!);
+              window.location.reload();
+            }}
+          >
+            {t('install_update')}
+          </Button>
+        </Stack>
+      </Dialog>
+    );
+  };
   return (
     <ModalsProvider
       labels={{ confirm: t('common.confirm'), cancel: t('common.cancel') }}
     >
       <Outlet />
-      {/* <PWABadge /> */}
+      <UpdateDialog />
     </ModalsProvider>
   );
 }

@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjsAr from 'dayjs/locale/ar';
 import { ReactionType, users } from '~/.server/db/schema';
-import { Choice, Suggestion, UserRecord } from './types';
+import { Choice, Suggestion, UserRecord, UserSession } from './types';
 import {
   Avatar,
   Group,
@@ -114,33 +114,34 @@ export const getProfileInfoText = (user: UserRecord) => {
   );
 };
 
-export const getFullName = (user) => `${user.firstName} ${user.lastName}`;
-export const firstLetters = (user) =>
-  `${user.firstName.charAt(0)} ${user.lastName.charAt(0)}`;
+export const getFullName = (user: UserSession) =>
+  `${user.firstName} ${user.lastName}`;
+// export const firstLetters = (user) =>
+//   `${user.firstName.charAt(0)} ${user.lastName.charAt(0)}`;
 
-export const getReactionIconData = (type: typeof ReactionType.enumName) => {
-  switch (type) {
-    case 'like':
-      return { icon: 'fluent-emoji:thumbs-up', color: 'blue' };
-    case 'love':
-      return { icon: 'fluent-emoji:smiling-face-with-hearts', color: 'red' };
-    case 'haha':
-      return {
-        icon: 'fluent-emoji:rolling-on-the-floor-laughing',
-        color: 'darkYellow',
-      };
-    case 'wow':
-      return { icon: 'noto:astonished-face', color: 'red' };
-    case 'sad':
-      return { icon: 'noto:sad-but-relieved-face', color: 'dark' };
-    case 'dislike':
-      return { icon: 'fluent-emoji:thumbs-down', color: 'orange' };
-    case 'angry':
-      return { icon: 'fluent-emoji:angry-face', color: 'red' };
-    default:
-      return { icon: '', color: '' };
-  }
-};
+// export const getReactionIconData = (type: typeof ReactionType.enumName) => {
+//   switch (type) {
+//     case 'like':
+//       return { icon: 'fluent-emoji:thumbs-up', color: 'blue' };
+//     case 'love':
+//       return { icon: 'fluent-emoji:smiling-face-with-hearts', color: 'red' };
+//     case 'haha':
+//       return {
+//         icon: 'fluent-emoji:rolling-on-the-floor-laughing',
+//         color: 'darkYellow',
+//       };
+//     case 'wow':
+//       return { icon: 'noto:astonished-face', color: 'red' };
+//     case 'sad':
+//       return { icon: 'noto:sad-but-relieved-face', color: 'dark' };
+//     case 'dislike':
+//       return { icon: 'fluent-emoji:thumbs-down', color: 'orange' };
+//     case 'angry':
+//       return { icon: 'fluent-emoji:angry-face', color: 'red' };
+//     default:
+//       return { icon: '', color: '' };
+//   }
+// };
 
 export const getUsersColumns = () => {
   const columnHelper = createColumnHelper<UserRecord>();

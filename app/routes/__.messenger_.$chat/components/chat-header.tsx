@@ -53,11 +53,7 @@ const ChatGroupHeader = ({
   // color: string;
   // chat: SerializeFrom<typeof loader>['chat']['data'];
 }) => {
-  // const [showUsers, setShowUsers] = useState(false);
   const [opened, { open, close }] = useDisclosure();
-  // const t = useTranslations('common');
-  // const navigate = useNavigate();
-  // const { type } = useParams();
   console.log('in chat group header', data);
   return (
     <>

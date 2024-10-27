@@ -54,9 +54,6 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   // }
 };
 
-export const handle = {
-  i18n: ['common', 'messenger', 'form'],
-};
 
 const ChatEdit = () => {
   const { chat, user } = useLoaderData<typeof loader>();
