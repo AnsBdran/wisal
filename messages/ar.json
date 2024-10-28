@@ -131,7 +131,10 @@
     "choose_image": "اختيار صورة",
     "profile_image_changed": "تم تغيير صورة ملفك الشخصي بنجاح.",
     "update_available": "هناك تحديث جديد متوفر",
-    "install_update": "تثبيث الآن"
+    "install_update": "تثبيث الآن",
+    "edit_post": "تعديل المنشور",
+    "already_logged_in": "لا يمكنك الوصول",
+    "already_logged_in_description": "لقد تم تسجيل دخولك بالفعل"
   },
   "settings": {
     "updated_successfully": "تم التحديث بنجاح",

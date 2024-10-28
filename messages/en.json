@@ -123,7 +123,10 @@
     "reload": "Reload",
     "profile_image_changed": "You profile image has been updated successfully.",
     "update_available": "There is a new update available",
-    "install_update": "Install now"
+    "install_update": "Install now",
+    "edit_post": "Edit post",
+    "already_logged_in": "You can't access this page",
+    "already_logged_in_description": "You are already logged in"
   },
   "settings": {
     "updated_successfully": "Updated successfully",

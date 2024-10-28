@@ -9,6 +9,7 @@ import {
   MessageHandler,
   SkipWaitHandler,
 } from '@remix-pwa/sw';
+
 const logger = new Logger({
   prefix: 'anas',
 });
@@ -25,7 +26,7 @@ const DATA_CACHE_NAME = `data-cache`;
 // cache types
 const documentCache = new EnhancedCache(DOCUMENT_CACHE_NAME, {
   version,
-  strategy: 'CacheFirst',
+  strategy: 'NetworkFirst',
   strategyOptions: {
     maxEntries: 64,
   },

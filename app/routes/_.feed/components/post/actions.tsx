@@ -13,7 +13,7 @@ export const PostActions = ({
 }: {
   editPostFormOpen: () => void;
   userID: number;
-  post: SerializeFrom<typeof loader>['posts']['data'][0];
+  post: SerializeFrom<Awaited<typeof loader>>['posts'];
 }) => {
   const t = useTranslations('common');
   const fetcher = useFetcher();

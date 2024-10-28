@@ -65,8 +65,8 @@ export const authenticateOrToast = async (request: Request) => {
   const t = await getTranslations(request);
 
   const feedRedirect = redirectWithInfo('/feed', {
-    message: t('common.you_are_unauthorized'),
-    description: t('common.you_are_unauthorized_description'),
+    message: t('common.already_logged_in'),
+    description: t('common.already_logged_in_description'),
   });
 
   const loginRedirect = redirectWithInfo('/login', {

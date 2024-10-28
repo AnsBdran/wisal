@@ -35,7 +35,11 @@ import { ModalsProvider } from '@mantine/modals';
 import { IntlProvider, useTranslations } from 'use-intl';
 // import { PWABadge } from './lib/components/pwa/badge';
 import { getMessages, resolveLocale } from './services/next-i18n';
-import { sendSkipWaitingMessage, useSWEffect } from '@remix-pwa/sw';
+import {
+  ManifestLink,
+  sendSkipWaitingMessage,
+  useSWEffect,
+} from '@remix-pwa/sw';
 import { usePWAManager } from '@remix-pwa/client';
 import { useDisclosure } from '@mantine/hooks';
 
@@ -83,6 +87,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <Meta />
+        {/* <ManifestLink manifestUrl='/manifest.webmanifest' /> */}
+        <link rel='manifest' href='/manifest.webmanifest' />
         <Links />
         <ColorSchemeScript defaultColorScheme='light' />
       </head>
@@ -145,9 +151,7 @@ export default function App() {
     );
   };
   return (
-    <ModalsProvider
-      labels={{ confirm: t('common.confirm'), cancel: t('common.cancel') }}
-    >
+    <ModalsProvider labels={{ confirm: t('confirm'), cancel: t('cancel') }}>
       <Outlet />
       <UpdateDialog />
     </ModalsProvider>

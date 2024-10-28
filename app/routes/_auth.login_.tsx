@@ -6,7 +6,7 @@ import {
   TextInput,
   Title,
 } from '@mantine/core';
-import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
+import { ActionFunctionArgs } from '@remix-run/node';
 import { Form, useActionData, useNavigation } from '@remix-run/react';
 import { authenticator } from '~/services/auth.server';
 import { useForm } from '@conform-to/react';
@@ -83,7 +83,8 @@ export async function action({ request }: ActionFunctionArgs) {
   if (submission.status !== 'success') {
     return submission.reply();
   }
-
+  console.log('Am I called again and again ?????????????????????????????????');
+  console.log('Am I called again and again ++++++++++++++++++++++++++++');
   const userRecord = await db.query.users.findFirst({
     where: ({ username }, op) => op.eq(username, submission.value.username),
     with: {
@@ -113,7 +114,6 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const session = await getSession(request.headers.get('Cookie'));
   session.set(authenticator.sessionKey, spreadRecordIntoSession(userRecord));
-  // const t = (t) => t;
   const t = await getTranslations(request);
 
   return redirectWithSuccess(
@@ -124,14 +124,8 @@ export async function action({ request }: ActionFunctionArgs) {
     },
     {
       headers: { 'Set-Cookie': await commitSession(session) },
+      status: 200,
     }
   );
 }
-
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  return await authenticator.isAuthenticated(request, {
-    successRedirect: '/feed',
-  });
-};
-
 export default Login;

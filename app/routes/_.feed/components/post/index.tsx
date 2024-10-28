@@ -140,7 +140,11 @@ export default function Post({
       />
 
       {post.userID === userID && (
-        <Modal opened={editPostFormOpened} onClose={editPostFormClose}>
+        <Modal
+          title={t('edit_post')}
+          opened={editPostFormOpened}
+          onClose={editPostFormClose}
+        >
           <EditPost
             post={post}
             userID={userID}
